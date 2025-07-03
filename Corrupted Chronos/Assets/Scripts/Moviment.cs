@@ -1,38 +1,61 @@
+using System.Linq.Expressions;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 
 public class Moviment : MonoBehaviour
 {
-    public float moveSpeed = 5f;
     private Rigidbody rb;
-    private Vector3 movement;
+    private PlayerInput playerInput;
+    private PlayerInputActions playerInputActions;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        playerInput = GetComponent<PlayerInput>();
+        
+        playerInputActions = new PlayerInputActions();
+        playerInputActions.Nau.Enable();
+        playerInputActions.Nau.CanviCapa.performed += moveCapa;
+    }
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+
     }
+
+    void FixedUpdate()
+    {
+        Vector2 movement =playerInputActions.Nau.Move.ReadValue<Vector2>().normalized;
+        //float moveSpeed = 5f;
+        //rb.AddForce(new Vector3(movement.x, 0, movement.y) * moveSpeed, ForceMode.Force);
+        transform.Translate(new Vector3(movement.x, 0, movement.y));
+
+    }
+
 
     // Update is called once per frame
     void Update()
     {
-       
-
-
         //float moveX = Input.GetAxisRaw("Horizontal");
         //float moveZ = Input.GetAxisRaw("Vertical");
         //movement = new Vector3(moveX, 0f, moveZ).normalized;
 
     }
 
-    void FixedUpdate()
+    private void moveCapa(InputAction.CallbackContext context)
     {
-        // Apply movement
-        //rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        float movement = playerInputActions.Nau.CanviCapa.ReadValue<float>();
+        
+        transform.Translate(new Vector3(0, movement, 0));
+        //rb.AddForce(new Vector3(0, movement,0), ForceMode.Force);
+        Debug.Log("canvi capa"+ movement);
+
     }
 
-    public void movementinputAAA(InputAction.CallbackContext context)
+    /*public void movementinputAAA(InputAction.CallbackContext context)
     {
         Debug.Log("move input detected");
         if (context.performed)
@@ -42,5 +65,5 @@ public class Moviment : MonoBehaviour
         }
         //Vector2 inputVector = RTeadValue<Vector2>();
         //rb.AddForce(new Vector3(inputVector.x, 0, inputVector.y) * moveSpeed, ForceMode.Force);
-    }
+    }*/
 }
