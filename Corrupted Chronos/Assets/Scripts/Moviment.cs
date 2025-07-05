@@ -51,7 +51,7 @@ public class Moviment : MonoBehaviour
         
         transform.Translate(new Vector3(0, movement, 0));
         //rb.AddForce(new Vector3(0, movement,0), ForceMode.Force);
-        Debug.Log("canvi capa"+ movement);
+        //Debug.Log("canvi capa"+ movement);
 
     }
 
