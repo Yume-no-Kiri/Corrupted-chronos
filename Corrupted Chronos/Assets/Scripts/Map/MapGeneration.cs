@@ -14,6 +14,10 @@ public class MapGeneration : MonoBehaviour
     [SerializeField]
     public bool startRandomlyEachIteration = true;
 
+        
+    [SerializeField]
+    private MapVisualizer mapVisualizer;
+    
     public void RunProceduralGeneration()
     {
         HashSet<Vector2Int> floorPositions= RunRandomWalk();
@@ -21,6 +25,7 @@ public class MapGeneration : MonoBehaviour
         {
             Debug.Log(position.ToString());
         }
+        mapVisualizer.PaintFloorTile(floorPositions);
     }
 
     public HashSet<Vector2Int> RunRandomWalk()
