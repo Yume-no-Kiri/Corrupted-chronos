@@ -1,4 +1,9 @@
 === npc1 === //node
 HI  //text tal qual
 are you here?
--> END //final diàleg
+* [YES]
+    Nice!
+    
+* [NO]
+    -> npc1
+- -> END //final diàleg

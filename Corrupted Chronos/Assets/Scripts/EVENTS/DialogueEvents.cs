@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
-
+using Ink.Runtime;
+using Ink.Parsed;
+using System.Collections.Generic;
 
 public class DialogueEvents
 {
@@ -15,7 +17,7 @@ public class DialogueEvents
 
     public event Action onDialogueStarted;
 
-    public void onDialogueStarted()
+    public void DialogueStarted()
     {
         if (onDialogueStarted != null)
         {
@@ -23,9 +25,9 @@ public class DialogueEvents
         }
     }
 
-    public event Action onDialoguesFinished;
+    public event Action onDialogueFinished;
 
-    public void onDialogueFinished()
+    public void DialogueFinished()
     {
         if (onDialogueFinished != null)
         {
@@ -33,15 +35,23 @@ public class DialogueEvents
         }
     }
 
-    public event Action<string> onDisplayDialogue;
+    public event Action<string, List<Ink.Runtime.Choice>> onDisplayDialogue;
 
-    public void onDisplayDialogue(string dialogue_line)
+    public void DisplayDialogue(string dialogue_line, List<Ink.Runtime.Choice> dialogue_choices)
     {
         if (onDisplayDialogue != null)
         {
-            onDisplayDialogue(dialogue_line);
+            onDisplayDialogue(dialogue_line, dialogue_choices);
         }
     }
 
+    public event Action<int> onUpdateChoice;
 
+    public void UpdateChoice(int value)
+    {
+        if (onUpdateChoice != null)
+        {
+            onUpdateChoice(value);
+        }
+    }
 }

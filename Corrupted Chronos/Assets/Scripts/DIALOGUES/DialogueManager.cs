@@ -7,6 +7,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TextAsset inkJson;
 
     private Story story;
+    private int current_choice = -1;
 
     private bool dialogue_playing = false;
     private PlayerInputActions playerInputActions;
@@ -14,12 +15,14 @@ public class DialogueManager : MonoBehaviour
     {
         story = new Story(inkJson.text);
         playerInputActions = new PlayerInputActions();
-        playerInputActions.UI.submit.performed -= ctx => ContinueOrExitStory(); //REVISAR
+
+        playerInputActions.UI.submit.performed += ctx => ContinueOrExitStory(); //REVISAR
     }
   
     private void OnEnable()
     {
         GameEventsManager.instance.dialogue_events.onEnterDialogue += EnterDialogue;
+        GameEventsManager.instance.dialogue_events.onUpdateChoice += UpdateChoiceIndex;
         playerInputActions.UI.Enable();
     }
 
@@ -27,9 +30,14 @@ public class DialogueManager : MonoBehaviour
     private void onDisable()
     {
         GameEventsManager.instance.dialogue_events.onEnterDialogue -= EnterDialogue;
-        playerInputActions.UI.Disable();
-      
+        GameEventsManager.instance.dialogue_events.onUpdateChoice -= UpdateChoiceIndex;
 
+        playerInputActions.UI.Disable();
+    }
+
+    private void UpdateChoiceIndex(int choice_index)
+    {
+        current_choice = choice_index;
     }
 
     private void EnterDialogue(string branca, int mode)
@@ -48,6 +56,7 @@ public class DialogueManager : MonoBehaviour
         //saltar a on toca
         if (!branca.Equals("")) 
         {
+            
             story.ChoosePathString(branca);
         }
         else
@@ -61,15 +70,22 @@ public class DialogueManager : MonoBehaviour
 
     private void ContinueOrExitStory()
     {
+        if (story.currentChoices.Count > 0 && current_choice != -1)
+        {
+            story.ChooseChoiceIndex(current_choice);
+            current_choice=-1;
+        }
+
         if (story.canContinue)  //Haurem de gestionar els tags de darrere la frase # npc:XXXXXXXX # emocio:XXXXXX, s'haurà de crear una funció que ho gestioni
         {
             string dialogue_line = story.Continue();
+            Debug.Log(dialogue_line);
 
             //de momemnt imprimim en consola 
             // OBVIAMENT CANVIAR A PASSAR PER LA UI
-            GameEventsManager.instance.dialogue_events.DisplayDialogue(dialogue_line);
+            GameEventsManager.instance.dialogue_events.DisplayDialogue(dialogue_line, story.currentChoices);
         }
-        else
+        else if (story.currentChoices.Count==0)
         {
             ExitDialogue();
         }
@@ -83,7 +99,6 @@ public class DialogueManager : MonoBehaviour
         dialogue_playing = false;
         //reset story
         story.ResetState();
-        onDisable();
     }
 
 }
