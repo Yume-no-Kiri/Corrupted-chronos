@@ -9,28 +9,26 @@ public class DialogueManager : MonoBehaviour
     private Story story;
 
     private bool dialogue_playing = false;
-
+    private PlayerInputActions playerInputActions;
     private void Awake()
     {
         story = new Story(inkJson.text);
+        playerInputActions = new PlayerInputActions();
+        playerInputActions.UI.submit.performed -= ctx => ContinueOrExitStory(); //REVISAR
     }
-    public void Update()  //S'HA DE FER QUE FUNCIONI BÉ
-    {
-        if (dialogue_playing)
-        {
-            if (Input.GetButton("space")) ContinueOrExitStory();
-        }
-    }
-
+  
     private void OnEnable()
     {
         GameEventsManager.instance.dialogue_events.onEnterDialogue += EnterDialogue;
+        playerInputActions.UI.Enable();
     }
 
     // Update is called once per frame
     private void onDisable()
     {
         GameEventsManager.instance.dialogue_events.onEnterDialogue -= EnterDialogue;
+        playerInputActions.UI.Disable();
+      
 
     }
 
