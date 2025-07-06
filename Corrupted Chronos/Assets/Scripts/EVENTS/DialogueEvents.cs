@@ -4,13 +4,44 @@ using System;
 
 public class DialogueEvents
 {
-    public event Action<string, string, int> onEnterDialogue;
-    public void EnterDialogue(string character, string emotion, int mode)
+    public event Action<string, int> onEnterDialogue;
+    public void EnterDialogue(string branca, int mode)
     {
         if (onEnterDialogue != null)
         {
-            onEnterDialogue(character, emotion, mode);
+            onEnterDialogue(branca, mode);
         }
     }
+
+    public event Action onDialogueStarted;
+
+    public void onDialogueStarted()
+    {
+        if (onDialogueStarted != null)
+        {
+            onDialogueStarted();
+        }
+    }
+
+    public event Action onDialoguesFinished;
+
+    public void onDialogueFinished()
+    {
+        if (onDialogueFinished != null)
+        {
+            onDialogueFinished();
+        }
+    }
+
+    public event Action<string> onDisplayDialogue;
+
+    public void onDisplayDialogue(string dialogue_line)
+    {
+        if (onDisplayDialogue != null)
+        {
+            onDisplayDialogue(dialogue_line);
+        }
+    }
+
 
 }

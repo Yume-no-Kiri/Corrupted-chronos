@@ -32,12 +32,7 @@ public class DialogueManager : MonoBehaviour
 
     }
 
-
-
-
-
-
-    private void EnterDialogue(string npc, string emotion, int mode)
+    private void EnterDialogue(string branca, int mode)
     {
         if (dialogue_playing)
         {
@@ -46,10 +41,14 @@ public class DialogueManager : MonoBehaviour
 
         dialogue_playing=true;
 
+
+        GameEventsManager.instance.dialogue_events.DialogueStarted();
+
+
         //saltar a on toca
-        if (!npc.Equals("")) 
+        if (!branca.Equals("")) 
         {
-            story.ChoosePathString(npc);
+            story.ChoosePathString(branca);
         }
         else
         {
@@ -62,13 +61,13 @@ public class DialogueManager : MonoBehaviour
 
     private void ContinueOrExitStory()
     {
-        if (story.canContinue)
+        if (story.canContinue)  //Haurem de gestionar els tags de darrere la frase # npc:XXXXXXXX # emocio:XXXXXX, s'haurà de crear una funció que ho gestioni
         {
             string dialogue_line = story.Continue();
 
             //de momemnt imprimim en consola 
             // OBVIAMENT CANVIAR A PASSAR PER LA UI
-            Debug.Log(dialogue_line);
+            GameEventsManager.instance.dialogue_events.DisplayDialogue(dialogue_line);
         }
         else
         {
@@ -79,10 +78,12 @@ public class DialogueManager : MonoBehaviour
     private void ExitDialogue()
     {
         Debug.Log("Sortint diàleg");
+        GameEventsManager.instance.dialogue_events.DialogueFinished();
 
-        dialogue_playing=false;
+        dialogue_playing = false;
         //reset story
         story.ResetState();
+        onDisable();
     }
 
 }

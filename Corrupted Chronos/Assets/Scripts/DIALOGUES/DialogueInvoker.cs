@@ -3,11 +3,8 @@ using System;
 
 public class DialogueInvoker : MonoBehaviour
 {
-    [Header("Character:")]
-    [SerializeField] private string npc;
-
-    [Header("Emotion:")]
-    [SerializeField] private string emotion;
+    [Header("Branca:")]
+    [SerializeField] private string branca;
 
     [Header("Mode:")]
     [SerializeField] private int mode;
@@ -16,9 +13,9 @@ public class DialogueInvoker : MonoBehaviour
     void Start()
     {
         //Invoca el dialeg
-        if (npc != null) 
+        if (branca != null) 
             {
-              GameEventsManager.instance.dialogue_events.EnterDialogue(npc, emotion, mode);
+              GameEventsManager.instance.dialogue_events.EnterDialogue(branca, mode);
             } 
     }
 
