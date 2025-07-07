@@ -489,6 +489,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &953748565
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4034951588921962960, guid: 5128885e611ca2548812017164f9d781, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4034951588921962960, guid: 5128885e611ca2548812017164f9d781, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4034951588921962960, guid: 5128885e611ca2548812017164f9d781, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4034951588921962960, guid: 5128885e611ca2548812017164f9d781, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4034951588921962960, guid: 5128885e611ca2548812017164f9d781, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4034951588921962960, guid: 5128885e611ca2548812017164f9d781, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4034951588921962960, guid: 5128885e611ca2548812017164f9d781, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4034951588921962960, guid: 5128885e611ca2548812017164f9d781, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4034951588921962960, guid: 5128885e611ca2548812017164f9d781, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4034951588921962960, guid: 5128885e611ca2548812017164f9d781, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7749826721590819506, guid: 5128885e611ca2548812017164f9d781, type: 3}
+      propertyPath: m_Name
+      value: QuadratTerreny
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5128885e611ca2548812017164f9d781, type: 3}
 --- !u!1 &1444698872
 GameObject:
   m_ObjectHideFlags: 0
@@ -501,6 +558,7 @@ GameObject:
   - component: {fileID: 1444698874}
   - component: {fileID: 1444698873}
   - component: {fileID: 1444698876}
+  - component: {fileID: 1444698877}
   m_Layer: 0
   m_Name: Nau
   m_TagString: Untagged
@@ -520,6 +578,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29919a04243bd68469907063f8cdb296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checkRadius: 0.45
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!54 &1444698874
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -545,7 +607,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!4 &1444698875
 Transform:
@@ -556,7 +618,7 @@ Transform:
   m_GameObject: {fileID: 1444698872}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: -0}
+  m_LocalPosition: {x: -0, y: 1, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -609,11 +671,40 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9e4030f5-55f9-4981-a7fe-6b3f122d0b1d
     m_ActionName: 'Nau/CanviCapa[/Mouse/scroll/down,/Mouse/scroll/up]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 118cb40a-27dd-4017-bbe4-75cd8a16b9b7
+    m_ActionName: UI/New action
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a21a0e44-5ee8-40f3-beea-c72787116d11
+    m_ActionName: 'UI/submit[/Keyboard/space]'
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Nau
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!65 &1444698877
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444698872}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1938941492
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,9 +731,9 @@ Transform:
   m_GameObject: {fileID: 1938941492}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1444698875}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
@@ -707,5 +798,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 410087041}
   - {fileID: 832575519}
-  - {fileID: 1444698875}
   - {fileID: 656593834}
+  - {fileID: 1444698875}
+  - {fileID: 953748565}
