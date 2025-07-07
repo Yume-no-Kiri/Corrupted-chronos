@@ -19,23 +19,23 @@ public class MapVisualizer : MonoBehaviour
     //prefabs
     public GameObject prefabTerreny;
     
-    public void PaintFloorTile(IEnumerable<Vector2Int> floorPositions)
+    public void PaintFloorTile(IEnumerable<Vector3Int> floorPositions)
     {
         //PaintTiles(floorPositions, floorTilemap, floorTile);
         PaintPrefab(floorPositions);
     }
 
-    private void PaintPrefab(IEnumerable<Vector2Int> positions)
+    private void PaintPrefab(IEnumerable<Vector3Int> positions)
     {
         foreach (var position in positions)
         {
-            Instantiate(prefabTerreny, new Vector3(position.x,0,position.y),Quaternion.identity);
+            Instantiate(prefabTerreny, position,Quaternion.identity);
         }
     }
 
 
     //use de tiles
-    private void PaintTiles(IEnumerable<Vector2Int> positions, Tilemap tilemap, TileBase tile)
+    private void PaintTiles(IEnumerable<Vector3Int> positions, Tilemap tilemap, TileBase tile)
     {
         foreach (var position in positions)
         {
@@ -43,7 +43,7 @@ public class MapVisualizer : MonoBehaviour
         }
     }
 
-    private void PaintSingleTile(Tilemap tilemap, TileBase tile,Vector2Int position)
+    private void PaintSingleTile(Tilemap tilemap, TileBase tile,Vector3Int position)
     {
         var tilePosition = tilemap.WorldToCell((Vector3Int)position);
         tilemap.SetTile(tilePosition, tile);

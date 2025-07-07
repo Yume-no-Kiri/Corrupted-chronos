@@ -6,7 +6,7 @@ using UnityEngine;
 public class MapGeneration : MonoBehaviour
 {
     [SerializeField]
-    protected Vector2Int startPos=Vector2Int.zero;
+    protected Vector3Int startPos=Vector3Int.zero;
     [SerializeField]
     private int iterations=10;
     [SerializeField]
@@ -20,30 +20,38 @@ public class MapGeneration : MonoBehaviour
     
     public void RunProceduralGeneration()
     {
-        HashSet<Vector2Int> floorPositions= RunRandomWalk();
+        HashSet<Vector3Int> floorPositions= RunRandomWalk();
         foreach (var position in floorPositions)
         {
-            Debug.Log(position.ToString());
+            Debug.Log(position.ToString() +"AAAAA");
         }
         mapVisualizer.PaintFloorTile(floorPositions);
     }
 
-    public HashSet<Vector2Int> RunRandomWalk()
+    public HashSet<Vector3Int> RunRandomWalk()
     {
-        var currentPos=startPos;
-        HashSet<Vector2Int> floorPositions = new HashSet<Vector2Int>();
-        //crido x random walks de llargada walksteps y iteracions 
-        for (int i = 0; i < iterations; i++)
+        HashSet<Vector3Int> floorPositions = new HashSet<Vector3Int>();
+
+        for (int j = 1; j < 3; j++)
         {
-            //crido random walk de walksteps passos
-            var path= GenerationAlgorithms.SimpleRandomWalk(currentPos,walkSteps);
-            floorPositions.UnionWith(path);
-            if (startRandomlyEachIteration)
+            //iterations += j;
+            //walkSteps += j;
+
+            var currentPos = startPos;
+            //crido x random walks de llargada walksteps y iteracions 
+            for (int i = 0; i < 4; i++)
             {
-                currentPos=floorPositions.ElementAt(Random.Range(0, floorPositions.Count));
+                //crido random walk de walksteps passos
+                var path = GenerationAlgorithms.SimpleRandomWalk(currentPos, walkSteps, j);
+                floorPositions.UnionWith(path);
+                if (startRandomlyEachIteration)
+                {
+                    currentPos = floorPositions.ElementAt(Random.Range(0, floorPositions.Count));
+                }
             }
         }
         return floorPositions;
+
     }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
