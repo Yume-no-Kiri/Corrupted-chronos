@@ -5,7 +5,18 @@ using UnityEngine.InputSystem;
 
 public class Moviment : MonoBehaviour
 {
+    
+    
+    
+    //físiques 
     private Rigidbody rb;
+    [SerializeField] 
+    private float checkRadius = 0.45f;
+    [SerializeField] 
+    private LayerMask collisionMask;
+
+    
+    //Controls/inputs
     private PlayerInput playerInput;
     private PlayerInputActions playerInputActions;
 
@@ -28,11 +39,15 @@ public class Moviment : MonoBehaviour
 
     void FixedUpdate()
     {
+        Collider[] hitsAbove = Physics.OverlapSphere(new Vector3(rb.position.x,rb.position.y+1,rb.position.z), checkRadius, collisionMask);
+        
+        
+        
         Vector2 movement =playerInputActions.Nau.Move.ReadValue<Vector2>().normalized;
-        //float moveSpeed = 5f;
-        //rb.AddForce(new Vector3(movement.x, 0, movement.y) * moveSpeed, ForceMode.Force);
-        transform.Translate(new Vector3(movement.x, 0, movement.y));
+        float moveSpeed = 5f;
+        //transform.Translate(new Vector3(movement.x, 0, movement.y));
 
+        rb.MovePosition(rb.position+ new Vector3(movement.x, 0, movement.y) * moveSpeed *Time.deltaTime);
     }
 
 
@@ -49,7 +64,9 @@ public class Moviment : MonoBehaviour
     {
         float movement = playerInputActions.Nau.CanviCapa.ReadValue<float>();
         
-        transform.Translate(new Vector3(0, movement, 0));
+        Vector3 newPosition = rb.position + new Vector3(0, movement, 0);
+        //transform.Translate(new Vector3(0, movement, 0));
+        rb.MovePosition(newPosition);
         //rb.AddForce(new Vector3(0, movement,0), ForceMode.Force);
         //Debug.Log("canvi capa"+ movement);
 
