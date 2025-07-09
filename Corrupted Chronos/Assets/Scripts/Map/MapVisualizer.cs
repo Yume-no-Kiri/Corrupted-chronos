@@ -19,17 +19,30 @@ public class MapVisualizer : MonoBehaviour
     //prefabs
     public GameObject prefabTerreny;
     
-    public void PaintFloorTile(IEnumerable<Vector3Int> floorPositions)
+    public void PaintFloorTile(WalkedBy floorPositions)
     {
         //PaintTiles(floorPositions, floorTilemap, floorTile);
         PaintPrefab(floorPositions);
+        foreach (var VARIABLE in floorPositions.Occupied)
+        {
+            Debug.Log($"Key: {VARIABLE.Key}, Value: {VARIABLE.Value}");
+        }
     }
 
-    private void PaintPrefab(IEnumerable<Vector3Int> positions)
+    private void PaintPrefab(WalkedBy positions)
     {
-        foreach (var position in positions)
+        foreach (var position in positions.Path)
         {
-            Instantiate(prefabTerreny, position,Quaternion.identity);
+            if (positions.Corners.Contains(position))
+            {
+                GameObject obj=Instantiate(prefabTerreny, position,Quaternion.identity);
+                SpriteRenderer sr = obj.GetComponentInChildren<SpriteRenderer>();
+                sr.color = Color.blue; // Tint it blue
+            }
+            else
+            {
+                Instantiate(prefabTerreny, position,Quaternion.identity);
+            }
         }
     }
 

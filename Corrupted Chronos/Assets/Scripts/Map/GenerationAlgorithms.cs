@@ -1,44 +1,116 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public static class GenerationAlgorithms
-{ 
-   
-    public static HashSet<Vector3Int> SimpleRandomWalk(Vector3Int startPos, int WalkSteps, int Height)
+{
+    //static HashSet<Vector3Int> Path = new HashSet<Vector3Int>();
+    //static HashSet<Vector3Int> Path;
+    //static HashSet<Vector3Int> Corners = new HashSet<Vector3Int>();
+    //static HashSet<Vector3Int> Corners;
+    
+    public static WalkedBy SimpleRandomWalk(Vector3Int startPos, int WalkSteps, int Height)
     {
-        HashSet<Vector3Int> path = new HashSet<Vector3Int>();
+        WalkedBy thisRW = new WalkedBy(1);
+        //startPos.y = 0;
+        startPos.y = Height;
+        thisRW.Path.Add(startPos);
+        thisRW.Corners.Add(startPos);
+        thisRW.Occupied.Add(startPos,0);
+        Debug.Log("added corner:"+startPos);
 
-        path.Add(startPos);
         var prevPos = startPos;
 
         for (int i = 0; i < WalkSteps; i++)
         {
+            Debug.Log("coming for"+i);
             var randDir = Direction2D.GetRandomDirection();
             var newPos = prevPos + randDir;
-            /*if (path.Contains(newPos))
+            if (thisRW.Path.Contains(newPos))
             {
-                WalkSteps += 1;
+                Debug.Log("coming IF1");
+                //si saltat les barreres i per algun motiu està per sota d'un rw
+                //no se l'efectivitat d'això
+                if (IsSurrounded(newPos, thisRW))
+                {
+                    Debug.Log("coming is surrounded 1");
+                    prevPos= thisRW.Corners.ElementAt(Random.Range(0, thisRW.Corners.Count));
+                }
+                //i -= 1; //WHY THIS PETA TOT????
             }
             else
-            {*/
-                //Debug.Log(randDir.y +"::"+ Height + "WHAAT1");
-                //randDir.y = Height;
-                //Debug.Log(randDir.y + "WHAAT2");
-                //var newPos = prevPos + randDir;
-                //newPos.z = Height;
-                newPos.y = 0;
+            {
                 newPos.y = Height;
-                path.Add(newPos);
+                
+                Debug.Log("coming ELSE1::added corner:"+newPos);
+                thisRW.Corners.Add(newPos);
+                thisRW.Occupied.Add(newPos,0);
+
+                List<Vector3Int> checkDirections = Direction2D.GetAllPossibleDirections();
+                foreach (var dir in checkDirections)
+                {
+                    Debug.Log("coming foreach"+dir.ToString());
+                    Vector3Int possibleRemove = newPos + dir;
+                    Debug.Log("coming foreach"+possibleRemove.ToString());
+                    if (thisRW.Corners.Contains(possibleRemove))
+                    {
+                        Debug.Log("coming IF2");
+                        thisRW.Occupied[possibleRemove] += 1;
+                        thisRW.Occupied[newPos] += 1;
+                        //int p = IsProababySurrounded( possibleRemove, thisRW);
+                        if(thisRW.Occupied[possibleRemove]==4){
+                            Debug.Log("coming is surrounded 2");
+                            thisRW.Corners.Remove(possibleRemove);
+                        }
+                    }
+                }
+                Debug.Log("ending else");
+                thisRW.Path.Add(newPos);
                 prevPos = newPos;
-            //}
+            }
         }
     
 
-        return path;
+        return thisRW;
     }
 
+   
+
+    
+    public static bool IsSurrounded(Vector3Int pos, WalkedBy thisRW)
+    {
+        //podria millorar l'eficiencia, guardant un valor per el número de costats tapats, i així només hauria de sumar als quadrats que afectene el que acabem d'afegir
+        List<Vector3Int> checkDirections = Direction2D.GetAllPossibleDirections();
+        foreach (var dir in checkDirections)
+        {
+            if (!thisRW.Path.Contains(pos+dir))
+            {
+                Debug.Log("RETURN FALSE"+pos.ToString() + dir.ToString());
+                return false;
+            }
+            
+            Debug.Log("Continuing is surrounded"+pos.ToString() + dir.ToString());
+            
+            
+        }
+        Debug.Log("RETURN TRUE"+pos.ToString());
+        return true;
+    }
+    public static void UnionDictionaries<TKey, TValue>(
+        Dictionary<TKey, TValue> target,
+        Dictionary<TKey, TValue> source)
+    {
+        foreach (var pair in source)
+        {
+            if (!target.ContainsKey(pair.Key))
+            {
+                target.Add(pair.Key, pair.Value);
+            }
+        }
+    }
+    
 }
 
 
@@ -67,5 +139,9 @@ public static class Direction2D
     {
         return cardinalDirectionList[Random.Range(0, cardinalDirectionList.Count)];
     }
-    
+
+    public static List<Vector3Int> GetAllPossibleDirections()
+    {
+        return cardinalDirectionList;
+    }
 }
