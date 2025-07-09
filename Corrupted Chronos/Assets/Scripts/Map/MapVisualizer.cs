@@ -23,7 +23,7 @@ public class MapVisualizer : MonoBehaviour
     {
         //PaintTiles(floorPositions, floorTilemap, floorTile);
         PaintPrefab(floorPositions);
-        foreach (var VARIABLE in floorPositions.Occupied)
+        foreach (var VARIABLE in floorPositions.InfoBlock)
         {
             Debug.Log($"Key: {VARIABLE.Key}, Value: {VARIABLE.Value}");
         }
@@ -43,6 +43,14 @@ public class MapVisualizer : MonoBehaviour
             {
                 Instantiate(prefabTerreny, position,Quaternion.identity);
             }
+        }
+
+        foreach (var position in positions.Occupied)
+        {
+            GameObject obj=Instantiate(prefabTerreny, new Vector3Int(position.x,position.y+4/10,position.z),Quaternion.identity);
+            SpriteRenderer sr = obj.GetComponentInChildren<SpriteRenderer>();
+            sr.color = Color.red; 
+            
         }
     }
 

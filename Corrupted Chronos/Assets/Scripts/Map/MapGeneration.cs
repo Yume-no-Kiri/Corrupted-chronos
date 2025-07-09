@@ -8,9 +8,13 @@ public class MapGeneration : MonoBehaviour
     [SerializeField]
     protected Vector3Int startPos=Vector3Int.zero;
     [SerializeField]
-    private int iterations=20;
+    private int iterations=10;
     [SerializeField]
-    private int walkSteps=20;
+    private int walkSteps=10;
+    [SerializeField]
+    private int heightVariety=4;
+    [SerializeField]
+    private int occuSpace=5;
     [SerializeField]
     public bool startRandomlyEachIteration = true;
 
@@ -22,7 +26,7 @@ public class MapGeneration : MonoBehaviour
     
     public void RunProceduralGeneration()
     {
-        WalkedBy floorPositions= RunRandomWalk();
+        WalkedBy floorPositions= RunMultipleRandomWalks();
         //HashSet<Vector3Int> floorPositions= RunRandomWalk();
         /*foreach (var position in floorPositions.Path)
         {
@@ -32,12 +36,13 @@ public class MapGeneration : MonoBehaviour
     }
 
     //public HashSet<Vector3Int> RunRandomWalk()
-    public WalkedBy RunRandomWalk()
+    public WalkedBy RunMultipleRandomWalks()
     {
         Debug.Log("Go in IN");
 
-        //HashSet<Vector3Int> floorPositions = new HashSet<Vector3Int>();
+        //varaibles
         WalkedBy floorPositions = new WalkedBy(1);
+        
         
         // for (int j = 1; j < 3; j++)
         //{
@@ -45,15 +50,34 @@ public class MapGeneration : MonoBehaviour
             //walkSteps += j;
             Debug.Log("Go in");
 
-            var currentPos = startPos;
+            //var currentPos = startPos;
+            var currentPos = GenerationAlgorithms.startPosToRW();
             //crido x random walks de llargada walksteps y iteracions 
             for (int i = 0; i < iterations; i++)
             {
+                WalkedBy rw= new WalkedBy(1);
+
+
+                for (int j = 0; j <iterations; j++)
+                {
+                    RunRandomWalk(rw, currentPos, walkSteps, heightVariety-i-j, occuSpace, floorPositions);
+                }
+                //RunRandomWalk(rw, currentPos, walkSteps, heightVariety-i, occuSpace, floorPositions);
+                //RunRandomWalk(rw, currentPos, walkSteps, heightVariety-i, occuSpace, floorPositions);
+
+                /*
                 //crido random walk de walksteps passos
-                WalkedBy path = GenerationAlgorithms.SimpleRandomWalk(currentPos, walkSteps, Random.Range(0, 4));
-                floorPositions.Path.UnionWith(path.Path);
-                floorPositions.Corners.UnionWith(path.Corners);
-                GenerationAlgorithms.UnionDictionaries(floorPositions.Occupied, path.Occupied);
+                WalkedBy rw = GenerationAlgorithms.SimpleRandomWalk(currentPos, walkSteps, heightVariety-i,occuSpace, floorPositions);
+                
+                //unió amb la resta de rw
+                floorPositions.Path.UnionWith(rw.Path);
+                floorPositions.Corners.UnionWith(rw.Corners);
+                floorPositions.Occupied.UnionWith(rw.Occupied);
+                GenerationAlgorithms.UnionDictionaries(floorPositions.InfoBlock, rw.InfoBlock);
+                */
+                
+                
+                
                 Debug.Log("Go between1" + i);
                 if (startRandomlyEachIteration)
                 {
@@ -65,6 +89,23 @@ public class MapGeneration : MonoBehaviour
         Debug.Log("Go out");
         return floorPositions;
     }
+
+    private void RunRandomWalk(WalkedBy rw, Vector3Int cpos, int ws, int h, int oc, WalkedBy fp)
+    {
+        
+        //crido random walk de walksteps passos
+        rw = GenerationAlgorithms.SimpleRandomWalk(cpos, ws, h,oc, fp);
+                
+        //unió amb la resta de rw
+        fp.Path.UnionWith(rw.Path);
+        fp.Corners.UnionWith(rw.Corners);
+        fp.Occupied.UnionWith(rw.Occupied);
+        GenerationAlgorithms.UnionDictionaries(fp.InfoBlock, rw.InfoBlock);
+    }
+    
+    
+    
+    
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -82,21 +123,31 @@ public class MapGeneration : MonoBehaviour
 
 public struct WalkedBy
 {
+    /// <EXPLICACIÓ>
+    /// Path es el terreny creat per el random walk,inclou els corners
+    /// Corners son els bordes del random walk
+    /// Occupied son els blocs que es "reserven", per a que altres random walks no hi puguin entrar
+    /// InfoBlock, actualment serveix per fer el calcul i segons el int saber DINAMICAMENT, que es border i que no, en un futur per podria substituïr amb informació general sobre cada block
+    /// <EXPLICACIÓ>
     public HashSet<Vector3Int> Path;
     public HashSet<Vector3Int> Corners;
-    public Dictionary<Vector3, int> Occupied;
-
+    public HashSet<Vector3Int> Occupied;
+    public Dictionary<Vector3, int> InfoBlock;
+    
      public WalkedBy(int a)
      {
          Path = new HashSet<Vector3Int>();
          Corners = new HashSet<Vector3Int>();
-         Occupied = new Dictionary<Vector3, int>();
+         InfoBlock = new Dictionary<Vector3, int>();
+         Occupied=new HashSet<Vector3Int>();
      }
-    public WalkedBy(HashSet<Vector3Int> floor, HashSet<Vector3Int> corner, Dictionary<Vector3, int> occupied)
+    public WalkedBy(HashSet<Vector3Int> floor, HashSet<Vector3Int> corner, Dictionary<Vector3, int> infoBlock, HashSet<Vector3Int> occupied)
     {
         Path=floor;
         Corners=corner;
+        InfoBlock=infoBlock;
         Occupied=occupied;
     }
+    
 }
 

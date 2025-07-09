@@ -408,8 +408,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPos: {x: 0, y: 0, z: 0}
-  iterations: 1
-  walkSteps: 25
+  iterations: 4
+  walkSteps: 100
+  heightVariety: 4
+  occuSpace: 3
   startRandomlyEachIteration: 1
   mapVisualizer: {fileID: 656593835}
 --- !u!4 &656593834
