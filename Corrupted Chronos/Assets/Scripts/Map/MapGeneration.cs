@@ -51,7 +51,8 @@ public class MapGeneration : MonoBehaviour
             Debug.Log("Go in");
 
             //var currentPos = startPos;
-            var currentPos = GenerationAlgorithms.startPosToRW();
+            var currentPos0 = GenerationAlgorithms.startPosToRW();
+            var currentPos1 = GenerationAlgorithms.startPosToRW();
             //crido x random walks de llargada walksteps y iteracions 
             for (int i = 0; i < iterations; i++)
             {
@@ -60,28 +61,20 @@ public class MapGeneration : MonoBehaviour
 
                 for (int j = 0; j <iterations; j++)
                 {
-                    RunRandomWalk(rw, currentPos, walkSteps, heightVariety-i-j, occuSpace, floorPositions);
+                    RunRandomWalk(rw, currentPos0, walkSteps, heightVariety-i-j, occuSpace, floorPositions);
+                    //RunRandomWalk(rw, currentPos1, walkSteps, heightVariety-i-j, occuSpace, floorPositions);
+                    
                 }
                 //RunRandomWalk(rw, currentPos, walkSteps, heightVariety-i, occuSpace, floorPositions);
                 //RunRandomWalk(rw, currentPos, walkSteps, heightVariety-i, occuSpace, floorPositions);
-
-                /*
-                //crido random walk de walksteps passos
-                WalkedBy rw = GenerationAlgorithms.SimpleRandomWalk(currentPos, walkSteps, heightVariety-i,occuSpace, floorPositions);
-                
-                //unió amb la resta de rw
-                floorPositions.Path.UnionWith(rw.Path);
-                floorPositions.Corners.UnionWith(rw.Corners);
-                floorPositions.Occupied.UnionWith(rw.Occupied);
-                GenerationAlgorithms.UnionDictionaries(floorPositions.InfoBlock, rw.InfoBlock);
-                */
                 
                 
                 
                 Debug.Log("Go between1" + i);
                 if (startRandomlyEachIteration)
                 {
-                    currentPos = floorPositions.Corners.ElementAt(Random.Range(0, floorPositions.Corners.Count));
+                    currentPos0 = floorPositions.Corners.ElementAt(Random.Range(0, floorPositions.Corners.Count));
+                    currentPos1 = floorPositions.Corners.ElementAt(Random.Range(0, floorPositions.Corners.Count));
                 }
                 Debug.Log("Go between2" + i);
             }

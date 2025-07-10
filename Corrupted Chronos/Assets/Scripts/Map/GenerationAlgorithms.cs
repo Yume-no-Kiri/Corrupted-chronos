@@ -40,20 +40,53 @@ public static class GenerationAlgorithms
             
             
             
-            
+            //EXPLICO LA MARABUNTA DE CODI COMENTAT: Intentava salvar els passos que es perden al anar a una posició que ja tenim, sense exit
+            //List<Vector3Int> discardDir = Direction2D.GetAllPossibleDirections();
+            //HashSet<Vector3Int> check = new HashSet<Vector3Int>();
             //si on anem és una posició que ja tenim
             if (thisRW.Path.Contains(newPos) || rwBefore.Occupied.Contains(newPos))
             {//Debug.Log("coming IF1");
-                
-                
+                //newPos += randDir;
+                //check = thisRW.Corners;
                 //si saltat les barreres i per algun motiu està per sota d'un rw
                 //no se l'efectivitat d'això
-                if (IsSurrounded(newPos, thisRW))
+                if (IsCompletlySurrounded(newPos, thisRW, rwBefore))
+                {
+                    prevPos = thisRW.Corners.ElementAt(Random.Range(0, thisRW.Corners.Count));
+/*                    discardDir.Remove(randDir);
+                    if (discardDir.Count == 0)
+                    {
+                        prevPos = thisRW.Corners.ElementAt(Random.Range(0, thisRW.Corners.Count));
+                    }
+                    else
+                    {
+                        randDir = Direction2D.GetFromListRandomDirection(discardDir);
+                        newPos = prevPos + randDir;
+                    }*/
+                }
+
+
+
+                /*if (IsSurrounded(newPos, thisRW))
                 {
                     //Debug.Log("coming is surrounded 1");
-                    prevPos= thisRW.Corners.ElementAt(Random.Range(0, thisRW.Corners.Count));
+                    if (check.Count() > 0)
+                    {
+                        prevPos = check.ElementAt(Random.Range(0, check.Count));
+                        check.Remove(prevPos);
+                        newPos = prevPos + randDir;
+                    }
                 }
+                else
+                {
+                    discardDir.Remove(randDir);
+                    randDir = Direction2D.GetFromListRandomDirection(discardDir);
+                    newPos = prevPos + randDir;
+                }
+                */
+                
                 //i -= 1; //WHY THIS PETA TOT???? //ho hauré de substituïr per un while, encara que em preocupa que peti igualment
+                
             }
             //anem a una posició que no tenim
             
@@ -97,6 +130,7 @@ public static class GenerationAlgorithms
                 for (int j = 0; j < OccuSpace; j++)
                 {
                     newPos.y-=1;
+                    //thisRW.Path.Add(newPos);
                     thisRW.Occupied.Add(newPos);
                 }
                 
@@ -106,6 +140,25 @@ public static class GenerationAlgorithms
     
 
         return thisRW;
+    }
+
+    private static bool IsCompletlySurrounded(Vector3Int pos, WalkedBy nowRW, WalkedBy beforeRW)
+    {
+        List<Vector3Int> checkDirections = Direction2D.GetAllPossibleDirections();
+        foreach (var dir in checkDirections)
+        {
+            if (!nowRW.Path.Contains(pos+dir) || (!beforeRW.Path.Contains(pos+dir)|| !beforeRW.Occupied.Contains(pos+dir)))
+            {
+                Debug.Log("RETURN FALSE"+pos.ToString() + dir.ToString());
+                return false;
+            }
+            
+            Debug.Log("Continuing is surrounded"+pos.ToString() + dir.ToString());
+            
+            
+        }
+        Debug.Log("RETURN TRUE"+pos.ToString());
+        return true;
     }
 
 
@@ -172,6 +225,11 @@ public static class Direction2D
     public static Vector3Int GetRandomDirection()
     {
         return cardinalDirectionList[Random.Range(0, cardinalDirectionList.Count)];
+    }
+    
+    public static Vector3Int GetFromListRandomDirection(List<Vector3Int> list)
+    {
+        return cardinalDirectionList[Random.Range(0, list.Count)];
     }
 
     public static List<Vector3Int> GetAllPossibleDirections()
