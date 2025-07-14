@@ -151,8 +151,8 @@ MonoBehaviour:
   mapSizeInChunks: 7
   chunkSize: 16
   chunkHeight: 100
-  waterThreshold: 9
-  noiseScale: 0.03
+  waterThreshold: 24
+  noiseScale: 0.01
   chunkPrefab: {fileID: 2511319144335605510, guid: 2f3115e5adde4384bbe6fa10a0421533, type: 3}
 --- !u!4 &123538423
 Transform:
@@ -1276,7 +1276,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &1444698875
 Transform:
   m_ObjectHideFlags: 0
@@ -1371,7 +1371,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1727848025
 GameObject:

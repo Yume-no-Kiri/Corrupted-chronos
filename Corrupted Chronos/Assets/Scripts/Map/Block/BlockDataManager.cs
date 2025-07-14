@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class BlockDataManager : MonoBehaviour
 {
-    //això es un fix de problemes de floats
-    public static float textureOffset = 0.001f;
+    //això es un fix, si es veuen linies blanques estranyes augmentar això
+    public static float textureOffset = 0.009f;
     public static float tileSizeX, tileSizeY;
     public static Dictionary<BlockType, TextureData> blockTextureDataDictionary = new Dictionary<BlockType, TextureData>();
     public BlockDataSO textureData;

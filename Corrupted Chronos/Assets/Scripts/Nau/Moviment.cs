@@ -13,7 +13,7 @@ public class Moviment : MonoBehaviour
     private Rigidbody rb;
     private Collider myCollider;
     //[SerializeField] 
-    private float checkRadius = 0.5f;
+    private float checkRadius = 0.6f;
     [SerializeField] 
     private LayerMask collisionMask;
     
@@ -46,7 +46,8 @@ public class Moviment : MonoBehaviour
 
     void FixedUpdate()
     {
-        float spawnsp= 0.75f;
+        rb.linearVelocity = Vector3.zero;
+        float spawnsp= 0.65f;
         //si necesito actualitzar això en el menú, a fixed Update
         hitsAbove = Physics.OverlapSphere(new Vector3(rb.position.x,rb.position.y+spawnsp,rb.position.z), checkRadius, collisionMask);
         hitsBelow = Physics.OverlapSphere(new Vector3(rb.position.x,rb.position.y-spawnsp,rb.position.z), checkRadius, collisionMask);
@@ -80,35 +81,47 @@ public class Moviment : MonoBehaviour
     private void moveCapa(InputAction.CallbackContext context)
     {
        
+        Debug.Log("rodeta ratolí detectat");
         float movement = playerInputActions.Nau.CanviCapa.ReadValue<float>();
         
         if (movement > 0 )
         {
-            if (hitsAbove.Length > 0 && !hitsBelow.Contains(myCollider))
+            if (hitsAbove.Length > 1 )//&& !hitsBelow.Contains(myCollider))
             {
-                Debug.Log("Can't move ABOVE. Blocked by:");
+                //Debug.Log("Can't move ABOVE. Blocked by:");
 
                 foreach (Collider col in hitsAbove)
                 {
-                    
-                    Debug.Log("- " + col.gameObject.name + " (tag: " + col.tag + ")");
-                    
+                    if (col != myCollider)
+                    {
+                        Debug.Log("- " + col.gameObject.name + " (tag: " + col.tag + ")");
+                    }
+                    else
+                    {
+                        return;
+
+                    }
                 }
 
-                return;
             }
         }else if (movement < 0)
         {
-            if (hitsBelow.Length > 0 && !hitsBelow.Contains(myCollider))
+            if (hitsBelow.Length > 1)// && !hitsBelow.Contains(myCollider))
             {
-                Debug.Log("Can't move BELOW. Blocked by:");
+                //Debug.Log("Can't move BELOW. Blocked by:");
 
                 foreach (Collider col in hitsBelow)
                 {
-                    Debug.Log("- " + col.gameObject.name + " (tag: " + col.tag + ")");
+                    if (col != myCollider)
+                    {
+                        Debug.Log("- " + col.gameObject.name + " (tag: " + col.tag + ")");
+                    }else
+                    {
+                        return;
+
+                    }
                 }
 
-                return;
             }
         }
         
