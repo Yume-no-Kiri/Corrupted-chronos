@@ -74,7 +74,7 @@ public class MapGeneration : MonoBehaviour
                 if (startRandomlyEachIteration)
                 {
                     currentPos0 = floorPositions.Corners.ElementAt(Random.Range(0, floorPositions.Corners.Count));
-                    currentPos1 = floorPositions.Corners.ElementAt(Random.Range(0, floorPositions.Corners.Count));
+                    //currentPos1 = floorPositions.Corners.ElementAt(Random.Range(0, floorPositions.Corners.Count));
                 }
                 Debug.Log("Go between2" + i);
             }
@@ -103,7 +103,7 @@ public class MapGeneration : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        RunProceduralGeneration();
+        //RunProceduralGeneration();
     }
 
     // Update is called once per frame

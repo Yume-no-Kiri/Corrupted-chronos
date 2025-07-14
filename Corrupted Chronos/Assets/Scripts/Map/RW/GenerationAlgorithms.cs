@@ -73,7 +73,7 @@ public static class GenerationAlgorithms
                     if (check.Count() > 0)
                     {
                         prevPos = check.ElementAt(Random.Range(0, check.Count));
-                        check.Remove(prevPos);
+                        check.Remove(prevPos); 
                         newPos = prevPos + randDir;
                     }
                 }

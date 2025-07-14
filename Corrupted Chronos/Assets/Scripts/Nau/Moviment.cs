@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -10,8 +11,9 @@ public class Moviment : MonoBehaviour
     
     //físiques 
     private Rigidbody rb;
-    [SerializeField] 
-    private float checkRadius = 0.45f;
+    private Collider myCollider;
+    //[SerializeField] 
+    private float checkRadius = 0.5f;
     [SerializeField] 
     private LayerMask collisionMask;
     
@@ -26,6 +28,8 @@ public class Moviment : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        myCollider = GetComponent<Collider>();
+        if (myCollider == null){ Debug.LogError("No collider attached!"); return; }
         playerInput = GetComponent<PlayerInput>();
         
         playerInputActions = new PlayerInputActions();
@@ -42,9 +46,10 @@ public class Moviment : MonoBehaviour
 
     void FixedUpdate()
     {
+        float spawnsp= 0.75f;
         //si necesito actualitzar això en el menú, a fixed Update
-        hitsAbove = Physics.OverlapSphere(new Vector3(rb.position.x,rb.position.y+1,rb.position.z), checkRadius, collisionMask);
-        hitsBelow = Physics.OverlapSphere(new Vector3(rb.position.x,rb.position.y-1,rb.position.z), checkRadius, collisionMask);
+        hitsAbove = Physics.OverlapSphere(new Vector3(rb.position.x,rb.position.y+spawnsp,rb.position.z), checkRadius, collisionMask);
+        hitsBelow = Physics.OverlapSphere(new Vector3(rb.position.x,rb.position.y-spawnsp,rb.position.z), checkRadius, collisionMask);
 
         Vector2 movement =playerInputActions.Nau.Move.ReadValue<Vector2>().normalized;
         float moveSpeed = 5f;
@@ -76,23 +81,25 @@ public class Moviment : MonoBehaviour
     {
        
         float movement = playerInputActions.Nau.CanviCapa.ReadValue<float>();
-
-        if (movement > 0)
+        
+        if (movement > 0 )
         {
-            if (hitsAbove.Length > 0)
+            if (hitsAbove.Length > 0 && !hitsBelow.Contains(myCollider))
             {
                 Debug.Log("Can't move ABOVE. Blocked by:");
 
                 foreach (Collider col in hitsAbove)
                 {
+                    
                     Debug.Log("- " + col.gameObject.name + " (tag: " + col.tag + ")");
+                    
                 }
 
                 return;
             }
         }else if (movement < 0)
         {
-            if (hitsBelow.Length > 0)
+            if (hitsBelow.Length > 0 && !hitsBelow.Contains(myCollider))
             {
                 Debug.Log("Can't move BELOW. Blocked by:");
 
@@ -105,9 +112,9 @@ public class Moviment : MonoBehaviour
             }
         }
         
-        Vector3 newPosition = rb.position + new Vector3(0, movement, 0);
+        //Vector3 newPosition = rb.position + new Vector3(0, movement, 0);
         //transform.Translate(new Vector3(0, movement, 0));
-        rb.MovePosition(newPosition);
+        rb.MovePosition(rb.position + new Vector3(0, movement, 0));
         //rb.AddForce(new Vector3(0, movement,0), ForceMode.Force);
         //Debug.Log("canvi capa"+ movement);
 
