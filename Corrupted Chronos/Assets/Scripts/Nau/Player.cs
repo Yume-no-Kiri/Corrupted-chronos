@@ -14,25 +14,35 @@ public class Player : MonoBehaviour
     
     //físiques 
     private Rigidbody rb;
-    private Collider myCollider;
-    //[SerializeField] 
-    private float checkRadius = 0.5f;
-    [SerializeField] 
-    private LayerMask collisionMask;
+   
     
     //Controls/inputs
     //private PlayerInput playerInput;
     public PlayerInputActions playerInputActions;
 
     //moure capa
-    //no segur del private, recomanció de rider
-    private Collider[] hitsAbove;
-    private Collider[] hitsBelow;
+    private bool lockUp;
+    private bool lockLow;
+    private float moveDuration;
+    private Vector3 targetPosition;
+    private bool isMoving;
+    private float elapsedTime;
+    
+    
+    //colliders and stuff
+    private Collider myColliderNau;
+    
+    private Collider myColliderPilot;
+
     
     //altres scripts
     InteractiveMethods interactiveMethods;
     List<InteractionType> whatsToInteract;
+    
 
+    
+    
+    
     //demoment serialitzat, pero es probable que quan això es torni més complexe s'hagui de passar per codi i no per inspector
     [SerializeField]
     private GameObject _nau;
@@ -41,11 +51,22 @@ public class Player : MonoBehaviour
     
     private void Awake()
     {
+        //varaibles generals
+        moveDuration = 0.06f;
+        isMoving = false;
+        elapsedTime = 0f;
+        lockUp = false;
+        lockLow = false;
+        
+        //components and stuff
         rb = GetComponent<Rigidbody>();
-        myCollider = GetComponent<Collider>();
-        if (myCollider == null){ Debug.LogError("No collider attached!"); return; }
+        myColliderNau = _nau.GetComponent<Collider>();
+        myColliderPilot = _pilot.GetComponent<Collider>();
+        
+        if (myColliderNau == null || myColliderPilot == null){ Debug.LogError("No collider attached!"); return; }
         //playerInput = GetComponent<PlayerInput>();
         
+        //maps inputs i connexions
         playerInputActions = new PlayerInputActions();
         playerInputActions.Nau.Enable();
         _nau.SetActive(true);
@@ -54,8 +75,11 @@ public class Player : MonoBehaviour
         
         playerInputActions.Nau.CanviCapa.performed += moveCapa;
 
+        //connexions amb els interactiveMethods
         interactiveMethods= new InteractiveMethods();
         whatsToInteract = new List<InteractionType>();
+        
+        
         
     }
 
@@ -78,11 +102,39 @@ public class Player : MonoBehaviour
             _nau.SetActive(false);
             _pilot.SetActive(true);
         }
+
+        if (isMoving)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / moveDuration);
+            if (t >= 1f)
+            {
+                Debug.Log("enter if in the fixed update ");
+                isMoving = false; // Movement finished
+            }
+        }
+        
+        
     }
 
     void FixedUpdate()
     {
+        //transició de capa
+        /*if (isMoving)
+        {
+            Debug.Log("enter fixed update ");
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / moveDuration);
+            Vector3 newPos = Vector3.Lerp(rb.position, new Vector3(rb.position.x, targetPosition.y, rb.position.z), t);
+            rb.MovePosition(newPos);
+            if (t >= 1f)
+            {
+                Debug.Log("enter if in the fixed update ");
 
+                isMoving = false; // Movement finished
+            }
+        }*/
+        //fas canvis adients segons el input map que estigui actiu
         if (playerInputActions.Nau.enabled)
         {
             MoveNau();
@@ -90,6 +142,8 @@ public class Player : MonoBehaviour
         {
             MovePilot();
         }
+        
+       
         
     }
 
@@ -100,11 +154,7 @@ public class Player : MonoBehaviour
 
         rb.linearVelocity = Vector3.zero;
         
-        float spawnsp= 0.5f;
-        hitsAbove = Physics.OverlapSphere(new Vector3(rb.position.x,rb.position.y+spawnsp,rb.position.z), checkRadius, collisionMask);
-        hitsBelow = Physics.OverlapSphere(new Vector3(rb.position.x,rb.position.y-spawnsp,rb.position.z), checkRadius, collisionMask);
-
-        //això del playerInputAction
+        // això del playerInputAction
         Vector2 movement =playerInputActions.Nau.MoveNau.ReadValue<Vector2>().normalized;
         float moveSpeed = 5f;
         //transform.Translate(new Vector3(movement.x, 0, movement.y));
@@ -130,58 +180,45 @@ public class Player : MonoBehaviour
     private void moveCapa(InputAction.CallbackContext context)
     {
        
-        //Debug.Log("rodeta ratolí detectat");
+        
+        
+        
+        Debug.Log("rodeta ratolí detectat");
         float movement = playerInputActions.Nau.CanviCapa.ReadValue<float>();
+        
+        //si ja estic fent el moviment cap a una nova capa, es podria guardar en una mena de coyote time
+        if (isMoving)
+        {
+            Debug.Log("enter is moving");
+            return;
+        }
         
         if (movement > 0 )
         {
-            if (hitsAbove.Length > 1 )//&& !hitsBelow.Contains(myCollider))
+            if (lockUp==true )//&& !hitsBelow.Contains(myCollider))
             {
-                //Debug.Log("Can't move ABOVE. Blocked by:");
-
-                foreach (Collider col in hitsAbove)
-                {
-                    if (col != myCollider)
-                    {
-                        Debug.Log("- " + col.gameObject.name + " (tag: " + col.tag + ")");
-                    }
-                    else
-                    {
-                        return;
-
-                    }
-                }
-
+                Debug.Log("enter is lockUP");
+                return;
             }
         }else if (movement < 0)
         {
-            if (hitsBelow.Length > 1)// && !hitsBelow.Contains(myCollider))
+            if (lockLow==true)// && !hitsBelow.Contains(myCollider))
             {
-                //Debug.Log("Can't move BELOW. Blocked by:");
+                Debug.Log("enter is lockLOW");
 
-                foreach (Collider col in hitsBelow)
-                {
-                    if (col != myCollider)
-                    {
-                        Debug.Log("- " + col.gameObject.name + " (tag: " + col.tag + ")");
-                    }else
-                    {
-                        return;
-
-                    }
-                }
+                return;
 
             }
         }
         
-        //Vector3 newPosition = rb.position + new Vector3(0, movement, 0);
-        //transform.Translate(new Vector3(0, movement, 0));
+        Debug.Log("enter TO THE END");
+        isMoving = true;
+        elapsedTime = 0f;
+        //targetPosition = rb.position + new Vector3(0, movement, 0);
         rb.MovePosition(rb.position + new Vector3(0, movement, 0));
-        //rb.AddForce(new Vector3(0, movement,0), ForceMode.Force);
-        //Debug.Log("canvi capa"+ movement);
 
     }
-    void OnDrawGizmos() //els detectors de col·lisió basicament
+    /*void OnDrawGizmos() //els detectors de col·lisió basicament
     {
         if (rb == null) return; // Avoid errors if not set in Inspector
         Vector3 targetPos = rb.position + Vector3.down;
@@ -190,8 +227,21 @@ public class Player : MonoBehaviour
         Vector3 targetPos1 = rb.position + Vector3.up;
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(targetPos1, checkRadius);
-    }
+    }*/
 
+    public void DetectorCapaResponse(DetectCanviCapaType detect, bool isLocked)
+    {
+        if (detect == DetectCanviCapaType.Up)
+        {
+            lockUp = isLocked;
+        }else if (detect == DetectCanviCapaType.Low)
+        {
+            lockLow = isLocked;
+        }
+        
+        
+    }
+    
     
     
     
