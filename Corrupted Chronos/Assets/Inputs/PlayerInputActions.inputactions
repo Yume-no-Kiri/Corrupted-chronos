@@ -6,7 +6,7 @@
             "id": "4b671ee1-ecfe-4aad-ad83-622b7445af51",
             "actions": [
                 {
-                    "name": "Move",
+                    "name": "MoveNau",
                     "type": "Value",
                     "id": "ea4afb7e-516e-42b4-bf00-07978fd94c92",
                     "expectedControlType": "Vector2",
@@ -32,7 +32,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "MoveNau",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -43,7 +43,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard",
-                    "action": "Move",
+                    "action": "MoveNau",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -54,7 +54,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard",
-                    "action": "Move",
+                    "action": "MoveNau",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -65,7 +65,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard",
-                    "action": "Move",
+                    "action": "MoveNau",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -76,7 +76,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard",
-                    "action": "Move",
+                    "action": "MoveNau",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -110,6 +110,78 @@
                     "processors": "",
                     "groups": ";Keyboard",
                     "action": "CanviCapa",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "Pilot",
+            "id": "e048085d-3b56-4bbc-af20-2c22f6327ff7",
+            "actions": [
+                {
+                    "name": "MovePilot",
+                    "type": "Value",
+                    "id": "13b5fc3f-83ff-44ed-9191-cc361a933fef",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "2D Vector",
+                    "id": "de5927ae-9ba2-458c-bfe5-6751dcf7a0cb",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovePilot",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "a9513697-22cc-4cb9-820e-d0fb09be55ad",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovePilot",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "58c5ec0b-c933-4bf9-b86a-4ddb28027e9e",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovePilot",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "04ac2a30-89bd-4df8-ab8c-6722d59cde09",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovePilot",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "ec906326-0ef4-4bd7-92bd-8a95a9e1602c",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovePilot",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
@@ -158,6 +230,54 @@
                     "processors": "",
                     "groups": "",
                     "action": "submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Global",
+            "id": "b5705423-3e81-4405-90ab-5b54d5304e89",
+            "actions": [
+                {
+                    "name": "Interactua",
+                    "type": "Button",
+                    "id": "f55bdf1d-ac78-42df-8b46-28a8f4b66aa5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pausa",
+                    "type": "Button",
+                    "id": "c05f9fc2-27cf-4aef-879e-9fc8611bfcf7",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "28964fd6-4ea6-400f-afe2-b204dcf2c49f",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interactua",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "67e8bd43-1689-4e1b-bfa9-76b69ebec05d",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pausa",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
