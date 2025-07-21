@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Interactive
   - Jugador
+  - NPC
   layers:
   - Default
   - TransparentFX
