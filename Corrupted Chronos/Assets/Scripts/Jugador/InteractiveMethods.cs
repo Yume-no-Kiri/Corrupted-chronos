@@ -15,7 +15,7 @@ public enum InteractionType
     NauPilot,
     PilotNau,
     PnINp,
-    OpenGarage
+    Garage
     
 } 
 
@@ -58,8 +58,8 @@ public class InteractiveMethods : MonoBehaviour
             case InteractionType.PnINp:
                 PnINp(player);
                 break;
-            case InteractionType.OpenGarage:
-                OpenGarage(player);
+            case InteractionType.Garage:
+                Garage(player);
                 break;
         }
     }
@@ -98,7 +98,7 @@ public class InteractiveMethods : MonoBehaviour
 
     }
 
-    public void OpenGarage(Player jugador)
+    public void Garage(Player jugador)
     {
         string estatAbans;
         

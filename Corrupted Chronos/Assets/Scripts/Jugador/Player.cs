@@ -39,8 +39,16 @@ public class Player : MonoBehaviour
     InteractiveMethods interactiveMethods;
     List<InteractionType> whatsToInteract;
     
-
+    //Garage stuff
+    private Vector3 MousePosition;
+    [SerializeField]
+    private GameObject mouseIndicator, cellIndicator;
+    private Vector3Int gridPosition;
+    [SerializeField]
+    private Grid grid;
     
+    //[SerializeField]
+    //private Camera camGarage;
     
     
     //demoment serialitzat, pero es probable que quan això es torni més complexe s'hagui de passar per codi i no per inspector
@@ -48,9 +56,15 @@ public class Player : MonoBehaviour
     private GameObject _nau;
     [SerializeField]
     private GameObject _pilot;
-
+    [SerializeField]
+    private GameObject _garage;
+    
+    
     [SerializeField] 
     private bool ComençaComPilot = true;
+    
+    
+    
     
     
     private void Awake()
@@ -88,7 +102,13 @@ public class Player : MonoBehaviour
         playerInputActions.Global.Enable();
         playerInputActions.Global.Interactua.performed += Interact;
         
+        //això demoment activat al inici per fer proves
+        playerInputActions.Garage.Enable();
+        //s'actualitza quan moc el mouse
+        playerInputActions.Garage.MousePosition.performed += PositionMouse;
 
+        
+        
         //connexions amb els interactiveMethods
         interactiveMethods= gameObject.AddComponent<InteractiveMethods>();
         whatsToInteract = new List<InteractionType>();
@@ -118,8 +138,12 @@ public class Player : MonoBehaviour
         }
 
         if (playerInputActions.Garage.enabled)
-        {
-            
+        { 
+            //Debug.Log("mousePOS:"+ MousePosition.ToString()+"  mouseIndi:"+mouseIndicator.transform.position.ToString());
+            gridPosition = grid.WorldToCell(MousePosition);
+            mouseIndicator.transform.position = MousePosition;
+            cellIndicator.transform.position = grid.CellToWorld(gridPosition);
+
         }
         
         
@@ -163,8 +187,6 @@ public class Player : MonoBehaviour
         {
             MovePilot();
         }
-        
-       
         
     }
 
@@ -265,8 +287,6 @@ public class Player : MonoBehaviour
     
     
     
-    
-    
     //Interacció amb objectes del escenari o coses especials
     void Interact(InputAction.CallbackContext context)
     {
@@ -291,6 +311,31 @@ public class Player : MonoBehaviour
         }
         
     }
+
+    private void PositionMouse(InputAction.CallbackContext context)
+    {
+       // Debug.Log("AAAAAAAAAA");
+        
+        Camera camGarage = _garage.GetComponentInChildren<Camera>();
+
+        Vector3 mouse = playerInputActions.Garage.MousePosition.ReadValue<Vector2>();
+        mouse.z = camGarage.nearClipPlane;
+        
+        Ray ray = camGarage.ScreenPointToRay(mouse);
+        RaycastHit hit;
+        LayerMask mask = LayerMask.GetMask("Default");
+        
+        if (Physics.Raycast(ray, out hit,300,mask))
+        {
+            MousePosition= hit.point;
+            //Debug.Log("BBBBBBBB");
+        }
+        //Debug.Log("AAAAAAAAAA "+mouse.ToString() );
+
+
+    }
+    
+    
     
     
     

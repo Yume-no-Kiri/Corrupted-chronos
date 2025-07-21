@@ -374,24 +374,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""id"": ""7bc64054-a30c-4ce8-9e7b-b1893ef3f1aa"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
-                    ""id"": ""b849cb52-fffd-4244-a5a5-04a8112a3f22"",
-                    ""expectedControlType"": """",
+                    ""name"": ""Mouse Position"",
+                    ""type"": ""Value"",
+                    ""id"": ""f5f000ad-170b-42cc-8914-57133d55a72f"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""92bf9fc5-3fb2-4ccb-8240-5316959e3a32"",
-                    ""path"": """",
+                    ""id"": ""db5cc3b4-0ed4-45cf-8ef9-8e8ffc02bd83"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""Mouse Position"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -429,7 +429,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Global_Pausa = m_Global.FindAction("Pausa", throwIfNotFound: true);
         // Garage
         m_Garage = asset.FindActionMap("Garage", throwIfNotFound: true);
-        m_Garage_Newaction = m_Garage.FindAction("New action", throwIfNotFound: true);
+        m_Garage_MousePosition = m_Garage.FindAction("Mouse Position", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -931,7 +931,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // Garage
     private readonly InputActionMap m_Garage;
     private List<IGarageActions> m_GarageActionsCallbackInterfaces = new List<IGarageActions>();
-    private readonly InputAction m_Garage_Newaction;
+    private readonly InputAction m_Garage_MousePosition;
     /// <summary>
     /// Provides access to input actions defined in input action map "Garage".
     /// </summary>
@@ -944,9 +944,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public GarageActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "Garage/Newaction".
+        /// Provides access to the underlying input action "Garage/MousePosition".
         /// </summary>
-        public InputAction @Newaction => m_Wrapper.m_Garage_Newaction;
+        public InputAction @MousePosition => m_Wrapper.m_Garage_MousePosition;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -973,9 +973,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GarageActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GarageActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @MousePosition.started += instance.OnMousePosition;
+            @MousePosition.performed += instance.OnMousePosition;
+            @MousePosition.canceled += instance.OnMousePosition;
         }
 
         /// <summary>
@@ -987,9 +987,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="GarageActions" />
         private void UnregisterCallbacks(IGarageActions instance)
         {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @MousePosition.started -= instance.OnMousePosition;
+            @MousePosition.performed -= instance.OnMousePosition;
+            @MousePosition.canceled -= instance.OnMousePosition;
         }
 
         /// <summary>
@@ -1125,11 +1125,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     public interface IGarageActions
     {
         /// <summary>
-        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Mouse Position" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnMousePosition(InputAction.CallbackContext context);
     }
 }
