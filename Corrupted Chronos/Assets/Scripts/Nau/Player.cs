@@ -117,6 +117,13 @@ public class Player : MonoBehaviour
             _pilot.SetActive(true);
         }
 
+        if (playerInputActions.Garage.enabled)
+        {
+            
+        }
+        
+        
+
         if (isMoving)
         {
             elapsedTime += Time.deltaTime;
@@ -264,9 +271,12 @@ public class Player : MonoBehaviour
     void Interact(InputAction.CallbackContext context)
     {
         Debug.Log("you press E");
+        //revsiar aquesta part, per veure 
         interactiveMethods.DoInteractions(whatsToInteract,this);
         
     }
+    
+    //afegeix mètodes a interactuar i treu mètodes a interactuar
     public void AddInteraction(InteractionType type)
     {
         Debug.Log("added");

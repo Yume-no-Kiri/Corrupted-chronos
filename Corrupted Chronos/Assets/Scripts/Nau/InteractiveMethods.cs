@@ -14,7 +14,8 @@ public enum InteractionType
 {
     NauPilot,
     PilotNau,
-    PnINp
+    PnINp,
+    OpenGarage
     
 } 
 
@@ -35,6 +36,8 @@ public class InteractiveMethods : MonoBehaviour
     public void DoInteractions(List<InteractionType> interactions, Player player)
     {
         Debug.Log("do itneractions %i:"+interactions.Count);
+
+        //revisar funcionament, un cop surtis d'un dels menus hauries d'esperar a que aquest acabi per poder invocar el següent
         for (int i = 0; i < interactions.Count; i++)
         {
             DoInteraction(interactions[i], player);
@@ -54,6 +57,9 @@ public class InteractiveMethods : MonoBehaviour
                 break;
             case InteractionType.PnINp:
                 PnINp(player);
+                break;
+            case InteractionType.OpenGarage:
+                OpenGarage(player);
                 break;
         }
     }
@@ -79,7 +85,7 @@ public class InteractiveMethods : MonoBehaviour
 
     public void PnINp(Player jugador)
     {
-        Debug.Log("enter pninp");
+        //Debug.Log("enter pninp");
         if (jugador.playerInputActions.Pilot.enabled)
         {
             Pilot_Nau(jugador);
@@ -91,6 +97,26 @@ public class InteractiveMethods : MonoBehaviour
         jugador.SubInteraction(i);
 
     }
+
+    public void OpenGarage(Player jugador)
+    {
+        string estatAbans;
+        
+        if (jugador.playerInputActions.Pilot.enabled)
+        {
+            estatAbans = "pilot";
+        }else if (jugador.playerInputActions.Nau.enabled)
+        {
+            estatAbans = "nau";
+        }
+        jugador.playerInputActions.Garage.Enable();
+        
+        
+        
+    }
+    
+    
+    
     
 }
 
