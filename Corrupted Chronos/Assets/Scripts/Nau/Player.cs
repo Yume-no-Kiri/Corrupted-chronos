@@ -48,6 +48,10 @@ public class Player : MonoBehaviour
     private GameObject _nau;
     [SerializeField]
     private GameObject _pilot;
+
+    [SerializeField] 
+    private bool ComençaComPilot = true;
+    
     
     private void Awake()
     {
@@ -68,15 +72,25 @@ public class Player : MonoBehaviour
         
         //maps inputs i connexions
         playerInputActions = new PlayerInputActions();
-        playerInputActions.Nau.Enable();
-        _nau.SetActive(true);
+        if (ComençaComPilot)
+        {
+            playerInputActions.Pilot.Enable();
+            _pilot.SetActive(true);
+            
+        }
+        else
+        {
+            playerInputActions.Nau.Enable();
+            _nau.SetActive(true);
+
+        }
+        playerInputActions.Nau.CanviCapa.performed += moveCapa;
         playerInputActions.Global.Enable();
         playerInputActions.Global.Interactua.performed += Interact;
         
-        playerInputActions.Nau.CanviCapa.performed += moveCapa;
 
         //connexions amb els interactiveMethods
-        interactiveMethods= new InteractiveMethods();
+        interactiveMethods= gameObject.AddComponent<InteractiveMethods>();
         whatsToInteract = new List<InteractionType>();
         
         
@@ -271,7 +285,11 @@ public class Player : MonoBehaviour
     
     public void SubInteraction(InteractionType type)
     {
-        whatsToInteract.Remove(type);
+        if (whatsToInteract.Contains(type))
+        {
+            whatsToInteract.Remove(type);
+        }
+        
     }
     
     

@@ -35,6 +35,8 @@ public class InteractiveMethods : MonoBehaviour
 
     public void DoInteractions(List<InteractionType> interactions, Player player)
     {
+        Debug.Log("do itneractions %i:"+interactions.Count);
+
         //revisar funcionament, un cop surtis d'un dels menus hauries d'esperar a que aquest acabi per poder invocar el següent
         for (int i = 0; i < interactions.Count; i++)
         {
@@ -67,12 +69,18 @@ public class InteractiveMethods : MonoBehaviour
     {
         jugador.playerInputActions.Nau.Disable();
         jugador.playerInputActions.Pilot.Enable();
+        
+        //no hi ha problema amb això, perque subInteraction mira si existeix
+        InteractionType i= InteractionType.NauPilot;
+        jugador.SubInteraction(i);
     }
     
     public void Pilot_Nau(Player jugador)
     {
         jugador.playerInputActions.Nau.Enable();
         jugador.playerInputActions.Pilot.Disable();
+        InteractionType i= InteractionType.PilotNau;
+        jugador.SubInteraction(i);
     }
 
     public void PnINp(Player jugador)
@@ -85,6 +93,9 @@ public class InteractiveMethods : MonoBehaviour
         {
             Nau_Pilot(jugador);
         }
+        InteractionType i= InteractionType.PnINp;
+        jugador.SubInteraction(i);
+
     }
 
     public void OpenGarage(Player jugador)
