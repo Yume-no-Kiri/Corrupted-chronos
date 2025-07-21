@@ -92,7 +92,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""id"": ""4b671ee1-ecfe-4aad-ad83-622b7445af51"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
+                    ""name"": ""MoveNau"",
                     ""type"": ""Value"",
                     ""id"": ""ea4afb7e-516e-42b4-bf00-07978fd94c92"",
                     ""expectedControlType"": ""Vector2"",
@@ -118,7 +118,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""MoveNau"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -129,7 +129,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard"",
-                    ""action"": ""Move"",
+                    ""action"": ""MoveNau"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -140,7 +140,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard"",
-                    ""action"": ""Move"",
+                    ""action"": ""MoveNau"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -151,7 +151,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard"",
-                    ""action"": ""Move"",
+                    ""action"": ""MoveNau"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -162,7 +162,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard"",
-                    ""action"": ""Move"",
+                    ""action"": ""MoveNau"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -196,6 +196,78 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard"",
                     ""action"": ""CanviCapa"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
+        },
+        {
+            ""name"": ""Pilot"",
+            ""id"": ""e048085d-3b56-4bbc-af20-2c22f6327ff7"",
+            ""actions"": [
+                {
+                    ""name"": ""MovePilot"",
+                    ""type"": ""Value"",
+                    ""id"": ""13b5fc3f-83ff-44ed-9191-cc361a933fef"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""de5927ae-9ba2-458c-bfe5-6751dcf7a0cb"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovePilot"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""a9513697-22cc-4cb9-820e-d0fb09be55ad"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovePilot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""58c5ec0b-c933-4bf9-b86a-4ddb28027e9e"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovePilot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""04ac2a30-89bd-4df8-ab8c-6722d59cde09"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovePilot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""ec906326-0ef4-4bd7-92bd-8a95a9e1602c"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovePilot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -248,6 +320,54 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Global"",
+            ""id"": ""b5705423-3e81-4405-90ab-5b54d5304e89"",
+            ""actions"": [
+                {
+                    ""name"": ""Interactua"",
+                    ""type"": ""Button"",
+                    ""id"": ""f55bdf1d-ac78-42df-8b46-28a8f4b66aa5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pausa"",
+                    ""type"": ""Button"",
+                    ""id"": ""c05f9fc2-27cf-4aef-879e-9fc8611bfcf7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""28964fd6-4ea6-400f-afe2-b204dcf2c49f"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interactua"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""67e8bd43-1689-4e1b-bfa9-76b69ebec05d"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pausa"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -266,18 +386,27 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
 }");
         // Nau
         m_Nau = asset.FindActionMap("Nau", throwIfNotFound: true);
-        m_Nau_Move = m_Nau.FindAction("Move", throwIfNotFound: true);
+        m_Nau_MoveNau = m_Nau.FindAction("MoveNau", throwIfNotFound: true);
         m_Nau_CanviCapa = m_Nau.FindAction("CanviCapa", throwIfNotFound: true);
+        // Pilot
+        m_Pilot = asset.FindActionMap("Pilot", throwIfNotFound: true);
+        m_Pilot_MovePilot = m_Pilot.FindAction("MovePilot", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Newaction = m_UI.FindAction("New action", throwIfNotFound: true);
         m_UI_submit = m_UI.FindAction("submit", throwIfNotFound: true);
+        // Global
+        m_Global = asset.FindActionMap("Global", throwIfNotFound: true);
+        m_Global_Interactua = m_Global.FindAction("Interactua", throwIfNotFound: true);
+        m_Global_Pausa = m_Global.FindAction("Pausa", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
     {
         UnityEngine.Debug.Assert(!m_Nau.enabled, "This will cause a leak and performance issues, PlayerInputActions.Nau.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Pilot.enabled, "This will cause a leak and performance issues, PlayerInputActions.Pilot.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, PlayerInputActions.UI.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Global.enabled, "This will cause a leak and performance issues, PlayerInputActions.Global.Disable() has not been called.");
     }
 
     /// <summary>
@@ -353,7 +482,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // Nau
     private readonly InputActionMap m_Nau;
     private List<INauActions> m_NauActionsCallbackInterfaces = new List<INauActions>();
-    private readonly InputAction m_Nau_Move;
+    private readonly InputAction m_Nau_MoveNau;
     private readonly InputAction m_Nau_CanviCapa;
     /// <summary>
     /// Provides access to input actions defined in input action map "Nau".
@@ -367,9 +496,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public NauActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "Nau/Move".
+        /// Provides access to the underlying input action "Nau/MoveNau".
         /// </summary>
-        public InputAction @Move => m_Wrapper.m_Nau_Move;
+        public InputAction @MoveNau => m_Wrapper.m_Nau_MoveNau;
         /// <summary>
         /// Provides access to the underlying input action "Nau/CanviCapa".
         /// </summary>
@@ -400,9 +529,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_NauActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_NauActionsCallbackInterfaces.Add(instance);
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
+            @MoveNau.started += instance.OnMoveNau;
+            @MoveNau.performed += instance.OnMoveNau;
+            @MoveNau.canceled += instance.OnMoveNau;
             @CanviCapa.started += instance.OnCanviCapa;
             @CanviCapa.performed += instance.OnCanviCapa;
             @CanviCapa.canceled += instance.OnCanviCapa;
@@ -417,9 +546,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="NauActions" />
         private void UnregisterCallbacks(INauActions instance)
         {
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
+            @MoveNau.started -= instance.OnMoveNau;
+            @MoveNau.performed -= instance.OnMoveNau;
+            @MoveNau.canceled -= instance.OnMoveNau;
             @CanviCapa.started -= instance.OnCanviCapa;
             @CanviCapa.performed -= instance.OnCanviCapa;
             @CanviCapa.canceled -= instance.OnCanviCapa;
@@ -456,6 +585,102 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="NauActions" /> instance referencing this action map.
     /// </summary>
     public NauActions @Nau => new NauActions(this);
+
+    // Pilot
+    private readonly InputActionMap m_Pilot;
+    private List<IPilotActions> m_PilotActionsCallbackInterfaces = new List<IPilotActions>();
+    private readonly InputAction m_Pilot_MovePilot;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Pilot".
+    /// </summary>
+    public struct PilotActions
+    {
+        private @PlayerInputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public PilotActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Pilot/MovePilot".
+        /// </summary>
+        public InputAction @MovePilot => m_Wrapper.m_Pilot_MovePilot;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_Pilot; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="PilotActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(PilotActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="PilotActions" />
+        public void AddCallbacks(IPilotActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PilotActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PilotActionsCallbackInterfaces.Add(instance);
+            @MovePilot.started += instance.OnMovePilot;
+            @MovePilot.performed += instance.OnMovePilot;
+            @MovePilot.canceled += instance.OnMovePilot;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="PilotActions" />
+        private void UnregisterCallbacks(IPilotActions instance)
+        {
+            @MovePilot.started -= instance.OnMovePilot;
+            @MovePilot.performed -= instance.OnMovePilot;
+            @MovePilot.canceled -= instance.OnMovePilot;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="PilotActions.UnregisterCallbacks(IPilotActions)" />.
+        /// </summary>
+        /// <seealso cref="PilotActions.UnregisterCallbacks(IPilotActions)" />
+        public void RemoveCallbacks(IPilotActions instance)
+        {
+            if (m_Wrapper.m_PilotActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="PilotActions.AddCallbacks(IPilotActions)" />
+        /// <seealso cref="PilotActions.RemoveCallbacks(IPilotActions)" />
+        /// <seealso cref="PilotActions.UnregisterCallbacks(IPilotActions)" />
+        public void SetCallbacks(IPilotActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PilotActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PilotActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="PilotActions" /> instance referencing this action map.
+    /// </summary>
+    public PilotActions @Pilot => new PilotActions(this);
 
     // UI
     private readonly InputActionMap m_UI;
@@ -563,6 +788,113 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="UIActions" /> instance referencing this action map.
     /// </summary>
     public UIActions @UI => new UIActions(this);
+
+    // Global
+    private readonly InputActionMap m_Global;
+    private List<IGlobalActions> m_GlobalActionsCallbackInterfaces = new List<IGlobalActions>();
+    private readonly InputAction m_Global_Interactua;
+    private readonly InputAction m_Global_Pausa;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Global".
+    /// </summary>
+    public struct GlobalActions
+    {
+        private @PlayerInputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public GlobalActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Global/Interactua".
+        /// </summary>
+        public InputAction @Interactua => m_Wrapper.m_Global_Interactua;
+        /// <summary>
+        /// Provides access to the underlying input action "Global/Pausa".
+        /// </summary>
+        public InputAction @Pausa => m_Wrapper.m_Global_Pausa;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_Global; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="GlobalActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(GlobalActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="GlobalActions" />
+        public void AddCallbacks(IGlobalActions instance)
+        {
+            if (instance == null || m_Wrapper.m_GlobalActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_GlobalActionsCallbackInterfaces.Add(instance);
+            @Interactua.started += instance.OnInteractua;
+            @Interactua.performed += instance.OnInteractua;
+            @Interactua.canceled += instance.OnInteractua;
+            @Pausa.started += instance.OnPausa;
+            @Pausa.performed += instance.OnPausa;
+            @Pausa.canceled += instance.OnPausa;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="GlobalActions" />
+        private void UnregisterCallbacks(IGlobalActions instance)
+        {
+            @Interactua.started -= instance.OnInteractua;
+            @Interactua.performed -= instance.OnInteractua;
+            @Interactua.canceled -= instance.OnInteractua;
+            @Pausa.started -= instance.OnPausa;
+            @Pausa.performed -= instance.OnPausa;
+            @Pausa.canceled -= instance.OnPausa;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="GlobalActions.UnregisterCallbacks(IGlobalActions)" />.
+        /// </summary>
+        /// <seealso cref="GlobalActions.UnregisterCallbacks(IGlobalActions)" />
+        public void RemoveCallbacks(IGlobalActions instance)
+        {
+            if (m_Wrapper.m_GlobalActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="GlobalActions.AddCallbacks(IGlobalActions)" />
+        /// <seealso cref="GlobalActions.RemoveCallbacks(IGlobalActions)" />
+        /// <seealso cref="GlobalActions.UnregisterCallbacks(IGlobalActions)" />
+        public void SetCallbacks(IGlobalActions instance)
+        {
+            foreach (var item in m_Wrapper.m_GlobalActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_GlobalActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="GlobalActions" /> instance referencing this action map.
+    /// </summary>
+    public GlobalActions @Global => new GlobalActions(this);
     private int m_KeyboardSchemeIndex = -1;
     /// <summary>
     /// Provides access to the input control scheme.
@@ -584,12 +916,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     public interface INauActions
     {
         /// <summary>
-        /// Method invoked when associated input action "Move" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "MoveNau" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMove(InputAction.CallbackContext context);
+        void OnMoveNau(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "CanviCapa" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -597,6 +929,21 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCanviCapa(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Pilot" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="PilotActions.AddCallbacks(IPilotActions)" />
+    /// <seealso cref="PilotActions.RemoveCallbacks(IPilotActions)" />
+    public interface IPilotActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "MovePilot" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMovePilot(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
@@ -619,5 +966,27 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSubmit(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Global" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="GlobalActions.AddCallbacks(IGlobalActions)" />
+    /// <seealso cref="GlobalActions.RemoveCallbacks(IGlobalActions)" />
+    public interface IGlobalActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "Interactua" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInteractua(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Pausa" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPausa(InputAction.CallbackContext context);
     }
 }
