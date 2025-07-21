@@ -107,8 +107,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.05
-  m_Center: {x: 0, y: 0, z: 1}
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0.5}
 --- !u!1 &4674578507382586438
 GameObject:
   m_ObjectHideFlags: 0
@@ -458,6 +458,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _nau: {fileID: 7745928943338400580}
   _pilot: {fileID: 3421498788124919428}
+  "Comen\xE7aComPilot": 1
 --- !u!114 &6929781158088448548
 MonoBehaviour:
   m_ObjectHideFlags: 0

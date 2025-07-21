@@ -31,11 +31,12 @@ public class changenau_pilot : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //revisar, per els problemes que te que onTriggerExit no es crida al desactivar el objecte
         Debug.Log("Player entered");
 
         if (other.CompareTag("Jugador"))
         {
-            Player i= other.GetComponent<Player>();
+            Player i= other.GetComponentInParent<Player>();
             Debug.Log("this is your Jugador" +i.gameObject.name);
             if (i != null)
             {
@@ -53,15 +54,23 @@ public class changenau_pilot : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        //Moltes vegades quan un objecte es desactivi això no es cridara, pero crec que es bona practica mantenir això aquí
         Debug.Log("Player left");
 
         if (other.CompareTag("Jugador"))
         {
-            Player i= other.GetComponentInChildren<Player>();
+            Player i= other.GetComponentInParent<Player>();
 
-            
-            
-            i.SubInteraction(ThisInteraction);
+            if (i != null)
+            {
+
+                i.SubInteraction(ThisInteraction);
+
+            }else
+            {
+                Debug.LogWarning("Object entered the trigger but does not have YourScriptType: " + other.gameObject.name);
+            }
+
             //playerInputActions.Global.Interactua += other. nau_pilot();
             Debug.Log("Player left special zone.");
         }

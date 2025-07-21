@@ -35,6 +35,7 @@ public class DetectorCapa : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("LOOOOCK");
         bool isLock = true;
         _objectsInside.Add(other.gameObject);
         GetComponentInParent<Player>().DetectorCapaResponse(whatIDetect, isLock);
@@ -42,6 +43,7 @@ public class DetectorCapa : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
+        Debug.Log("Open lock");
         _objectsInside.Remove(other.gameObject);
 
         if (_objectsInside.Count == 0)
