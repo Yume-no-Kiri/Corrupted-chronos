@@ -282,6 +282,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Garage",
+            "id": "7bc64054-a30c-4ce8-9e7b-b1893ef3f1aa",
+            "actions": [
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "b849cb52-fffd-4244-a5a5-04a8112a3f22",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "92bf9fc5-3fb2-4ccb-8240-5316959e3a32",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
