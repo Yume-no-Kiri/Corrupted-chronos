@@ -15,7 +15,8 @@ public enum InteractionType
     NauPilot,
     PilotNau,
     PnINp,
-    Garage
+    OpenGarage,
+    CloseGarage
     
 } 
 
@@ -24,7 +25,8 @@ public class InteractiveMethods : MonoBehaviour
     //public List<String> ListMethods = new List<String>();
    // public List<MethodPlayer> ListMethodDelegates = new List<MethodPlayer>();
     
-
+   //string estatAnterior="";
+   private InteractionType estatAnterior;
     private void Start()
     {
         //ListMethods.Add("Nau_Pilot");
@@ -58,13 +60,17 @@ public class InteractiveMethods : MonoBehaviour
             case InteractionType.PnINp:
                 PnINp(player);
                 break;
-            case InteractionType.Garage:
-                Garage(player);
+            case InteractionType.OpenGarage:
+                OpenGarage(player);
+                break;
+            case InteractionType.CloseGarage:
+                CloseGarage(player);
                 break;
         }
     }
+
     
-    
+
     public void Nau_Pilot(Player jugador)
     {
         jugador.playerInputActions.Nau.Disable();
@@ -98,23 +104,43 @@ public class InteractiveMethods : MonoBehaviour
 
     }
 
-    public void Garage(Player jugador)
+    public void OpenGarage(Player jugador)
     {
-        string estatAbans;
         
         if (jugador.playerInputActions.Pilot.enabled)
         {
-            estatAbans = "pilot";
+            estatAnterior = InteractionType.NauPilot;
+            jugador.playerInputActions.Pilot.Disable();
+
+            
         }else if (jugador.playerInputActions.Nau.enabled)
         {
-            estatAbans = "nau";
+            estatAnterior = InteractionType.PilotNau;
+            jugador.playerInputActions.Nau.Disable();
+
         }
         jugador.playerInputActions.Garage.Enable();
         
+        InteractionType i= InteractionType.OpenGarage;
+        jugador.SubInteraction(i);
         
-        
+        //sempre que s'obri el garatge s'afegeix per poder tancar-no, no trobo no tindria sentit fer-ho així
+        //pero si es vulgues fer, seria afegir un if aquí sota
+        i= InteractionType.CloseGarage;
+        jugador.AddInteraction(i);
     }
-    
+    private void CloseGarage(Player jugador)
+    {
+        jugador.playerInputActions.Garage.Disable();
+        
+        //basicament, passem a nau o pilot.
+        DoInteraction(estatAnterior,jugador);
+        jugador.CloseGarage();
+        
+        InteractionType i= InteractionType.CloseGarage;
+        jugador.SubInteraction(i);
+    }
+
     
     
     

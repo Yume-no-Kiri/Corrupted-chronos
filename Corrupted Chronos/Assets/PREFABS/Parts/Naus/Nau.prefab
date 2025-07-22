@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 2624723378671476639}
   m_Layer: 0
   m_Name: Nau
-  m_TagString: Untagged
+  m_TagString: Jugador
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1763164884124142999
 Transform:
   m_ObjectHideFlags: 0
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 235881136111251525}
   - component: {fileID: 4515621604441068070}
   - component: {fileID: 2800162162202484177}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DetectUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 5652530642838023696}
   - component: {fileID: 8480709283464083882}
   - component: {fileID: 7050939464386604001}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DetectLow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

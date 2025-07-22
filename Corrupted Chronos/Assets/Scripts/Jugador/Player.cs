@@ -41,13 +41,16 @@ public class Player : MonoBehaviour
    
     
     //demoment serialitzat, pero es probable que quan això es torni més complexe s'hagui de passar per codi i no per inspector
+    [Space(10)]
     [Header("Variables")]
-    public GameObject _nau;
+    private GameObject _nau;
 //    [SerializeField]
-    public GameObject _pilot;
+    private GameObject _pilot;
     [SerializeField]
     private PartsDatabaseSO _database;
-    
+    [SerializeField]
+    private Vector3 spawnPosition;
+    private Camera _playerCamera;
     [SerializeField] 
     private bool ComençaComPilot = true;
     
@@ -64,6 +67,9 @@ public class Player : MonoBehaviour
     private Vector3Int gridPosition;
     [SerializeField]
     private Grid grid;
+    private Camera _garageCamera;
+
+    
     
     //[SerializeField]
     //private Camera camGarage;
@@ -80,21 +86,28 @@ public class Player : MonoBehaviour
         lockUp = false;
         lockLow = false;
         
-        //assignar _nau i _pilot amb databaseSO
         
-         
+        //assignar _nau i _pilot amb databaseSO
+        //REVISAR EL TEMA DEL TRANSFORM I POSICIÓ D'SPAWN, es bastant irregular
+        //_database.AllNaus.FindIndex(data=>data.ID=id_a_buscar)
          _nau =Instantiate(_database.AllNaus[0].Prefab);
         _pilot= Instantiate(_database.AllPilots[0].Prefab);
-        _nau.transform.position = transform.position;
-        _pilot.transform.position = transform.position;
-        _nau.transform.SetParent(this.transform);
-        _pilot.transform.SetParent(this.transform);
+        _nau.transform.position = new Vector3(0, spawnPosition.y,0);
+        _pilot.transform.position = new Vector3(0, spawnPosition.y, 0);
         
+        _nau.transform.SetParent(this.transform,false);
+        _pilot.transform.SetParent(this.transform,false);
+     
         
         //components and stuff
         rb = GetComponent<Rigidbody>();
         myColliderNau = _nau.GetComponent<Collider>();
         myColliderPilot = _pilot.GetComponent<Collider>();
+        _playerCamera = GetComponentInChildren<Camera>();
+        _garageCamera= _garage.GetComponentInChildren<Camera>();
+        if(_garageCamera == null) Debug.LogError("not garage camera");
+        if(_playerCamera == null) Debug.LogError("not player camera");
+        
         
         if (myColliderNau == null || myColliderPilot == null){ Debug.LogError("No collider attached!"); return; }
         //playerInput = GetComponent<PlayerInput>();
@@ -143,20 +156,28 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-
+        //això no és el més eficient del mon, perque ho està revisant amb el update, i no fa falta revisar-ho tant,
+        //amb excepció de la segona part garage enabled
+        //control de modes
         if (playerInputActions.Nau.enabled)
         {
+            _playerCamera.enabled = true;
             _nau.SetActive(true);
             _pilot.SetActive(false);
         }else if (playerInputActions.Pilot.enabled)
         {
+            _playerCamera.enabled = true;
             _nau.SetActive(false);
             _pilot.SetActive(true);
-        }
-
-        if (playerInputActions.Garage.enabled)
+        }else if (playerInputActions.Garage.enabled)
         { 
             //Debug.Log("mousePOS:"+ MousePosition.ToString()+"  mouseIndi:"+mouseIndicator.transform.position.ToString());
+            _playerCamera.enabled = false;
+            _nau.SetActive(false);
+            _pilot.SetActive(false);
+            _garage.SetActive(true);
+            //_garage.enabled = true;
+                
             gridPosition = grid.WorldToCell(MousePosition);
             mouseIndicator.transform.position = MousePosition;
             cellIndicator.transform.position = grid.CellToWorld(gridPosition);
@@ -178,7 +199,13 @@ public class Player : MonoBehaviour
         
         
     }
+    public void CloseGarage()
+    {
+        _garage.SetActive(false);
+    }
 
+    
+    
     void FixedUpdate()
     {
         //transició de capa
@@ -351,9 +378,8 @@ public class Player : MonoBehaviour
 
 
     }
-    
-    
-    
+
+   
     
     
 }
