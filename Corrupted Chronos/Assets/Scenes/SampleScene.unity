@@ -1624,10 +1624,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e39b45a38873f9459bd9708ae0194f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneCamera: {fileID: 2095245306}
-  lastPosition: {x: 0, y: 0, z: 0}
-  placementLayermask:
-    m_Bits: 17
 --- !u!1 &1728887662
 GameObject:
   m_ObjectHideFlags: 0
@@ -1787,7 +1783,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2741672428399594995, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2741672428399594995, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1829,6 +1825,10 @@ PrefabInstance:
       propertyPath: _garage
       value: 
       objectReference: {fileID: 1277509493}
+    - target: {fileID: 9065371578681910068, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
+      propertyPath: _database
+      value: 
+      objectReference: {fileID: 11400000, guid: cae380d3cf3bdd44d8267c7a1d4cd998, type: 2}
     - target: {fileID: 9065371578681910068, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
       propertyPath: cellIndicator
       value: 

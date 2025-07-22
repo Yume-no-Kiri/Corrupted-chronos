@@ -1,0 +1,31 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+[CreateAssetMenu(fileName = "PartsDatabaseSO", menuName = "Scriptable Objects/PartsDatabaseSO")]
+public class PartsDatabaseSO : ScriptableObject
+{
+    public List<ObjectData> AllParts;
+    public List<ObjectData> AllNaus;
+    
+    //els pilots son més simples, no necesitem quan ocupen
+    public List<ObjectData> AllPilots;
+}
+
+[Serializable]
+public class ObjectData
+{
+    [field: SerializeField]
+    public string Name { get; private set; }
+    
+    [field: SerializeField]
+    public string ID { get; private set; }
+    
+    [field: SerializeField]
+    public Vector2Int Size { get; private set; } = Vector2Int.one;
+    
+    [field: SerializeField]
+    public GameObject Prefab { get; private set; }
+}

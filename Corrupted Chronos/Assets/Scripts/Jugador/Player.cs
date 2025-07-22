@@ -38,8 +38,26 @@ public class Player : MonoBehaviour
     //altres scripts
     InteractiveMethods interactiveMethods;
     List<InteractionType> whatsToInteract;
+   
     
-    //Garage stuff
+    //demoment serialitzat, pero es probable que quan això es torni més complexe s'hagui de passar per codi i no per inspector
+    [Header("Variables")]
+    public GameObject _nau;
+//    [SerializeField]
+    public GameObject _pilot;
+    [SerializeField]
+    private PartsDatabaseSO _database;
+    
+    [SerializeField] 
+    private bool ComençaComPilot = true;
+    
+    [Space(3)]
+
+    [Header("Garage stuff")]
+    [SerializeField]
+    private GameObject _garage;
+    [Space(1)]
+    
     private Vector3 MousePosition;
     [SerializeField]
     private GameObject mouseIndicator, cellIndicator;
@@ -49,21 +67,7 @@ public class Player : MonoBehaviour
     
     //[SerializeField]
     //private Camera camGarage;
-    
-    
-    //demoment serialitzat, pero es probable que quan això es torni més complexe s'hagui de passar per codi i no per inspector
-    [SerializeField]
-    private GameObject _nau;
-    [SerializeField]
-    private GameObject _pilot;
-    [SerializeField]
-    private GameObject _garage;
-    
-    
-    [SerializeField] 
-    private bool ComençaComPilot = true;
-    
-    
+
     
     
     
@@ -75,6 +79,17 @@ public class Player : MonoBehaviour
         elapsedTime = 0f;
         lockUp = false;
         lockLow = false;
+        
+        //assignar _nau i _pilot amb databaseSO
+        
+         
+         _nau =Instantiate(_database.AllNaus[0].Prefab);
+        _pilot= Instantiate(_database.AllPilots[0].Prefab);
+        _nau.transform.position = transform.position;
+        _pilot.transform.position = transform.position;
+        _nau.transform.SetParent(this.transform);
+        _pilot.transform.SetParent(this.transform);
+        
         
         //components and stuff
         rb = GetComponent<Rigidbody>();
@@ -107,6 +122,8 @@ public class Player : MonoBehaviour
         //s'actualitza quan moc el mouse
         playerInputActions.Garage.MousePosition.performed += PositionMouse;
 
+        
+        
         
         
         //connexions amb els interactiveMethods
