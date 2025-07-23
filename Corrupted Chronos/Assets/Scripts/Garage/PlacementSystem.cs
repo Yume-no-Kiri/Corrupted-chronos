@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlacementSystem : MonoBehaviour
 {
@@ -8,9 +9,14 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private GameObject mouseIndicator;
     
+    [SerializeField]
+    private Player playerInput;
     
     [SerializeField]
     private Grid grid;
+    
+    
+     
     
     private void Update()
     {

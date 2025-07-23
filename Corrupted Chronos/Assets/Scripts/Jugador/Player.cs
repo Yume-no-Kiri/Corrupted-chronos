@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -9,7 +10,8 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    
+    //TODO després del llançament de la demo
+    //separar aquest script en player i inputmanager, aquest script controla massa coses 
     
     
     //físiques 
@@ -69,7 +71,7 @@ public class Player : MonoBehaviour
     private Grid grid;
     private Camera _garageCamera;
 
-    
+    public event Action OnClicked, OnExit;
     
     //[SerializeField]
     //private Camera camGarage;
@@ -134,7 +136,7 @@ public class Player : MonoBehaviour
         playerInputActions.Garage.Enable();
         //s'actualitza quan moc el mouse
         playerInputActions.Garage.MousePosition.performed += PositionMouse;
-
+        playerInputActions.Garage.OnClick.performed += OnClickGarage;
         
         
         
@@ -379,7 +381,10 @@ public class Player : MonoBehaviour
 
     }
 
-   
+    void OnClickGarage(InputAction.CallbackContext context)
+    {
+        OnClicked?.Invoke();
+    }
     
     
 }

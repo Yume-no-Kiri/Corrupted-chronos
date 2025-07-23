@@ -140,7 +140,7 @@ public class InteractiveMethods : MonoBehaviour
         InteractionType i= InteractionType.CloseGarage;
         jugador.SubInteraction(i);
     }
-
+    
     
     
     
