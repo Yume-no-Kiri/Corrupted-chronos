@@ -17,7 +17,6 @@ public class Player : MonoBehaviour
    
     
     //Controls/inputs
-    //private PlayerInput playerInput;
     public PlayerInputActions playerInputActions;
 
     //moure capa
@@ -29,21 +28,17 @@ public class Player : MonoBehaviour
     private float elapsedTime;
     
     
-    //colliders and stuff
+    //colliders 
     private Collider myColliderNau;
-    
     private Collider myColliderPilot;
 
     
-    //altres scripts
+    //mètodes interactius
     InteractiveMethods interactiveMethods;
+    //és un llista, perque en algun moment HAUREM de resoldre que passa si estàs en una àrea on, pots canviar a pilot i també pots entrara a garatge
     List<InteractionType> whatsToInteract;
     
-
-    
-    
-    
-    //demoment serialitzat, pero es probable que quan això es torni més complexe s'hagui de passar per codi i no per inspector
+    //aquest script controla tant l'ús de la nau com del pilot
     [SerializeField]
     private GameObject _nau;
     [SerializeField]
@@ -68,7 +63,6 @@ public class Player : MonoBehaviour
         myColliderPilot = _pilot.GetComponent<Collider>();
         
         if (myColliderNau == null || myColliderPilot == null){ Debug.LogError("No collider attached!"); return; }
-        //playerInput = GetComponent<PlayerInput>();
         
         //maps inputs i connexions
         playerInputActions = new PlayerInputActions();
@@ -84,6 +78,10 @@ public class Player : MonoBehaviour
             _nau.SetActive(true);
 
         }
+        
+        //pels multiples mètodes conecta amb els inputs
+        //playerInputActions.Nau.MoveNau.performed += MoveNau;
+        //playerInputActions.Pilot.MovePilot.triggered += MovePilot;
         playerInputActions.Nau.CanviCapa.performed += moveCapa;
         playerInputActions.Global.Enable();
         playerInputActions.Global.Interactua.performed += Interact;
@@ -106,7 +104,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-
+        //mètode complementari de interactive method
+        //si estem en pilot o en nau, que s'ha de mostrar
         if (playerInputActions.Nau.enabled)
         {
             _nau.SetActive(true);
@@ -117,6 +116,7 @@ public class Player : MonoBehaviour
             _pilot.SetActive(true);
         }
 
+        //fix per no travessar terreny
         if (isMoving)
         {
             elapsedTime += Time.deltaTime;
@@ -162,6 +162,7 @@ public class Player : MonoBehaviour
     }
 
 
+    //inputs per la nau
     void MoveNau()
     {
         //Debug.Log("estàs amb la nau");
@@ -173,10 +174,11 @@ public class Player : MonoBehaviour
         float moveSpeed = 5f;
         //transform.Translate(new Vector3(movement.x, 0, movement.y));
 
-        rb.MovePosition(rb.position+ new Vector3(movement.x, 0, movement.y) * moveSpeed *Time.deltaTime);
+        rb.MovePosition(rb.position+ new Vector3(movement.x, 0, movement.y) * (moveSpeed * Time.deltaTime));
         
     }
 
+    //inputs per el pilot
     void MovePilot()
     {
         //Debug.Log("estàs amb el pilot");
@@ -186,16 +188,13 @@ public class Player : MonoBehaviour
         float moveSpeed = 2f;
         //transform.Translate(new Vector3(movement.x, 0, movement.y));
 
-        rb.MovePosition(rb.position+ new Vector3(movement.x, 0, movement.y) * moveSpeed *Time.deltaTime);
+        rb.MovePosition(rb.position+ new Vector3(movement.x, 0, movement.y) * (moveSpeed * Time.deltaTime));
         
     }
     
 
     private void moveCapa(InputAction.CallbackContext context)
     {
-       
-        
-        
         
         Debug.Log("rodeta ratolí detectat");
         float movement = playerInputActions.Nau.CanviCapa.ReadValue<float>();
@@ -243,6 +242,7 @@ public class Player : MonoBehaviour
         Gizmos.DrawWireSphere(targetPos1, checkRadius);
     }*/
 
+    //Mètode cridat per els scripts que detecten capes
     public void DetectorCapaResponse(DetectCanviCapaType detect, bool isLocked)
     {
         if (detect == DetectCanviCapaType.Up)
@@ -260,19 +260,26 @@ public class Player : MonoBehaviour
     
     
     
-    //Interacció amb objectes del escenari o coses especials
+    //Interacció amb objectes del escenari o cases especials
+    //per no tractar tots els mètodes que interactuïn amb el jugador i sobretot amb la e, aquest procés 
+    //està efectuat en el seu propi script interactiveMethods
+    
+    //Executa les interaccions en el script corresponent
     void Interact(InputAction.CallbackContext context)
     {
         Debug.Log("you press E");
         interactiveMethods.DoInteractions(whatsToInteract,this);
         
     }
+    
+    //afegeix interacció
     public void AddInteraction(InteractionType type)
     {
         Debug.Log("added");
         whatsToInteract.Add(type);
     }
     
+    //treu interacció
     public void SubInteraction(InteractionType type)
     {
         if (whatsToInteract.Contains(type))
