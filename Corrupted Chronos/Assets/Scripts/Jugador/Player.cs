@@ -11,7 +11,7 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     //TODO després del llançament de la demo
-    //separar aquest script en player i inputmanager, aquest script controla massa coses 
+    //revisar la separació entre aquest script player i inputmanager, aquest script encara controla massa coses 
     
     
     //físiques 
@@ -20,7 +20,10 @@ public class Player : MonoBehaviour
     
     //Controls/inputs
     //private PlayerInput playerInput;
-    public PlayerInputActions playerInputActions;
+    [SerializeField]
+    public GameObject inputMangerObject;
+    
+    public InputManager inputManager;
 
     //moure capa
     private bool lockUp;
@@ -63,7 +66,7 @@ public class Player : MonoBehaviour
     private GameObject _garage;
     [Space(1)]
     
-    private Vector3 MousePosition;
+    //private Vector3 MousePosition;
     [SerializeField]
     private GameObject mouseIndicator, cellIndicator;
     private Vector3Int gridPosition;
@@ -71,7 +74,6 @@ public class Player : MonoBehaviour
     private Grid grid;
     private Camera _garageCamera;
 
-    public event Action OnClicked, OnExit;
     
     //[SerializeField]
     //private Camera camGarage;
@@ -81,6 +83,10 @@ public class Player : MonoBehaviour
     
     private void Awake()
     {
+        inputManager = inputMangerObject.GetComponent<InputManager>();
+        
+        if (inputManager == null){Debug.LogError("aaaaAAAA inputmanager");}
+        
         //varaibles generals
         moveDuration = 0.06f;
         isMoving = false;
@@ -115,28 +121,27 @@ public class Player : MonoBehaviour
         //playerInput = GetComponent<PlayerInput>();
         
         //maps inputs i connexions
-        playerInputActions = new PlayerInputActions();
         if (ComençaComPilot)
         {
-            playerInputActions.Pilot.Enable();
+            inputManager.playerInputActions.Pilot.Enable();
             _pilot.SetActive(true);
             
         }
         else
         {
-            playerInputActions.Nau.Enable();
+            inputManager.playerInputActions.Nau.Enable();
             _nau.SetActive(true);
 
         }
-        playerInputActions.Nau.CanviCapa.performed += moveCapa;
-        playerInputActions.Global.Enable();
-        playerInputActions.Global.Interactua.performed += Interact;
+        inputManager.playerInputActions.Nau.CanviCapa.performed += moveCapa;
+        inputManager.playerInputActions.Global.Enable();
+        inputManager.playerInputActions.Global.Interactua.performed += Interact;
         
         //això demoment activat al inici per fer proves
-        playerInputActions.Garage.Enable();
+        inputManager.playerInputActions.Garage.Enable();
         //s'actualitza quan moc el mouse
-        playerInputActions.Garage.MousePosition.performed += PositionMouse;
-        playerInputActions.Garage.OnClick.performed += OnClickGarage;
+        inputManager.playerInputActions.Garage.MousePosition.performed += PositionMouse;
+        inputManager.playerInputActions.Garage.OnClick.performed += OnClickGarage;
         
         
         
@@ -161,29 +166,46 @@ public class Player : MonoBehaviour
         //això no és el més eficient del mon, perque ho està revisant amb el update, i no fa falta revisar-ho tant,
         //amb excepció de la segona part garage enabled
         //control de modes
-        if (playerInputActions.Nau.enabled)
+        if (inputManager.playerInputActions.Nau.enabled)
         {
             _playerCamera.enabled = true;
+            _garageCamera.enabled = false;
+            
+            //fix, em sortia un missatge estrany d'error
+            _playerCamera.GetComponent<AudioListener>().enabled = true;
+            _garageCamera.GetComponent<AudioListener>().enabled = false;
+            
             _nau.SetActive(true);
             _pilot.SetActive(false);
-        }else if (playerInputActions.Pilot.enabled)
+        }else if (inputManager.playerInputActions.Pilot.enabled)
         {
             _playerCamera.enabled = true;
+            _garageCamera.enabled = false;
+
+            _playerCamera.GetComponent<AudioListener>().enabled = true;
+            _garageCamera.GetComponent<AudioListener>().enabled = false;
+            
             _nau.SetActive(false);
             _pilot.SetActive(true);
-        }else if (playerInputActions.Garage.enabled)
+        }else if (inputManager.playerInputActions.Garage.enabled)
         { 
             //Debug.Log("mousePOS:"+ MousePosition.ToString()+"  mouseIndi:"+mouseIndicator.transform.position.ToString());
             _playerCamera.enabled = false;
+            _garageCamera.enabled = true;
+            
+            _playerCamera.GetComponent<AudioListener>().enabled = false;
+            _garageCamera.GetComponent<AudioListener>().enabled = true;
+            
             _nau.SetActive(false);
             _pilot.SetActive(false);
             _garage.SetActive(true);
             //_garage.enabled = true;
-                
-            gridPosition = grid.WorldToCell(MousePosition);
-            mouseIndicator.transform.position = MousePosition;
+            
+            /*això potser s'hauria de moure a placementSystem
+            gridPosition = grid.WorldToCell(inputManager.MousePosition);
+            mouseIndicator.transform.position = inputManager.MousePosition;
             cellIndicator.transform.position = grid.CellToWorld(gridPosition);
-
+            */
         }
         
         
@@ -226,10 +248,10 @@ public class Player : MonoBehaviour
             }
         }*/
         //fas canvis adients segons el input map que estigui actiu
-        if (playerInputActions.Nau.enabled)
+        if (inputManager.playerInputActions.Nau.enabled)
         {
             MoveNau();
-        }else if (playerInputActions.Pilot.enabled)
+        }else if (inputManager.playerInputActions.Pilot.enabled)
         {
             MovePilot();
         }
@@ -244,7 +266,7 @@ public class Player : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         
         // això del playerInputAction
-        Vector2 movement =playerInputActions.Nau.MoveNau.ReadValue<Vector2>().normalized;
+        Vector2 movement =inputManager.playerInputActions.Nau.MoveNau.ReadValue<Vector2>().normalized;
         float moveSpeed = 5f;
         //transform.Translate(new Vector3(movement.x, 0, movement.y));
 
@@ -257,7 +279,7 @@ public class Player : MonoBehaviour
         //Debug.Log("estàs amb el pilot");
         
         rb.linearVelocity = Vector3.zero;
-        Vector2 movement =playerInputActions.Pilot.MovePilot.ReadValue<Vector2>().normalized;
+        Vector2 movement =inputManager.playerInputActions.Pilot.MovePilot.ReadValue<Vector2>().normalized;
         float moveSpeed = 2f;
         //transform.Translate(new Vector3(movement.x, 0, movement.y));
 
@@ -273,7 +295,7 @@ public class Player : MonoBehaviour
         
         
         Debug.Log("rodeta ratolí detectat");
-        float movement = playerInputActions.Nau.CanviCapa.ReadValue<float>();
+        float movement = inputManager.playerInputActions.Nau.CanviCapa.ReadValue<float>();
         
         //si ja estic fent el moviment cap a una nova capa, es podria guardar en una mena de coyote time
         if (isMoving)
@@ -364,7 +386,7 @@ public class Player : MonoBehaviour
         
         Camera camGarage = _garage.GetComponentInChildren<Camera>();
 
-        Vector3 mouse = playerInputActions.Garage.MousePosition.ReadValue<Vector2>();
+        Vector3 mouse = inputManager.playerInputActions.Garage.MousePosition.ReadValue<Vector2>();
         mouse.z = camGarage.nearClipPlane;
         
         Ray ray = camGarage.ScreenPointToRay(mouse);
@@ -373,7 +395,7 @@ public class Player : MonoBehaviour
         
         if (Physics.Raycast(ray, out hit,300,mask))
         {
-            MousePosition= hit.point;
+            inputManager.MousePosition= hit.point;
             //Debug.Log("BBBBBBBB");
         }
         //Debug.Log("AAAAAAAAAA "+mouse.ToString() );
@@ -383,7 +405,7 @@ public class Player : MonoBehaviour
 
     void OnClickGarage(InputAction.CallbackContext context)
     {
-        OnClicked?.Invoke();
+        //OnClicked?.Invoke();
     }
     
     

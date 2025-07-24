@@ -21,7 +21,7 @@ public class ObjectData
     public string Name { get; private set; }
     
     [field: SerializeField]
-    public string ID { get; private set; }
+    public int ID { get; private set; }
     
     [field: SerializeField]
     public Vector2Int Size { get; private set; } = Vector2Int.one;

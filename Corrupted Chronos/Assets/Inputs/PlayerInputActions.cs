@@ -390,6 +390,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OnExit"",
+                    ""type"": ""Button"",
+                    ""id"": ""c8531c9d-0089-44ec-a7b5-6755d6dcac56"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -406,23 +415,34 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""7ceecb19-18cc-495c-929c-4f3e320d6e52"",
-                    ""path"": """",
+                    ""id"": ""c6a0565b-0072-4c01-8162-b9905f4f73d5"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Mouse Position"",
+                    ""action"": ""OnClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""c6a0565b-0072-4c01-8162-b9905f4f73d5"",
-                    ""path"": """",
+                    ""id"": ""0de71a8e-fa4c-4ce8-b3f7-3be1d6bc2a2b"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""OnClick"",
+                    ""action"": ""OnExit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""61f432ff-2408-44e3-b138-84c4372c8027"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OnExit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -462,6 +482,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Garage = asset.FindActionMap("Garage", throwIfNotFound: true);
         m_Garage_MousePosition = m_Garage.FindAction("Mouse Position", throwIfNotFound: true);
         m_Garage_OnClick = m_Garage.FindAction("OnClick", throwIfNotFound: true);
+        m_Garage_OnExit = m_Garage.FindAction("OnExit", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -965,6 +986,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<IGarageActions> m_GarageActionsCallbackInterfaces = new List<IGarageActions>();
     private readonly InputAction m_Garage_MousePosition;
     private readonly InputAction m_Garage_OnClick;
+    private readonly InputAction m_Garage_OnExit;
     /// <summary>
     /// Provides access to input actions defined in input action map "Garage".
     /// </summary>
@@ -984,6 +1006,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Garage/OnClick".
         /// </summary>
         public InputAction @OnClick => m_Wrapper.m_Garage_OnClick;
+        /// <summary>
+        /// Provides access to the underlying input action "Garage/OnExit".
+        /// </summary>
+        public InputAction @OnExit => m_Wrapper.m_Garage_OnExit;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1016,6 +1042,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @OnClick.started += instance.OnOnClick;
             @OnClick.performed += instance.OnOnClick;
             @OnClick.canceled += instance.OnOnClick;
+            @OnExit.started += instance.OnOnExit;
+            @OnExit.performed += instance.OnOnExit;
+            @OnExit.canceled += instance.OnOnExit;
         }
 
         /// <summary>
@@ -1033,6 +1062,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @OnClick.started -= instance.OnOnClick;
             @OnClick.performed -= instance.OnOnClick;
             @OnClick.canceled -= instance.OnOnClick;
+            @OnExit.started -= instance.OnOnExit;
+            @OnExit.performed -= instance.OnOnExit;
+            @OnExit.canceled -= instance.OnOnExit;
         }
 
         /// <summary>
@@ -1181,5 +1213,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnOnClick(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OnExit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOnExit(InputAction.CallbackContext context);
     }
 }

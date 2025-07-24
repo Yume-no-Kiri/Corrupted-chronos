@@ -148,7 +148,6 @@ GameObject:
   - component: {fileID: 2741672428399594995}
   - component: {fileID: 2338407926785619175}
   - component: {fileID: 9065371578681910068}
-  - component: {fileID: 2090595894423609896}
   m_Layer: 0
   m_Name: Player
   m_TagString: Jugador
@@ -211,80 +210,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29919a04243bd68469907063f8cdb296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputMangerObject: {fileID: 0}
+  inputManager: {fileID: 0}
+  _database: {fileID: 0}
+  spawnPosition: {x: 0, y: 0, z: 0}
+  "Comen\xE7aComPilot": 1
+  _garage: {fileID: 0}
   mouseIndicator: {fileID: 0}
   cellIndicator: {fileID: 0}
   grid: {fileID: 0}
-  _nau: {fileID: 0}
-  _pilot: {fileID: 0}
-  _garage: {fileID: 0}
-  "Comen\xE7aComPilot": 1
---- !u!114 &2090595894423609896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2429161139803003294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: a0621f4c72099a24cb266666a52c378c, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 9065371578681910068}
-        m_TargetAssemblyTypeName: Moviment, Assembly-CSharp
-        m_MethodName: movementinputAAA
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: ea4afb7e-516e-42b4-bf00-07978fd94c92
-    m_ActionName: Nau/move
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9e4030f5-55f9-4981-a7fe-6b3f122d0b1d
-    m_ActionName: 'Nau/CanviCapa[/Mouse/scroll/down,/Mouse/scroll/up]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 118cb40a-27dd-4017-bbe4-75cd8a16b9b7
-    m_ActionName: UI/New action
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: a21a0e44-5ee8-40f3-beea-c72787116d11
-    m_ActionName: 'UI/submit[/Keyboard/space]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 13b5fc3f-83ff-44ed-9191-cc361a933fef
-    m_ActionName: 'Pilot/MovePilot[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f55bdf1d-ac78-42df-8b46-28a8f4b66aa5
-    m_ActionName: 'Global/Interactua[/Keyboard/e]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c05f9fc2-27cf-4aef-879e-9fc8611bfcf7
-    m_ActionName: Global/Pausa
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Keyboard
-  m_DefaultActionMap: Nau
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}

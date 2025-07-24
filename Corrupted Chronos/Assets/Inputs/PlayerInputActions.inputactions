@@ -304,6 +304,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OnExit",
+                    "type": "Button",
+                    "id": "c8531c9d-0089-44ec-a7b5-6755d6dcac56",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -320,23 +329,34 @@
                 },
                 {
                     "name": "",
-                    "id": "7ceecb19-18cc-495c-929c-4f3e320d6e52",
-                    "path": "",
+                    "id": "c6a0565b-0072-4c01-8162-b9905f4f73d5",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Mouse Position",
+                    "action": "OnClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "c6a0565b-0072-4c01-8162-b9905f4f73d5",
-                    "path": "",
+                    "id": "0de71a8e-fa4c-4ce8-b3f7-3be1d6bc2a2b",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "OnClick",
+                    "action": "OnExit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "61f432ff-2408-44e3-b138-84c4372c8027",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OnExit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

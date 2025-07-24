@@ -12,14 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ceecd758bd57064b8efdd4e966e5fb7, type: 3}
   m_Name: PartsDatabaseSO
   m_EditorClassIdentifier: 
-  AllParts: []
+  AllParts:
+  - <Name>k__BackingField: Metralleta
+    <ID>k__BackingField: 0
+    <Size>k__BackingField: {x: 1, y: 2}
+    <Prefab>k__BackingField: {fileID: 5216852073179350294, guid: aad720e43b3d46d40a7f40a6877f7c31, type: 3}
   AllNaus:
   - <Name>k__BackingField: Nau Basic
-    <ID>k__BackingField: n001
+    <ID>k__BackingField: 0
     <Size>k__BackingField: {x: 0, y: 0}
     <Prefab>k__BackingField: {fileID: 3513957959478190534, guid: 6f465741ba949c641a95ce5b90ea5b85, type: 3}
   AllPilots:
   - <Name>k__BackingField: Pilot Basic
-    <ID>k__BackingField: p001
+    <ID>k__BackingField: 0
     <Size>k__BackingField: {x: 0, y: 0}
     <Prefab>k__BackingField: {fileID: 5587545801459419818, guid: 83692990601c6a14694a3f67c567c435, type: 3}
