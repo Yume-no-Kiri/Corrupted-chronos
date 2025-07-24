@@ -10,48 +10,56 @@ public class DialogueInvoker : MonoBehaviour
     [Header("Mode:")]
     [SerializeField] private int mode;
 
-    [Header("player Input Actions:")]
-
-    public PlayerInputActions playerInputActions;
-
-
-    private bool enable_dialogue = false;
-
-    private void Awake()
-    {
-        playerInputActions.Global.Interactua.performed += Interact;
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void FixedUpdate()
-    {
-        //Invoca el dialeg
-        if (playerInputActions.Pilot.enabled && enable_dialogue) 
-            {
-              GameEventsManager.instance.dialogue_events.EnterDialogue(branca, mode);
-            } 
-    }
+    [SerializeField]
+    public InteractionType ThisInteraction;
 
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("NPC"))
+        if (other.CompareTag("Jugador"))
         {
-            enable_dialogue = true;
+            Player i = other.GetComponentInParent<Player>();
+            Debug.Log("this is your Jugador" + i.gameObject.name);
+            if (i != null)
+            {
+                //canvia l'interacció, canviar de pilot nau, nau pilot, entrar sortir de garatge, xarlar, etc...
+                i.AddInteraction(ThisInteraction);
+                i.AddDialogueInfo(branca, mode);
+
+
+            }   
+            else
+            {
+                Debug.LogWarning("Object entered the trigger but does not have YourScriptType: " + other.gameObject.name);
+            }
+
+            //playerInputActions.Global.Interactua += other. nau_pilot();
+            Debug.Log("Player can talk.");
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("NPC"))
+        if (other.CompareTag("Jugador"))
         {
-            enable_dialogue = false;
+            Player i = other.GetComponentInParent<Player>();
+
+            if (i != null)
+            {
+
+                i.SubInteraction(ThisInteraction);
+
+            }
+            else
+            {
+                Debug.LogWarning("Object entered the trigger but does not have YourScriptType: " + other.gameObject.name);
+            }
+
+            //playerInputActions.Global.Interactua += other. nau_pilot();
+            Debug.Log("Player left special zone.");
         }
     }
 
-    private void Interact(InputAction.CallbackContext patata)
-    {
-
-    }
 
 }

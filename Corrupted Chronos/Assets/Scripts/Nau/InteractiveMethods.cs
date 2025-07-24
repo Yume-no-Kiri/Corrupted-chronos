@@ -8,7 +8,7 @@ using System;
 //EXPLICACIÓ:
 //crida de mètodes del jugador degut a certes coses, estar en una zona concreta, etc..
 //zones que també es podrien crear aquí: obrir botiga, conversa,
-//està separat per poder mantenir aquests "cassos especials" fora de la logica del jugador i que estigui més ordenat
+//està separat per poder mantenir aquests "casos especials" fora de la logica del jugador i que estigui més ordenat
 //es crea al script player i s'afegeix al mateix lloc que player
 
 //es creen per dir quin mètode es crida, i està assignat a cada objecte que afegeix un mètode interactiu al jugador
@@ -16,7 +16,8 @@ public enum InteractionType
 {
     NauPilot,
     PilotNau,
-    PnINp
+    PnINp,
+    Talk
     
 } 
 
@@ -58,6 +59,9 @@ public class InteractiveMethods : MonoBehaviour
                 break;
             case InteractionType.PnINp:
                 PnINp(player);
+                break;
+            case InteractionType.Talk:
+                Talk(player);
                 break;
         }
     }
@@ -108,8 +112,8 @@ public class InteractiveMethods : MonoBehaviour
         jugador.SubInteraction(i);
 
     }
-    
-    
+
+
     //sugerencia per col·locar els dialegs:
     /*
      Crea un mètode dialeg, que segons el player i alguna variable, cridi la teva logica de player,
@@ -118,11 +122,20 @@ public class InteractiveMethods : MonoBehaviour
      
      Com passar informació del mètode? 
      bé, aquí pots tocar-ho de diferentes maneres, per exemple, tindre un script a cada npc amb informació de la teva logica dels dialegs 
-     que han de tenir, i que guardes a player quan afegeixes la interacció, amb logica similar al ontrigger enter i ontrigger exti de
+     que han de tenir, i que guardes a player quan afegeixes la interacció, amb logica similar al ontrigger enter i ontrigger exit de
      change nau pilot 
     
      */
-    
-    
+
+    public void Talk(Player jugador)
+    {
+        InteractionType i = InteractionType.Talk;
+
+        print(jugador.branca);
+        GameEventsManager.instance.dialogue_events.EnterDialogue(jugador.branca, jugador.mode);
+        jugador.SubInteraction(i);
+    }
+
+
 }
 

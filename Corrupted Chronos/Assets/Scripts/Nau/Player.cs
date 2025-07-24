@@ -46,8 +46,11 @@ public class Player : MonoBehaviour
 
     [SerializeField] 
     private bool ComençaComPilot = true;
-    
-    
+
+    //Dialeg:
+    public string branca;
+    public int mode;
+
     private void Awake()
     {
         //varaibles generals
@@ -61,6 +64,8 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         myColliderNau = _nau.GetComponent<Collider>();
         myColliderPilot = _pilot.GetComponent<Collider>();
+
+       
         
         if (myColliderNau == null || myColliderPilot == null){ Debug.LogError("No collider attached!"); return; }
         
@@ -287,6 +292,12 @@ public class Player : MonoBehaviour
             whatsToInteract.Remove(type);
         }
         
+    }
+
+    public void AddDialogueInfo(string branca, int mode)
+    {
+        this.branca = branca;
+        this.mode = mode;   
     }
     
     
