@@ -78,8 +78,8 @@ public class Player : MonoBehaviour
     //[SerializeField]
     //private Camera camGarage;
 
-    
-    
+    //parts stuff
+    private List<GameObject> AddedParts;
     
     private void Awake()
     {
@@ -142,7 +142,6 @@ public class Player : MonoBehaviour
         //s'actualitza quan moc el mouse
         inputManager.playerInputActions.Garage.MousePosition.performed += PositionMouse;
         //inputManager.playerInputActions.Garage.OnClick.performed += OnClickGarage;
-        
         
         
         
@@ -403,34 +402,64 @@ public class Player : MonoBehaviour
 
     }
 
-    public void AddPart(GameObject gb, Vector3Int origin)
+    public void AddPart(GameObject gb, Vector3 origin)
     {
-        //revisar aquest sistema de coordenades per a que utilitzi grid coordenades millor
+        //Aquesta marabunda de codi funciona :D
         GameObject part = Instantiate(gb);
         Vector3 newOrigin = transform.position;
-        Vector3Int relative = Vector3Int.RoundToInt(gb.transform.position);
-        Vector3 finalWorldPosition = origin - relative;
+        Vector3 relative =gb.transform.position;
+        Vector3 finalWorldPosition = relative -origin ;
         finalWorldPosition+=newOrigin;
         finalWorldPosition.y=_nau.transform.position.y;
-        Debug.Log(origin + "EEEEEEEEEEEEE");
-        Debug.Log(relative + "fffFFFFFFFFF");
         part.transform.position = finalWorldPosition;
         Transform ToAdd = _nau.transform.Find("Added");
         if (ToAdd != null)
         {
             part.transform.SetParent(ToAdd.transform, true);
         }
+        AddedParts.Add(part);
     }
-
+    
+    
     public void RemovePart()
     {
         Transform ToRemove = _nau.transform.Find("Added");
         foreach (Transform child in ToRemove.transform)
         {
+            
             Destroy(child.gameObject);
         }
+        AddedParts.Clear();
+
        
     }
+
+    public void ActivateParts()
+    {
+        PartActions pa;
+        foreach (GameObject part in AddedParts)
+        {
+            pa = part.GetComponent<PartActions>();
+            switch (pa.GetTypePart())
+            {
+                case TypePart.Mele:
+                    Debug.Log("part mele no acabat");
+                    break;
+                case TypePart.Moveable:
+                    Debug.Log("part movable no acabat");
+                    break;
+                case TypePart.Shootable:
+                   // inputManager.OnShot += ctx => pa.DoShot();
+                    break;
+            }
+                
+            
+            
+            
+        }
+    }
+    
+    
     
     /*void OnClickGarage(InputAction.CallbackContext context)
     {

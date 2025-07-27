@@ -12,7 +12,7 @@ public class InputManager : MonoBehaviour
     public Vector3 MousePosition;
 
     
-    public event Action OnClick, OnExit;
+    public event Action OnClick, OnExit, OnShot;
 
     
     private void Awake()
@@ -21,6 +21,7 @@ public class InputManager : MonoBehaviour
         playerInputActions = new PlayerInputActions();
         playerInputActions.Garage.OnClick.performed += CallOnClick;
         playerInputActions.Garage.OnExit.performed += CallOnExit;
+        playerInputActions.Nau.OnShot.performed +=ctx=> OnShot?.Invoke();
 
     }
 

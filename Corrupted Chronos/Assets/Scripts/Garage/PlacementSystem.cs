@@ -18,7 +18,7 @@ public class PlacementSystem : MonoBehaviour
     private GameObject mouseIndicator, cellIndicator;
     
     [SerializeField]
-    private GameObject inputManagerObject;
+    //private GameObject inputManagerObject;
     private InputManager inputManager;
     
     [SerializeField]
@@ -56,7 +56,7 @@ public class PlacementSystem : MonoBehaviour
     {
         _placedObjects = new List<GameObject>();
         
-        inputManager = inputManagerObject.GetComponent<InputManager>();
+        //inputManager = inputManagerObject.GetComponent<InputManager>();
     }
 
     private void Start()
@@ -135,12 +135,13 @@ public class PlacementSystem : MonoBehaviour
             for (int i = 1; i < _placedObjects.Count; i++)
             {
                 GameObject part=_placedObjects[i];
-                nauAdded.AddPart(part,  Vector3Int.RoundToInt(origin));
-
+                nauAdded.AddPart(part,  origin);
+                //nauAdded.AddPart2(_placedObjects[0].transform.Find("Added").transform);
             }
         }
-        
-        
+
+        nauAdded.ActivateParts();
+
     }
     /*public void WhereToAddParts()
     {
@@ -235,7 +236,7 @@ public class PlacementSystem : MonoBehaviour
         bool placementValidity =CheckPlacementValidity(gridPosition,selectedObjectIndex);
         if (!placementValidity) return;
         
-        GameObject partToAdd= Instantiate(_selectedListConfig[selectedObjectIndex].Prefab);
+        GameObject partToAdd= Instantiate(_selectedListConfig[selectedObjectIndex].Prefab, _placedObjects[0].transform.Find("Added").transform);
         partToAdd.transform.position = grid.CellToWorld(gridPosition);
         
         Transform coll = partToAdd.transform.Find("Collisions");

@@ -536,7 +536,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseIndicator: {fileID: 1178753817}
   cellIndicator: {fileID: 633775174}
-  inputManagerObject: {fileID: 644118998}
+  inputManager: {fileID: 644119001}
   grid: {fileID: 1301789496}
   database: {fileID: 11400000, guid: cae380d3cf3bdd44d8267c7a1d4cd998, type: 2}
   schemePlain: {fileID: 765996957}

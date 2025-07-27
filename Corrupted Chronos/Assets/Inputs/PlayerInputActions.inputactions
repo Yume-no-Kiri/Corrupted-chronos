@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "OnShot",
+                    "type": "Button",
+                    "id": "7a7f5f6d-9aef-4efe-8a0e-a574a0841a31",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -112,6 +121,17 @@
                     "action": "CanviCapa",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "1d2d7875-4c57-4e5d-a8a8-249b6506e1bd",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OnShot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
