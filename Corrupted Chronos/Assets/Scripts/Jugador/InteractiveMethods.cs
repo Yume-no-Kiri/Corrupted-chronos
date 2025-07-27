@@ -69,6 +69,9 @@ public class InteractiveMethods : MonoBehaviour
             case InteractionType.CloseGarage:
                 CloseGarage(player);
                 break;
+            default:
+                Debug.LogError("Interaction method no existeix, InteractiveMethods.cs");
+                break;
         }
     }
 

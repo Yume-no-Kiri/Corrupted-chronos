@@ -99,7 +99,7 @@ public class Player : MonoBehaviour
         //REVISAR EL TEMA DEL TRANSFORM I POSICIÓ D'SPAWN, es bastant irregular
         //_database.AllNaus.FindIndex(data=>data.ID=id_a_buscar)
          _nau =Instantiate(_database.AllNaus[0].Prefab);
-        _pilot= Instantiate(_database.AllPilots[0].Prefab);
+        _pilot= Instantiate(_database.AllTravelers[0].Prefab);
         _nau.transform.position = new Vector3(0, spawnPosition.y,0);
         _pilot.transform.position = new Vector3(0, spawnPosition.y, 0);
         
@@ -109,7 +109,7 @@ public class Player : MonoBehaviour
         
         //components and stuff
         rb = GetComponent<Rigidbody>();
-        myColliderNau = _nau.GetComponent<Collider>();
+        myColliderNau = _nau.transform.Find("Collisions").transform.Find("Collider").GetComponentInChildren<Collider>();
         myColliderPilot = _pilot.GetComponent<Collider>();
         _playerCamera = GetComponentInChildren<Camera>();
         _garageCamera= _garage.GetComponentInChildren<Camera>();
@@ -141,7 +141,7 @@ public class Player : MonoBehaviour
         inputManager.playerInputActions.Garage.Enable();
         //s'actualitza quan moc el mouse
         inputManager.playerInputActions.Garage.MousePosition.performed += PositionMouse;
-        inputManager.playerInputActions.Garage.OnClick.performed += OnClickGarage;
+        //inputManager.playerInputActions.Garage.OnClick.performed += OnClickGarage;
         
         
         
@@ -158,7 +158,7 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        _garage.SetActive(false);
     }
 
     void Update()
@@ -403,10 +403,39 @@ public class Player : MonoBehaviour
 
     }
 
-    void OnClickGarage(InputAction.CallbackContext context)
+    public void AddPart(GameObject gb, Vector3Int origin)
+    {
+        //revisar aquest sistema de coordenades per a que utilitzi grid coordenades millor
+        GameObject part = Instantiate(gb);
+        Vector3 newOrigin = transform.position;
+        Vector3Int relative = Vector3Int.RoundToInt(gb.transform.position);
+        Vector3 finalWorldPosition = origin - relative;
+        finalWorldPosition+=newOrigin;
+        finalWorldPosition.y=_nau.transform.position.y;
+        Debug.Log(origin + "EEEEEEEEEEEEE");
+        Debug.Log(relative + "fffFFFFFFFFF");
+        part.transform.position = finalWorldPosition;
+        Transform ToAdd = _nau.transform.Find("Added");
+        if (ToAdd != null)
+        {
+            part.transform.SetParent(ToAdd.transform, true);
+        }
+    }
+
+    public void RemovePart()
+    {
+        Transform ToRemove = _nau.transform.Find("Added");
+        foreach (Transform child in ToRemove.transform)
+        {
+            Destroy(child.gameObject);
+        }
+       
+    }
+    
+    /*void OnClickGarage(InputAction.CallbackContext context)
     {
         //OnClicked?.Invoke();
-    }
+    }*/
     
     
 }

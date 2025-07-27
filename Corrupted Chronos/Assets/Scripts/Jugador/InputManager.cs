@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -39,11 +40,29 @@ public class InputManager : MonoBehaviour
     public bool IsPointerOverUI()=>EventSystem.current.IsPointerOverGameObject();
     void CallOnClick(InputAction.CallbackContext callbackContext)
     {
-        OnClick?.Invoke();
+        if (callbackContext.performed)
+            StartCoroutine(DelayedClick());
+       // OnClick?.Invoke();
     }
-    private void CallOnExit(InputAction.CallbackContext obj)
+    private IEnumerator DelayedClick()
     {
-        OnExit?.Invoke();
+        yield return null; // Wait one frame
+        OnClick?.Invoke(); // Now this is called AFTER UI system updated
     }
-
+    
+    
+    private void CallOnExit(InputAction.CallbackContext callbackContext)
+    {
+        if (callbackContext.performed)
+            StartCoroutine(DelayedExit());
+        //OnExit?.Invoke();
+    }
+    private IEnumerator DelayedExit()
+    {
+        yield return null; // Wait one frame
+        OnExit?.Invoke(); // Now this is called AFTER UI system updated
+    }
+    
+    
+    
 }

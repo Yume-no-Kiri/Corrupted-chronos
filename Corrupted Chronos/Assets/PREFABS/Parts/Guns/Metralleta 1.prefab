@@ -97,7 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7589288795423491174}
   m_Layer: 0
-  m_Name: Metralleta
+  m_Name: Metralleta 1
   m_TagString: Jugador
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -228,7 +228,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: be53604266cff7a4289669b53f010798, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 02ba87a75cac2a74ab8e5abc0f6eaae8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

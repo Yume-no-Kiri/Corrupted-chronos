@@ -16,14 +16,17 @@ MonoBehaviour:
   - <Name>k__BackingField: Metralleta
     <ID>k__BackingField: 0
     <Size>k__BackingField: {x: 1, y: 2}
+    <BuildSize>k__BackingField: {x: 2, y: 4}
     <Prefab>k__BackingField: {fileID: 5216852073179350294, guid: aad720e43b3d46d40a7f40a6877f7c31, type: 3}
   AllNaus:
   - <Name>k__BackingField: Nau Basic
     <ID>k__BackingField: 0
-    <Size>k__BackingField: {x: 0, y: 0}
+    <Size>k__BackingField: {x: 2, y: 2}
+    <BuildSize>k__BackingField: {x: 3, y: 3}
     <Prefab>k__BackingField: {fileID: 3513957959478190534, guid: 6f465741ba949c641a95ce5b90ea5b85, type: 3}
-  AllPilots:
-  - <Name>k__BackingField: Pilot Basic
+  AllTravelers:
+  - <Name>k__BackingField: Traveler Basic
     <ID>k__BackingField: 0
     <Size>k__BackingField: {x: 0, y: 0}
+    <BuildSize>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 5587545801459419818, guid: 83692990601c6a14694a3f67c567c435, type: 3}
