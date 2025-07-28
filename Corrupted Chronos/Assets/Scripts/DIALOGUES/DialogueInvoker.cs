@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
 
 public class DialogueInvoker : MonoBehaviour
 {
@@ -9,14 +10,56 @@ public class DialogueInvoker : MonoBehaviour
     [Header("Mode:")]
     [SerializeField] private int mode;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField]
+    public InteractionType ThisInteraction;
+
+
+
+    private void OnTriggerEnter(Collider other)
     {
-        //Invoca el dialeg
-        if (branca != null) 
+        if (other.CompareTag("Jugador"))
+        {
+            Player i = other.GetComponentInParent<Player>();
+            Debug.Log("this is your Jugador" + i.gameObject.name);
+            if (i != null)
             {
-              GameEventsManager.instance.dialogue_events.EnterDialogue(branca, mode);
-            } 
+                //canvia l'interacció, canviar de pilot nau, nau pilot, entrar sortir de garatge, xarlar, etc...
+                i.AddInteraction(ThisInteraction);
+                i.AddDialogueInfo(branca, mode);
+
+
+            }   
+            else
+            {
+                Debug.LogWarning("Object entered the trigger but does not have YourScriptType: " + other.gameObject.name);
+            }
+
+            //playerInputActions.Global.Interactua += other. nau_pilot();
+            Debug.Log("Player can talk.");
+        }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Jugador"))
+        {
+            Player i = other.GetComponentInParent<Player>();
+
+            if (i != null)
+            {
+
+                i.SubInteraction(ThisInteraction);
+
+            }
+            else
+            {
+                Debug.LogWarning("Object entered the trigger but does not have YourScriptType: " + other.gameObject.name);
+            }
+
+            //playerInputActions.Global.Interactua += other. nau_pilot();
+            Debug.Log("Player left special zone.");
+        }
+    }
+
 
 }
