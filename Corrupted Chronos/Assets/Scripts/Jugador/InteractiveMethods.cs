@@ -10,6 +10,12 @@ using System;
 //zones que també es podrien crear aquí: obrir botiga, conversa,
 //està separat per poder mantenir aquests "casos especials" fora de la logica del jugador i que estigui més ordenat
 //es crea al script player i s'afegeix al mateix lloc que player
+// zones que també es podrien crear aquí: obrir botiga, menu?
+
+//TODO after demo
+//revisar totes les crides de player.InputManger, ja que moltes podrien tenir la instancia
+//del inputManager i cridar player NOMÉS, quan sigui necesari 
+
 
 //es creen per dir quin mètode es crida, i està assignat a cada objecte que afegeix un mètode interactiu al jugador
 public enum InteractionType
@@ -17,8 +23,9 @@ public enum InteractionType
     NauPilot,
     PilotNau,
     PnINp,
-    Talk
-    OpenGarage
+    Talk,
+    OpenGarage,
+    CloseGarage
 
     
 } 
@@ -28,7 +35,8 @@ public class InteractiveMethods : MonoBehaviour
     //public List<String> ListMethods = new List<String>();
    // public List<MethodPlayer> ListMethodDelegates = new List<MethodPlayer>();
     
-
+   //string estatAnterior="";
+   private InteractionType estatAnterior;
     private void Start()
     {
         //ListMethods.Add("Nau_Pilot");
@@ -72,15 +80,25 @@ public class InteractiveMethods : MonoBehaviour
                 OpenGarage(player);
 
                 break;
+            case InteractionType.CloseGarage:
+                CloseGarage(player);
+                break;
+            default:
+                Debug.LogError("Interaction method no existeix, InteractiveMethods.cs");
+                break;
         }
     }
+
     
+
     
     //canvia entre el mode nau a pilot, desactivant els inputs necessaris
+
+
     public void Nau_Pilot(Player jugador)
     {
-        jugador.playerInputActions.Nau.Disable();
-        jugador.playerInputActions.Pilot.Enable();
+        jugador.inputManager.playerInputActions.Nau.Disable();
+        jugador.inputManager.playerInputActions.Pilot.Enable();
         
         //degut a que no sempre ontrigger exit s'activa, i la majoria de casos, només volen cridar-ho una vegada, 
         //quan s'activa la interacció l'eliminem 
@@ -92,12 +110,11 @@ public class InteractiveMethods : MonoBehaviour
     //canvia de pilot a nau, desactivant els inputs necessaris 
     public void Pilot_Nau(Player jugador)
     {
-        jugador.playerInputActions.Nau.Enable();
-        jugador.playerInputActions.Pilot.Disable();
-        
         //degut a que no sempre ontrigger exit s'activa, i la majoria de casos, només volen cridar-ho una vegada, 
         //quan s'activa la interacció l'eliminem 
         //per si les mosques
+        jugador.inputManager.playerInputActions.Nau.Enable();
+        jugador.inputManager.playerInputActions.Pilot.Disable();
         InteractionType i= InteractionType.PilotNau;
         jugador.SubInteraction(i);
     }
@@ -106,10 +123,10 @@ public class InteractiveMethods : MonoBehaviour
     public void PnINp(Player jugador)
     {
         //Debug.Log("enter pninp");
-        if (jugador.playerInputActions.Pilot.enabled)
+        if (jugador.inputManager.playerInputActions.Pilot.enabled)
         {
             Pilot_Nau(jugador);
-        }else if (jugador.playerInputActions.Nau.enabled)
+        }else if (jugador.inputManager.playerInputActions.Nau.enabled)
         {
             Nau_Pilot(jugador);
         }
@@ -138,17 +155,40 @@ public class InteractiveMethods : MonoBehaviour
      
     public void OpenGarage(Player jugador)
     {
-        string estatAbans;
         
-        if (jugador.playerInputActions.Pilot.enabled)
+        if (jugador.inputManager.playerInputActions.Pilot.enabled)
         {
-            estatAbans = "pilot";
-        }else if (jugador.playerInputActions.Nau.enabled)
+            estatAnterior = InteractionType.NauPilot;
+            jugador.inputManager.playerInputActions.Pilot.Disable();
+
+            
+        }else if (jugador.inputManager.playerInputActions.Nau.enabled)
         {
-            estatAbans = "nau";
+            estatAnterior = InteractionType.PilotNau;
+            jugador.inputManager.playerInputActions.Nau.Disable();
+
         }
-        jugador.playerInputActions.Garage.Enable();
-         
+
+        jugador.inputManager.playerInputActions.Garage.Enable();
+        
+        InteractionType i= InteractionType.OpenGarage;
+        jugador.SubInteraction(i);
+        
+        //sempre que s'obri el garatge s'afegeix per poder tancar-no, no trobo no tindria sentit fer-ho així
+        //pero si es vulgues fer, seria afegir un if aquí sota
+        i= InteractionType.CloseGarage;
+        jugador.AddInteraction(i);
+    }
+    private void CloseGarage(Player jugador)
+    {
+        jugador.inputManager.playerInputActions.Garage.Disable();
+        
+        //basicament, passem a nau o pilot.
+        DoInteraction(estatAnterior,jugador);
+        jugador.CloseGarage();
+        
+        InteractionType i= InteractionType.CloseGarage;
+        jugador.SubInteraction(i);
     }
     
 
