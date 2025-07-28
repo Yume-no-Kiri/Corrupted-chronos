@@ -108,6 +108,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""OnShot"",
+                    ""type"": ""Button"",
+                    ""id"": ""7a7f5f6d-9aef-4efe-8a0e-a574a0841a31"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -198,6 +207,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""CanviCapa"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1d2d7875-4c57-4e5d-a8a8-249b6506e1bd"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OnShot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -374,9 +394,27 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""id"": ""7bc64054-a30c-4ce8-9e7b-b1893ef3f1aa"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""Mouse Position"",
+                    ""type"": ""Value"",
+                    ""id"": ""f5f000ad-170b-42cc-8914-57133d55a72f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""OnClick"",
                     ""type"": ""Button"",
-                    ""id"": ""b849cb52-fffd-4244-a5a5-04a8112a3f22"",
+                    ""id"": ""f82c0c94-051f-45a4-93f3-cf970123a69b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OnExit"",
+                    ""type"": ""Button"",
+                    ""id"": ""c8531c9d-0089-44ec-a7b5-6755d6dcac56"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -386,12 +424,45 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""92bf9fc5-3fb2-4ccb-8240-5316959e3a32"",
-                    ""path"": """",
+                    ""id"": ""db5cc3b4-0ed4-45cf-8ef9-8e8ffc02bd83"",
+                    ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""Mouse Position"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c6a0565b-0072-4c01-8162-b9905f4f73d5"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OnClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0de71a8e-fa4c-4ce8-b3f7-3be1d6bc2a2b"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OnExit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""61f432ff-2408-44e3-b138-84c4372c8027"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OnExit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -416,6 +487,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Nau = asset.FindActionMap("Nau", throwIfNotFound: true);
         m_Nau_MoveNau = m_Nau.FindAction("MoveNau", throwIfNotFound: true);
         m_Nau_CanviCapa = m_Nau.FindAction("CanviCapa", throwIfNotFound: true);
+        m_Nau_OnShot = m_Nau.FindAction("OnShot", throwIfNotFound: true);
         // Pilot
         m_Pilot = asset.FindActionMap("Pilot", throwIfNotFound: true);
         m_Pilot_MovePilot = m_Pilot.FindAction("MovePilot", throwIfNotFound: true);
@@ -429,7 +501,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Global_Pausa = m_Global.FindAction("Pausa", throwIfNotFound: true);
         // Garage
         m_Garage = asset.FindActionMap("Garage", throwIfNotFound: true);
-        m_Garage_Newaction = m_Garage.FindAction("New action", throwIfNotFound: true);
+        m_Garage_MousePosition = m_Garage.FindAction("Mouse Position", throwIfNotFound: true);
+        m_Garage_OnClick = m_Garage.FindAction("OnClick", throwIfNotFound: true);
+        m_Garage_OnExit = m_Garage.FindAction("OnExit", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -516,6 +590,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<INauActions> m_NauActionsCallbackInterfaces = new List<INauActions>();
     private readonly InputAction m_Nau_MoveNau;
     private readonly InputAction m_Nau_CanviCapa;
+    private readonly InputAction m_Nau_OnShot;
     /// <summary>
     /// Provides access to input actions defined in input action map "Nau".
     /// </summary>
@@ -535,6 +610,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Nau/CanviCapa".
         /// </summary>
         public InputAction @CanviCapa => m_Wrapper.m_Nau_CanviCapa;
+        /// <summary>
+        /// Provides access to the underlying input action "Nau/OnShot".
+        /// </summary>
+        public InputAction @OnShot => m_Wrapper.m_Nau_OnShot;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -567,6 +646,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CanviCapa.started += instance.OnCanviCapa;
             @CanviCapa.performed += instance.OnCanviCapa;
             @CanviCapa.canceled += instance.OnCanviCapa;
+            @OnShot.started += instance.OnOnShot;
+            @OnShot.performed += instance.OnOnShot;
+            @OnShot.canceled += instance.OnOnShot;
         }
 
         /// <summary>
@@ -584,6 +666,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CanviCapa.started -= instance.OnCanviCapa;
             @CanviCapa.performed -= instance.OnCanviCapa;
             @CanviCapa.canceled -= instance.OnCanviCapa;
+            @OnShot.started -= instance.OnOnShot;
+            @OnShot.performed -= instance.OnOnShot;
+            @OnShot.canceled -= instance.OnOnShot;
         }
 
         /// <summary>
@@ -931,7 +1016,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // Garage
     private readonly InputActionMap m_Garage;
     private List<IGarageActions> m_GarageActionsCallbackInterfaces = new List<IGarageActions>();
-    private readonly InputAction m_Garage_Newaction;
+    private readonly InputAction m_Garage_MousePosition;
+    private readonly InputAction m_Garage_OnClick;
+    private readonly InputAction m_Garage_OnExit;
     /// <summary>
     /// Provides access to input actions defined in input action map "Garage".
     /// </summary>
@@ -944,9 +1031,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public GarageActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "Garage/Newaction".
+        /// Provides access to the underlying input action "Garage/MousePosition".
         /// </summary>
-        public InputAction @Newaction => m_Wrapper.m_Garage_Newaction;
+        public InputAction @MousePosition => m_Wrapper.m_Garage_MousePosition;
+        /// <summary>
+        /// Provides access to the underlying input action "Garage/OnClick".
+        /// </summary>
+        public InputAction @OnClick => m_Wrapper.m_Garage_OnClick;
+        /// <summary>
+        /// Provides access to the underlying input action "Garage/OnExit".
+        /// </summary>
+        public InputAction @OnExit => m_Wrapper.m_Garage_OnExit;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -973,9 +1068,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GarageActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GarageActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @MousePosition.started += instance.OnMousePosition;
+            @MousePosition.performed += instance.OnMousePosition;
+            @MousePosition.canceled += instance.OnMousePosition;
+            @OnClick.started += instance.OnOnClick;
+            @OnClick.performed += instance.OnOnClick;
+            @OnClick.canceled += instance.OnOnClick;
+            @OnExit.started += instance.OnOnExit;
+            @OnExit.performed += instance.OnOnExit;
+            @OnExit.canceled += instance.OnOnExit;
         }
 
         /// <summary>
@@ -987,9 +1088,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="GarageActions" />
         private void UnregisterCallbacks(IGarageActions instance)
         {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @MousePosition.started -= instance.OnMousePosition;
+            @MousePosition.performed -= instance.OnMousePosition;
+            @MousePosition.canceled -= instance.OnMousePosition;
+            @OnClick.started -= instance.OnOnClick;
+            @OnClick.performed -= instance.OnOnClick;
+            @OnClick.canceled -= instance.OnOnClick;
+            @OnExit.started -= instance.OnOnExit;
+            @OnExit.performed -= instance.OnOnExit;
+            @OnExit.canceled -= instance.OnOnExit;
         }
 
         /// <summary>
@@ -1057,6 +1164,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCanviCapa(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OnShot" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOnShot(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Pilot" which allows adding and removing callbacks.
@@ -1125,11 +1239,25 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     public interface IGarageActions
     {
         /// <summary>
-        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Mouse Position" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnMousePosition(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OnClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOnClick(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OnExit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOnExit(InputAction.CallbackContext context);
     }
 }
