@@ -368,6 +368,34 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Garage"",
+            ""id"": ""7bc64054-a30c-4ce8-9e7b-b1893ef3f1aa"",
+            ""actions"": [
+                {
+                    ""name"": ""New action"",
+                    ""type"": ""Button"",
+                    ""id"": ""b849cb52-fffd-4244-a5a5-04a8112a3f22"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""92bf9fc5-3fb2-4ccb-8240-5316959e3a32"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""New action"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -399,6 +427,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Global = asset.FindActionMap("Global", throwIfNotFound: true);
         m_Global_Interactua = m_Global.FindAction("Interactua", throwIfNotFound: true);
         m_Global_Pausa = m_Global.FindAction("Pausa", throwIfNotFound: true);
+        // Garage
+        m_Garage = asset.FindActionMap("Garage", throwIfNotFound: true);
+        m_Garage_Newaction = m_Garage.FindAction("New action", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -407,6 +438,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         UnityEngine.Debug.Assert(!m_Pilot.enabled, "This will cause a leak and performance issues, PlayerInputActions.Pilot.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, PlayerInputActions.UI.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Global.enabled, "This will cause a leak and performance issues, PlayerInputActions.Global.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Garage.enabled, "This will cause a leak and performance issues, PlayerInputActions.Garage.Disable() has not been called.");
     }
 
     /// <summary>
@@ -895,6 +927,102 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="GlobalActions" /> instance referencing this action map.
     /// </summary>
     public GlobalActions @Global => new GlobalActions(this);
+
+    // Garage
+    private readonly InputActionMap m_Garage;
+    private List<IGarageActions> m_GarageActionsCallbackInterfaces = new List<IGarageActions>();
+    private readonly InputAction m_Garage_Newaction;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "Garage".
+    /// </summary>
+    public struct GarageActions
+    {
+        private @PlayerInputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public GarageActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "Garage/Newaction".
+        /// </summary>
+        public InputAction @Newaction => m_Wrapper.m_Garage_Newaction;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_Garage; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="GarageActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(GarageActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="GarageActions" />
+        public void AddCallbacks(IGarageActions instance)
+        {
+            if (instance == null || m_Wrapper.m_GarageActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_GarageActionsCallbackInterfaces.Add(instance);
+            @Newaction.started += instance.OnNewaction;
+            @Newaction.performed += instance.OnNewaction;
+            @Newaction.canceled += instance.OnNewaction;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="GarageActions" />
+        private void UnregisterCallbacks(IGarageActions instance)
+        {
+            @Newaction.started -= instance.OnNewaction;
+            @Newaction.performed -= instance.OnNewaction;
+            @Newaction.canceled -= instance.OnNewaction;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="GarageActions.UnregisterCallbacks(IGarageActions)" />.
+        /// </summary>
+        /// <seealso cref="GarageActions.UnregisterCallbacks(IGarageActions)" />
+        public void RemoveCallbacks(IGarageActions instance)
+        {
+            if (m_Wrapper.m_GarageActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="GarageActions.AddCallbacks(IGarageActions)" />
+        /// <seealso cref="GarageActions.RemoveCallbacks(IGarageActions)" />
+        /// <seealso cref="GarageActions.UnregisterCallbacks(IGarageActions)" />
+        public void SetCallbacks(IGarageActions instance)
+        {
+            foreach (var item in m_Wrapper.m_GarageActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_GarageActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="GarageActions" /> instance referencing this action map.
+    /// </summary>
+    public GarageActions @Garage => new GarageActions(this);
     private int m_KeyboardSchemeIndex = -1;
     /// <summary>
     /// Provides access to the input control scheme.
@@ -988,5 +1116,20 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPausa(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Garage" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="GarageActions.AddCallbacks(IGarageActions)" />
+    /// <seealso cref="GarageActions.RemoveCallbacks(IGarageActions)" />
+    public interface IGarageActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNewaction(InputAction.CallbackContext context);
     }
 }
