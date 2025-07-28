@@ -18,6 +18,11 @@ MonoBehaviour:
     <Size>k__BackingField: {x: 1, y: 2}
     <BuildSize>k__BackingField: {x: 2, y: 4}
     <Prefab>k__BackingField: {fileID: 5216852073179350294, guid: aad720e43b3d46d40a7f40a6877f7c31, type: 3}
+  - <Name>k__BackingField: Escopeta
+    <ID>k__BackingField: 1
+    <Size>k__BackingField: {x: 1, y: 2}
+    <BuildSize>k__BackingField: {x: 2, y: 4}
+    <Prefab>k__BackingField: {fileID: 5216852073179350294, guid: ed32564e70a0da549821e8f91bcbb3af, type: 3}
   AllNaus:
   - <Name>k__BackingField: Nau Basic
     <ID>k__BackingField: 0

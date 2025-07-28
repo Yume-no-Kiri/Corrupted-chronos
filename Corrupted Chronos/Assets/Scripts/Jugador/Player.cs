@@ -422,15 +422,40 @@ public class Player : MonoBehaviour
         {
             part.transform.SetParent(ToAdd.transform, true);
         }
+        Transform coll = part.transform.Find("Collisions");
+        if (coll != null) coll.gameObject.SetActive(true);
+        
         AddedParts.Add(part);
     }
     
     
     public void RemovePart()
     {
+        PartActions pa;
+
         Transform ToRemove = _nau.transform.Find("Added");
         foreach (Transform child in ToRemove.transform)
         {
+            
+            
+            //potser el remove conexions hauria de ser el seu propi mètode
+            pa = child.gameObject.GetComponent<PartActions>();
+            switch (pa.GetTypePart())
+            {
+                case TypePart.Mele:
+                    Debug.Log("part mele no acabat");
+                    break;
+                case TypePart.Moveable:
+                    Debug.Log("part movable no acabat");
+                    break;
+                case TypePart.ShootableLeft:
+                    inputManager.OnShotLeft -= pa.DoShot;
+                    break;
+                case TypePart.ShootableRight:
+                    inputManager.OnShotRight -= pa.DoShot;
+                    break;
+            }
+            
             
             Destroy(child.gameObject);
         }
@@ -450,23 +475,23 @@ public class Player : MonoBehaviour
             switch (pa.GetTypePart())
             {
                 case TypePart.Mele:
-                    Debug.Log("part mele no acabat");
+                    Debug.LogWarning("part mele no acabat");
                     break;
                 case TypePart.Moveable:
-                    Debug.Log("part movable no acabat");
+                    Debug.LogWarning("part movable no acabat");
                     break;
-                case TypePart.Shootable:
-                    inputManager.OnShot += pa.DoShot;
+                case TypePart.ShootableLeft:
+                    inputManager.OnShotLeft += pa.DoShot;
+                    break;
+                case TypePart.ShootableRight:
+                    inputManager.OnShotRight += pa.DoShot;
                     break;
             }
-                
-            
-            
-            
         }
     }
-    
-    
+
+
+  
     
     /*void OnClickGarage(InputAction.CallbackContext context)
     {

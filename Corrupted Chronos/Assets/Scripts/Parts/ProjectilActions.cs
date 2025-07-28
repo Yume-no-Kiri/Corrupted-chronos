@@ -8,33 +8,46 @@ public class ProjectilActions : MonoBehaviour
 {
     
     protected int mal;
-    [HideInInspector] public Vector2 iniPos;
+    [HideInInspector] public Vector3 iniPos;
     
-    private float distMax = 50;
-    private float speed =15f;
+    private float distMax = 20f;
+    private float speed =9f;
+
+    private Rigidbody rb;
     
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         
+        rb = GetComponent<Rigidbody>();
+
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        iniPos = this.transform.position;
+    }
+
+    private void FixedUpdate()
+    {
+        rb.linearVelocity=transform.right*speed;
+        float distance = Vector3.Distance(iniPos, this.transform.position);
+        //Debug.Log("Distance: " + distance +"__iniPos: "+iniPos+ "__transform.position: " + this.transform.position);
+        if (distance > distMax)
+        {
+            Destroy(this.gameObject);
+        }
     }
     
     public int RetornaMal()
     {
         return mal;
     }
-    public void DefinirBala(int nouMalBala)
+    public void DefinirBala(int nouMalBala, float distancia)
     {
         // Debug.Log($"mal0 {mal} naumal0{nouMalBala}");
 
-        mal = nouMalBala;
+        mal += nouMalBala;
+        distMax+= distancia;
         //Debug.Log($"mal1 {mal} naumal1{nouMalBala}");
 
     }
