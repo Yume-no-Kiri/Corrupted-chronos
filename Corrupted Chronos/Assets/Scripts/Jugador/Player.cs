@@ -149,7 +149,7 @@ public class Player : MonoBehaviour
         interactiveMethods= gameObject.AddComponent<InteractiveMethods>();
         whatsToInteract = new List<InteractionType>();
         
-        
+        AddedParts= new List<GameObject>();
         
     }
 
@@ -439,6 +439,8 @@ public class Player : MonoBehaviour
         PartActions pa;
         foreach (GameObject part in AddedParts)
         {
+            //no estic segur de que part actions segui lo millor per invocar aquests mètodes,
+            //revisar explicació escrita en EachPartScript per futur REFACTORITZACIÓ
             pa = part.GetComponent<PartActions>();
             switch (pa.GetTypePart())
             {
@@ -449,7 +451,7 @@ public class Player : MonoBehaviour
                     Debug.Log("part movable no acabat");
                     break;
                 case TypePart.Shootable:
-                   // inputManager.OnShot += ctx => pa.DoShot();
+                    inputManager.OnShot += pa.DoShot;
                     break;
             }
                 

@@ -96,6 +96,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7589288795423491174}
+  - component: {fileID: 5971455534803147072}
   m_Layer: 0
   m_Name: Metralleta
   m_TagString: Jugador
@@ -120,6 +121,21 @@ Transform:
   - {fileID: 2986836355674896042}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5971455534803147072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5216852073179350294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1e5b3ad05c89214e9be48b42f1896bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeName: Metralleta
+  firepoint: {fileID: 698397631943366705}
+  bulletPrefab: {fileID: 8735485520253785074, guid: 8284973a34c69d346b031d28dea8d7a6, type: 3}
 --- !u!1 &8084476889223222862
 GameObject:
   m_ObjectHideFlags: 0

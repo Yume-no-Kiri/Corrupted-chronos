@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public enum TypePart
@@ -26,6 +27,7 @@ public class PartActions : MonoBehaviour
      protected Transform firepoint;
      protected GameObject bulletPrefab;
 
+     protected bool canShot = true;
      protected float t2s = 1f;
      protected float t2s2 = 1f;
      protected int cargador = 5;
@@ -49,6 +51,15 @@ public class PartActions : MonoBehaviour
     {
         throw new System.NotImplementedException();
     }
+
+    public void PassVariables(Transform firepoint,GameObject bulletPrefab)
+    {
+        this.firepoint = firepoint;
+        this.bulletPrefab = bulletPrefab;
+    }
+
+    
+    
 }
 
 public class Metralleta : PartActions
@@ -66,6 +77,28 @@ public class Metralleta : PartActions
     
     public override void DoShot()
     {
+        if (canShot)
+        {
+            Debug.Log("Transfrom.position: " + transform.position);
+            StartCoroutine(ShotIE());
+        }
         
+        
+        Debug.Log("AQUÍ INSTANCIES BALA");
     }
+
+    private IEnumerator ShotIE()
+    {
+        
+        bulletInstance = Instantiate(bulletPrefab, firepoint.position, Quaternion.identity);//, rotationWithOffset);
+        ProjectilActions bulletInfo = bulletInstance.GetComponent<ProjectilActions>();
+        bulletInfo.DefinirBala(malBala );
+
+        canShot = false;
+        //Debug.Log($"t2s: {t2s-t2s %PlayerStats.CooldownBalaJugador}");
+        yield return new WaitForSeconds(t2s - t2s);
+        canShot = true;
+    }
+    
+    
 }
