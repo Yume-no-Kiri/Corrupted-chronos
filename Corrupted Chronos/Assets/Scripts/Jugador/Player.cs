@@ -81,6 +81,11 @@ public class Player : MonoBehaviour
     //parts stuff
     private List<GameObject> AddedParts;
     
+    //Dialeg:
+    public string branca;
+    public int mode;
+    
+    
     private void Awake()
     {
         inputManager = inputMangerObject.GetComponent<InputManager>();
@@ -467,6 +472,11 @@ public class Player : MonoBehaviour
     {
         //OnClicked?.Invoke();
     }*/
-    
+    public void AddDialogueInfo(string branca, int mode)
+    {
+        this.branca = branca;
+        this.mode = mode;   
+    }
+
     
 }

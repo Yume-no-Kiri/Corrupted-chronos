@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class changenau_pilot : MonoBehaviour
 {
-    private BoxCollider boxCollider;
+    
     //private PlayerInputActions inputActions;
-    private bool PlayerInside = false;
+    //private bool PlayerInside = false;
 
+    //aquest es el mètode que s'activa la possiblitat d'activar quan hi passar el jugador per el trigger
     [SerializeField]
     public InteractionType ThisInteraction;
     
@@ -29,17 +30,21 @@ public class changenau_pilot : MonoBehaviour
     {
     }
 
+    //quan l'objecte entri en la zona afegeix la possibilitat d'interactuar
     private void OnTriggerEnter(Collider other)
     {
-        //revisar, per els problemes que te que onTriggerExit no es crida al desactivar el objecte
         Debug.Log("Player entered");
 
+        //comprovem que es jugador
         if (other.CompareTag("Jugador"))
         {
+            
+            //trigger detecta nau o pilot, pero no el seu pare player, qeu l'escript que ens interessa
             Player i= other.GetComponentInParent<Player>();
             Debug.Log("this is your Jugador" +i.gameObject.name);
             if (i != null)
             {
+                //canvia l'interacció, canviar de pilot nau, nau pilot, entrar sortir de garatge, xarlar, etc...
                 i.AddInteraction(ThisInteraction);
             }
             else
@@ -52,9 +57,11 @@ public class changenau_pilot : MonoBehaviour
         }
     }
 
+    //quan l'objecte surti de la zona treu la possibilitat d'interactuar
     private void OnTriggerExit(Collider other)
     {
-        //Moltes vegades quan un objecte es desactivi això no es cridara, pero crec que es bona practica mantenir això aquí
+        //mètode de seguretat, per si les mosques.
+        //moltes vegades al desactivar objectes aquest mètode no es cridara
         Debug.Log("Player left");
 
         if (other.CompareTag("Jugador"))

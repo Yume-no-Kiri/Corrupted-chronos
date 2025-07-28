@@ -56,7 +56,6 @@ public class DialogueManager : MonoBehaviour
         //saltar a on toca
         if (!branca.Equals("")) 
         {
-            
             story.ChoosePathString(branca);
         }
         else
