@@ -1,9 +1,13 @@
 using System.Collections;
 using UnityEngine;
 
+
+//Maybe shootablLeft i shootable Right, no es lo millor per el joc final, 
+//pero la demo servirà 
 public enum TypePart
 {
-    Shootable,
+    ShootableLeft,
+    ShootableRight,
     Mele,
     Moveable
     
@@ -64,9 +68,10 @@ public class PartActions : MonoBehaviour
 
 public class Metralleta : PartActions
 {
-    void Start()
+    void Awake()
     {
-        typePart= TypePart.Shootable;
+        t2s = 0.25f;
+        typePart= TypePart.ShootableLeft;
     }
 
     /*protected override void saveVariablesShot()
@@ -89,16 +94,63 @@ public class Metralleta : PartActions
 
     private IEnumerator ShotIE()
     {
-        
-        bulletInstance = Instantiate(bulletPrefab, firepoint.position, Quaternion.identity);//, rotationWithOffset);
-        ProjectilActions bulletInfo = bulletInstance.GetComponent<ProjectilActions>();
-        bulletInfo.DefinirBala(malBala );
+        Quaternion rotationWithOffset = firepoint.GetComponentInParent<Transform>().rotation * Quaternion.Euler(0, 90, 90);
 
+        bulletInstance = Instantiate(bulletPrefab, firepoint.position, rotationWithOffset);
+        ProjectilActions bulletInfo = bulletInstance.GetComponent<ProjectilActions>();
+        bulletInfo.DefinirBala(1, +3);
+        
         canShot = false;
         //Debug.Log($"t2s: {t2s-t2s %PlayerStats.CooldownBalaJugador}");
-        yield return new WaitForSeconds(t2s - t2s);
+        yield return new WaitForSeconds(t2s);
         canShot = true;
     }
+    
+    
+}
+
+public class Escopeta : PartActions
+{
+    void Awake()
+    {
+        t2s = 1f;
+        typePart= TypePart.ShootableRight;
+    }
+
+    public override void DoShot()
+    {
+        if (canShot)
+        {
+            Debug.Log("Transfrom.position: " + transform.position);
+            StartCoroutine(ShotIE());
+        }
+        
+        
+        Debug.Log("AQUÍ INSTANCIES BALA");
+    }
+
+    private IEnumerator ShotIE()
+    {
+        int valor = 10;
+        int nbullets = 5;
+        for (int i = 0; i < nbullets; i++)
+        {
+            valor *= i;
+            Quaternion rotationWithOffset = firepoint.GetComponentInParent<Transform>().rotation * Quaternion.Euler((-20+valor), 90, 90);
+
+            bulletInstance = Instantiate(bulletPrefab, firepoint.position, rotationWithOffset);
+            ProjectilActions bulletInfo = bulletInstance.GetComponent<ProjectilActions>();
+            bulletInfo.DefinirBala(1, -5 );
+            valor =10;
+
+        }
+        
+        canShot = false;
+        //Debug.Log($"t2s: {t2s-t2s %PlayerStats.CooldownBalaJugador}");
+        yield return new WaitForSeconds(t2s);
+        canShot = true;
+    }
+
     
     
 }

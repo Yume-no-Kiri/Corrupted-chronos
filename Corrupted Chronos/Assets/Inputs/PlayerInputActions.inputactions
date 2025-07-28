@@ -24,9 +24,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "OnShot",
+                    "name": "OnShotLeft",
                     "type": "Button",
                     "id": "7a7f5f6d-9aef-4efe-8a0e-a574a0841a31",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "OnShotRight",
+                    "type": "Button",
+                    "id": "e0d67fa4-a04b-4a48-8582-add7e18d484b",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -129,7 +138,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "OnShot",
+                    "action": "OnShotLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c004594d-aa3d-452b-9815-5c5b6c9f9e75",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OnShotRight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

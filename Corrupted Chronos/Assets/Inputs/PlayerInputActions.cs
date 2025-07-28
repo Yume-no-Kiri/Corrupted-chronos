@@ -110,9 +110,18 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""OnShot"",
+                    ""name"": ""OnShotLeft"",
                     ""type"": ""Button"",
                     ""id"": ""7a7f5f6d-9aef-4efe-8a0e-a574a0841a31"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OnShotRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""e0d67fa4-a04b-4a48-8582-add7e18d484b"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -215,7 +224,18 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""OnShot"",
+                    ""action"": ""OnShotLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c004594d-aa3d-452b-9815-5c5b6c9f9e75"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OnShotRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -487,7 +507,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Nau = asset.FindActionMap("Nau", throwIfNotFound: true);
         m_Nau_MoveNau = m_Nau.FindAction("MoveNau", throwIfNotFound: true);
         m_Nau_CanviCapa = m_Nau.FindAction("CanviCapa", throwIfNotFound: true);
-        m_Nau_OnShot = m_Nau.FindAction("OnShot", throwIfNotFound: true);
+        m_Nau_OnShotLeft = m_Nau.FindAction("OnShotLeft", throwIfNotFound: true);
+        m_Nau_OnShotRight = m_Nau.FindAction("OnShotRight", throwIfNotFound: true);
         // Pilot
         m_Pilot = asset.FindActionMap("Pilot", throwIfNotFound: true);
         m_Pilot_MovePilot = m_Pilot.FindAction("MovePilot", throwIfNotFound: true);
@@ -590,7 +611,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<INauActions> m_NauActionsCallbackInterfaces = new List<INauActions>();
     private readonly InputAction m_Nau_MoveNau;
     private readonly InputAction m_Nau_CanviCapa;
-    private readonly InputAction m_Nau_OnShot;
+    private readonly InputAction m_Nau_OnShotLeft;
+    private readonly InputAction m_Nau_OnShotRight;
     /// <summary>
     /// Provides access to input actions defined in input action map "Nau".
     /// </summary>
@@ -611,9 +633,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @CanviCapa => m_Wrapper.m_Nau_CanviCapa;
         /// <summary>
-        /// Provides access to the underlying input action "Nau/OnShot".
+        /// Provides access to the underlying input action "Nau/OnShotLeft".
         /// </summary>
-        public InputAction @OnShot => m_Wrapper.m_Nau_OnShot;
+        public InputAction @OnShotLeft => m_Wrapper.m_Nau_OnShotLeft;
+        /// <summary>
+        /// Provides access to the underlying input action "Nau/OnShotRight".
+        /// </summary>
+        public InputAction @OnShotRight => m_Wrapper.m_Nau_OnShotRight;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -646,9 +672,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CanviCapa.started += instance.OnCanviCapa;
             @CanviCapa.performed += instance.OnCanviCapa;
             @CanviCapa.canceled += instance.OnCanviCapa;
-            @OnShot.started += instance.OnOnShot;
-            @OnShot.performed += instance.OnOnShot;
-            @OnShot.canceled += instance.OnOnShot;
+            @OnShotLeft.started += instance.OnOnShotLeft;
+            @OnShotLeft.performed += instance.OnOnShotLeft;
+            @OnShotLeft.canceled += instance.OnOnShotLeft;
+            @OnShotRight.started += instance.OnOnShotRight;
+            @OnShotRight.performed += instance.OnOnShotRight;
+            @OnShotRight.canceled += instance.OnOnShotRight;
         }
 
         /// <summary>
@@ -666,9 +695,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CanviCapa.started -= instance.OnCanviCapa;
             @CanviCapa.performed -= instance.OnCanviCapa;
             @CanviCapa.canceled -= instance.OnCanviCapa;
-            @OnShot.started -= instance.OnOnShot;
-            @OnShot.performed -= instance.OnOnShot;
-            @OnShot.canceled -= instance.OnOnShot;
+            @OnShotLeft.started -= instance.OnOnShotLeft;
+            @OnShotLeft.performed -= instance.OnOnShotLeft;
+            @OnShotLeft.canceled -= instance.OnOnShotLeft;
+            @OnShotRight.started -= instance.OnOnShotRight;
+            @OnShotRight.performed -= instance.OnOnShotRight;
+            @OnShotRight.canceled -= instance.OnOnShotRight;
         }
 
         /// <summary>
@@ -1165,12 +1197,19 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnCanviCapa(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "OnShot" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "OnShotLeft" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnOnShot(InputAction.CallbackContext context);
+        void OnOnShotLeft(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "OnShotRight" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOnShotRight(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Pilot" which allows adding and removing callbacks.
