@@ -75,7 +75,7 @@ public class InteractiveMethods : MonoBehaviour
 
             case InteractionType.Talk:
                 Talk(player);
-
+                break;
             case InteractionType.OpenGarage:
                 OpenGarage(player);
 
