@@ -160,6 +160,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1763164884124142999}
     m_Modifications:
+    - target: {fileID: 920320678710942248, guid: c8c37e52fae11694b85f841fff08befb, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5458492991815117848, guid: c8c37e52fae11694b85f841fff08befb, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6531355636247689528, guid: c8c37e52fae11694b85f841fff08befb, type: 3}
       propertyPath: m_Name
       value: Collisions

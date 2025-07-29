@@ -22,6 +22,8 @@ public enum InteractionType
 {
     NauPilot,
     PilotNau,
+    NauPilotPosition,
+    PilotNauPosition,
     PnINp,
     Talk,
     OpenGarage,
@@ -69,6 +71,12 @@ public class InteractiveMethods : MonoBehaviour
             case InteractionType.PilotNau:
                 Pilot_Nau(player);
                 break;
+            case InteractionType.PilotNauPosition:
+                Pilot_Nau_Position(player);
+                break;
+            case InteractionType.NauPilotPosition:
+                Nau_Pilot_Position(player);
+                break;
             case InteractionType.PnINp:
                 PnINp(player);
                 break;
@@ -94,18 +102,60 @@ public class InteractiveMethods : MonoBehaviour
     
     //canvia entre el mode nau a pilot, desactivant els inputs necessaris
 
+    public void Nau_Pilot_Position(Player jugador)
+    {
+        jugador.inputManager.playerInputActions.Nau.Disable();
+        jugador.inputManager.playerInputActions.Pilot.Enable();
+        Debug.Log("AAAAAAAAAAAAAAAAAAAA");
+        var vector3 = jugador.transform.position;
+        vector3.z = vector3.z + 10f;
+        jugador.transform.position = vector3;
+        
+        
 
+        //jugador.transform.eulerAngles = Vector3.zero;
+
+        //degut a que no sempre ontrigger exit s'activa, i la majoria de casos, només volen cridar-ho una vegada, 
+        //quan s'activa la interacció l'eliminem 
+        //per si les mosques
+        InteractionType i= InteractionType.NauPilotPosition;
+        jugador.SubInteraction(i);
+    }
+    
+    
     public void Nau_Pilot(Player jugador)
     {
         jugador.inputManager.playerInputActions.Nau.Disable();
         jugador.inputManager.playerInputActions.Pilot.Enable();
         
+        jugador.transform.eulerAngles = Vector3.zero;
+
         //degut a que no sempre ontrigger exit s'activa, i la majoria de casos, només volen cridar-ho una vegada, 
         //quan s'activa la interacció l'eliminem 
         //per si les mosques
         InteractionType i= InteractionType.NauPilot;
         jugador.SubInteraction(i);
     }
+    
+    public void Pilot_Nau_Position(Player jugador)
+    {
+        //degut a que no sempre ontrigger exit s'activa, i la majoria de casos, només volen cridar-ho una vegada, 
+        //quan s'activa la interacció l'eliminem 
+        //quan s'activa la interacció l'eliminem 
+        //per si les mosques
+        jugador.inputManager.playerInputActions.Pilot.Disable();
+        var vector3 = jugador.transform.position;
+        vector3.z = vector3.z - 10;
+        jugador.transform.position = vector3;
+
+        
+        jugador.inputManager.playerInputActions.Nau.Enable();
+        jugador.ClearDetectorsCapa();
+        
+        InteractionType i= InteractionType.PilotNauPosition;
+        jugador.SubInteraction(i);
+    }
+    
     
     //canvia de pilot a nau, desactivant els inputs necessaris 
     public void Pilot_Nau(Player jugador)
@@ -118,6 +168,7 @@ public class InteractiveMethods : MonoBehaviour
         InteractionType i= InteractionType.PilotNau;
         jugador.SubInteraction(i);
     }
+    
 
     //canvia de pilot a nau i viceversa segons quin mode estem
     public void PnINp(Player jugador)

@@ -84,6 +84,7 @@ public class Player : MonoBehaviour
     //parts stuff
     private List<GameObject> AddedParts;
     
+    private List<GameObject> DetectorsCapa;
     //Dialeg:
     public string branca;
     public int mode;
@@ -153,6 +154,7 @@ public class Player : MonoBehaviour
         whatsToInteract = new List<InteractionType>();
         
         AddedParts= new List<GameObject>();
+        DetectorsCapa = new List<GameObject>();
         
     }
 
@@ -425,7 +427,7 @@ public class Player : MonoBehaviour
         Gizmos.DrawWireSphere(targetPos1, checkRadius);
     }*/
 
-    public void DetectorCapaResponse(DetectCanviCapaType detect, bool isLocked)
+    public void DetectorCapaResponse(DetectCanviCapaType detect, bool isLocked, GameObject detector)
     {
         if (detect == DetectCanviCapaType.Up)
         {
@@ -434,8 +436,25 @@ public class Player : MonoBehaviour
         {
             lockLow = isLocked;
         }
+
+        if (!DetectorsCapa.Contains(detector))
+        {
+            DetectorsCapa.Add(detector);
+        }
         
-        
+    }
+
+    //es millor revisar les leyers de fisiques que implementar aquest mètode
+    public void ClearDetectorsCapa()
+    {
+        if (DetectorsCapa != null && DetectorsCapa.Count > 0)
+        {
+            foreach (var detect in DetectorsCapa)
+            {
+                DetectorCapa script = detect.GetComponent<DetectorCapa>();
+                if (script != null) script.ClearObjects();
+            }
+        }
     }
     
     
@@ -453,7 +472,11 @@ public class Player : MonoBehaviour
     public void AddInteraction(InteractionType type)
     {
         Debug.Log("added");
-        whatsToInteract.Add(type);
+        if (!whatsToInteract.Contains(type))
+        {
+            whatsToInteract.Add(type);
+
+        }
     }
     
     public void SubInteraction(InteractionType type)
@@ -514,6 +537,21 @@ public class Player : MonoBehaviour
                 case TypePart.ShootableRight:
                     inputManager.OnShotRight -= pa.DoShot;
                     break;
+            }
+            
+            GameObject col=  child.transform.Find("Collisions").gameObject;
+            if (col != null)
+            {
+                //List<GameObject> dettors = new List<GameObject>();
+                DetectorCapa[] script= col.transform.GetComponentsInChildren<DetectorCapa>();
+                foreach (var s in script)
+                {
+                    if (DetectorsCapa.Contains(s.gameObject))
+                    {
+                        DetectorsCapa.Remove(s.gameObject);
+                    }
+                }
+                
             }
             
             

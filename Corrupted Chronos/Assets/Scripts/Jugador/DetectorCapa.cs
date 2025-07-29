@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -35,10 +36,15 @@ public class DetectorCapa : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("LOOOOCK");
+        Debug.Log("LOOOOCK " + other.gameObject.name);
         bool isLock = true;
         _objectsInside.Add(other.gameObject);
-        GetComponentInParent<Player>().DetectorCapaResponse(whatIDetect, isLock);
+        GetComponentInParent<Player>().DetectorCapaResponse(whatIDetect, isLock, this.gameObject);
+    }
+
+    public void ClearObjects()
+    {
+        _objectsInside.Clear();
     }
 
     void OnTriggerExit(Collider other)
@@ -49,7 +55,7 @@ public class DetectorCapa : MonoBehaviour
         if (_objectsInside.Count == 0)
         {
             bool isLock = false;
-            GetComponentInParent<Player>().DetectorCapaResponse(whatIDetect, isLock);
+            GetComponentInParent<Player>().DetectorCapaResponse(whatIDetect, isLock, this.gameObject);
         }
     }
     
