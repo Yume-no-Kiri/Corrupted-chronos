@@ -140,7 +140,7 @@ public class Escopeta : PartActions
 
             bulletInstance = Instantiate(bulletPrefab, firepoint.position, rotationWithOffset);
             ProjectilActions bulletInfo = bulletInstance.GetComponent<ProjectilActions>();
-            bulletInfo.DefinirBala(1, -5 );
+            bulletInfo.DefinirBala(1, -8 );
             valor =10;
 
         }

@@ -11,7 +11,7 @@ public class ProjectilActions : MonoBehaviour
     [HideInInspector] public Vector3 iniPos;
     
     private float distMax = 20f;
-    private float speed =9f;
+    private float speed =10f;
 
     private Rigidbody rb;
     

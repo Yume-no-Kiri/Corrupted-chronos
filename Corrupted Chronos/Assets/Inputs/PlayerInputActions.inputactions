@@ -289,6 +289,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Mouse Position",
+                    "type": "Value",
+                    "id": "896bcd14-7811-4832-9763-e8e205e21cfa",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Pausa",
                     "type": "Button",
                     "id": "c05f9fc2-27cf-4aef-879e-9fc8611bfcf7",
@@ -312,6 +321,17 @@
                 },
                 {
                     "name": "",
+                    "id": "13c09069-7079-4746-ad88-7196e8aa3f54",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mouse Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "67e8bd43-1689-4e1b-bfa9-76b69ebec05d",
                     "path": "",
                     "interactions": "",
@@ -327,15 +347,6 @@
             "name": "Garage",
             "id": "7bc64054-a30c-4ce8-9e7b-b1893ef3f1aa",
             "actions": [
-                {
-                    "name": "Mouse Position",
-                    "type": "Value",
-                    "id": "f5f000ad-170b-42cc-8914-57133d55a72f",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
                 {
                     "name": "OnClick",
                     "type": "Button",
@@ -356,17 +367,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "db5cc3b4-0ed4-45cf-8ef9-8e8ffc02bd83",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Mouse Position",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "c6a0565b-0072-4c01-8162-b9905f4f73d5",

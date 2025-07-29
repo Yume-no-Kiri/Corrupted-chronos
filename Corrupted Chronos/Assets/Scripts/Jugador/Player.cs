@@ -33,7 +33,6 @@ public class Player : MonoBehaviour
     private bool isMoving;
     private float elapsedTime;
     
-    
     //colliders and stuff
     private Collider myColliderNau;
     
@@ -48,16 +47,17 @@ public class Player : MonoBehaviour
     //demoment serialitzat, pero es probable que quan això es torni més complexe s'hagui de passar per codi i no per inspector
     [Space(10)]
     [Header("Variables")]
+    public GameObject pointAddNau;
     private GameObject _nau;
-//    [SerializeField]
     private GameObject _pilot;
     [SerializeField]
     private PartsDatabaseSO _database;
     [SerializeField]
     private Vector3 spawnPosition;
+    [SerializeField]
     private Camera _playerCamera;
     [SerializeField] 
-    private bool ComençaComPilot = true;
+    private bool ComencaComPilot = true;
     
     [Space(3)]
 
@@ -66,7 +66,6 @@ public class Player : MonoBehaviour
     private GameObject _garage;
     [Space(1)]
     
-    //private Vector3 MousePosition;
     [SerializeField]
     private GameObject mouseIndicator, cellIndicator;
     private Vector3Int gridPosition;
@@ -74,7 +73,11 @@ public class Player : MonoBehaviour
     private Grid grid;
     private Camera _garageCamera;
 
-    
+    private Vector3 mousePos;
+    private Vector3 mousedir;
+    private Quaternion mouseRotation;       
+    public float rotationSpeed = 40f;
+
     //[SerializeField]
     //private Camera camGarage;
 
@@ -88,6 +91,7 @@ public class Player : MonoBehaviour
     
     private void Awake()
     {
+        //crec que hauria d'estructurar, que va a awake i que a start
         inputManager = inputMangerObject.GetComponent<InputManager>();
         
         if (inputManager == null){Debug.LogError("aaaaAAAA inputmanager");}
@@ -103,20 +107,37 @@ public class Player : MonoBehaviour
         //assignar _nau i _pilot amb databaseSO
         //REVISAR EL TEMA DEL TRANSFORM I POSICIÓ D'SPAWN, es bastant irregular
         //_database.AllNaus.FindIndex(data=>data.ID=id_a_buscar)
-         _nau =Instantiate(_database.AllNaus[0].Prefab);
-        _pilot= Instantiate(_database.AllTravelers[0].Prefab);
+        //pointAddNau= transform.Find("AddNau").gameObject;
+        //if(_playerCamera == null) Debug.LogError("not AddNau");
+        
+        //revisar aquest offset quan revisi el punt de pivot per garatge i mode normal
+        //NO FUNCIOONA EL PUTO OFFSET NO HO ENTENC, SI AGAFA EL ADDNAU OBJECT, PERQUE COLL NO ÉS FILL, JO EM TORNO BOIG
+        //ara funcioan pero no es la solucio pel problema del pivot al rotar, hauré de crear algun traductor de posició per el grid,
+        //o crear 2 objectes per cada part, per grid i per col·locar
+        
+        
+        //Vector3 spawnOffset = new Vector3(1, 0f, 1); // example offset (1 unit up)
+         //_nau =Instantiate(_database.AllNaus[0].Prefab);
+         //_nau.transform.SetParent (_pointAddNau.transform);
+         //_nau.transform.position = new Vector3(0, 0, 0); 
+         //_nau.transform.localRotation = Quaternion.identity;
+         
+        //_nau =Instantiate(_database.AllNaus[0].Prefab, pointAddNau.transform, true);
+        //_nau.transform.position = pointAddNau.transform.position;
+        _nau = Instantiate(_database.AllNaus[0].Prefab);
+        _pilot= Instantiate(_database.AllTravelers[0].Prefab, this.transform, false);
         _nau.transform.position = new Vector3(0, spawnPosition.y,0);
         _pilot.transform.position = new Vector3(0, spawnPosition.y, 0);
         
+        //OHHHHH that's why
         _nau.transform.SetParent(this.transform,false);
-        _pilot.transform.SetParent(this.transform,false);
-     
-        
+
+
         //components and stuff
         rb = GetComponent<Rigidbody>();
         myColliderNau = _nau.transform.Find("Collisions").transform.Find("Collider").GetComponentInChildren<Collider>();
         myColliderPilot = _pilot.GetComponent<Collider>();
-        _playerCamera = GetComponentInChildren<Camera>();
+        //_playerCamera = GetComponentInParent<Camera>();
         _garageCamera= _garage.GetComponentInChildren<Camera>();
         if(_garageCamera == null) Debug.LogError("not garage camera");
         if(_playerCamera == null) Debug.LogError("not player camera");
@@ -124,29 +145,6 @@ public class Player : MonoBehaviour
         
         if (myColliderNau == null || myColliderPilot == null){ Debug.LogError("No collider attached!"); return; }
         //playerInput = GetComponent<PlayerInput>();
-        
-        //maps inputs i connexions
-        if (ComençaComPilot)
-        {
-            inputManager.playerInputActions.Pilot.Enable();
-            _pilot.SetActive(true);
-            
-        }
-        else
-        {
-            inputManager.playerInputActions.Nau.Enable();
-            _nau.SetActive(true);
-
-        }
-        inputManager.playerInputActions.Nau.CanviCapa.performed += moveCapa;
-        inputManager.playerInputActions.Global.Enable();
-        inputManager.playerInputActions.Global.Interactua.performed += Interact;
-        
-        //això demoment activat al inici per fer proves
-        inputManager.playerInputActions.Garage.Enable();
-        //s'actualitza quan moc el mouse
-        inputManager.playerInputActions.Garage.MousePosition.performed += PositionMouse;
-        //inputManager.playerInputActions.Garage.OnClick.performed += OnClickGarage;
         
         
         
@@ -162,7 +160,38 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
+        
+        
+        
         _garage.SetActive(false);
+        //maps inputs i connexions
+        if (ComencaComPilot)
+        {
+            inputManager.playerInputActions.Pilot.Enable();
+            inputManager.playerInputActions.Nau.Disable();
+
+            _pilot.SetActive(true);
+            
+        }
+        else
+        {
+            inputManager.playerInputActions.Nau.Enable();
+            inputManager.playerInputActions.Pilot.Disable();
+            _nau.SetActive(true);
+
+        }
+        inputManager.playerInputActions.Nau.CanviCapa.performed += moveCapa;
+        inputManager.playerInputActions.Global.Enable();
+        inputManager.playerInputActions.Global.Interactua.performed += Interact;
+        
+        //això demoment activat al inici per fer proves
+        inputManager.playerInputActions.Garage.Disable();
+        //s'actualitza quan moc el mouse
+        inputManager.playerInputActions.Global.MousePosition.performed += PositionMouse;
+        //inputManager.playerInputActions.Garage.OnClick.performed += OnClickGarage;
+
+
     }
 
     void Update()
@@ -227,12 +256,8 @@ public class Player : MonoBehaviour
         
         
     }
-    public void CloseGarage()
-    {
-        _garage.SetActive(false);
-    }
-
     
+  
     
     void FixedUpdate()
     {
@@ -252,6 +277,10 @@ public class Player : MonoBehaviour
             }
         }*/
         //fas canvis adients segons el input map que estigui actiu
+        //transform.right=mousedir;
+        //transform.rotation = Quaternion.Euler(0f, angleCamera,0f );
+        transform.rotation = Quaternion.Lerp(transform.rotation, mouseRotation, Time.deltaTime * rotationSpeed);
+
         if (inputManager.playerInputActions.Nau.enabled)
         {
             MoveNau();
@@ -261,7 +290,59 @@ public class Player : MonoBehaviour
         }
         
     }
+    private void PositionMouse(InputAction.CallbackContext context)
+    {
+       // Debug.Log("AAAAAAAAAA");
+        
 
+        mousePos = inputManager.playerInputActions.Global.MousePosition.ReadValue<Vector2>();
+
+
+        if (inputManager.playerInputActions.Garage.enabled)
+        {
+            //Camera camGarage = _garage.GetComponentInChildren<Camera>();
+            mousePos.z = _garageCamera.nearClipPlane;
+        
+            Ray ray = _garageCamera.ScreenPointToRay(mousePos);
+            RaycastHit hit;
+            LayerMask mask = LayerMask.GetMask("Default");
+        
+            if (Physics.Raycast(ray, out hit,300,mask))
+            {
+                inputManager.MousePosition= hit.point;
+                //Debug.Log("BBBBBBBB");
+            }
+            //Debug.Log("AAAAAAAAAA "+mouse.ToString() );
+
+        }else if (inputManager.playerInputActions.Nau.enabled || inputManager.playerInputActions.Pilot.enabled)
+        {
+            //Camera camPlayer = _playerCamera.GetComponentInChildren<Camera>();
+            //mouse.z = _playerCamera.nearClipPlane;
+            //dona igual si nau o player, estan conectats
+            //mousePos.y = _nau.transform.position.y;
+            //mousePos= _playerCamera.ScreenToWorldPoint(mousePos);
+            //mousedir = (mousePos - transform.position); 
+            //angleCamera = Mathf.Atan2(mousedir.y, mousedir.x) * Mathf.Rad2Deg;
+            //mousedir= new Vector2(mousePos.x-transform.position.x, mousePos.z-transform.position.z);
+            mousePos.z = Mathf.Abs(_playerCamera.transform.position.y - transform.position.y);
+            Vector3 mouseWorldPosition = _playerCamera.ScreenToWorldPoint(mousePos);
+            
+            mousedir= mouseWorldPosition - transform.position;
+            mousedir.y = 0;
+            if (mousedir != Vector3.zero)
+            {
+                mouseRotation = Quaternion.LookRotation(mousedir);
+            }
+            
+        }
+    }
+    
+    public void CloseGarage()
+    {
+        _garage.SetActive(false);
+    }
+
+    
 
     void MoveNau()
     {
@@ -384,28 +465,7 @@ public class Player : MonoBehaviour
         
     }
 
-    private void PositionMouse(InputAction.CallbackContext context)
-    {
-       // Debug.Log("AAAAAAAAAA");
-        
-        Camera camGarage = _garage.GetComponentInChildren<Camera>();
-
-        Vector3 mouse = inputManager.playerInputActions.Garage.MousePosition.ReadValue<Vector2>();
-        mouse.z = camGarage.nearClipPlane;
-        
-        Ray ray = camGarage.ScreenPointToRay(mouse);
-        RaycastHit hit;
-        LayerMask mask = LayerMask.GetMask("Default");
-        
-        if (Physics.Raycast(ray, out hit,300,mask))
-        {
-            inputManager.MousePosition= hit.point;
-            //Debug.Log("BBBBBBBB");
-        }
-        //Debug.Log("AAAAAAAAAA "+mouse.ToString() );
-
-
-    }
+  
 
     public void AddPart(GameObject gb, Vector3 origin)
     {

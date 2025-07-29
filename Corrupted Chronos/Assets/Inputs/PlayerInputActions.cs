@@ -375,6 +375,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Mouse Position"",
+                    ""type"": ""Value"",
+                    ""id"": ""896bcd14-7811-4832-9763-e8e205e21cfa"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
                     ""name"": ""Pausa"",
                     ""type"": ""Button"",
                     ""id"": ""c05f9fc2-27cf-4aef-879e-9fc8611bfcf7"",
@@ -398,6 +407,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""13c09069-7079-4746-ad88-7196e8aa3f54"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse Position"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""67e8bd43-1689-4e1b-bfa9-76b69ebec05d"",
                     ""path"": """",
                     ""interactions"": """",
@@ -413,15 +433,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""name"": ""Garage"",
             ""id"": ""7bc64054-a30c-4ce8-9e7b-b1893ef3f1aa"",
             ""actions"": [
-                {
-                    ""name"": ""Mouse Position"",
-                    ""type"": ""Value"",
-                    ""id"": ""f5f000ad-170b-42cc-8914-57133d55a72f"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
                 {
                     ""name"": ""OnClick"",
                     ""type"": ""Button"",
@@ -442,17 +453,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""db5cc3b4-0ed4-45cf-8ef9-8e8ffc02bd83"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Mouse Position"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""c6a0565b-0072-4c01-8162-b9905f4f73d5"",
@@ -519,10 +519,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         // Global
         m_Global = asset.FindActionMap("Global", throwIfNotFound: true);
         m_Global_Interactua = m_Global.FindAction("Interactua", throwIfNotFound: true);
+        m_Global_MousePosition = m_Global.FindAction("Mouse Position", throwIfNotFound: true);
         m_Global_Pausa = m_Global.FindAction("Pausa", throwIfNotFound: true);
         // Garage
         m_Garage = asset.FindActionMap("Garage", throwIfNotFound: true);
-        m_Garage_MousePosition = m_Garage.FindAction("Mouse Position", throwIfNotFound: true);
         m_Garage_OnClick = m_Garage.FindAction("OnClick", throwIfNotFound: true);
         m_Garage_OnExit = m_Garage.FindAction("OnExit", throwIfNotFound: true);
     }
@@ -942,6 +942,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Global;
     private List<IGlobalActions> m_GlobalActionsCallbackInterfaces = new List<IGlobalActions>();
     private readonly InputAction m_Global_Interactua;
+    private readonly InputAction m_Global_MousePosition;
     private readonly InputAction m_Global_Pausa;
     /// <summary>
     /// Provides access to input actions defined in input action map "Global".
@@ -958,6 +959,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Global/Interactua".
         /// </summary>
         public InputAction @Interactua => m_Wrapper.m_Global_Interactua;
+        /// <summary>
+        /// Provides access to the underlying input action "Global/MousePosition".
+        /// </summary>
+        public InputAction @MousePosition => m_Wrapper.m_Global_MousePosition;
         /// <summary>
         /// Provides access to the underlying input action "Global/Pausa".
         /// </summary>
@@ -991,6 +996,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Interactua.started += instance.OnInteractua;
             @Interactua.performed += instance.OnInteractua;
             @Interactua.canceled += instance.OnInteractua;
+            @MousePosition.started += instance.OnMousePosition;
+            @MousePosition.performed += instance.OnMousePosition;
+            @MousePosition.canceled += instance.OnMousePosition;
             @Pausa.started += instance.OnPausa;
             @Pausa.performed += instance.OnPausa;
             @Pausa.canceled += instance.OnPausa;
@@ -1008,6 +1016,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Interactua.started -= instance.OnInteractua;
             @Interactua.performed -= instance.OnInteractua;
             @Interactua.canceled -= instance.OnInteractua;
+            @MousePosition.started -= instance.OnMousePosition;
+            @MousePosition.performed -= instance.OnMousePosition;
+            @MousePosition.canceled -= instance.OnMousePosition;
             @Pausa.started -= instance.OnPausa;
             @Pausa.performed -= instance.OnPausa;
             @Pausa.canceled -= instance.OnPausa;
@@ -1048,7 +1059,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // Garage
     private readonly InputActionMap m_Garage;
     private List<IGarageActions> m_GarageActionsCallbackInterfaces = new List<IGarageActions>();
-    private readonly InputAction m_Garage_MousePosition;
     private readonly InputAction m_Garage_OnClick;
     private readonly InputAction m_Garage_OnExit;
     /// <summary>
@@ -1062,10 +1072,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public GarageActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        /// <summary>
-        /// Provides access to the underlying input action "Garage/MousePosition".
-        /// </summary>
-        public InputAction @MousePosition => m_Wrapper.m_Garage_MousePosition;
         /// <summary>
         /// Provides access to the underlying input action "Garage/OnClick".
         /// </summary>
@@ -1100,9 +1106,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GarageActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GarageActionsCallbackInterfaces.Add(instance);
-            @MousePosition.started += instance.OnMousePosition;
-            @MousePosition.performed += instance.OnMousePosition;
-            @MousePosition.canceled += instance.OnMousePosition;
             @OnClick.started += instance.OnOnClick;
             @OnClick.performed += instance.OnOnClick;
             @OnClick.canceled += instance.OnOnClick;
@@ -1120,9 +1123,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="GarageActions" />
         private void UnregisterCallbacks(IGarageActions instance)
         {
-            @MousePosition.started -= instance.OnMousePosition;
-            @MousePosition.performed -= instance.OnMousePosition;
-            @MousePosition.canceled -= instance.OnMousePosition;
             @OnClick.started -= instance.OnOnClick;
             @OnClick.performed -= instance.OnOnClick;
             @OnClick.canceled -= instance.OnOnClick;
@@ -1263,6 +1263,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInteractua(InputAction.CallbackContext context);
         /// <summary>
+        /// Method invoked when associated input action "Mouse Position" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMousePosition(InputAction.CallbackContext context);
+        /// <summary>
         /// Method invoked when associated input action "Pausa" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -1277,13 +1284,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     /// <seealso cref="GarageActions.RemoveCallbacks(IGarageActions)" />
     public interface IGarageActions
     {
-        /// <summary>
-        /// Method invoked when associated input action "Mouse Position" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMousePosition(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "OnClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

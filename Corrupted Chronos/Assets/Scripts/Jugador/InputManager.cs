@@ -17,7 +17,6 @@ public class InputManager : MonoBehaviour
     
     private void Awake()
     {
-        
         playerInputActions = new PlayerInputActions();
         playerInputActions.Garage.OnClick.performed += CallOnClick;
         playerInputActions.Garage.OnExit.performed += CallOnExit;
