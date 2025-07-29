@@ -238,30 +238,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &347397185 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1869946001473418249, guid: e6d48fc411ccbc648afc8a426912bceb, type: 3}
-  m_PrefabInstance: {fileID: 1298378355}
-  m_PrefabAsset: {fileID: 0}
 --- !u!20 &347397188 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 5735484070636312041, guid: e6d48fc411ccbc648afc8a426912bceb, type: 3}
   m_PrefabInstance: {fileID: 1298378355}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &347397190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 347397185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03d4aa6ef3da7ce459c15387fa50fa87, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 1622962788}
-  smoothSpeed: 5
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1238,13 +1219,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 7134998359777030550, guid: e6d48fc411ccbc648afc8a426912bceb, type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 1622962788}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1869946001473418249, guid: e6d48fc411ccbc648afc8a426912bceb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 347397190}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6d48fc411ccbc648afc8a426912bceb, type: 3}
 --- !u!156049354 &1301789496 stripped
 Grid:

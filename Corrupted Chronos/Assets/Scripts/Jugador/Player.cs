@@ -125,13 +125,13 @@ public class Player : MonoBehaviour
         //_nau =Instantiate(_database.AllNaus[0].Prefab, pointAddNau.transform, true);
         //_nau.transform.position = pointAddNau.transform.position;
         _nau = Instantiate(_database.AllNaus[0].Prefab);
-        _pilot= Instantiate(_database.AllTravelers[0].Prefab, this.transform, false);
+        _pilot= Instantiate(_database.AllTravelers[0].Prefab);
         _nau.transform.position = new Vector3(0, spawnPosition.y,0);
         _pilot.transform.position = new Vector3(0, spawnPosition.y, 0);
         
         //OHHHHH that's why
         _nau.transform.SetParent(this.transform,false);
-
+        _pilot.transform.SetParent(this.transform,false);
 
         //components and stuff
         rb = GetComponent<Rigidbody>();
@@ -314,7 +314,7 @@ public class Player : MonoBehaviour
             }
             //Debug.Log("AAAAAAAAAA "+mouse.ToString() );
 
-        }else if (inputManager.playerInputActions.Nau.enabled || inputManager.playerInputActions.Pilot.enabled)
+        }else if (inputManager.playerInputActions.Nau.enabled)
         {
             //Camera camPlayer = _playerCamera.GetComponentInChildren<Camera>();
             //mouse.z = _playerCamera.nearClipPlane;
