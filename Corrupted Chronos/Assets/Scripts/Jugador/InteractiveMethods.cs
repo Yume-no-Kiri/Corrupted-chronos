@@ -198,6 +198,10 @@ public class InteractiveMethods : MonoBehaviour
     {
         InteractionType i = InteractionType.Talk;
 
+        //desactiva controls pilot
+        //jugador.inputManager.playerInputActions.Pilot.Disable();
+
+        
         print(jugador.branca);
         GameEventsManager.instance.dialogue_events.EnterDialogue(jugador.branca, jugador.mode);
         jugador.SubInteraction(i);

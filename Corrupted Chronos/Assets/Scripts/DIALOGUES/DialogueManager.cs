@@ -75,7 +75,7 @@ public class DialogueManager : MonoBehaviour
             current_choice=-1;
         }
 
-        if (story.canContinue)  //Haurem de gestionar els tags de darrere la frase # npc:XXXXXXXX # emocio:XXXXXX, s'haurà de crear una funció que ho gestioni
+        if (story.canContinue)  //Haurem de gestionar els tags de darrere la frase # npc:XXXXXXXX # emocio:XXXXXX, s'haurï¿½ de crear una funciï¿½ que ho gestioni
         {
             string dialogue_line = story.Continue();
             Debug.Log(dialogue_line);
@@ -92,9 +92,10 @@ public class DialogueManager : MonoBehaviour
 
     private void ExitDialogue()
     {
-        Debug.Log("Sortint diàleg");
+        Debug.Log("Sortint diï¿½leg");
         GameEventsManager.instance.dialogue_events.DialogueFinished();
-
+        
+        
         dialogue_playing = false;
         //reset story
         story.ResetState();

@@ -19,6 +19,7 @@ public class DialogueEvents
 
     public void DialogueStarted()
     {
+        
         if (onDialogueStarted != null)
         {
             onDialogueStarted();
