@@ -126,6 +126,33 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""23a04d42-7c93-49ae-97f1-85c6d9ced7db"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""71c904c3-5ea5-4082-92c6-45004b5a6427"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Boost"",
+                    ""type"": ""Button"",
+                    ""id"": ""9edf9f03-4894-407a-b7f3-491a41d9a719"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -236,6 +263,39 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""OnShotRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""88587714-17b7-4827-9816-9cc6aba6ef02"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2435f4d3-fd0c-4014-ba95-acfabe060c4e"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""26ce6281-dc66-45f2-a61a-2260766a84be"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Boost"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -509,6 +569,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Nau_CanviCapa = m_Nau.FindAction("CanviCapa", throwIfNotFound: true);
         m_Nau_OnShotLeft = m_Nau.FindAction("OnShotLeft", throwIfNotFound: true);
         m_Nau_OnShotRight = m_Nau.FindAction("OnShotRight", throwIfNotFound: true);
+        m_Nau_Up = m_Nau.FindAction("Up", throwIfNotFound: true);
+        m_Nau_Down = m_Nau.FindAction("Down", throwIfNotFound: true);
+        m_Nau_Boost = m_Nau.FindAction("Boost", throwIfNotFound: true);
         // Pilot
         m_Pilot = asset.FindActionMap("Pilot", throwIfNotFound: true);
         m_Pilot_MovePilot = m_Pilot.FindAction("MovePilot", throwIfNotFound: true);
@@ -613,6 +676,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Nau_CanviCapa;
     private readonly InputAction m_Nau_OnShotLeft;
     private readonly InputAction m_Nau_OnShotRight;
+    private readonly InputAction m_Nau_Up;
+    private readonly InputAction m_Nau_Down;
+    private readonly InputAction m_Nau_Boost;
     /// <summary>
     /// Provides access to input actions defined in input action map "Nau".
     /// </summary>
@@ -640,6 +706,18 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Nau/OnShotRight".
         /// </summary>
         public InputAction @OnShotRight => m_Wrapper.m_Nau_OnShotRight;
+        /// <summary>
+        /// Provides access to the underlying input action "Nau/Up".
+        /// </summary>
+        public InputAction @Up => m_Wrapper.m_Nau_Up;
+        /// <summary>
+        /// Provides access to the underlying input action "Nau/Down".
+        /// </summary>
+        public InputAction @Down => m_Wrapper.m_Nau_Down;
+        /// <summary>
+        /// Provides access to the underlying input action "Nau/Boost".
+        /// </summary>
+        public InputAction @Boost => m_Wrapper.m_Nau_Boost;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -678,6 +756,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @OnShotRight.started += instance.OnOnShotRight;
             @OnShotRight.performed += instance.OnOnShotRight;
             @OnShotRight.canceled += instance.OnOnShotRight;
+            @Up.started += instance.OnUp;
+            @Up.performed += instance.OnUp;
+            @Up.canceled += instance.OnUp;
+            @Down.started += instance.OnDown;
+            @Down.performed += instance.OnDown;
+            @Down.canceled += instance.OnDown;
+            @Boost.started += instance.OnBoost;
+            @Boost.performed += instance.OnBoost;
+            @Boost.canceled += instance.OnBoost;
         }
 
         /// <summary>
@@ -701,6 +788,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @OnShotRight.started -= instance.OnOnShotRight;
             @OnShotRight.performed -= instance.OnOnShotRight;
             @OnShotRight.canceled -= instance.OnOnShotRight;
+            @Up.started -= instance.OnUp;
+            @Up.performed -= instance.OnUp;
+            @Up.canceled -= instance.OnUp;
+            @Down.started -= instance.OnDown;
+            @Down.performed -= instance.OnDown;
+            @Down.canceled -= instance.OnDown;
+            @Boost.started -= instance.OnBoost;
+            @Boost.performed -= instance.OnBoost;
+            @Boost.canceled -= instance.OnBoost;
         }
 
         /// <summary>
@@ -1210,6 +1306,27 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnOnShotRight(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Up" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnUp(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Down" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDown(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Boost" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnBoost(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Pilot" which allows adding and removing callbacks.

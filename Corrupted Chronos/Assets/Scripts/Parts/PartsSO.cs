@@ -1,6 +1,8 @@
 using UnityEngine;
 
-/*Això ho tenia SS pero amb els canvis que portem i tenin en compte que volem fer algo millor
+/* NO S'UTILITZA
+ *
+ *Això ho tenia SS pero amb els canvis que portem i tenin en compte que volem fer algo millor
  * dubto de l'utilitat d¡incloure un scripteable object. 
  * 
  */

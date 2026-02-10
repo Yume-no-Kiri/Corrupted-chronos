@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class changenau_pilot : MonoBehaviour
 {
+    /*
+    Se deberia canviar el nombre, este sirve para activar qualquier interaccion
     
-    //private PlayerInputActions inputActions;
-    //private bool PlayerInside = false;
+    */
 
     //aquest es el mètode que s'activa la possiblitat d'activar quan hi passar el jugador per el trigger
     [SerializeField]

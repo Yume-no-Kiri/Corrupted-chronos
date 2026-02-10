@@ -1711,6 +1711,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: InputManager
       objectReference: {fileID: 0}
+    - target: {fileID: 1060662276896693617, guid: adef2bb69500e7b49805bad5f3b831f2, type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 852508117}
+    - target: {fileID: 1060662276896693617, guid: adef2bb69500e7b49805bad5f3b831f2, type: 3}
+      propertyPath: m_ActionEvents.Array.data[12].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 852508117}
     - target: {fileID: 5432673105518498420, guid: adef2bb69500e7b49805bad5f3b831f2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 521.2446

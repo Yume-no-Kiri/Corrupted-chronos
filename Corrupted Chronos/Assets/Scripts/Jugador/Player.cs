@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -10,9 +11,10 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    //TODO després del llançament de la demo
+    //TODO
     //revisar la separació entre aquest script player i inputmanager, aquest script encara controla massa coses 
-    
+    //separar stats en un arxiu public que pugui ser modificat per parts de nau i altres components 
+    //reworkejar moviment a little bit (quan et mous es nota que va a salts), maybe incorporar leap
     
     //físiques 
     private Rigidbody rb;
@@ -27,10 +29,14 @@ public class Player : MonoBehaviour
 
     //moure capa
     private bool lockUp;
-    private bool lockLow;
+    private bool lockDown;
     private float moveDuration;
     private Vector3 targetPosition;
     private bool isMoving;
+    private bool isBoosting;
+
+    private Vector3 _newMovePosition;
+
     private float elapsedTime;
     
     //colliders and stuff
@@ -57,6 +63,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Camera _playerCamera;
     [SerializeField] 
+
     private bool ComencaComPilot = true;
     
     [Space(3)]
@@ -100,9 +107,10 @@ public class Player : MonoBehaviour
         //varaibles generals
         moveDuration = 0.06f;
         isMoving = false;
+        isBoosting=false;
         elapsedTime = 0f;
         lockUp = false;
-        lockLow = false;
+        lockDown = false;
         
         
         //assignar _nau i _pilot amb databaseSO
@@ -158,13 +166,10 @@ public class Player : MonoBehaviour
         
     }
 
-
+    #region Start
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
-        
-        
         
         _garage.SetActive(false);
         //maps inputs i connexions
@@ -183,7 +188,14 @@ public class Player : MonoBehaviour
             _nau.SetActive(true);
 
         }
-        inputManager.playerInputActions.Nau.CanviCapa.performed += moveCapa;
+        // inputManager.playerInputActions.Nau.CanviCapa.performed += moveCapa;
+
+        inputManager.playerInputActions.Nau.Up.performed+=GoUp;
+        inputManager.playerInputActions.Nau.Down.performed+=GoDown;
+        inputManager.playerInputActions.Nau.Boost.started+=DoBoost;
+        inputManager.playerInputActions.Nau.Boost.canceled+=DoBoost;
+
+
         inputManager.playerInputActions.Global.Enable();
         inputManager.playerInputActions.Global.Interactua.performed += Interact;
         
@@ -195,7 +207,9 @@ public class Player : MonoBehaviour
 
 
     }
+    #endregion
 
+    #region Update 
     void Update()
     {
         //això no és el més eficient del mon, perque ho està revisant amb el update, i no fa falta revisar-ho tant,
@@ -256,9 +270,28 @@ public class Player : MonoBehaviour
             }
         }
         
-        
+        if(!inputManager.playerInputActions.Nau.enabled) return;
+        if (!lockDown && !isBoosting)
+        {
+            Debug.Log("GRAVITY on1");
+             
+            // Debug.Log("GRAVITY on2");
+
+            //aplicar gravetat
+            StartCoroutine(wait());
+            _newMovePosition+= new Vector3(0, -1, 0);
+            
+            // rb.MovePosition(rb.position + new Vector3(0, -1, 0));
+
+            
+        }
+
     }
     
+    IEnumerator wait()
+    {
+        return null;
+    }
   
     
     void FixedUpdate()
@@ -290,8 +323,13 @@ public class Player : MonoBehaviour
         {
             MovePilot();
         }
-        
+
+        rb.MovePosition(rb.position+_newMovePosition);
+        _newMovePosition=Vector3.zero;
+        // OnDrawGizmosSelected();
     }
+    #endregion
+
     private void PositionMouse(InputAction.CallbackContext context)
     {
        // Debug.Log("AAAAAAAAAA");
@@ -354,10 +392,13 @@ public class Player : MonoBehaviour
         
         // això del playerInputAction
         Vector2 movement =inputManager.playerInputActions.Nau.MoveNau.ReadValue<Vector2>().normalized;
-        float moveSpeed = 5f;
+        //is boosting movespeed=2, else movespeed=4
+        float moveSpeed=isBoosting ? 10f: 4f;
+
         //transform.Translate(new Vector3(movement.x, 0, movement.y));
 
-        rb.MovePosition(rb.position+ new Vector3(movement.x, 0, movement.y) * moveSpeed *Time.deltaTime);
+        _newMovePosition+= new Vector3(movement.x, 0, movement.y) * moveSpeed *Time.deltaTime;
+        // rb.MovePosition(rb.position+ new Vector3(movement.x, 0, movement.y) * moveSpeed *Time.deltaTime);
         
     }
 
@@ -367,20 +408,82 @@ public class Player : MonoBehaviour
         
         rb.linearVelocity = Vector3.zero;
         Vector2 movement =inputManager.playerInputActions.Pilot.MovePilot.ReadValue<Vector2>().normalized;
-        float moveSpeed = 2f;
-        //transform.Translate(new Vector3(movement.x, 0, movement.y));
+         float moveSpeed = 2f;
 
-        rb.MovePosition(rb.position+ new Vector3(movement.x, 0, movement.y) * moveSpeed *Time.deltaTime);
+
+        _newMovePosition+= new Vector3(movement.x, 0, movement.y) * moveSpeed *Time.deltaTime;
+        // rb.MovePosition(rb.position+ new Vector3(movement.x, 0, movement.y) * moveSpeed *Time.deltaTime);
         
     }
     
+    //acabar revisió de moviment
+    #region MOVE CAPA/ UP & DOWN
+
+    
+    private void GoUp(InputAction.CallbackContext context)
+    {
+        //reaprofitar parcialment move capa
+        //si shift apretat no gravetat
+     
+     
+        if (lockUp==true )//&& !hitsBelow.Contains(myCollider))
+        {
+            Debug.Log("enter is lockUP");
+            return;
+        }
+        _newMovePosition+= new Vector3(0, 1, 0);
+
+        // rb.MovePosition(rb.position + new Vector3(0, 1, 0));
+    }
+
+   /*  public bool IsGrounded()
+    {
+        float dis=0.4f;
+        bool isGrounded = Physics.CheckSphere(rb.position, dis);
+        return isGrounded;
+    } */
+
+  /*   void OnDrawGizmosSelected()
+    {
+        // if (groundCheck != null)
+        // {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(rb.position, 0.4f);
+        // }
+    } */
+    private void GoDown(InputAction.CallbackContext context)
+    {
+        if (lockDown)// && !hitsBelow.Contains(myCollider))
+        {
+            Debug.Log("enter is lockLOW");
+            return;
+
+        }
+        // isMoving = true;
+        // elapsedTime = 0f;
+        //targetPosition = rb.position + new Vector3(0, movement, 0);
+
+        _newMovePosition+= new Vector3(0, -1, 0);
+
+        // rb.MovePosition(rb.position + new Vector3(0, -1, 0));
+    }
+
+    private void DoBoost(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            Debug.Log("is    boosting");
+            isBoosting=true;
+        }else if (context.canceled)
+        {
+            Debug.Log("isn't boosting");
+            isBoosting=false;
+        }
+    }
 
     private void moveCapa(InputAction.CallbackContext context)
     {
        
-        
-        
-        
         Debug.Log("rodeta ratolí detectat");
         float movement = inputManager.playerInputActions.Nau.CanviCapa.ReadValue<float>();
         
@@ -400,7 +503,7 @@ public class Player : MonoBehaviour
             }
         }else if (movement < 0)
         {
-            if (lockLow==true)// && !hitsBelow.Contains(myCollider))
+            if (lockDown==true)// && !hitsBelow.Contains(myCollider))
             {
                 Debug.Log("enter is lockLOW");
 
@@ -434,7 +537,7 @@ public class Player : MonoBehaviour
             lockUp = isLocked;
         }else if (detect == DetectCanviCapaType.Low)
         {
-            lockLow = isLocked;
+            lockDown = isLocked;
         }
 
         if (!DetectorsCapa.Contains(detector))
@@ -443,6 +546,7 @@ public class Player : MonoBehaviour
         }
         
     }
+
 
     //es millor revisar les leyers de fisiques que implementar aquest mètode
     public void ClearDetectorsCapa()
@@ -456,9 +560,13 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+
+
+    #endregion
+
     
-    
-    
+    #region Interaccions dinamiques
     //Interacció amb objectes del escenari o coses especials
     void Interact(InputAction.CallbackContext context)
     {
@@ -478,6 +586,7 @@ public class Player : MonoBehaviour
 
         }
     }
+
     
     public void SubInteraction(InteractionType type)
     {
@@ -488,7 +597,11 @@ public class Player : MonoBehaviour
         
     }
 
-  
+    #endregion
+
+
+    #region ASSIGNA PARTS
+
 
     public void AddPart(GameObject gb, Vector3 origin)
     {
@@ -512,6 +625,7 @@ public class Player : MonoBehaviour
     }
     
     
+
     public void RemovePart()
     {
         PartActions pa;
@@ -589,6 +703,7 @@ public class Player : MonoBehaviour
     }
 
 
+    #endregion
   
     
     /*void OnClickGarage(InputAction.CallbackContext context)

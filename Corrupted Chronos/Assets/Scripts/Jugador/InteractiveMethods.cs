@@ -18,6 +18,7 @@ using System;
 
 
 //es creen per dir quin mètode es crida, i està assignat a cada objecte que afegeix un mètode interactiu al jugador
+//probablemente revisar naupilotposition i pilotnauposition
 public enum InteractionType
 {
     NauPilot,

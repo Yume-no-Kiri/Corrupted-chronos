@@ -1,6 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
+/*
+    TIENE TODOS LOS CODIGOS ARMAS 
+
+*/
+
 
 //Maybe shootablLeft i shootable Right, no es lo millor per el joc final, 
 //pero la demo servirà 
