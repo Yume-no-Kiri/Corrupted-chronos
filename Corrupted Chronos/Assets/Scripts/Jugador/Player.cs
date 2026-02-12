@@ -271,27 +271,27 @@ public class Player : MonoBehaviour
         }
         
         if(!inputManager.playerInputActions.Nau.enabled) return;
-        if (!lockDown && !isBoosting)
+        if (lockDown)// && !isBoosting)
         {
             Debug.Log("GRAVITY on1");
              
             // Debug.Log("GRAVITY on2");
 
             //aplicar gravetat
-            StartCoroutine(wait());
-            _newMovePosition+= new Vector3(0, -1, 0);
+            rb.useGravity =false;
+            // _newMovePosition+= new Vector3(0, -1, 0);
+            // StartCoroutine(wait());
             
             // rb.MovePosition(rb.position + new Vector3(0, -1, 0));
-
-            
         }
+
 
     }
     
-    IEnumerator wait()
+   /*  IEnumerator wait()
     {
         return null;
-    }
+    } */
   
     
     void FixedUpdate()
@@ -432,10 +432,15 @@ public class Player : MonoBehaviour
             return;
         }
         _newMovePosition+= new Vector3(0, 1, 0);
-
+        StartCoroutine(ActivateGravity());
         // rb.MovePosition(rb.position + new Vector3(0, 1, 0));
     }
 
+    IEnumerator ActivateGravity()
+    {
+        yield return 0.5f;
+        rb.useGravity=true;
+    }
    /*  public bool IsGrounded()
     {
         float dis=0.4f;
