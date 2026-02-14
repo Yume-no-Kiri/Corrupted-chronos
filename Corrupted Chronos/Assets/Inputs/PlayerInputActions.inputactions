@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "PlayerInputActions",
     "maps": [
         {
@@ -60,7 +61,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Boost",
+                    "name": "Barrelroll",
                     "type": "Button",
                     "id": "9edf9f03-4894-407a-b7f3-491a41d9a719",
                     "expectedControlType": "",
@@ -183,7 +184,7 @@
                 {
                     "name": "",
                     "id": "88587714-17b7-4827-9816-9cc6aba6ef02",
-                    "path": "<Keyboard>/shift",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -205,11 +206,11 @@
                 {
                     "name": "",
                     "id": "26ce6281-dc66-45f2-a61a-2260766a84be",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Boost",
+                    "action": "Barrelroll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -85,6 +85,8 @@ public class Player : MonoBehaviour
     private Quaternion mouseRotation;       
     public float rotationSpeed = 40f;
 
+
+    private bool _gravity=false;
     //[SerializeField]
     //private Camera camGarage;
 
@@ -95,8 +97,21 @@ public class Player : MonoBehaviour
     //Dialeg:
     public string branca;
     public int mode;
+
+
+    ///Variables a moure al singleton
+
+    private float moveSpeedNau=10f;
+    private float moveSpeedPilot=4f;
+
+    private float staminaMax=100f;
+    private float staminaAct;
+    private float staminaRegen=2.5f;
+    private float staminaTime2Regen=2f;
+    //hauria d'haver algo per a que passat x umbrals passi x coses, segons coses afegides
+
     
-    
+    //todo arnau: revisar el mètode awake
     private void Awake()
     {
         //crec que hauria d'estructurar, que va a awake i que a start
@@ -105,7 +120,7 @@ public class Player : MonoBehaviour
         if (inputManager == null){Debug.LogError("aaaaAAAA inputmanager");}
         
         //varaibles generals
-        moveDuration = 0.06f;
+        moveDuration = 0.1f;
         isMoving = false;
         isBoosting=false;
         elapsedTime = 0f;
@@ -192,8 +207,8 @@ public class Player : MonoBehaviour
 
         inputManager.playerInputActions.Nau.Up.performed+=GoUp;
         inputManager.playerInputActions.Nau.Down.performed+=GoDown;
-        inputManager.playerInputActions.Nau.Boost.started+=DoBoost;
-        inputManager.playerInputActions.Nau.Boost.canceled+=DoBoost;
+        inputManager.playerInputActions.Nau.Barrelroll.started+=DoBoost;
+        inputManager.playerInputActions.Nau.Barrelroll.canceled+=DoBoost;
 
 
         inputManager.playerInputActions.Global.Enable();
@@ -205,6 +220,11 @@ public class Player : MonoBehaviour
         inputManager.playerInputActions.Global.MousePosition.performed += PositionMouse;
         //inputManager.playerInputActions.Garage.OnClick.performed += OnClickGarage;
 
+        // inputManager.playerInputActions.Nau.
+        //    InputActionChange input+= HangleChangeInputMap;
+
+        ApplyChangeInputMap();
+
 
     }
     #endregion
@@ -212,125 +232,220 @@ public class Player : MonoBehaviour
     #region Update 
     void Update()
     {
-        //això no és el més eficient del mon, perque ho està revisant amb el update, i no fa falta revisar-ho tant,
-        //amb excepció de la segona part garage enabled
-        //control de modes
+        ApplyGravity();
+
+        /* if (isMoving)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / moveDuration);
+            if (t >= 1f)
+            {
+                Debug.Log("enter if in the fixed update ");
+                isMoving = false; // Movement finished
+            }
+        } */
+
+        if (!inputManager.playerInputActions.Nau.enabled) return;
+        if (lockDown)// && !isBoosting)
+        {
+            Debug.Log("GRAVITY on1");
+
+            _gravity = false;
+ 
+        }
+
+
+    }
+
+   
+
+    void FixedUpdate()
+    {
+
+        //això s'haurà de moure al seu script rotar mira
+        transform.rotation = Quaternion.Lerp(transform.rotation, mouseRotation, Time.deltaTime * rotationSpeed);
+
+        GetInputPlayer();
+
+        //aquí aplica el moviment, probablement moure en un script separat
+        rb.MovePosition(rb.position + _newMovePosition);
+        _newMovePosition = Vector3.zero;
+        // OnDrawGizmosSelected();
+    }
+
+   
+    #endregion
+
+    #region moure al singleton
+
+   /*  void aa()
+    {
+        
+        IEnumerator regen()
+        {
+            yield return 0f;
+        }
+
+
+    } */
+
+
+
+
+    #endregion
+
+    #region changeInputMap
+    public void AccesChangeInputMap(NameInputAction inputMap, bool enableIt)
+    {
+        string mapName = inputMap.ToString();
+        
+        InputActionMap targetMap = inputManager.playerInputActions.asset.FindActionMap(mapName);
+
+        if (targetMap != null)
+        {
+            if (enableIt)
+            {
+                targetMap.Enable();
+                ApplyChangeInputMap();
+            }
+            else
+            {
+                targetMap.Disable();
+                ApplyChangeInputMap();
+            }
+
+        }
+        else
+        {
+            Debug.LogError("wtf input map no detectat erroooooor");
+        }
+    
+        
+    }
+
+    //es crida cada vegada que hi ha un canvi en el inputs, no es pot fer automatic s'ha d'escriure per cridar-ho
+    private void ApplyChangeInputMap()
+    {
         if (inputManager.playerInputActions.Nau.enabled)
         {
             _playerCamera.enabled = true;
             _garageCamera.enabled = false;
-            
+
             //fix, em sortia un missatge estrany d'error
             _playerCamera.GetComponent<AudioListener>().enabled = true;
             _garageCamera.GetComponent<AudioListener>().enabled = false;
-            
+
             _nau.SetActive(true);
             _pilot.SetActive(false);
-        }else if (inputManager.playerInputActions.Pilot.enabled)
+
+        }
+        else if (inputManager.playerInputActions.Pilot.enabled)
         {
             _playerCamera.enabled = true;
             _garageCamera.enabled = false;
 
             _playerCamera.GetComponent<AudioListener>().enabled = true;
             _garageCamera.GetComponent<AudioListener>().enabled = false;
-            
+
             _nau.SetActive(false);
             _pilot.SetActive(true);
-        }else if (inputManager.playerInputActions.Garage.enabled)
-        { 
+
+
+        }
+        else if (inputManager.playerInputActions.Garage.enabled)
+        {
             //Debug.Log("mousePOS:"+ MousePosition.ToString()+"  mouseIndi:"+mouseIndicator.transform.position.ToString());
             _playerCamera.enabled = false;
             _garageCamera.enabled = true;
-            
+
             _playerCamera.GetComponent<AudioListener>().enabled = false;
             _garageCamera.GetComponent<AudioListener>().enabled = true;
-            
+
             _nau.SetActive(false);
             _pilot.SetActive(false);
             _garage.SetActive(true);
             //_garage.enabled = true;
-            
+
             /*això potser s'hauria de moure a placementSystem
             gridPosition = grid.WorldToCell(inputManager.MousePosition);
             mouseIndicator.transform.position = inputManager.MousePosition;
             cellIndicator.transform.position = grid.CellToWorld(gridPosition);
             */
         }
-        
-        
-
-        if (isMoving)
-        {
-            elapsedTime += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedTime / moveDuration);
-            if (t >= 1f)
-            {
-                Debug.Log("enter if in the fixed update ");
-                isMoving = false; // Movement finished
-            }
-        }
-        
-        if(!inputManager.playerInputActions.Nau.enabled) return;
-        if (lockDown)// && !isBoosting)
-        {
-            Debug.Log("GRAVITY on1");
-             
-            // Debug.Log("GRAVITY on2");
-
-            //aplicar gravetat
-            rb.useGravity =false;
-            // _newMovePosition+= new Vector3(0, -1, 0);
-            // StartCoroutine(wait());
-            
-            // rb.MovePosition(rb.position + new Vector3(0, -1, 0));
-        }
-
-
     }
-    
-   /*  IEnumerator wait()
+    public void CloseGarage()
     {
-        return null;
-    } */
-  
+        _garage.SetActive(false);
+    }
+
+    #endregion
+
     
-    void FixedUpdate()
+    #region moviment basic
+    //canviar a public si es el cas
+    private void GetInputPlayer()
     {
-        //transició de capa
-        /*if (isMoving)
-        {
-            Debug.Log("enter fixed update ");
-            elapsedTime += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedTime / moveDuration);
-            Vector3 newPos = Vector3.Lerp(rb.position, new Vector3(rb.position.x, targetPosition.y, rb.position.z), t);
-            rb.MovePosition(newPos);
-            if (t >= 1f)
-            {
-                Debug.Log("enter if in the fixed update ");
-
-                isMoving = false; // Movement finished
-            }
-        }*/
-        //fas canvis adients segons el input map que estigui actiu
-        //transform.right=mousedir;
-        //transform.rotation = Quaternion.Euler(0f, angleCamera,0f );
-        transform.rotation = Quaternion.Lerp(transform.rotation, mouseRotation, Time.deltaTime * rotationSpeed);
-
         if (inputManager.playerInputActions.Nau.enabled)
         {
-            MoveNau();
-        }else if (inputManager.playerInputActions.Pilot.enabled)
-        {
-            MovePilot();
+            GetInputNau();
         }
+        else if (inputManager.playerInputActions.Pilot.enabled)
+        {
+            GetInputPilot();
+        }
+    }
+    private void GetInputNau()
+    {
+        //Debug.Log("estàs amb la nau");
 
-        rb.MovePosition(rb.position+_newMovePosition);
-        _newMovePosition=Vector3.zero;
-        // OnDrawGizmosSelected();
+        rb.linearVelocity = Vector3.zero;
+        
+        Vector2 movement =inputManager.playerInputActions.Nau.MoveNau.ReadValue<Vector2>().normalized;
+
+        /* si afegim speed d'alguna mena 
+        //is boosting movespeed=2, else movespeed=4
+        // float moveSpeed=isBoosting ? 10f: 4f;
+        */
+
+        _newMovePosition+= new Vector3(movement.x, 0, movement.y) * moveSpeedNau *Time.deltaTime;
+        
+    }
+
+    private void GetInputPilot()
+    {
+        //Debug.Log("estàs amb el pilot");
+        
+        rb.linearVelocity = Vector3.zero;
+        Vector2 movement =inputManager.playerInputActions.Pilot.MovePilot.ReadValue<Vector2>().normalized;
+
+        _newMovePosition+= new Vector3(movement.x, 0, movement.y) * moveSpeedPilot *Time.deltaTime;
+        
     }
     #endregion
 
-    private void PositionMouse(InputAction.CallbackContext context)
+    //acabar revisió de moviment
+    #region Moviment més complexe
+
+    private void ApplyGravity()
+    {
+        if (_gravity)
+        {
+
+            //depen de com es vuglusi jugar amb la gravetat, si aquesta creix quan no estem entre enters i disminueix quan estem en enters
+            
+            /* float decimalPart =  rb.transform.position.y % 1.0f;
+            float resultat = Mathf.Abs((decimalPart * 2) - 1);
+            float resultat =Mathf.Lerp(1f,0.2f, (Mathf.Cos(decimalPart * 2 * Mathf.PI) + 1f) / 2f);
+            print("gravity result"+ resultat);
+            // if(resultat<=0.2) resultat=0.2f;
+            _newMovePosition += Vector3.down * resultat*Time.deltaTime; */
+            
+            _newMovePosition += Vector3.down *Time.deltaTime;
+
+        }
+    }
+
+       private void PositionMouse(InputAction.CallbackContext context)
     {
        // Debug.Log("AAAAAAAAAA");
         
@@ -377,49 +492,6 @@ public class Player : MonoBehaviour
         }
     }
     
-    public void CloseGarage()
-    {
-        _garage.SetActive(false);
-    }
-
-    
-
-    void MoveNau()
-    {
-        //Debug.Log("estàs amb la nau");
-
-        rb.linearVelocity = Vector3.zero;
-        
-        // això del playerInputAction
-        Vector2 movement =inputManager.playerInputActions.Nau.MoveNau.ReadValue<Vector2>().normalized;
-        //is boosting movespeed=2, else movespeed=4
-        float moveSpeed=isBoosting ? 10f: 4f;
-
-        //transform.Translate(new Vector3(movement.x, 0, movement.y));
-
-        _newMovePosition+= new Vector3(movement.x, 0, movement.y) * moveSpeed *Time.deltaTime;
-        // rb.MovePosition(rb.position+ new Vector3(movement.x, 0, movement.y) * moveSpeed *Time.deltaTime);
-        
-    }
-
-    void MovePilot()
-    {
-        //Debug.Log("estàs amb el pilot");
-        
-        rb.linearVelocity = Vector3.zero;
-        Vector2 movement =inputManager.playerInputActions.Pilot.MovePilot.ReadValue<Vector2>().normalized;
-         float moveSpeed = 2f;
-
-
-        _newMovePosition+= new Vector3(movement.x, 0, movement.y) * moveSpeed *Time.deltaTime;
-        // rb.MovePosition(rb.position+ new Vector3(movement.x, 0, movement.y) * moveSpeed *Time.deltaTime);
-        
-    }
-    
-    //acabar revisió de moviment
-    #region MOVE CAPA/ UP & DOWN
-
-    
     private void GoUp(InputAction.CallbackContext context)
     {
         //reaprofitar parcialment move capa
@@ -439,23 +511,9 @@ public class Player : MonoBehaviour
     IEnumerator ActivateGravity()
     {
         yield return 0.5f;
-        rb.useGravity=true;
+        _gravity=true;
     }
-   /*  public bool IsGrounded()
-    {
-        float dis=0.4f;
-        bool isGrounded = Physics.CheckSphere(rb.position, dis);
-        return isGrounded;
-    } */
-
-  /*   void OnDrawGizmosSelected()
-    {
-        // if (groundCheck != null)
-        // {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(rb.position, 0.4f);
-        // }
-    } */
+   
     private void GoDown(InputAction.CallbackContext context)
     {
         if (lockDown)// && !hitsBelow.Contains(myCollider))
@@ -711,11 +769,7 @@ public class Player : MonoBehaviour
     #endregion
   
     
-    /*void OnClickGarage(InputAction.CallbackContext context)
-    {
-        //OnClicked?.Invoke();
-    }*/
-    public void AddDialogueInfo(string branca, int mode)
+     public void AddDialogueInfo(string branca, int mode)
     {
         this.branca = branca;
         this.mode = mode;   

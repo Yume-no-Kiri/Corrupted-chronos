@@ -32,9 +32,17 @@ public enum InteractionType
 
     
 } 
+public enum NameInputAction{
+    Nau,
+    Pilot,
+    Garage
+}
+
 
 public class InteractiveMethods : MonoBehaviour
 {
+    
+
     //public List<String> ListMethods = new List<String>();
    // public List<MethodPlayer> ListMethodDelegates = new List<MethodPlayer>();
     
@@ -105,9 +113,21 @@ public class InteractiveMethods : MonoBehaviour
 
     public void Nau_Pilot_Position(Player jugador)
     {
-        jugador.inputManager.playerInputActions.Nau.Disable();
-        jugador.inputManager.playerInputActions.Pilot.Enable();
+        //v1: si HangleChangeInputMap es al update
+       /*  jugador.inputManager.playerInputActions.Nau.Disable();
+        jugador.inputManager.playerInputActions.Pilot.Enable(); */
+
+        //v2: HangleChangeInputMap no es al update
+        jugador.AccesChangeInputMap(NameInputAction.Nau, false);
+        jugador.AccesChangeInputMap(NameInputAction.Pilot, true);
+
+        
+
+
         Debug.Log("AAAAAAAAAAAAAAAAAAAA");
+
+
+
         var vector3 = jugador.transform.position;
         vector3.z = vector3.z + 10f;
         jugador.transform.position = vector3;
@@ -126,9 +146,13 @@ public class InteractiveMethods : MonoBehaviour
     
     public void Nau_Pilot(Player jugador)
     {
-        jugador.inputManager.playerInputActions.Nau.Disable();
+       /*  jugador.inputManager.playerInputActions.Nau.Disable();
         jugador.inputManager.playerInputActions.Pilot.Enable();
-        
+        */ 
+        jugador.AccesChangeInputMap(NameInputAction.Nau, false);
+        jugador.AccesChangeInputMap(NameInputAction.Pilot, true);
+
+
         jugador.transform.eulerAngles = Vector3.zero;
 
         //degut a que no sempre ontrigger exit s'activa, i la majoria de casos, només volen cridar-ho una vegada, 
@@ -144,17 +168,24 @@ public class InteractiveMethods : MonoBehaviour
         //quan s'activa la interacció l'eliminem 
         //quan s'activa la interacció l'eliminem 
         //per si les mosques
-        jugador.inputManager.playerInputActions.Pilot.Disable();
+        /* jugador.inputManager.playerInputActions.Pilot.Disable();
+        jugador.inputManager.playerInputActions.Nau.Enable();
+ */
+        jugador.AccesChangeInputMap(NameInputAction.Pilot, false);
+        jugador.AccesChangeInputMap(NameInputAction.Nau, true);
+
+
+
         var vector3 = jugador.transform.position;
         vector3.z = vector3.z - 10;
         jugador.transform.position = vector3;
 
-        
-        jugador.inputManager.playerInputActions.Nau.Enable();
+
         jugador.ClearDetectorsCapa();
         
         InteractionType i= InteractionType.PilotNauPosition;
         jugador.SubInteraction(i);
+
     }
     
     
@@ -164,8 +195,14 @@ public class InteractiveMethods : MonoBehaviour
         //degut a que no sempre ontrigger exit s'activa, i la majoria de casos, només volen cridar-ho una vegada, 
         //quan s'activa la interacció l'eliminem 
         //per si les mosques
-        jugador.inputManager.playerInputActions.Nau.Enable();
-        jugador.inputManager.playerInputActions.Pilot.Disable();
+
+        /* jugador.inputManager.playerInputActions.Nau.Enable();
+        jugador.inputManager.playerInputActions.Pilot.Disable(); */
+
+        jugador.AccesChangeInputMap(NameInputAction.Nau, true);
+        jugador.AccesChangeInputMap(NameInputAction.Pilot, false);
+
+
         InteractionType i= InteractionType.PilotNau;
         jugador.SubInteraction(i);
     }
@@ -211,18 +248,21 @@ public class InteractiveMethods : MonoBehaviour
         if (jugador.inputManager.playerInputActions.Pilot.enabled)
         {
             estatAnterior = InteractionType.NauPilot;
-            jugador.inputManager.playerInputActions.Pilot.Disable();
+            // jugador.inputManager.playerInputActions.Pilot.Disable();
 
+            jugador.AccesChangeInputMap(NameInputAction.Pilot, false);
             
         }else if (jugador.inputManager.playerInputActions.Nau.enabled)
         {
             estatAnterior = InteractionType.PilotNau;
-            jugador.inputManager.playerInputActions.Nau.Disable();
+            // jugador.inputManager.playerInputActions.Nau.Disable();
+            jugador.AccesChangeInputMap(NameInputAction.Nau, false);
 
         }
 
-        jugador.inputManager.playerInputActions.Garage.Enable();
-        
+        // jugador.inputManager.playerInputActions.Garage.Enable();
+        jugador.AccesChangeInputMap(NameInputAction.Garage, true);
+
         InteractionType i= InteractionType.OpenGarage;
         jugador.SubInteraction(i);
         
@@ -233,7 +273,8 @@ public class InteractiveMethods : MonoBehaviour
     }
     private void CloseGarage(Player jugador)
     {
-        jugador.inputManager.playerInputActions.Garage.Disable();
+        // jugador.inputManager.playerInputActions.Garage.Disable();
+        jugador.AccesChangeInputMap(NameInputAction.Garage, false);
         
         //basicament, passem a nau o pilot.
         DoInteraction(estatAnterior,jugador);

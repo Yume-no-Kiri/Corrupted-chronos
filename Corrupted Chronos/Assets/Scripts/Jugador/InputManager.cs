@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour
     
     public PlayerInputActions playerInputActions;
 
+    
     public Vector3 MousePosition;
 
     
@@ -38,6 +39,8 @@ public class InputManager : MonoBehaviour
 
     }
     
+
+    //crec que això es per el garatge
     public bool IsPointerOverUI()=>EventSystem.current.IsPointerOverGameObject();
     void CallOnClick(InputAction.CallbackContext callbackContext)
     {
