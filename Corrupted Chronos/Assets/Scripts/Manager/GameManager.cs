@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -7,7 +8,6 @@ public class GameManager : MonoBehaviour
     /*
     Guardem tota informació que s'haurà d'anar actualitzant, estats del jugador i coses així
     sobre actualització i acces de valors:
-    Estaria subscriure scripts a certs grups de variables, si una variable d'aquest grup es canviada actualitzem als scripts subscrits, en comptes de cada frame tornar a preguntar per els valors
     
     */
 
@@ -16,12 +16,16 @@ public class GameManager : MonoBehaviour
 
     //demoment les stats del jugador aquí mateix, en un futur potser moure a un script separat i tindre'l també aquí
 
-    //GRUP stats jugador //Podriem fer subgrups si fos necesari
     public float health;
+    
+    //stamina stuff
     public float staminaMax=100f;
     public float staminaAct;
-    public float staminaRegen=2.5f;
+    public float staminaRegenQuantity=2.5f;
     public float staminaTime2Regen=2f;
+    public bool StaminaRegen=false;
+    public Coroutine CoroutineStamina;
+
     public float moveSpeedNau=10f;
     public float moveSpeedPilot=4f;
     //modificar segons si implementem speeds diferents segons on estan els propulsors
@@ -52,6 +56,22 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(staminaAct<=0) CoroutineStamina=StartCoroutine(TimerRegenStamina());
+        if (StaminaRegen)
+        {
+            staminaAct+=staminaRegenQuantity*Time.deltaTime;
+        }
+        if (staminaAct== staminaMax)
+        {
+            StaminaRegen=false;
+        }
+    }
+
+
+
+    IEnumerator TimerRegenStamina()
+    {
+        yield return staminaTime2Regen;
+        StaminaRegen=true;
     }
 }

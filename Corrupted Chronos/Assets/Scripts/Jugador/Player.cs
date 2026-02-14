@@ -104,10 +104,12 @@ public class Player : MonoBehaviour
     private float moveSpeedNau=10f;
     private float moveSpeedPilot=4f;
 
-    private float staminaMax=100f;
+   /*  private float staminaMax=100f;
     private float staminaAct;
     private float staminaRegen=2.5f;
-    private float staminaTime2Regen=2f;
+    private float staminaTime2Regen=2f; */
+
+
     //hauria d'haver algo per a que passat x umbrals passi x coses, segons coses afegides
 
     
@@ -207,8 +209,8 @@ public class Player : MonoBehaviour
 
         inputManager.playerInputActions.Nau.Up.performed+=GoUp;
         inputManager.playerInputActions.Nau.Down.performed+=GoDown;
-        inputManager.playerInputActions.Nau.Barrelroll.started+=DoBoost;
-        inputManager.playerInputActions.Nau.Barrelroll.canceled+=DoBoost;
+        inputManager.playerInputActions.Nau.Barrelroll.started+=DoBarrelRoll;
+        inputManager.playerInputActions.Nau.Barrelroll.canceled+=DoBarrelRoll;
 
 
         inputManager.playerInputActions.Global.Enable();
@@ -274,24 +276,6 @@ public class Player : MonoBehaviour
     }
 
    
-    #endregion
-
-    #region moure al singleton
-
-   /*  void aa()
-    {
-        
-        IEnumerator regen()
-        {
-            yield return 0f;
-        }
-
-
-    } */
-
-
-
-
     #endregion
 
     #region changeInputMap
@@ -445,7 +429,7 @@ public class Player : MonoBehaviour
         }
     }
 
-       private void PositionMouse(InputAction.CallbackContext context)
+    private void PositionMouse(InputAction.CallbackContext context)
     {
        // Debug.Log("AAAAAAAAAA");
         
@@ -503,8 +487,20 @@ public class Player : MonoBehaviour
             Debug.Log("enter is lockUP");
             return;
         }
+        _gravity=false;
         _newMovePosition+= new Vector3(0, 1, 0);
-        StartCoroutine(ActivateGravity());
+
+        if (!lockDown)
+        {
+            //gastar stamina per mantenir-te al aire
+        }
+
+        else
+        {
+            StartCoroutine(ActivateGravity());
+        }
+
+        
         // rb.MovePosition(rb.position + new Vector3(0, 1, 0));
     }
 
@@ -520,8 +516,9 @@ public class Player : MonoBehaviour
         {
             Debug.Log("enter is lockLOW");
             return;
-
         }
+
+
         // isMoving = true;
         // elapsedTime = 0f;
         //targetPosition = rb.position + new Vector3(0, movement, 0);
@@ -531,8 +528,14 @@ public class Player : MonoBehaviour
         // rb.MovePosition(rb.position + new Vector3(0, -1, 0));
     }
 
-    private void DoBoost(InputAction.CallbackContext context)
+    private void DoBarrelRoll(InputAction.CallbackContext context)
     {
+        //ara mateix barrelRoll hauria de ser petit dash cap a una direcció
+
+
+
+
+        /* boost de velocitat, desactualitzat
         if (context.started)
         {
             Debug.Log("is    boosting");
@@ -541,7 +544,7 @@ public class Player : MonoBehaviour
         {
             Debug.Log("isn't boosting");
             isBoosting=false;
-        }
+        } */
     }
 
     private void moveCapa(InputAction.CallbackContext context)
