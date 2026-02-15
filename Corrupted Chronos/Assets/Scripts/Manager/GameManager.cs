@@ -22,12 +22,19 @@ public class GameManager : MonoBehaviour
     public float staminaMax=100f;
     public float staminaAct;
     public float staminaRegenQuantity=2.5f;
-    public float staminaTime2Regen=2f;
+    public float staminaUseQuantity=10f;
+    public float staminaTime2Regen=4f;
     public bool StaminaRegen=false;
     public Coroutine CoroutineStamina;
 
     public float moveSpeedNau=10f;
     public float moveSpeedPilot=4f;
+
+    //variable que es crida d'altres mètodes per voler volar i usar la stamina
+    public bool want2Fly=false;
+    //variable que respon gameManager i contesta a si es pot volar, osigui usar la stamina
+    public bool staminaInUse { get; private set;}
+
     //modificar segons si implementem speeds diferents segons on estan els propulsors
     
 
@@ -35,6 +42,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        staminaAct=staminaMax;
         if(Instance == null)
         {
             Instance=this;
@@ -56,22 +64,52 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(staminaAct<=0) CoroutineStamina=StartCoroutine(TimerRegenStamina());
+        //if ens falta stamina, iniciem coroutine per si podem regenerar
+        if(staminaAct<=100) CoroutineStamina=StartCoroutine(TimerRegenStamina());
         if (StaminaRegen)
         {
+            //regenerem
             staminaAct+=staminaRegenQuantity*Time.deltaTime;
+
+            //si màxim apaguem
+            if (staminaAct>= staminaMax)
+            {
+                StaminaRegen=false;
+            }
         }
-        if (staminaAct== staminaMax)
+
+        //si ens ha dit que vol utiltizar stamina
+        if (want2Fly)
         {
+            //parem regeneració
+            StopCoroutine(CoroutineStamina);
             StaminaRegen=false;
+
+            //podem usar stamina o no
+            if(staminaAct>0) staminaInUse=true;
+            else {
+                staminaInUse=false;
+                return;
+            }
+
+            //gastar stamina
+            staminaAct-=staminaUseQuantity*Time.deltaTime;
+            
+            //ja no podem usar stamina
+            if (staminaAct <= 0)
+            {
+                staminaInUse=false;
+                want2Fly=false;
+            }
         }
+        print("staminaAct: "+staminaAct);
     }
 
 
 
     IEnumerator TimerRegenStamina()
     {
-        yield return staminaTime2Regen;
+        yield return new WaitForSeconds(staminaTime2Regen);
         StaminaRegen=true;
     }
 }

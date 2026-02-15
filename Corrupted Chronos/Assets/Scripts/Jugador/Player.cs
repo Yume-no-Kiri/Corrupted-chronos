@@ -250,10 +250,19 @@ public class Player : MonoBehaviour
         if (!inputManager.playerInputActions.Nau.enabled) return;
         if (lockDown)// && !isBoosting)
         {
-            Debug.Log("GRAVITY on1");
+            Debug.Log("GRAVITY off");
 
             _gravity = false;
  
+        }else
+        {
+            if (GameManager.Instance.staminaInUse == false)
+            {
+                _gravity=true;
+
+                // ActivateGravity();
+            }
+            //gastar energia per mantenir-se en la capa
         }
 
 
@@ -273,6 +282,7 @@ public class Player : MonoBehaviour
         rb.MovePosition(rb.position + _newMovePosition);
         _newMovePosition = Vector3.zero;
         // OnDrawGizmosSelected();
+        toFly();
     }
 
    
@@ -417,14 +427,14 @@ public class Player : MonoBehaviour
 
             //depen de com es vuglusi jugar amb la gravetat, si aquesta creix quan no estem entre enters i disminueix quan estem en enters
             
-            /* float decimalPart =  rb.transform.position.y % 1.0f;
-            float resultat = Mathf.Abs((decimalPart * 2) - 1);
+            float decimalPart =  rb.transform.position.y % 1.0f;
+            // float resultat = Mathf.Abs((decimalPart * 2) - 1);
             float resultat =Mathf.Lerp(1f,0.2f, (Mathf.Cos(decimalPart * 2 * Mathf.PI) + 1f) / 2f);
             print("gravity result"+ resultat);
             // if(resultat<=0.2) resultat=0.2f;
-            _newMovePosition += Vector3.down * resultat*Time.deltaTime; */
+            _newMovePosition += Vector3.down * resultat*Time.deltaTime;
             
-            _newMovePosition += Vector3.down *Time.deltaTime;
+            // _newMovePosition += Vector3.down *Time.deltaTime;
 
         }
     }
@@ -490,15 +500,17 @@ public class Player : MonoBehaviour
         _gravity=false;
         _newMovePosition+= new Vector3(0, 1, 0);
 
-        if (!lockDown)
-        {
-            //gastar stamina per mantenir-te al aire
-        }
 
-        else
+        /* if (!lockDown)
+        {
+            GameManager.Instance.want2Fly=true;
+            //gastar stamina per mantenir-te al aire
+        } */
+
+       /*  else
         {
             StartCoroutine(ActivateGravity());
-        }
+        } */
 
         
         // rb.MovePosition(rb.position + new Vector3(0, 1, 0));
@@ -517,13 +529,18 @@ public class Player : MonoBehaviour
             Debug.Log("enter is lockLOW");
             return;
         }
+        _newMovePosition+= new Vector3(0, -1, 0);
 
 
+        /* if (!lockDown)
+        {
+            GameManager.Instance.want2Fly=true;
+            //gastar stamina per mantenir-te al aire
+        } */
         // isMoving = true;
         // elapsedTime = 0f;
         //targetPosition = rb.position + new Vector3(0, movement, 0);
 
-        _newMovePosition+= new Vector3(0, -1, 0);
 
         // rb.MovePosition(rb.position + new Vector3(0, -1, 0));
     }
@@ -596,6 +613,17 @@ public class Player : MonoBehaviour
         Gizmos.DrawWireSphere(targetPos1, checkRadius);
     }*/
 
+    void toFly()
+    {
+        if (!lockDown)
+        {
+            GameManager.Instance.want2Fly=true;
+        }
+        else
+        {
+            GameManager.Instance.want2Fly=false;
+        }
+    }
     public void DetectorCapaResponse(DetectCanviCapaType detect, bool isLocked, GameObject detector)
     {
         if (detect == DetectCanviCapaType.Up)
