@@ -6,7 +6,6 @@ using System;
 //potser canviar-li el nom
 
 //classe general, del que venen els diferents projectils, revisar en un futur
-[Serializable]
 public struct InformationBullet
 {
     public int mal;
@@ -39,7 +38,6 @@ public class BaseBullets : MonoBehaviour
     GameObject myCreator;
     private Rigidbody rb;
 
-    [HideInInspector]
    public InformationBullet statsBullet;
    /*  protected int mal; */
 
