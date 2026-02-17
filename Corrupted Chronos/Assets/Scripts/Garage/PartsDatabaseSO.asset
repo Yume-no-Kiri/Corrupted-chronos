@@ -28,7 +28,7 @@ MonoBehaviour:
     <ID>k__BackingField: 0
     <Size>k__BackingField: {x: 2, y: 2}
     <BuildSize>k__BackingField: {x: 3, y: 3}
-    <Prefab>k__BackingField: {fileID: 3513957959478190534, guid: 6f465741ba949c641a95ce5b90ea5b85, type: 3}
+    <Prefab>k__BackingField: {fileID: 3513957959478190534, guid: 35472b169ec04ca4da0fdada2eac151c, type: 3}
   AllTravelers:
   - <Name>k__BackingField: Traveler Basic
     <ID>k__BackingField: 0

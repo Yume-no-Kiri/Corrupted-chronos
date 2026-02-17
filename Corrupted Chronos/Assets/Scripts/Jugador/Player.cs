@@ -34,11 +34,14 @@ public class Player : MonoBehaviour
     private float moveDuration;
     private Vector3 targetPosition;
     private bool isMoving;
-    private bool isBoosting;
+    private bool isBarrelRoll;
 
     bool keepDown=false;
     Coroutine goDownCoroutine;
     private Vector3 _newMovePosition;
+    private Vector3 _GravityForce;
+    private Vector3 _TotalForces;
+
 
     private float elapsedTime;
     
@@ -83,9 +86,12 @@ public class Player : MonoBehaviour
     private Grid grid;
     private Camera _garageCamera;
 
+    private Quaternion mouseRotation;       
+
     private Vector3 mousePos;
     private Vector3 mousedir;
     Quaternion targetRotation ;
+     Vector3 mouseWorldPosition;
     float angle;
     // private Quaternion mouseRotation;       
     // public float rotationSpeed = 0.5f;
@@ -109,11 +115,6 @@ public class Player : MonoBehaviour
     private float moveSpeedNau=10f;
     private float moveSpeedPilot=4f;
 
-   /*  private float staminaMax=100f;
-    private float staminaAct;
-    private float staminaRegen=2.5f;
-    private float staminaTime2Regen=2f; */
-
 
     //hauria d'haver algo per a que passat x umbrals passi x coses, segons coses afegides
 
@@ -129,7 +130,7 @@ public class Player : MonoBehaviour
         //varaibles generals
         moveDuration = 0.1f;
         isMoving = false;
-        isBoosting=false;
+        // isBoosting=false;
         elapsedTime = 0f;
         lockUp = false;
         lockDown = false;
@@ -155,14 +156,11 @@ public class Player : MonoBehaviour
          
         //_nau =Instantiate(_database.AllNaus[0].Prefab, pointAddNau.transform, true);
         //_nau.transform.position = pointAddNau.transform.position;
-        _nau = Instantiate(_database.AllNaus[0].Prefab);
-        _pilot= Instantiate(_database.AllTravelers[0].Prefab);
-        _nau.transform.position = new Vector3(0, spawnPosition.y,0);
-        _pilot.transform.position = new Vector3(0, spawnPosition.y, 0);
-        
-        //OHHHHH that's why
+        _nau = Instantiate(_database.AllNaus[0].Prefab, new Vector3(0, 0, 0), quaternion.identity);
+        _pilot= Instantiate(_database.AllTravelers[0].Prefab,new Vector3(0, 0, 0), quaternion.identity);
         _nau.transform.SetParent(this.transform,false);
         _pilot.transform.SetParent(this.transform,false);
+        
 
         //components and stuff
         rb = GetComponent<Rigidbody>();
@@ -257,6 +255,39 @@ public class Player : MonoBehaviour
                 isMoving = false; // Movement finished
             }
         } */
+        /* transform.rotation =Quaternion.Euler(0f, 0f, angle);
+        Debug.DrawLine(transform.position, mouseWorldPosition, Color.white, Time.deltaTime); */
+        if (mousedir != Vector3.zero)
+        {
+            // GameManager.Instance.rotationSpeed;
+            // 4. Aplicar la rotació en l'eix Y (el que fa girar horitzontalment)
+            // transform.rotation= Quaternion.LookRotation(mousedir);
+
+            float dot= Vector3.Dot(transform.right, mousedir.normalized);
+            if (dot > 0)
+            {
+                 Debug.Log("rotationSpeed  ___>0___");
+                GameManager.Instance.rotationSpeed= GameManager.Instance.rotationSpeedRight ;
+            }
+            if (dot < 0)
+            {
+                Debug.Log("rotationSpeed  ___<0___");
+                GameManager.Instance.rotationSpeed= GameManager.Instance.rotationSpeedLeft ;
+                
+            }
+
+            // GameManager.Instance.rotationSpeed = (dot > 0) ?  GameManager.Instance.rotationSpeedRight :  GameManager.Instance.rotationSpeedLeft;
+            Debug.Log("rotationSpeed, dot:"+ dot+" speed"+GameManager.Instance.rotationSpeed);
+
+            targetRotation = Quaternion.LookRotation(mousedir);
+            transform.rotation = Quaternion.RotateTowards(
+            transform.rotation, 
+            targetRotation, 
+            GameManager.Instance.rotationSpeed * Time.deltaTime
+            );
+        }
+        Debug.DrawRay(transform.position, transform.right * 2f, Color.red);
+        Debug.DrawLine(transform.position, mouseWorldPosition, Color.white);
 
         if (!inputManager.playerInputActions.Nau.enabled) return;
         if (lockDown)// && !isBoosting)
@@ -277,31 +308,17 @@ public class Player : MonoBehaviour
         }
 
 
-        // transform.rotation=Quaternion.FromToRotation(transform.right,mousedir);
-        // Quaternion targetRotation = Quaternion.LookRotation(mousedir);
-        // transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, GameManager.Instance.rotationSpeed*Time.deltaTime);
+        }
+    #endregion
 
-
-        /* transform.rotation = Quaternion.RotateTowards(
-                    transform.rotation, 
-                    targetRotation, 
-                    GameManager.Instance.rotationSpeed * Time.deltaTime
-                );
-         */
-         transform.rotation=targetRotation;
-        
-        Debug.Log("mouse direction:"+ targetRotation.ToString() +" transform.rotation:"+transform.rotation);
-
-    }
-
-   
+    #region FixedUpdate
 
     void FixedUpdate()
     {
 
         //això s'haurà de moure al seu script rotar mira
         
-        // transform.rotation = Quaternion.Lerp(transform.rotation, mousedir, Time.deltaTime *  GameManager.Instance.rotationSpeed);
+        // transform.rotation = Quaternion.Lerp(transform.rotation, mouseRotation, Time.deltaTime *  GameManager.Instance.rotationSpeed);
     
         GetInputPlayer();
 
@@ -309,15 +326,40 @@ public class Player : MonoBehaviour
             goDownCoroutine=StartCoroutine(GoDownCoroutine());
         }
 
+
+
         //aquí aplica el moviment, probablement moure en un script separat
-        rb.MovePosition(rb.position + _newMovePosition);
-        _newMovePosition = Vector3.zero;
-        // OnDrawGizmosSelected();
+
+        //sumem forces
+        //is barrel roll on, stoping all other forces
+        if (isBarrelRoll)
+        {
+            if (_newMovePosition == Vector3.zero)
+            {
+                //que? mou enrere o 
+            }
+
+            rb.AddForce(_newMovePosition*GameManager.Instance.dashingForce);
+        }
+        else
+        {
+            _TotalForces=_newMovePosition+_GravityForce;
+
+            // rb.MovePosition(rb.position + _TotalForces);
+            rb.transform.position+=40* _TotalForces*Time.deltaTime;
+            _newMovePosition = Vector3.zero;
+            _GravityForce = Vector3.zero;
+        }
+
+       
+
+
+
+
         toFly();
     }
-
-   
     #endregion
+   
 
     #region changeInputMap
     public void AccesChangeInputMap(NameInputAction inputMap, bool enableIt)
@@ -463,7 +505,7 @@ public class Player : MonoBehaviour
             float resultat =Mathf.Lerp(1f,0.2f, (Mathf.Cos(decimalPart * 2 * Mathf.PI) + 1f) / 2f);
             print("gravity result"+ resultat);
             // if(resultat<=0.2) resultat=0.2f;
-            _newMovePosition += Vector3.down * resultat*Time.deltaTime;
+            _GravityForce += Vector3.down * resultat*Time.deltaTime;
             
             // _newMovePosition += Vector3.down *Time.deltaTime;
 
@@ -496,33 +538,27 @@ public class Player : MonoBehaviour
 
         }else if (inputManager.playerInputActions.Nau.enabled)
         {
-            //Camera camPlayer = _playerCamera.GetComponentInChildren<Camera>();
-            //mouse.z = _playerCamera.nearClipPlane;
-            //dona igual si nau o player, estan conectats
-            //mousePos.y = _nau.transform.position.y;
-            //mousePos= _playerCamera.ScreenToWorldPoint(mousePos);
-            //mousedir = (mousePos - transform.position); 
-            //angleCamera = Mathf.Atan2(mousedir.y, mousedir.x) * Mathf.Rad2Deg;
-            //mousedir= new Vector2(mousePos.x-transform.position.x, mousePos.z-transform.position.z);
-            mousePos.z = Mathf.Abs(_playerCamera.transform.position.y - transform.position.y);
+        
+            Ray ray = _playerCamera.ScreenPointToRay(mousePos);
+    
+            Plane groundPlane = new Plane(Vector3.up, transform.position);
+            float rayDistance;
 
-            Vector3 mouseWorldPosition = _playerCamera.ScreenToWorldPoint(mousePos);
-            mousedir= (mouseWorldPosition - transform.position).normalized;
-            // angle=Mathf.Atan2()
-            angle=Mathf.Atan2(mousedir.y,mousedir.x)*Mathf.Rad2Deg;
-
-            targetRotation= Quaternion.AngleAxis(angle, Vector3.down );
-
-            float dot= Vector3.Dot(transform.right, mousedir);
-            GameManager.Instance.rotationSpeed = (dot > 0) ?  GameManager.Instance.rotationSpeedRight :  GameManager.Instance.rotationSpeedLeft;
-            
-            // mousedir= mouseWorldPosition - transform.position;
-
-            // mousedir.y = 0;
-            /* if (mousedir != Vector3.zero)
+            if (groundPlane.Raycast(ray, out rayDistance))
             {
-                mouseRotation = Quaternion.LookRotation(mousedir);
-            } */
+                // Aquesta és la posició real del ratolí en el món 3D
+                mouseWorldPosition = ray.GetPoint(rayDistance);
+
+                // 3. Calcular la direcció (ignorant l'altura Y per no inclinar el personatge)
+                mousedir = mouseWorldPosition - transform.position;
+                mousedir.y = 0; 
+
+                
+                //smoth
+                /* float smoothSpeed = Mathf.Lerp(lastSpeed, speedTarget, Time.deltaTime * 5f);
+                lastSpeed = smoothSpeed; */
+            }
+
             
         }
     }
@@ -549,11 +585,6 @@ public class Player : MonoBehaviour
         _newMovePosition+= new Vector3(0, 1, 0);
 
         GameManager.Instance.MoveUpStamina();
-
-
-
-        
-        // rb.MovePosition(rb.position + new Vector3(0, 1, 0));
     }
 
   
@@ -613,11 +644,10 @@ public class Player : MonoBehaviour
    
     private void DoBarrelRoll(InputAction.CallbackContext context)
     {
+        isBarrelRoll=true;
+        StartCoroutine(BarrelRollActive());
+
         //ara mateix barrelRoll hauria de ser petit dash cap a una direcció
-
-
-
-
         /* boost de velocitat, desactualitzat
         if (context.started)
         {
@@ -628,6 +658,12 @@ public class Player : MonoBehaviour
             Debug.Log("isn't boosting");
             isBoosting=false;
         } */
+    }
+
+    IEnumerator BarrelRollActive()
+    {
+        yield return new WaitForSeconds(0.5f);
+        isBarrelRoll=false;
     }
 
     private void moveCapa(InputAction.CallbackContext context)

@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2429161139803003294}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.1, y: 16, z: 76.3}
+  m_LocalPosition: {x: 11.1, y: 0, z: 76.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -42,7 +42,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2429161139803003294}
   serializedVersion: 5
-  m_Mass: 1
+  m_Mass: 35.17
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -58,7 +58,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &9065371578681910068
@@ -75,15 +75,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputMangerObject: {fileID: 0}
   inputManager: {fileID: 0}
+  pointAddNau: {fileID: 8243788764539750877}
   _database: {fileID: 11400000, guid: cae380d3cf3bdd44d8267c7a1d4cd998, type: 2}
   spawnPosition: {x: 0, y: -6, z: 0}
   _playerCamera: {fileID: 0}
-  ComencaComPilot: 1
+  ComencaComPilot: 0
   _garage: {fileID: 0}
   mouseIndicator: {fileID: 0}
   cellIndicator: {fileID: 0}
   grid: {fileID: 0}
-  rotationSpeed: 40
   branca: 
   mode: 0
 --- !u!1 &8243788764539750877

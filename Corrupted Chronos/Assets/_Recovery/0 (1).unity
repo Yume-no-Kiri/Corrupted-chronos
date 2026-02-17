@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &12259668 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8243788764539750877, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
+  m_PrefabInstance: {fileID: 2030388161}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &123538422 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4381293455650752573, guid: 444cf5f1574e95b4c93e453a00035d8b, type: 3}
@@ -1581,6 +1586,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 2338407926785619175, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
+      propertyPath: m_Mass
+      value: 35.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 2338407926785619175, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2338407926785619175, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2429161139803003294, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1634,6 +1651,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1277509493}
     - target: {fileID: 9065371578681910068, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
+      propertyPath: pointAddNau
+      value: 
+      objectReference: {fileID: 12259668}
+    - target: {fileID: 9065371578681910068, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
       propertyPath: _playerCamera
       value: 
       objectReference: {fileID: 347397188}
@@ -1646,7 +1667,7 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1178753817}
     - target: {fileID: 9065371578681910068, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
-      propertyPath: spawnPosition.y
+      propertyPath: ComencaComPilot
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9065371578681910068, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}

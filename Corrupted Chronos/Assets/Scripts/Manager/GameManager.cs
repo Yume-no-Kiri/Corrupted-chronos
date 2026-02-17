@@ -32,12 +32,21 @@ public class GameManager : MonoBehaviour
 
 
     public float moveSpeedNau=10f;
+    [NonSerialized]
+
     public float moveSpeedPilot=4f;
 
-    public float rotationSpeed=20f;
-    public float rotationSpeedRight=20f;
-    public float rotationSpeedLeft=20f;
+    [NonSerialized]
+    public float rotationSpeed=50f;
+    [NonSerialized]
 
+    public float rotationSpeedRight=80f;
+    [NonSerialized]
+
+    public float rotationSpeedLeft=80f;
+
+
+    public float dashingForce=20f;
 
 
 
