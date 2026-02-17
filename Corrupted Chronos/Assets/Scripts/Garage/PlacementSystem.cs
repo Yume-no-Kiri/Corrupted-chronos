@@ -95,7 +95,7 @@ public class PlacementSystem : MonoBehaviour
     }
     public void StartPlacementTraveler(int id)
     {
-        StartPlacementGeneral(id, ConfigurationNau.Travelers);
+        StartPlacementGeneral(id, ConfigurationNau.Pilots);
     }
 
     public void ResetPlacement()
@@ -174,8 +174,8 @@ public class PlacementSystem : MonoBehaviour
                 _selectedListConfig = database.AllNaus;
                 selectedObjectIndex = _selectedListConfig.FindIndex(data => data.ID == id);
                 break;
-            case ConfigurationNau.Travelers:
-                _selectedListConfig= database.AllTravelers;
+            case ConfigurationNau.Pilots:
+                _selectedListConfig= database.AllPilots;
                 selectedObjectIndex = _selectedListConfig.FindIndex(data => data.ID == id);
                 break;
             default:

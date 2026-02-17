@@ -8,7 +8,7 @@ public enum ConfigurationNau
 {
     Parts,
     Naus,
-    Travelers
+    Pilots
 } 
 
 
@@ -21,7 +21,7 @@ public class PartsDatabaseSO : ScriptableObject
     public List<ObjectData> AllNaus;
     
     //els pilots son més simples, no necesitem quan ocupen
-    public List<ObjectData> AllTravelers;
+    public List<ObjectData> AllPilots;
 }
 
 [Serializable]
@@ -45,6 +45,7 @@ public class ObjectData
     
  
 
+    //2 prefabs probablment un de garatge i un amb la funcionalitat en si 
     [field: SerializeField]
     public GameObject Prefab { get; private set; }
 }
