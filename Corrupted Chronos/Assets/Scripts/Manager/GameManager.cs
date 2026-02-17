@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -27,8 +28,18 @@ public class GameManager : MonoBehaviour
     public bool StaminaRegen=false;
     public Coroutine CoroutineStamina;
 
+    public float staminaMoveUPUseQuantity=5f;
+
+
     public float moveSpeedNau=10f;
     public float moveSpeedPilot=4f;
+
+    public float rotationSpeed=20f;
+    public float rotationSpeedRight=20f;
+    public float rotationSpeedLeft=20f;
+
+
+
 
     //variable que es crida d'altres mètodes per voler volar i usar la stamina
     public bool want2Fly=false;
@@ -111,5 +122,10 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(staminaTime2Regen);
         StaminaRegen=true;
+    }
+
+    public void MoveUpStamina()
+    {
+        staminaAct-=staminaMoveUPUseQuantity; 
     }
 }

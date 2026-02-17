@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /*
     TIENE TODOS LOS CODIGOS ARMAS 
@@ -56,7 +57,7 @@ public class PartActions : MonoBehaviour
     void Start() { }
     void Update() { }
 
-    public virtual void DoShot()
+    public virtual void DoShot( InputAction.CallbackContext ctx)
     {
         throw new System.NotImplementedException();
     }
@@ -85,9 +86,9 @@ public class Metralleta : PartActions
     }*/
     
     
-    public override void DoShot()
+    public override void DoShot(InputAction.CallbackContext ctx)
     {
-        if (canShot)
+        if (canShot && ctx.performed)
         {
             Debug.Log("Transfrom.position: " + transform.position);
             StartCoroutine(ShotIE());
@@ -102,7 +103,7 @@ public class Metralleta : PartActions
         Quaternion rotationWithOffset = firepoint.GetComponentInParent<Transform>().rotation * Quaternion.Euler(0, 90, 90);
 
         bulletInstance = Instantiate(bulletPrefab, firepoint.position, rotationWithOffset);
-        ProjectilActions bulletInfo = bulletInstance.GetComponent<ProjectilActions>();
+        BaseBullets bulletInfo = bulletInstance.GetComponent<BaseBullets>();
         bulletInfo.DefinirBala(1, +3);
         
         canShot = false;
@@ -122,9 +123,9 @@ public class Escopeta : PartActions
         typePart= TypePart.ShootableRight;
     }
 
-    public override void DoShot()
+    public override void DoShot(InputAction.CallbackContext ctx)
     {
-        if (canShot)
+        if (canShot && ctx.performed)
         {
             Debug.Log("Transfrom.position: " + transform.position);
             StartCoroutine(ShotIE());
@@ -144,7 +145,7 @@ public class Escopeta : PartActions
             Quaternion rotationWithOffset = firepoint.GetComponentInParent<Transform>().rotation * Quaternion.Euler((-20+valor), 90, 90);
 
             bulletInstance = Instantiate(bulletPrefab, firepoint.position, rotationWithOffset);
-            ProjectilActions bulletInfo = bulletInstance.GetComponent<ProjectilActions>();
+            BaseBullets bulletInfo = bulletInstance.GetComponent<BaseBullets>();
             bulletInfo.DefinirBala(1, -8 );
             valor =10;
 

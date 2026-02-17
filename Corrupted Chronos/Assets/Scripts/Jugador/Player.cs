@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Ink.Parsed;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -35,6 +36,8 @@ public class Player : MonoBehaviour
     private bool isMoving;
     private bool isBoosting;
 
+    bool keepDown=false;
+    Coroutine goDownCoroutine;
     private Vector3 _newMovePosition;
 
     private float elapsedTime;
@@ -82,8 +85,10 @@ public class Player : MonoBehaviour
 
     private Vector3 mousePos;
     private Vector3 mousedir;
-    private Quaternion mouseRotation;       
-    public float rotationSpeed = 40f;
+    Quaternion targetRotation ;
+    float angle;
+    // private Quaternion mouseRotation;       
+    // public float rotationSpeed = 0.5f;
 
 
     private bool _gravity=false;
@@ -208,8 +213,14 @@ public class Player : MonoBehaviour
         // inputManager.playerInputActions.Nau.CanviCapa.performed += moveCapa;
 
         inputManager.playerInputActions.Nau.Up.performed+=GoUp;
+
+        inputManager.playerInputActions.Nau.Down.started+=GoDown;
         inputManager.playerInputActions.Nau.Down.performed+=GoDown;
+        inputManager.playerInputActions.Nau.Down.canceled+=GoDown;
+
+
         inputManager.playerInputActions.Nau.Barrelroll.started+=DoBarrelRoll;
+        inputManager.playerInputActions.Nau.Barrelroll.performed+=DoBarrelRoll;
         inputManager.playerInputActions.Nau.Barrelroll.canceled+=DoBarrelRoll;
 
 
@@ -258,13 +269,28 @@ public class Player : MonoBehaviour
         {
             if (GameManager.Instance.staminaInUse == false)
             {
-                _gravity=true;
+                // _gravity=true;
 
-                // ActivateGravity();
+                StartCoroutine(ActivateGravity());
             }
             //gastar energia per mantenir-se en la capa
         }
 
+
+        // transform.rotation=Quaternion.FromToRotation(transform.right,mousedir);
+        // Quaternion targetRotation = Quaternion.LookRotation(mousedir);
+        // transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, GameManager.Instance.rotationSpeed*Time.deltaTime);
+
+
+        /* transform.rotation = Quaternion.RotateTowards(
+                    transform.rotation, 
+                    targetRotation, 
+                    GameManager.Instance.rotationSpeed * Time.deltaTime
+                );
+         */
+         transform.rotation=targetRotation;
+        
+        Debug.Log("mouse direction:"+ targetRotation.ToString() +" transform.rotation:"+transform.rotation);
 
     }
 
@@ -274,9 +300,14 @@ public class Player : MonoBehaviour
     {
 
         //això s'haurà de moure al seu script rotar mira
-        transform.rotation = Quaternion.Lerp(transform.rotation, mouseRotation, Time.deltaTime * rotationSpeed);
-
+        
+        // transform.rotation = Quaternion.Lerp(transform.rotation, mousedir, Time.deltaTime *  GameManager.Instance.rotationSpeed);
+    
         GetInputPlayer();
+
+        if(keepDown){
+            goDownCoroutine=StartCoroutine(GoDownCoroutine());
+        }
 
         //aquí aplica el moviment, probablement moure en un script separat
         rb.MovePosition(rb.position + _newMovePosition);
@@ -443,7 +474,7 @@ public class Player : MonoBehaviour
     {
        // Debug.Log("AAAAAAAAAA");
         
-
+        print("t'executes?");
         mousePos = inputManager.playerInputActions.Global.MousePosition.ReadValue<Vector2>();
 
 
@@ -474,24 +505,41 @@ public class Player : MonoBehaviour
             //angleCamera = Mathf.Atan2(mousedir.y, mousedir.x) * Mathf.Rad2Deg;
             //mousedir= new Vector2(mousePos.x-transform.position.x, mousePos.z-transform.position.z);
             mousePos.z = Mathf.Abs(_playerCamera.transform.position.y - transform.position.y);
+
             Vector3 mouseWorldPosition = _playerCamera.ScreenToWorldPoint(mousePos);
+            mousedir= (mouseWorldPosition - transform.position).normalized;
+            // angle=Mathf.Atan2()
+            angle=Mathf.Atan2(mousedir.y,mousedir.x)*Mathf.Rad2Deg;
+
+            targetRotation= Quaternion.AngleAxis(angle, Vector3.down );
+
+            float dot= Vector3.Dot(transform.right, mousedir);
+            GameManager.Instance.rotationSpeed = (dot > 0) ?  GameManager.Instance.rotationSpeedRight :  GameManager.Instance.rotationSpeedLeft;
             
-            mousedir= mouseWorldPosition - transform.position;
-            mousedir.y = 0;
-            if (mousedir != Vector3.zero)
+            // mousedir= mouseWorldPosition - transform.position;
+
+            // mousedir.y = 0;
+            /* if (mousedir != Vector3.zero)
             {
                 mouseRotation = Quaternion.LookRotation(mousedir);
-            }
+            } */
             
         }
     }
     
+    //probablement modificar per suavitzar una mica
+    /* private void setPositionToMove()
+    {
+        Vector3 pos= transform.position;
+        transform.position = new Vector3(pos.x, Mathf.RoundToInt(pos.y), pos.z); 
+    } */
+
     private void GoUp(InputAction.CallbackContext context)
     {
         //reaprofitar parcialment move capa
         //si shift apretat no gravetat
      
-     
+        // setPositionToMove();
         if (lockUp==true )//&& !hitsBelow.Contains(myCollider))
         {
             Debug.Log("enter is lockUP");
@@ -500,51 +548,69 @@ public class Player : MonoBehaviour
         _gravity=false;
         _newMovePosition+= new Vector3(0, 1, 0);
 
+        GameManager.Instance.MoveUpStamina();
 
-        /* if (!lockDown)
-        {
-            GameManager.Instance.want2Fly=true;
-            //gastar stamina per mantenir-te al aire
-        } */
 
-       /*  else
-        {
-            StartCoroutine(ActivateGravity());
-        } */
 
         
         // rb.MovePosition(rb.position + new Vector3(0, 1, 0));
     }
 
-    IEnumerator ActivateGravity()
-    {
-        yield return 0.5f;
-        _gravity=true;
-    }
-   
+  
     private void GoDown(InputAction.CallbackContext context)
     {
-        if (lockDown)// && !hitsBelow.Contains(myCollider))
+        //Potser estaria bé que quan baixem deixem de gastar stamina per 0.5 segons
+
+        // setPositionToMove();
+        if (context.started)
         {
-            Debug.Log("enter is lockLOW");
-            return;
+            Debug.Log("enter started");
+
+            if (lockDown)// && !hitsBelow.Contains(myCollider))
+            {
+                Debug.Log("enter is lockLOW");
+                keepDown=false; 
+                /* if (goDownCoroutine != null) {
+                    StopCoroutine(goDownCoroutine);
+                } */
+                return;
+            }
+            // _newMovePosition+= new Vector3(0, -1, 0);
+            _newMovePosition+= new Vector3(0, -1, 0);
+            keepDown=true;
+
         }
-        _newMovePosition+= new Vector3(0, -1, 0);
 
-
-        /* if (!lockDown)
+        if (context.canceled)
         {
-            GameManager.Instance.want2Fly=true;
-            //gastar stamina per mantenir-te al aire
-        } */
-        // isMoving = true;
-        // elapsedTime = 0f;
-        //targetPosition = rb.position + new Vector3(0, movement, 0);
+            Debug.Log("enter canceled");
+            keepDown=false;
+            if (goDownCoroutine != null) {
+                StopCoroutine(goDownCoroutine);
+            }
+        }
 
 
         // rb.MovePosition(rb.position + new Vector3(0, -1, 0));
     }
+    //anar a baix mantenint el boto
+    IEnumerator GoDownCoroutine()
+    {
+        yield return new WaitForSeconds(1.3f);
+        if (lockDown){
+            keepDown=false; 
+        }else{
+            _newMovePosition+= new Vector3(0, -1, 0);
+        }
+        // goDownCoroutine=StartCoroutine(GoDownCoroutine());
+    }
 
+    IEnumerator ActivateGravity()
+    {
+        yield return new WaitForSeconds(0.5f);
+        _gravity=true;
+    }
+   
     private void DoBarrelRoll(InputAction.CallbackContext context)
     {
         //ara mateix barrelRoll hauria de ser petit dash cap a una direcció

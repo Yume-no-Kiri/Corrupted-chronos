@@ -4,7 +4,7 @@ using UnityEngine;
 //potser canviar-li el nom
 
 //classe general, del que venen els diferents projectils, revisar en un futur
-public class ProjectilActions : MonoBehaviour
+public class BaseBullets : MonoBehaviour
 {
     
     protected int mal;

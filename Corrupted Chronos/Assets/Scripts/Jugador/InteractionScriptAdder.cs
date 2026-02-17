@@ -2,33 +2,24 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class changenau_pilot : MonoBehaviour
+public class InteractionScriptAdder : MonoBehaviour
 {
-    /*
-    Se deberia canviar el nombre, este sirve para activar qualquier interaccion
-    
-    */
+   
 
     //aquest es el mètode que s'activa la possiblitat d'activar quan hi passar el jugador per el trigger
     [SerializeField]
     public InteractionType ThisInteraction;
-    
-    
+
+    [Space(2)]
+    [Header("if interaction is +position")]
+    Vector3 positionPilot;
+    Vector3 positionNau;
+
+
+
     private void Awake()
     {
         //inputActions = new PlayerInputActions();
-    }
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start() 
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 
     //quan l'objecte entri en la zona afegeix la possibilitat d'interactuar
@@ -46,6 +37,7 @@ public class changenau_pilot : MonoBehaviour
             if (i != null)
             {
                 //canvia l'interacció, canviar de pilot nau, nau pilot, entrar sortir de garatge, xarlar, etc...
+                //escriure aquí positionPilot i PositionNau, si la interacció l'utilitzen perf, si no encara millor
                 i.AddInteraction(ThisInteraction);
             }
             else
