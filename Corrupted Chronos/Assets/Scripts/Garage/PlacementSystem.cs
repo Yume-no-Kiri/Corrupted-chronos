@@ -69,6 +69,58 @@ public class PlacementSystem : MonoBehaviour
         
         
     }
+   
+    private void Update()
+    {
+        
+        // això està al player update i potser s'hauria de moure aquì 
+        /*Vector3Int gridPosition = grid.WorldToCell(inputManager.MousePosition);
+        mouseIndicator.transform.position = inputManager.MousePosition;
+        cellIndicator.transform.position = grid.CellToWorld(gridPosition);
+        */
+        if (inputManager.playerInputActions.Garage.enabled)
+        {
+            Vector3Int gridPosition = grid.WorldToCell(inputManager.MousePosition);
+            
+            int placementValidity =CheckPlacementValidityInt(gridPosition,selectedObjectIndex);
+            //pre.material.color=placementValidity ? Color.red : Color.white;
+            if (_previewObject)
+            {
+                cellIndicator.SetActive(false);
+                _previewObject.transform.position = grid.CellToWorld(gridPosition)+ new Vector3(0,0.5f,0);
+                foreach (var sr in _previewObject.GetComponentsInChildren<SpriteRenderer>())
+                {
+                    if (placementValidity==1)
+                    {
+                       sr.color = Color.green; 
+                    }
+                    else if(placementValidity==2)
+                    {
+                        sr.color = Color.blue;
+                    }else if (placementValidity == 3)
+                    {
+                        sr.color = Color.red;
+                    }else if (placementValidity == 4)
+                    {
+                        sr.color = Color.yellow;
+                    }
+
+                    
+                }
+            }
+            else
+            {
+                cellIndicator.SetActive(true);
+                cellIndicator.transform.position = grid.CellToWorld(gridPosition);
+
+            }
+            
+            
+            //mouseIndicator.transform.position = inputManager.MousePosition;
+
+        }
+    }
+
 
     void FirstStructure()
     {
@@ -98,6 +150,8 @@ public class PlacementSystem : MonoBehaviour
         StartPlacementGeneral(id, ConfigurationNau.Pilots);
     }
 
+
+    #region botons
     public void ResetPlacement()
     {
         foreach (var placedObject in _placedObjects) Destroy(placedObject);
@@ -143,6 +197,7 @@ public class PlacementSystem : MonoBehaviour
         nauAdded.ActivateParts();
 
     }
+    #endregion
     /*public void WhereToAddParts()
     {
         Transform nauTransform = player.transform.Find("Nau");
@@ -161,6 +216,7 @@ public class PlacementSystem : MonoBehaviour
         }
     }*/
     
+    #region place stuff
     //els botons no permeten mètodes on es passen més de 2 parametres
     public void StartPlacementGeneral(int id, ConfigurationNau config)
     {
@@ -235,7 +291,8 @@ public class PlacementSystem : MonoBehaviour
         
         bool placementValidity =CheckPlacementValidity(gridPosition,selectedObjectIndex);
         if (!placementValidity) return;
-        
+        //          ||||||
+        //peta aquí vvvvvv        
         GameObject partToAdd= Instantiate(_selectedListConfig[selectedObjectIndex].Prefab, _placedObjects[0].transform.Find("Added").transform);
         partToAdd.transform.position = grid.CellToWorld(gridPosition);
         
@@ -335,59 +392,9 @@ public class PlacementSystem : MonoBehaviour
         
     }
     
-    
-    
-    private void Update()
-    {
-        
-        // això està al player update i potser s'hauria de moure aquì 
-        /*Vector3Int gridPosition = grid.WorldToCell(inputManager.MousePosition);
-        mouseIndicator.transform.position = inputManager.MousePosition;
-        cellIndicator.transform.position = grid.CellToWorld(gridPosition);
-        */
-        if (inputManager.playerInputActions.Garage.enabled)
-        {
-            Vector3Int gridPosition = grid.WorldToCell(inputManager.MousePosition);
-            
-            int placementValidity =CheckPlacementValidityInt(gridPosition,selectedObjectIndex);
-            //pre.material.color=placementValidity ? Color.red : Color.white;
-            if (_previewObject)
-            {
-                cellIndicator.SetActive(false);
-                _previewObject.transform.position = grid.CellToWorld(gridPosition)+ new Vector3(0,0.5f,0);
-                foreach (var sr in _previewObject.GetComponentsInChildren<SpriteRenderer>())
-                {
-                    if (placementValidity==1)
-                    {
-                       sr.color = Color.green; 
-                    }
-                    else if(placementValidity==2)
-                    {
-                        sr.color = Color.blue;
-                    }else if (placementValidity == 3)
-                    {
-                        sr.color = Color.red;
-                    }else if (placementValidity == 4)
-                    {
-                        sr.color = Color.yellow;
-                    }
-
-                    
-                }
-            }
-            else
-            {
-                cellIndicator.SetActive(true);
-                cellIndicator.transform.position = grid.CellToWorld(gridPosition);
-
-            }
-            
-            
-            //mouseIndicator.transform.position = inputManager.MousePosition;
-
-        }
-    }
-
+    #endregion
+ 
+    #region enable/disable
     
     private void OnEnable()
     {
@@ -418,4 +425,5 @@ public class PlacementSystem : MonoBehaviour
             }
         }
     }
+    #endregion
 }

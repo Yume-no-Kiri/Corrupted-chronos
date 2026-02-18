@@ -28,6 +28,7 @@ public class GridData
 {
     Dictionary<Vector3Int, GroundData> placedObjects = new();
 
+    #region afegir objectes al mapa
     //afegir un objecte
     public void AddObjectAt(Vector3Int gridPosition, Vector2Int objectSize, Vector2Int buildableSize,  int ID, int placedObjectIndex)
     {
@@ -91,6 +92,7 @@ public class GridData
     
     }
 
+    //el primer element a construir es la nau
     //mètode per build i occupy
     public void AddOrModifyFirstElement(Vector3Int pos, PlacementData dataUpdate)
     {
@@ -115,8 +117,8 @@ public class GridData
         }*/
     }
     
-    
-    
+    #endregion
+    #region calcul occupied o buildable
     
     //calcular totes posicions del objecte que ocuapran
     private List<Vector3Int> CalculatePositionsWillOccupy(Vector3Int gridPosition, Vector2Int objectSize)
@@ -171,7 +173,9 @@ public class GridData
         */
     }
 
+    #endregion
 
+    #region CanPlaceObject
     //comprovar si afegir object
     //comprovar occupied i si no es buildable
     public bool CanPlaceObejctAt(Vector3Int gridPosition, Vector2Int objectSize)
@@ -241,6 +245,9 @@ public class GridData
         return r;
     }
 
+    #endregion
+
+    #region si es occupied o buildable
     private bool IsOcupiedAt(Vector3Int pos)
     {
         bool r = false;
@@ -261,8 +268,11 @@ public class GridData
         return r;
     }
     
-
+    #endregion
 }
+
+//potser separar això en un script sol
+#region PlacementData
 
 //cada objecte tindrà això
 public class PlacementData
@@ -390,3 +400,5 @@ public class PlacementData
     
     
 }
+
+#endregion

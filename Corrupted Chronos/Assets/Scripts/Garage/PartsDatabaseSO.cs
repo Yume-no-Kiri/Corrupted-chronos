@@ -12,7 +12,8 @@ public enum ConfigurationNau
 } 
 
 
-
+/* Potser canviar això una mica, perque objectData es bastant basica.
+Revisar com es fa ara, pero per les parts això és massa general */
 
 [CreateAssetMenu(fileName = "PartsDatabaseSO", menuName = "Scriptable Objects/PartsDatabaseSO")]
 public class PartsDatabaseSO : ScriptableObject
@@ -36,9 +37,9 @@ public class ObjectData
     
 
     //probablemente informacion de posicionamiento como un script solo
-
     [field: SerializeField]
     public Vector2Int Size { get; private set; } = Vector2Int.one;
+
     //aquest només el tindan Naus i parts, inclús haurien d'haver més, per les múltples variacions
     [field: SerializeField]
     public Vector2Int BuildSize { get; private set; } = Vector2Int.one;
