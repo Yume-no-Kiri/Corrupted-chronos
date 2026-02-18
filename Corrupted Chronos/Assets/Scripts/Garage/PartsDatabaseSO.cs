@@ -8,11 +8,12 @@ public enum ConfigurationNau
 {
     Parts,
     Naus,
-    Travelers
+    Pilots
 } 
 
 
-
+/* Potser canviar això una mica, perque objectData es bastant basica.
+Revisar com es fa ara, pero per les parts això és massa general */
 
 [CreateAssetMenu(fileName = "PartsDatabaseSO", menuName = "Scriptable Objects/PartsDatabaseSO")]
 public class PartsDatabaseSO : ScriptableObject
@@ -21,7 +22,7 @@ public class PartsDatabaseSO : ScriptableObject
     public List<ObjectData> AllNaus;
     
     //els pilots son més simples, no necesitem quan ocupen
-    public List<ObjectData> AllTravelers;
+    public List<ObjectData> AllPilots;
 }
 
 [Serializable]
@@ -36,15 +37,16 @@ public class ObjectData
     
 
     //probablemente informacion de posicionamiento como un script solo
-
     [field: SerializeField]
     public Vector2Int Size { get; private set; } = Vector2Int.one;
+
     //aquest només el tindan Naus i parts, inclús haurien d'haver més, per les múltples variacions
     [field: SerializeField]
     public Vector2Int BuildSize { get; private set; } = Vector2Int.one;
     
  
 
+    //2 prefabs probablment un de garatge i un amb la funcionalitat en si 
     [field: SerializeField]
     public GameObject Prefab { get; private set; }
 }

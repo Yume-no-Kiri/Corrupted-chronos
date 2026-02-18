@@ -35,6 +35,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &76409179544447677
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -53,6 +54,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -74,9 +77,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 15b75ac4df3c7c94c9ece0e241ff0aed, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -86,7 +91,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!135 &3678086678322823177
 SphereCollider:
@@ -238,7 +242,6 @@ MonoBehaviour:
   m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
-  m_Version: 2
   m_TaaSettings:
     m_Quality: 3
     m_FrameInfluence: 0.1
@@ -246,6 +249,7 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!1 &5591852160211229115
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,9 +460,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29919a04243bd68469907063f8cdb296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nau: {fileID: 7745928943338400580}
-  _pilot: {fileID: 3421498788124919428}
-  "Comen\xE7aComPilot": 1
+  inputMangerObject: {fileID: 0}
+  inputManager: {fileID: 0}
+  pointAddNau: {fileID: 0}
+  _database: {fileID: 0}
+  spawnPosition: {x: 0, y: 0, z: 0}
+  _playerCamera: {fileID: 0}
+  ComencaComPilot: 1
+  _garage: {fileID: 0}
+  mouseIndicator: {fileID: 0}
+  cellIndicator: {fileID: 0}
+  grid: {fileID: 0}
+  branca: 
+  mode: 0
 --- !u!114 &6929781158088448548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -524,6 +538,38 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: c05f9fc2-27cf-4aef-879e-9fc8611bfcf7
     m_ActionName: Global/Pausa
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7a7f5f6d-9aef-4efe-8a0e-a574a0841a31
+    m_ActionName: 'Nau/OnShotLeft[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e0d67fa4-a04b-4a48-8582-add7e18d484b
+    m_ActionName: 'Nau/OnShotRight[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 23a04d42-7c93-49ae-97f1-85c6d9ced7db
+    m_ActionName: 'Nau/Up[/Keyboard/space]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 71c904c3-5ea5-4082-92c6-45004b5a6427
+    m_ActionName: 'Nau/Down[/Keyboard/ctrl]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9edf9f03-4894-407a-b7f3-491a41d9a719
+    m_ActionName: 'Nau/Barrelroll[/Keyboard/shift]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 896bcd14-7811-4832-9763-e8e205e21cfa
+    m_ActionName: 'Global/Mouse Position[/Mouse/position]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f82c0c94-051f-45a4-93f3-cf970123a69b
+    m_ActionName: 'Garage/OnClick[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c8531c9d-0089-44ec-a7b5-6755d6dcac56
+    m_ActionName: 'Garage/OnExit[/Mouse/rightButton,/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard
   m_DefaultActionMap: Nau
@@ -566,6 +612,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &2527221901056549312
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -584,6 +631,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -605,9 +654,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 56bf5be0e7ff21942b97a1ae45017018, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -617,7 +668,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!135 &7821282411161834427
 SphereCollider:

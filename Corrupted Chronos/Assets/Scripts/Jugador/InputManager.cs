@@ -13,7 +13,8 @@ public class InputManager : MonoBehaviour
     public Vector3 MousePosition;
 
     
-    public event Action OnClick, OnExit, OnShotLeft, OnShotRight;
+    public event Action OnClick, OnExit;
+    public event Action<InputAction.CallbackContext> OnShotLeft, OnShotRight;
 
     
     private void Awake()
@@ -21,8 +22,8 @@ public class InputManager : MonoBehaviour
         playerInputActions = new PlayerInputActions();
         playerInputActions.Garage.OnClick.performed += CallOnClick;
         playerInputActions.Garage.OnExit.performed += CallOnExit;
-        playerInputActions.Nau.OnShotLeft.performed +=ctx=> OnShotLeft?.Invoke();
-        playerInputActions.Nau.OnShotRight.performed += ctx=> OnShotRight?.Invoke();
+        playerInputActions.Nau.OnShotLeft.performed +=ctx=> OnShotLeft?.Invoke(ctx);
+        playerInputActions.Nau.OnShotRight.performed += ctx=> OnShotRight?.Invoke(ctx);
 
     }
 

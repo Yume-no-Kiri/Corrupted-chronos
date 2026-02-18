@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Ink.Parsed;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -33,9 +34,14 @@ public class Player : MonoBehaviour
     private float moveDuration;
     private Vector3 targetPosition;
     private bool isMoving;
-    private bool isBoosting;
+    private bool isBarrelRoll;
 
+    bool keepDown=false;
+    Coroutine goDownCoroutine;
     private Vector3 _newMovePosition;
+    private Vector3 _GravityForce;
+    private Vector3 _TotalForces;
+
 
     private float elapsedTime;
     
@@ -80,10 +86,15 @@ public class Player : MonoBehaviour
     private Grid grid;
     private Camera _garageCamera;
 
+    private Quaternion mouseRotation;       
+
     private Vector3 mousePos;
     private Vector3 mousedir;
-    private Quaternion mouseRotation;       
-    public float rotationSpeed = 40f;
+    Quaternion targetRotation ;
+     Vector3 mouseWorldPosition;
+    float angle;
+    // private Quaternion mouseRotation;       
+    // public float rotationSpeed = 0.5f;
 
 
     private bool _gravity=false;
@@ -104,10 +115,7 @@ public class Player : MonoBehaviour
     private float moveSpeedNau=10f;
     private float moveSpeedPilot=4f;
 
-    private float staminaMax=100f;
-    private float staminaAct;
-    private float staminaRegen=2.5f;
-    private float staminaTime2Regen=2f;
+
     //hauria d'haver algo per a que passat x umbrals passi x coses, segons coses afegides
 
     
@@ -122,7 +130,7 @@ public class Player : MonoBehaviour
         //varaibles generals
         moveDuration = 0.1f;
         isMoving = false;
-        isBoosting=false;
+        // isBoosting=false;
         elapsedTime = 0f;
         lockUp = false;
         lockDown = false;
@@ -148,14 +156,11 @@ public class Player : MonoBehaviour
          
         //_nau =Instantiate(_database.AllNaus[0].Prefab, pointAddNau.transform, true);
         //_nau.transform.position = pointAddNau.transform.position;
-        _nau = Instantiate(_database.AllNaus[0].Prefab);
-        _pilot= Instantiate(_database.AllTravelers[0].Prefab);
-        _nau.transform.position = new Vector3(0, spawnPosition.y,0);
-        _pilot.transform.position = new Vector3(0, spawnPosition.y, 0);
-        
-        //OHHHHH that's why
+        _nau = Instantiate(_database.AllNaus[0].Prefab, new Vector3(0, 0, 0), quaternion.identity);
+        _pilot= Instantiate(_database.AllPilots[0].Prefab,new Vector3(0, 0, 0), quaternion.identity);
         _nau.transform.SetParent(this.transform,false);
         _pilot.transform.SetParent(this.transform,false);
+        
 
         //components and stuff
         rb = GetComponent<Rigidbody>();
@@ -206,9 +211,15 @@ public class Player : MonoBehaviour
         // inputManager.playerInputActions.Nau.CanviCapa.performed += moveCapa;
 
         inputManager.playerInputActions.Nau.Up.performed+=GoUp;
+
+        inputManager.playerInputActions.Nau.Down.started+=GoDown;
         inputManager.playerInputActions.Nau.Down.performed+=GoDown;
-        inputManager.playerInputActions.Nau.Barrelroll.started+=DoBoost;
-        inputManager.playerInputActions.Nau.Barrelroll.canceled+=DoBoost;
+        inputManager.playerInputActions.Nau.Down.canceled+=GoDown;
+
+
+        inputManager.playerInputActions.Nau.Barrelroll.started+=DoBarrelRoll;
+        inputManager.playerInputActions.Nau.Barrelroll.performed+=DoBarrelRoll;
+        inputManager.playerInputActions.Nau.Barrelroll.canceled+=DoBarrelRoll;
 
 
         inputManager.playerInputActions.Global.Enable();
@@ -244,55 +255,111 @@ public class Player : MonoBehaviour
                 isMoving = false; // Movement finished
             }
         } */
+        /* transform.rotation =Quaternion.Euler(0f, 0f, angle);
+        Debug.DrawLine(transform.position, mouseWorldPosition, Color.white, Time.deltaTime); */
+        if (mousedir != Vector3.zero)
+        {
+            // GameManager.Instance.rotationSpeed;
+            // 4. Aplicar la rotació en l'eix Y (el que fa girar horitzontalment)
+            // transform.rotation= Quaternion.LookRotation(mousedir);
+
+            float dot= Vector3.Dot(transform.right, mousedir.normalized);
+            if (dot > 0)
+            {
+                 Debug.Log("rotationSpeed  ___>0___");
+                GameManager.Instance.rotationSpeed= GameManager.Instance.rotationSpeedRight ;
+            }
+            if (dot < 0)
+            {
+                Debug.Log("rotationSpeed  ___<0___");
+                GameManager.Instance.rotationSpeed= GameManager.Instance.rotationSpeedLeft ;
+                
+            }
+
+            // GameManager.Instance.rotationSpeed = (dot > 0) ?  GameManager.Instance.rotationSpeedRight :  GameManager.Instance.rotationSpeedLeft;
+            Debug.Log("rotationSpeed, dot:"+ dot+" speed"+GameManager.Instance.rotationSpeed);
+
+            targetRotation = Quaternion.LookRotation(mousedir);
+            transform.rotation = Quaternion.RotateTowards(
+            transform.rotation, 
+            targetRotation, 
+            GameManager.Instance.rotationSpeed * Time.deltaTime
+            );
+        }
+        Debug.DrawRay(transform.position, transform.right * 2f, Color.red);
+        Debug.DrawLine(transform.position, mouseWorldPosition, Color.white);
 
         if (!inputManager.playerInputActions.Nau.enabled) return;
         if (lockDown)// && !isBoosting)
         {
-            Debug.Log("GRAVITY on1");
+            Debug.Log("GRAVITY off");
 
             _gravity = false;
  
+        }else
+        {
+            if (GameManager.Instance.staminaInUse == false)
+            {
+                // _gravity=true;
+
+                StartCoroutine(ActivateGravity());
+            }
+            //gastar energia per mantenir-se en la capa
         }
 
 
-    }
+        }
+    #endregion
 
-   
+    #region FixedUpdate
 
     void FixedUpdate()
     {
 
         //això s'haurà de moure al seu script rotar mira
-        transform.rotation = Quaternion.Lerp(transform.rotation, mouseRotation, Time.deltaTime * rotationSpeed);
-
+        
+        // transform.rotation = Quaternion.Lerp(transform.rotation, mouseRotation, Time.deltaTime *  GameManager.Instance.rotationSpeed);
+    
         GetInputPlayer();
 
-        //aquí aplica el moviment, probablement moure en un script separat
-        rb.MovePosition(rb.position + _newMovePosition);
-        _newMovePosition = Vector3.zero;
-        // OnDrawGizmosSelected();
-    }
-
-   
-    #endregion
-
-    #region moure al singleton
-
-   /*  void aa()
-    {
-        
-        IEnumerator regen()
-        {
-            yield return 0f;
+        if(keepDown){
+            goDownCoroutine=StartCoroutine(GoDownCoroutine());
         }
 
 
-    } */
+
+        //aquí aplica el moviment, probablement moure en un script separat
+
+        //sumem forces
+        //is barrel roll on, stoping all other forces
+        if (isBarrelRoll)
+        {
+            if (_newMovePosition == Vector3.zero)
+            {
+                //que? mou enrere o 
+            }
+
+            rb.AddForce(_newMovePosition*GameManager.Instance.dashingForce);
+        }
+        else
+        {
+            _TotalForces=_newMovePosition+_GravityForce;
+
+            // rb.MovePosition(rb.position + _TotalForces);
+            rb.transform.position+=40* _TotalForces*Time.deltaTime;
+            _newMovePosition = Vector3.zero;
+            _GravityForce = Vector3.zero;
+        }
+
+       
 
 
 
 
+        toFly();
+    }
     #endregion
+   
 
     #region changeInputMap
     public void AccesChangeInputMap(NameInputAction inputMap, bool enableIt)
@@ -433,23 +500,23 @@ public class Player : MonoBehaviour
 
             //depen de com es vuglusi jugar amb la gravetat, si aquesta creix quan no estem entre enters i disminueix quan estem en enters
             
-            /* float decimalPart =  rb.transform.position.y % 1.0f;
-            float resultat = Mathf.Abs((decimalPart * 2) - 1);
+            float decimalPart =  rb.transform.position.y % 1.0f;
+            // float resultat = Mathf.Abs((decimalPart * 2) - 1);
             float resultat =Mathf.Lerp(1f,0.2f, (Mathf.Cos(decimalPart * 2 * Mathf.PI) + 1f) / 2f);
             print("gravity result"+ resultat);
             // if(resultat<=0.2) resultat=0.2f;
-            _newMovePosition += Vector3.down * resultat*Time.deltaTime; */
+            _GravityForce += Vector3.down * resultat*Time.deltaTime;
             
-            _newMovePosition += Vector3.down *Time.deltaTime;
+            // _newMovePosition += Vector3.down *Time.deltaTime;
 
         }
     }
 
-       private void PositionMouse(InputAction.CallbackContext context)
+    private void PositionMouse(InputAction.CallbackContext context)
     {
        // Debug.Log("AAAAAAAAAA");
         
-
+        print("t'executes?");
         mousePos = inputManager.playerInputActions.Global.MousePosition.ReadValue<Vector2>();
 
 
@@ -471,68 +538,117 @@ public class Player : MonoBehaviour
 
         }else if (inputManager.playerInputActions.Nau.enabled)
         {
-            //Camera camPlayer = _playerCamera.GetComponentInChildren<Camera>();
-            //mouse.z = _playerCamera.nearClipPlane;
-            //dona igual si nau o player, estan conectats
-            //mousePos.y = _nau.transform.position.y;
-            //mousePos= _playerCamera.ScreenToWorldPoint(mousePos);
-            //mousedir = (mousePos - transform.position); 
-            //angleCamera = Mathf.Atan2(mousedir.y, mousedir.x) * Mathf.Rad2Deg;
-            //mousedir= new Vector2(mousePos.x-transform.position.x, mousePos.z-transform.position.z);
-            mousePos.z = Mathf.Abs(_playerCamera.transform.position.y - transform.position.y);
-            Vector3 mouseWorldPosition = _playerCamera.ScreenToWorldPoint(mousePos);
-            
-            mousedir= mouseWorldPosition - transform.position;
-            mousedir.y = 0;
-            if (mousedir != Vector3.zero)
+        
+            Ray ray = _playerCamera.ScreenPointToRay(mousePos);
+    
+            Plane groundPlane = new Plane(Vector3.up, transform.position);
+            float rayDistance;
+
+            if (groundPlane.Raycast(ray, out rayDistance))
             {
-                mouseRotation = Quaternion.LookRotation(mousedir);
+                // Aquesta és la posició real del ratolí en el món 3D
+                mouseWorldPosition = ray.GetPoint(rayDistance);
+
+                // 3. Calcular la direcció (ignorant l'altura Y per no inclinar el personatge)
+                mousedir = mouseWorldPosition - transform.position;
+                mousedir.y = 0; 
+
+                
+                //smoth
+                /* float smoothSpeed = Mathf.Lerp(lastSpeed, speedTarget, Time.deltaTime * 5f);
+                lastSpeed = smoothSpeed; */
             }
+
             
         }
     }
     
+    //probablement modificar per suavitzar una mica
+    /* private void setPositionToMove()
+    {
+        Vector3 pos= transform.position;
+        transform.position = new Vector3(pos.x, Mathf.RoundToInt(pos.y), pos.z); 
+    } */
+
     private void GoUp(InputAction.CallbackContext context)
     {
         //reaprofitar parcialment move capa
         //si shift apretat no gravetat
      
-     
+        // setPositionToMove();
         if (lockUp==true )//&& !hitsBelow.Contains(myCollider))
         {
             Debug.Log("enter is lockUP");
             return;
         }
+        _gravity=false;
         _newMovePosition+= new Vector3(0, 1, 0);
-        StartCoroutine(ActivateGravity());
-        // rb.MovePosition(rb.position + new Vector3(0, 1, 0));
+
+        GameManager.Instance.MoveUpStamina();
+    }
+
+  
+    private void GoDown(InputAction.CallbackContext context)
+    {
+        //Potser estaria bé que quan baixem deixem de gastar stamina per 0.5 segons
+
+        // setPositionToMove();
+        if (context.started)
+        {
+            Debug.Log("enter started");
+
+            if (lockDown)// && !hitsBelow.Contains(myCollider))
+            {
+                Debug.Log("enter is lockLOW");
+                keepDown=false; 
+                /* if (goDownCoroutine != null) {
+                    StopCoroutine(goDownCoroutine);
+                } */
+                return;
+            }
+            // _newMovePosition+= new Vector3(0, -1, 0);
+            _newMovePosition+= new Vector3(0, -1, 0);
+            keepDown=true;
+
+        }
+
+        if (context.canceled)
+        {
+            Debug.Log("enter canceled");
+            keepDown=false;
+            if (goDownCoroutine != null) {
+                StopCoroutine(goDownCoroutine);
+            }
+        }
+
+
+        // rb.MovePosition(rb.position + new Vector3(0, -1, 0));
+    }
+    //anar a baix mantenint el boto
+    IEnumerator GoDownCoroutine()
+    {
+        yield return new WaitForSeconds(1.3f);
+        if (lockDown){
+            keepDown=false; 
+        }else{
+            _newMovePosition+= new Vector3(0, -1, 0);
+        }
+        // goDownCoroutine=StartCoroutine(GoDownCoroutine());
     }
 
     IEnumerator ActivateGravity()
     {
-        yield return 0.5f;
+        yield return new WaitForSeconds(0.5f);
         _gravity=true;
     }
    
-    private void GoDown(InputAction.CallbackContext context)
+    private void DoBarrelRoll(InputAction.CallbackContext context)
     {
-        if (lockDown)// && !hitsBelow.Contains(myCollider))
-        {
-            Debug.Log("enter is lockLOW");
-            return;
+        isBarrelRoll=true;
+        StartCoroutine(BarrelRollActive());
 
-        }
-        // isMoving = true;
-        // elapsedTime = 0f;
-        //targetPosition = rb.position + new Vector3(0, movement, 0);
-
-        _newMovePosition+= new Vector3(0, -1, 0);
-
-        // rb.MovePosition(rb.position + new Vector3(0, -1, 0));
-    }
-
-    private void DoBoost(InputAction.CallbackContext context)
-    {
+        //ara mateix barrelRoll hauria de ser petit dash cap a una direcció
+        /* boost de velocitat, desactualitzat
         if (context.started)
         {
             Debug.Log("is    boosting");
@@ -541,7 +657,13 @@ public class Player : MonoBehaviour
         {
             Debug.Log("isn't boosting");
             isBoosting=false;
-        }
+        } */
+    }
+
+    IEnumerator BarrelRollActive()
+    {
+        yield return new WaitForSeconds(0.5f);
+        isBarrelRoll=false;
     }
 
     private void moveCapa(InputAction.CallbackContext context)
@@ -593,6 +715,17 @@ public class Player : MonoBehaviour
         Gizmos.DrawWireSphere(targetPos1, checkRadius);
     }*/
 
+    void toFly()
+    {
+        if (!lockDown)
+        {
+            GameManager.Instance.want2Fly=true;
+        }
+        else
+        {
+            GameManager.Instance.want2Fly=false;
+        }
+    }
     public void DetectorCapaResponse(DetectCanviCapaType detect, bool isLocked, GameObject detector)
     {
         if (detect == DetectCanviCapaType.Up)
