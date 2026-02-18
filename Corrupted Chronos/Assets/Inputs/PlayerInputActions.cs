@@ -154,6 +154,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=2)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Boost"",
+                    ""type"": ""Button"",
+                    ""id"": ""a196be50-9f0b-4217-92c5-c55201ac93d1"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -297,6 +306,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Barrelroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""28fe955a-5521-416b-8340-646e96c619a9"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Boost"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -573,6 +593,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Nau_Up = m_Nau.FindAction("Up", throwIfNotFound: true);
         m_Nau_Down = m_Nau.FindAction("Down", throwIfNotFound: true);
         m_Nau_Barrelroll = m_Nau.FindAction("Barrelroll", throwIfNotFound: true);
+        m_Nau_Boost = m_Nau.FindAction("Boost", throwIfNotFound: true);
         // Pilot
         m_Pilot = asset.FindActionMap("Pilot", throwIfNotFound: true);
         m_Pilot_MovePilot = m_Pilot.FindAction("MovePilot", throwIfNotFound: true);
@@ -680,6 +701,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Nau_Up;
     private readonly InputAction m_Nau_Down;
     private readonly InputAction m_Nau_Barrelroll;
+    private readonly InputAction m_Nau_Boost;
     /// <summary>
     /// Provides access to input actions defined in input action map "Nau".
     /// </summary>
@@ -719,6 +741,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Nau/Barrelroll".
         /// </summary>
         public InputAction @Barrelroll => m_Wrapper.m_Nau_Barrelroll;
+        /// <summary>
+        /// Provides access to the underlying input action "Nau/Boost".
+        /// </summary>
+        public InputAction @Boost => m_Wrapper.m_Nau_Boost;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -766,6 +792,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Barrelroll.started += instance.OnBarrelroll;
             @Barrelroll.performed += instance.OnBarrelroll;
             @Barrelroll.canceled += instance.OnBarrelroll;
+            @Boost.started += instance.OnBoost;
+            @Boost.performed += instance.OnBoost;
+            @Boost.canceled += instance.OnBoost;
         }
 
         /// <summary>
@@ -798,6 +827,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Barrelroll.started -= instance.OnBarrelroll;
             @Barrelroll.performed -= instance.OnBarrelroll;
             @Barrelroll.canceled -= instance.OnBarrelroll;
+            @Boost.started -= instance.OnBoost;
+            @Boost.performed -= instance.OnBoost;
+            @Boost.canceled -= instance.OnBoost;
         }
 
         /// <summary>
@@ -1328,6 +1360,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnBarrelroll(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Boost" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnBoost(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Pilot" which allows adding and removing callbacks.
