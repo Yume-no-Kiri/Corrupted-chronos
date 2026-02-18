@@ -156,8 +156,8 @@ public class Player : MonoBehaviour
          
         //_nau =Instantiate(_database.AllNaus[0].Prefab, pointAddNau.transform, true);
         //_nau.transform.position = pointAddNau.transform.position;
-        _nau = Instantiate(_database.AllNaus[0].Prefab, new Vector3(0, 0, 0), quaternion.identity);
-        _pilot= Instantiate(_database.AllPilots[0].Prefab,new Vector3(0, 0, 0), quaternion.identity);
+        _nau = Instantiate(_database.AllNaus[0].PrefabGaratge, new Vector3(0, 0, 0), quaternion.identity);
+        _pilot= Instantiate(_database.AllPilots[0].PrefabGaratge,new Vector3(0, 0, 0), quaternion.identity);
         _nau.transform.SetParent(this.transform,false);
         _pilot.transform.SetParent(this.transform,false);
         

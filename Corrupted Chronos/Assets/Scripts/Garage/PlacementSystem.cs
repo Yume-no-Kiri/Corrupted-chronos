@@ -250,7 +250,7 @@ public class PlacementSystem : MonoBehaviour
         
         //objecte per veure el preview
         if(_previewObject !=null)          Destroy(_previewObject);
-        _previewObject= Instantiate(_selectedListConfig[selectedObjectIndex].Prefab);
+        _previewObject= Instantiate(_selectedListConfig[selectedObjectIndex].PrefabGaratge);
         Transform coll = _previewObject.transform.Find("Collisions");
         if (coll != null) coll.gameObject.SetActive(false);
         
@@ -292,8 +292,12 @@ public class PlacementSystem : MonoBehaviour
         bool placementValidity =CheckPlacementValidity(gridPosition,selectedObjectIndex);
         if (!placementValidity) return;
         //          ||||||
+
+
+        if(!_selectedListConfig[selectedObjectIndex].PrefabGaratge) Debug.LogError("error prefab");
+        if(!_placedObjects[0].transform.Find("Added").transform) Debug.LogError("error no se que es això");
         //peta aquí vvvvvv        
-        GameObject partToAdd= Instantiate(_selectedListConfig[selectedObjectIndex].Prefab, _placedObjects[0].transform.Find("Added").transform);
+        GameObject partToAdd= Instantiate(_selectedListConfig[selectedObjectIndex].PrefabGaratge, _placedObjects[0].transform.Find("Added").transform);
         partToAdd.transform.position = grid.CellToWorld(gridPosition);
         
         Transform coll = partToAdd.transform.Find("Collisions");
@@ -328,7 +332,7 @@ public class PlacementSystem : MonoBehaviour
         //bool placementValidity =CheckPlacementValidity(gridPosition,selectedObjectIndex);
         //if (!placementValidity) return;
         
-        GameObject partToAdd= Instantiate(_selectedListConfig[selectedObjectIndex].Prefab);
+        GameObject partToAdd= Instantiate(_selectedListConfig[selectedObjectIndex].PrefabGaratge);
         partToAdd.transform.position = grid.CellToWorld(gridPosition);//- offset;
         
         Transform coll = partToAdd.transform.Find("Collisions");
