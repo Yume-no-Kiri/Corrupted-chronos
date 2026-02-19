@@ -48,5 +48,9 @@ public class ObjectData
 
     //2 prefabs probablment un de garatge i un amb la funcionalitat en si 
     [field: SerializeField]
-    public GameObject Prefab { get; private set; }
+    public GameObject PrefabGaratge { get; private set; }
+
+    // [field: SerializeField]
+    // public GameObject PrefabJugable { get; private set; }
+
 }
