@@ -351,11 +351,6 @@ public class Player : MonoBehaviour
             _GravityForce = Vector3.zero;
         }
 
-       
-
-
-
-
         toFly();
     }
     #endregion
@@ -726,6 +721,10 @@ public class Player : MonoBehaviour
             GameManager.Instance.want2Fly=false;
         }
     }
+
+    #endregion
+    #region Capes Detector
+
     public void DetectorCapaResponse(DetectCanviCapaType detect, bool isLocked, GameObject detector)
     {
         if (detect == DetectCanviCapaType.Up)
