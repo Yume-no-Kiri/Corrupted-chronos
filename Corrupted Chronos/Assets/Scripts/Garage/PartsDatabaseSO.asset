@@ -15,28 +15,47 @@ MonoBehaviour:
   AllParts:
   - <Name>k__BackingField: Metralleta
     <ID>k__BackingField: 0
-    <Size>k__BackingField: {x: 1, y: 2}
-    <BuildSize>k__BackingField: {x: 2, y: 4}
+    <dictionaryAuxSize>k__BackingField:
+    - typeGround: 1
+      sizeGround:
+        Size: {x: 1, y: 2}
+        ExtraSize: []
+    - typeGround: 2
+      sizeGround:
+        Size: {x: 3, y: 4}
+        ExtraSize: []
     <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: aad720e43b3d46d40a7f40a6877f7c31, type: 3}
   - <Name>k__BackingField: Escopeta
     <ID>k__BackingField: 1
-    <Size>k__BackingField: {x: 1, y: 2}
-    <BuildSize>k__BackingField: {x: 2, y: 4}
+    <dictionaryAuxSize>k__BackingField:
+    - typeGround: 1
+      sizeGround:
+        Size: {x: 1, y: 2}
+        ExtraSize: []
+    - typeGround: 2
+      sizeGround:
+        Size: {x: 3, y: 4}
+        ExtraSize: []
     <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: ed32564e70a0da549821e8f91bcbb3af, type: 3}
   - <Name>k__BackingField: Quadrat Prova
     <ID>k__BackingField: 2
-    <Size>k__BackingField: {x: 1, y: 1}
-    <BuildSize>k__BackingField: {x: 2, y: 2}
+    <dictionaryAuxSize>k__BackingField:
+    - typeGround: 1
+      sizeGround:
+        Size: {x: 1, y: 1}
+        ExtraSize: []
+    - typeGround: 2
+      sizeGround:
+        Size: {x: 3, y: 3}
+        ExtraSize: []
     <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: f09e7fbb6e285d345b48218b683c4cfd, type: 3}
   AllNaus:
   - <Name>k__BackingField: Nau Basic
     <ID>k__BackingField: 0
-    <Size>k__BackingField: {x: 2, y: 2}
-    <BuildSize>k__BackingField: {x: 3, y: 3}
+    <dictionaryAuxSize>k__BackingField: []
     <PrefabGaratge>k__BackingField: {fileID: 3513957959478190534, guid: 35472b169ec04ca4da0fdada2eac151c, type: 3}
   AllPilots:
   - <Name>k__BackingField: pilot basic
     <ID>k__BackingField: 0
-    <Size>k__BackingField: {x: 2, y: 2}
-    <BuildSize>k__BackingField: {x: 2, y: 2}
+    <dictionaryAuxSize>k__BackingField: []
     <PrefabGaratge>k__BackingField: {fileID: 5587545801459419818, guid: 83692990601c6a14694a3f67c567c435, type: 3}

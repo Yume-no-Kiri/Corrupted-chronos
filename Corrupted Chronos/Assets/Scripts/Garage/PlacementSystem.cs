@@ -306,8 +306,8 @@ public class PlacementSystem : MonoBehaviour
             cablesShip;
         */
         //selectedData.AddObjectAt(gridPosition,_selectedListConfig[selectedObjectIndex].Size,
-        schemeShip.AddObjectAt(gridPosition,_selectedListConfig[selectedObjectIndex].Size,
-            _selectedListConfig[selectedObjectIndex].BuildSize,
+        schemeShip.AddObjectAt(gridPosition,_selectedListConfig[selectedObjectIndex].ConfigGround[TypeGround.Occupied],
+            _selectedListConfig[selectedObjectIndex].ConfigGround[TypeGround.Buildable],
             _selectedListConfig[selectedObjectIndex].ID,
             _placedObjects.Count-1);
         
@@ -353,8 +353,8 @@ public class PlacementSystem : MonoBehaviour
             cablesShip;
         */ 
         //selectedData.AddObjectAt(gridPosition,_selectedListConfig[selectedObjectIndex].Size,
-        schemeShip.AddObjectAt(gridPosition,_selectedListConfig[selectedObjectIndex].Size,
-            _selectedListConfig[selectedObjectIndex].BuildSize,
+        schemeShip.AddObjectAt(gridPosition,_selectedListConfig[selectedObjectIndex].ConfigGround[TypeGround.Occupied],
+            _selectedListConfig[selectedObjectIndex].ConfigGround[TypeGround.Buildable],
             _selectedListConfig[selectedObjectIndex].ID,
             _placedObjects.Count-1);
         
@@ -383,7 +383,7 @@ public class PlacementSystem : MonoBehaviour
                 cablesShip;
         */
 
-        return schemeShip.CanPlaceObejctAt(gridPosition,_selectedListConfig[selectedIndex].Size);
+        return schemeShip.CanPlaceObejctAt(gridPosition,_selectedListConfig[selectedIndex].ConfigGround[TypeGround.Occupied]);
         
     }
     
@@ -397,7 +397,7 @@ public class PlacementSystem : MonoBehaviour
                 cablesShip;
         */
 
-        return schemeShip.CanPlaceObejctAt2(gridPosition,_selectedListConfig[selectedIndex].Size);
+        return schemeShip.CanPlaceObejctAt2(gridPosition,_selectedListConfig[selectedIndex].ConfigGround[TypeGround.Occupied]);
         
     }
     

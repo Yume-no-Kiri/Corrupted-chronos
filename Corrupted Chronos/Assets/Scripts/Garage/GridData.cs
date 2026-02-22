@@ -9,8 +9,14 @@ using UnityEngine;
 public enum TypeGround
 {
     Null,
+    Occupied,
     Buildable,
-    Occupied
+
+    Muzzle, //boquilla de arma
+    Magazine, //cargador
+    OverHeat,
+
+
 } 
 
 public class GroundData
@@ -31,7 +37,7 @@ public class GridData
 
     #region afegir objectes al mapa
     //afegir un objecte
-    public void AddObjectAt(Vector3Int gridPosition, Vector2Int objectSize, Vector2Int buildableSize,  int ID, int placedObjectIndex)
+    public void AddObjectAt(Vector3Int gridPosition, HashSet<Vector2Int> objectSize, HashSet<Vector2Int> buildableSize,  int ID, int placedObjectIndex)
     {
         Debug.Log("______________________new objct____________________");
         List<Vector3Int> positionWillOccupy = CalculatePositionsWillOccupy(gridPosition, objectSize);
@@ -122,36 +128,48 @@ public class GridData
     #region calcul occupied o buildable
     
     //calcular totes posicions del objecte que ocuapran
-    private List<Vector3Int> CalculatePositionsWillOccupy(Vector3Int gridPosition, Vector2Int objectSize)
+    private List<Vector3Int> CalculatePositionsWillOccupy(Vector3Int gridPosition, HashSet<Vector2Int> objectSize)
     {
         //si es vol afegir rotació algo a fer aquí 
         List<Vector3Int> returnVal = new();
-        for (int x = 0; x < objectSize.x; x++)
+        /* for (int x = 0; x < objectSize.x; x++)
         {
             for (int y = 0; y < objectSize.y; y++)
             {
                 returnVal.Add(gridPosition + new Vector3Int(x, 0, y));
             }
+        } */
+        foreach (var item in objectSize)
+        {
+            returnVal.Add(gridPosition+ new Vector3Int(item.x,0,item.y));
         }
         
         return returnVal;
     }
 
     //calcular totes les posicions que deixarà buildable un objecte
-    private List<Vector3Int> CalculatePositionsWillBuildable(Vector3Int gridPosition, Vector2Int objectSize,
-        Vector2Int buildableSize)
+    private List<Vector3Int> CalculatePositionsWillBuildable(Vector3Int gridPosition, HashSet<Vector2Int> objectSize,
+        HashSet<Vector2Int> buildableSize)
     {
-        Vector2Int overSize= buildableSize- objectSize ;
+        //fer que els extrems, les puntos, no es triin
+
+        List<Vector3Int> returnVal = new();
+        /* Vector2Int overSize= buildableSize- objectSize ;
         overSize= new Vector2Int(Mathf.Abs(overSize.x),Mathf.Abs(overSize.y));
         //podria ser que diferents objectes tinguin diferents mètodes per calcular l'espai que deixen poder construïr 
-        List<Vector3Int> returnVal = new();
         for (int x = 0-overSize.x; x < objectSize.x+overSize.x; x++)
         {
             for (int y = 0-overSize.y; y < objectSize.y+overSize.y; y++)
             {
                 returnVal.Add(gridPosition + new Vector3Int(x, 0, y));
             }
+        } */
+        foreach (var item in buildableSize)
+        {
+            returnVal.Add(gridPosition+ new Vector3Int(item.x,0,item.y));
         }
+
+
         return returnVal;
 
         /*
@@ -179,7 +197,7 @@ public class GridData
     #region CanPlaceObject
     //comprovar si afegir object
     //comprovar occupied i si no es buildable
-    public bool CanPlaceObejctAt(Vector3Int gridPosition, Vector2Int objectSize)
+    public bool CanPlaceObejctAt(Vector3Int gridPosition, HashSet<Vector2Int> objectSize)
     {
         //veure si té alguna peça en buildable
         bool r = false, occuped = false;
@@ -210,7 +228,7 @@ public class GridData
         
         return r;
     }
-    public int CanPlaceObejctAt2(Vector3Int gridPosition, Vector2Int objectSize)
+    public int CanPlaceObejctAt2(Vector3Int gridPosition, HashSet<Vector2Int> objectSize)
     {
         //veure si té alguna peça en buildable
         int r = 0;
