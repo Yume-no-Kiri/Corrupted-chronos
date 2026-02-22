@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -33,13 +34,8 @@ public class PlacementSystem : MonoBehaviour
     private List<ObjectData> _selectedListConfig;
 
     //el esquema, amb parts afeguides de la nau
-    //un seria per les parts a afegir de la nau, l'altra seria per els cables, conectar energia i altres modificacions
-    // a sobre del esquema normal, encara no implementat i revisar segons la implementació de GridData
     private GridData schemeShip; //, cablesShip;
     
-    /*[serializedFile]
-     * private gameobject gridVisualization;
-     */
 
     private List<GameObject> _placedObjects;
 
@@ -48,6 +44,7 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private GameObject schemePlain;
     private Vector3 _baseNauPos;
+    private Vector3 _OffSetPos= new Vector3(-1f,0,-1f);
 
     [SerializeField] private GameObject player;
     private Player nauAdded;
@@ -73,11 +70,7 @@ public class PlacementSystem : MonoBehaviour
     private void Update()
     {
         
-        // això està al player update i potser s'hauria de moure aquì 
-        /*Vector3Int gridPosition = grid.WorldToCell(inputManager.MousePosition);
-        mouseIndicator.transform.position = inputManager.MousePosition;
-        cellIndicator.transform.position = grid.CellToWorld(gridPosition);
-        */
+       
         if (inputManager.playerInputActions.Garage.enabled)
         {
             Vector3Int gridPosition = grid.WorldToCell(inputManager.MousePosition);
@@ -121,15 +114,16 @@ public class PlacementSystem : MonoBehaviour
         }
     }
 
-
     void FirstStructure()
     {
         schemeShip = new GridData();
         //_baseNauPos= schemePlain.GetComponentInChildren<Transform>().position;
         StartPlacementGeneral(0,ConfigurationNau.Naus);
         _baseNauPos=schemePlain.GetComponent<Renderer>().bounds.center;
+        Debug.Log("abseNau Pos1:"+_baseNauPos);
+        /* _baseNauPos+=_OffSetPos;
+        Debug.Log("abseNau Pos2:"+_baseNauPos); */
 
-        
         PlaceFirstStructure(_baseNauPos);
         
        // _baseNauPos = 
@@ -137,6 +131,9 @@ public class PlacementSystem : MonoBehaviour
     
 
    //mètodes que es cridaran per botons
+
+    #region botons
+
     public void StartPlacementParts(int id)
     {
         StartPlacementGeneral(id, ConfigurationNau.Parts);
@@ -151,16 +148,12 @@ public class PlacementSystem : MonoBehaviour
     }
 
 
-    #region botons
     public void ResetPlacement()
     {
         foreach (var placedObject in _placedObjects) Destroy(placedObject);
         _placedObjects.Clear();
         if (nauAdded != null)
-        {    //   foreach (var son in nauAdded.GetComponentsInChildren<GameObject>())
-            //{
-              //  Destroy(son);
-            //}
+        {    
             nauAdded.RemovePart();
         }
         FirstStructure();
@@ -173,22 +166,26 @@ public class PlacementSystem : MonoBehaviour
 
 
         //nauAdded= nauTransform.Find("Added").GameObject();
-        nauAdded = player.GetComponent<Player>();
+
+        if(!nauAdded) nauAdded = player.GetComponent<Player>();
+        player.transform.rotation=quaternion.identity;
+
         if (nauAdded == null) {
             Debug.LogError("didn't find nau");
-        
             return;
         }
-        //Debug.Log(_baseNauPos +"CCCCCCCCC");
+        if (nauAdded != null)
+        {    
+            nauAdded.RemovePart();
+        }
 
        Vector3 origin= _placedObjects[0].transform.position;
-      // Debug.Log(origin +"AAAAAAAAAA");
-
         if (_placedObjects.Count > 0)
         {
             for (int i = 1; i < _placedObjects.Count; i++)
             {
                 GameObject part=_placedObjects[i];
+                
                 nauAdded.AddPart(part,  origin);
                 //nauAdded.AddPart2(_placedObjects[0].transform.Find("Added").transform);
             }
@@ -295,7 +292,7 @@ public class PlacementSystem : MonoBehaviour
 
 
         if(!_selectedListConfig[selectedObjectIndex].PrefabGaratge) Debug.LogError("error prefab");
-        if(!_placedObjects[0].transform.Find("Added").transform) Debug.LogError("error no se que es això");
+        if(!_placedObjects[0].transform.Find("Added").transform) Debug.LogError("No podem afegir parts");
         //peta aquí vvvvvv        
         GameObject partToAdd= Instantiate(_selectedListConfig[selectedObjectIndex].PrefabGaratge, _placedObjects[0].transform.Find("Added").transform);
         partToAdd.transform.position = grid.CellToWorld(gridPosition);
@@ -325,7 +322,13 @@ public class PlacementSystem : MonoBehaviour
             Debug.Log("Pointer over UI");
             return;
         }*/
+        //   _OffSetPos = new Vector3(grid.cellSize.x / 2, 0, grid.cellSize.z / 2);
+          _OffSetPos = new Vector3(0.5f, 0, 0.5f);
+        Debug.Log("gridTo Pos2:"+ _OffSetPos);
+        // newPosition+=_OffSetPos;
         Vector3Int gridPosition = grid.WorldToCell(newPosition) ;
+        Debug.Log("gridTo Pos1:"+ gridPosition);
+      
         //mouseIndicator.transform.position = inputManager.MousePosition;
         //Debug.Log("VENGA OSTIA"+selectedObjectIndex);
         
@@ -333,13 +336,15 @@ public class PlacementSystem : MonoBehaviour
         //if (!placementValidity) return;
         
         GameObject partToAdd= Instantiate(_selectedListConfig[selectedObjectIndex].PrefabGaratge);
-        partToAdd.transform.position = grid.CellToWorld(gridPosition);//- offset;
+
+        partToAdd.transform.position = grid.CellToWorld(gridPosition);//+ Vector3Int.FloorToInt(_OffSetPos)
         
         Transform coll = partToAdd.transform.Find("Collisions");
         if (coll != null) coll.gameObject.SetActive(false);
 
         
-        
+        newPosition-=_OffSetPos;
+        gridPosition = grid.WorldToCell(newPosition) ;
         
         
         _placedObjects.Add(partToAdd);

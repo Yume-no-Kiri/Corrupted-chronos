@@ -795,7 +795,7 @@ public class Player : MonoBehaviour
     #endregion
 
 
-    #region ASSIGNA PARTS
+    #region called from placement system
 
 
     public void AddPart(GameObject gb, Vector3 origin)
@@ -819,8 +819,6 @@ public class Player : MonoBehaviour
         AddedParts.Add(part);
     }
     
-    
-
     public void RemovePart()
     {
         PartActions pa;
@@ -829,16 +827,14 @@ public class Player : MonoBehaviour
         foreach (Transform child in ToRemove.transform)
         {
             
-            
-            //potser el remove conexions hauria de ser el seu propi mètode
             pa = child.gameObject.GetComponent<PartActions>();
             switch (pa.GetTypePart())
             {
                 case TypePart.Mele:
-                    Debug.Log("part mele no acabat");
+                    Debug.LogError("part mele no acabat");
                     break;
                 case TypePart.Moveable:
-                    Debug.Log("part movable no acabat");
+                    Debug.LogError("part movable no acabat");
                     break;
                 case TypePart.ShootableLeft:
                     inputManager.OnShotLeft -= pa.DoShot;

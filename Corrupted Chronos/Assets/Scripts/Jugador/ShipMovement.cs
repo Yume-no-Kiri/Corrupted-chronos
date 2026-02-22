@@ -14,7 +14,7 @@ public class ShipMovement : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float boostMultiplier = 2f;
+    // [SerializeField] private float boostMultiplier = 2f;
 
     [Header("Smoothing")]
     [SerializeField] private float directionSmoothing = 10f;
@@ -67,7 +67,7 @@ public class ShipMovement : MonoBehaviour
             targetMoveVector.Normalize();
 
         bool isBoosting = boostAction.action.IsPressed();
-        targetSpeedMultiplier = isBoosting ? boostMultiplier : 1f;
+        // targetSpeedMultiplier = isBoosting ? boostMultiplier : 1f;
     }
 
     private void SmoothDirection()

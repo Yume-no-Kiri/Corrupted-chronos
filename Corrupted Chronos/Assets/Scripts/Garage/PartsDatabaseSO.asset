@@ -23,6 +23,11 @@ MonoBehaviour:
     <Size>k__BackingField: {x: 1, y: 2}
     <BuildSize>k__BackingField: {x: 2, y: 4}
     <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: ed32564e70a0da549821e8f91bcbb3af, type: 3}
+  - <Name>k__BackingField: Quadrat Prova
+    <ID>k__BackingField: 2
+    <Size>k__BackingField: {x: 1, y: 1}
+    <BuildSize>k__BackingField: {x: 2, y: 2}
+    <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: f09e7fbb6e285d345b48218b683c4cfd, type: 3}
   AllNaus:
   - <Name>k__BackingField: Nau Basic
     <ID>k__BackingField: 0
