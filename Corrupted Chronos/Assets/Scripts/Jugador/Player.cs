@@ -23,10 +23,10 @@ public class Player : MonoBehaviour
     
     //Controls/inputs
     //private PlayerInput playerInput;
-    [SerializeField]
-    public GameObject inputMangerObject;
+    /* [SerializeField]
+    public GameObject inputMangerObject; */
     
-    public InputManager inputManager;
+    public InputManager inputManager { get; private set; }
 
     //moure capa
     private bool lockUp;
@@ -62,7 +62,6 @@ public class Player : MonoBehaviour
     public GameObject pointAddNau;
     private GameObject _nau;
     private GameObject _pilot;
-    [SerializeField]
     private PartsDatabaseSO _database;
     [SerializeField]
     private Vector3 spawnPosition;
@@ -123,9 +122,8 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         //crec que hauria d'estructurar, que va a awake i que a start
-        inputManager = inputMangerObject.GetComponent<InputManager>();
+        // inputManager = inputMangerObject.GetComponent<InputManager>();
         
-        if (inputManager == null){Debug.LogError("aaaaAAAA inputmanager");}
         
         //varaibles generals
         moveDuration = 0.1f;
@@ -156,6 +154,19 @@ public class Player : MonoBehaviour
          
         //_nau =Instantiate(_database.AllNaus[0].Prefab, pointAddNau.transform, true);
         //_nau.transform.position = pointAddNau.transform.position;
+        
+        
+    }
+
+    #region Start
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        inputManager=GameManager.Instance.inputManager;
+
+        if (inputManager == null){Debug.LogError("aaaaAAAA inputmanager");}
+        _database=GameManager.Instance.dataBaseParts;
+
         _nau = Instantiate(_database.AllNaus[0].PrefabGaratge, new Vector3(0, 0, 0), quaternion.identity);
         _pilot= Instantiate(_database.AllPilots[0].PrefabGaratge,new Vector3(0, 0, 0), quaternion.identity);
         _nau.transform.SetParent(this.transform,false);
@@ -183,14 +194,8 @@ public class Player : MonoBehaviour
         
         AddedParts= new List<GameObject>();
         DetectorsCapa = new List<GameObject>();
-        
-    }
 
-    #region Start
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+
         _garage.SetActive(false);
         //maps inputs i connexions
         if (ComencaComPilot)
@@ -511,7 +516,7 @@ public class Player : MonoBehaviour
     {
        // Debug.Log("AAAAAAAAAA");
         
-        print("t'executes?");
+        // print("t'executes?");
         mousePos = inputManager.playerInputActions.Global.MousePosition.ReadValue<Vector2>();
 
 

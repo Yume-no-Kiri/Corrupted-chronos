@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 7589288795423491174}
   - component: {fileID: 5971455534803147072}
   m_Layer: 0
-  m_Name: Escopeta
+  m_Name: prova 3x1
   m_TagString: Jugador
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

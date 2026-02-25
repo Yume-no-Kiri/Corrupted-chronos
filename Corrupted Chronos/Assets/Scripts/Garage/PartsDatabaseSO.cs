@@ -15,6 +15,7 @@ public enum ConfigurationNau
 [Serializable]
 public struct SizeGround
 {
+    public Vector2Int Origen;
     public Vector2Int Size ;
     public List<Vector2Int> ExtraSize;
 
@@ -28,6 +29,7 @@ public struct DictionaryAuxSize
 
 /* Potser canviar això una mica, perque objectData es bastant basica.
 Revisar com es fa ara, pero per les parts això és massa general */
+//això estaria millor si gran part de les variables les escrivís en codi i no al inspector
 
 [CreateAssetMenu(fileName = "PartsDatabaseSO", menuName = "Scriptable Objects/PartsDatabaseSO")]
 public class PartsDatabaseSO : ScriptableObject
@@ -37,6 +39,21 @@ public class PartsDatabaseSO : ScriptableObject
     
     //els pilots son més simples, no necesitem quan ocupen
     public List<ObjectData> AllPilots;
+
+    /* això tocarà modificar-ho lleugermanet */
+    public void configPositions()
+    {
+        Debug.LogWarning("ENTREM A CONFIG POSITONS");
+        foreach (var item in AllParts)
+        {
+            item.ConfigPositions();
+        }
+        foreach (var item in AllNaus)
+        {
+            item.ConfigPositions();
+        }
+        Debug.LogWarning("ENDED CONFIG POSITIONS");
+    }
 }
 
 [Serializable]
@@ -61,7 +78,7 @@ public class ObjectData
 
 
     //Dictionarys no es poden configurar al inspector, així que fem una mica de parafermalia
-    public Dictionary<TypeGround,HashSet<Vector2Int>> ConfigGround;
+    public Dictionary<TypeGround,HashSet<Vector2Int>> ConfigGround= new Dictionary<TypeGround, HashSet<Vector2Int>>();
 
 
 
@@ -87,8 +104,9 @@ public class ObjectData
     // public GameObject PrefabJugable { get; private set; }
 
 
-    void Awake()
+    public void ConfigPositions()
     {
+        Debug.Log("EXECUTANT AWAKE DE PARTS DATA BASE SO");
         foreach (var item in dictionaryAuxSize)
         {
             if (!ConfigGround.ContainsKey(item.typeGround)){
@@ -101,13 +119,44 @@ public class ObjectData
     {
         /* Fer el calcul, passar de sizeGround a hashset de les posicions
          */
+        HashSet<Vector2Int> res= new HashSet<Vector2Int>();
+        int offsetX = dicAux.sizeGround.Size.x / 2;
+        int offsetY = dicAux.sizeGround.Size.y / 2;
+        
         switch(dicAux.typeGround){
             case TypeGround.Occupied:
-            
-            return null;
+                
+                for (int x = 0; x < dicAux.sizeGround.Size.x; x++)
+                {
+                    for (int y = 0; y < dicAux.sizeGround.Size.y; y++)
+                    {
+                        res.Add(new Vector2Int(x-offsetX, y-offsetY));
+                    }
+                } 
+                foreach (var item in dicAux.sizeGround.ExtraSize)
+                {
+                    res.Add(item);
+                }
+            return res;
             case TypeGround.Buildable:
+                Vector2Int origen= dicAux.sizeGround.Origen;
+                for (int x = 0; x < dicAux.sizeGround.Size.x; x++)
+                {
+                    for (int y = 0; y < dicAux.sizeGround.Size.y; y++)
+                    {
+                        //extrems
+                        if((x == 0 || x == dicAux.sizeGround.Size.x - 1) && (y == 0 || y == dicAux.sizeGround.Size.y - 1)) continue;
 
-            return null;
+                        res.Add(new Vector2Int(x-offsetX+origen.x, y-offsetY+origen.y));
+                    }
+                } 
+                foreach (var item in dicAux.sizeGround.ExtraSize)
+                {
+                    res.Add(item);
+                }
+               
+                //no tindre en compte els cantonades
+            return res;
             case TypeGround.Null:
                 Debug.LogError("Error terreny es null????");
             return null;

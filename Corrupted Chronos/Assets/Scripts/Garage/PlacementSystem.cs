@@ -25,7 +25,6 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private Grid grid;
 
-    [SerializeField]
     private PartsDatabaseSO database;
 
     //index del objecte segons la llista de parts tots
@@ -40,15 +39,21 @@ public class PlacementSystem : MonoBehaviour
     private List<GameObject> _placedObjects;
 
     private GameObject _previewObject;
+    private List<GameObject> _debugCubes= new List<GameObject>();
+    public GameObject debugCube;
+
 
     [SerializeField]
     private GameObject schemePlain;
-    private Vector3 _baseNauPos;
+    private Vector3 _baseNauPos= Vector3.zero;
     private Vector3 _OffSetPos= new Vector3(-1f,0,-1f);
 
     [SerializeField] private GameObject player;
     private Player nauAdded;
+    Vector3 rotationToAdd;
 
+    public bool canShowBuildGrid;
+    private int rotationPart=0; //entre 0 i 3, right +1; left-1
     private void Awake()
     {
         _placedObjects = new List<GameObject>();
@@ -58,12 +63,16 @@ public class PlacementSystem : MonoBehaviour
 
     private void Start()
     {
+        database=GameManager.Instance.dataBaseParts;
         StopPlacement();
         //cablesShip = new GridData();
         
         FirstStructure();
         StopPlacement();
         
+        GameManager.Instance.inputManager.RotateLeft+=RotateLeft; 
+        GameManager.Instance.inputManager.RotateRight+=RotateRight; 
+
         
     }
    
@@ -114,8 +123,143 @@ public class PlacementSystem : MonoBehaviour
         }
     }
 
+    void RotateLeft(InputAction.CallbackContext ctx)
+    {
+        /* rotationPart=-1;
+        if(rotationPart<0) rotationPart=3;
+        if(rotationPart>3) rotationPart=0; */
+
+        Debug.Log("rotate left detected");
+        if (_previewObject)
+        {
+            //  Dictionary<TypeGround, HashSet<Vector2Int>> llistaRotada;
+            HashSet<Vector2Int> setRotada= new HashSet<Vector2Int>();
+            
+            _previewObject.transform.Rotate(0, -90, 0, Space.World);
+
+            foreach (TypeGround tGround in Enum.GetValues(typeof(TypeGround)))
+            {
+                if (!_selectedListConfig[selectedObjectIndex].ConfigGround.ContainsKey(tGround)) continue;
+
+                foreach (var item in _selectedListConfig[selectedObjectIndex].ConfigGround[tGround])
+                {
+                    setRotada.Add(new Vector2Int(-item.y, item.x));
+                    /* Vector3 novaRotacio = _previewObject.transform.eulerAngles;
+                    novaRotacio.y -= 45f;
+                    rotationToAdd=novaRotacio;
+                    _previewObject.transform.eulerAngles = novaRotacio; */
+                    
+                }
+                _selectedListConfig[selectedObjectIndex].ConfigGround[tGround]=setRotada;
+
+                if(canShowBuildGrid) ShowBuildGrid();
+                
+            }
+            
+            // .ConfigGround[TypeGround.Occupied]
+        }
+    }
+    void RotateRight(InputAction.CallbackContext ctx)
+    {
+        /* rotationPart=+1;
+        if(rotationPart<0) rotationPart=3;
+        if(rotationPart>3) rotationPart=0; */
+        if (_previewObject)
+        {
+            // Dictionary<TypeGround, HashSet<Vector2Int>> llistaRotada;
+            HashSet<Vector2Int> setRotada= new HashSet<Vector2Int>();
+            
+            _previewObject.transform.Rotate(0, 90, 0, Space.World);
+            
+
+            foreach (TypeGround tGround in Enum.GetValues(typeof(TypeGround)))
+            {
+                if (!_selectedListConfig[selectedObjectIndex].ConfigGround.ContainsKey(tGround)) continue;
+                
+                foreach (var item in _selectedListConfig[selectedObjectIndex].ConfigGround[tGround])
+                {
+                    setRotada.Add(new Vector2Int(item.y, -item.x));
+
+                    /* Vector3 novaRotacio = _previewObject.transform.eulerAngles;
+                    novaRotacio.y += 45f;
+                    rotationToAdd=novaRotacio;
+                    _previewObject.transform.eulerAngles = novaRotacio; */
+
+
+
+                }
+                _selectedListConfig[selectedObjectIndex].ConfigGround[tGround] = setRotada;
+
+                if(canShowBuildGrid) ShowBuildGrid();
+            }
+
+            // .ConfigGround[TypeGround.Occupied]
+        }
+
+        Debug.Log("rotate right detected");
+        
+    }
+
+    private void ShowBuildGrid()
+    {
+        // float leng= 0.5f;
+        var buildPositions=_selectedListConfig[selectedObjectIndex].ConfigGround[TypeGround.Buildable];
+
+        // int maxsize = _selectedListConfig[selectedObjectIndex].ConfigGround[TypeGround.Buildable].Count;
+        int i = 0;
+        foreach (var item in buildPositions)
+        {
+            //grid.CellToWorld(new Vector3Int(item.x, 0, item.y));
+            if(i< _debugCubes.Count)
+            {
+                
+            
+                _debugCubes[i].transform.localPosition = new Vector3(item.x, 0, item.y);
+                _debugCubes[i].SetActive(true);
+                // i++;
+            }else //if (maxsize <= i)
+            {
+                
+                GameObject cube = Instantiate(debugCube,_previewObject.transform);
+                cube.transform.localPosition = new Vector3(item.x, 0, item.y);
+                _debugCubes.Add(cube);
+                
+                /* cube.transform.SetParent(_previewObject.transform);
+                _debugCubes.Add(cube); */
+                // maxsize++;
+            }
+            print("position : x:"+item.x+" y:" +item.y);
+        }
+        for (int j = i; j < _debugCubes.Count; j++)
+        {
+            _debugCubes[j].SetActive(false);
+        }
+    }
+    /* private void showBuildAll(GameObject father){
+       
+        foreach (TypeGround tGround in Enum.GetValues(typeof(TypeGround)))
+        {
+            
+            if (!_selectedListConfig[selectedObjectIndex].ConfigGround.ContainsKey(tGround)) continue;
+            foreach (var item in _selectedListConfig[selectedObjectIndex].ConfigGround[tGround])
+            {
+                
+               
+                    GameObject cube=Instantiate(debugCube,new Vector3( item.x,0,item.y), quaternion.identity); 
+                    if(tGround==TypeGround.Occupied) cube.transform.localEulerAngles = new Vector3(0,50,0);
+
+                    cube.transform.SetParent(father.transform);
+
+
+                    _debugCubes.Add(cube);
+                    // maxsize++;
+           }
+        }
+    } */
+
     void FirstStructure()
     {
+        
         schemeShip = new GridData();
         //_baseNauPos= schemePlain.GetComponentInChildren<Transform>().position;
         StartPlacementGeneral(0,ConfigurationNau.Naus);
@@ -124,6 +268,7 @@ public class PlacementSystem : MonoBehaviour
         /* _baseNauPos+=_OffSetPos;
         Debug.Log("abseNau Pos2:"+_baseNauPos); */
 
+        if(_baseNauPos== Vector3.zero)  Debug.LogError("error amb _baseNausPos?");
         PlaceFirstStructure(_baseNauPos);
         
        // _baseNauPos = 
@@ -250,7 +395,16 @@ public class PlacementSystem : MonoBehaviour
         _previewObject= Instantiate(_selectedListConfig[selectedObjectIndex].PrefabGaratge);
         Transform coll = _previewObject.transform.Find("Collisions");
         if (coll != null) coll.gameObject.SetActive(false);
-        
+
+        foreach (var item in _selectedListConfig[selectedObjectIndex].ConfigGround[TypeGround.Buildable])
+        {
+            GameObject cube=Instantiate(debugCube,new Vector3( item.x,0,item.y), quaternion.identity); 
+            cube.transform.SetParent(_previewObject.transform);
+            _debugCubes.Add(cube);
+            
+
+        }
+
         inputManager.OnClick += PlaceStructure;
         //inputManager.OnClick += () => StartCoroutine(DelayedPlace());
         inputManager.OnExit += StopPlacement;
@@ -290,13 +444,17 @@ public class PlacementSystem : MonoBehaviour
         if (!placementValidity) return;
         //          ||||||
 
-
-        if(!_selectedListConfig[selectedObjectIndex].PrefabGaratge) Debug.LogError("error prefab");
+        var object2inst=_selectedListConfig[selectedObjectIndex];
+        if(!object2inst.PrefabGaratge) Debug.LogError("error prefab");
         if(!_placedObjects[0].transform.Find("Added").transform) Debug.LogError("No podem afegir parts");
         //peta aquí vvvvvv        
-        GameObject partToAdd= Instantiate(_selectedListConfig[selectedObjectIndex].PrefabGaratge, _placedObjects[0].transform.Find("Added").transform);
+        GameObject partToAdd= Instantiate(object2inst.PrefabGaratge, _placedObjects[0].transform.Find("Added").transform);
+        // partToAdd.transform.eulerAngles=rotationToAdd;
         partToAdd.transform.position = grid.CellToWorld(gridPosition);
+        partToAdd.transform.rotation= _previewObject.transform.rotation;
         
+        // showBuildAll(partToAdd);
+
         Transform coll = partToAdd.transform.Find("Collisions");
         if (coll != null) coll.gameObject.SetActive(false);
         
@@ -306,11 +464,11 @@ public class PlacementSystem : MonoBehaviour
             cablesShip;
         */
         //selectedData.AddObjectAt(gridPosition,_selectedListConfig[selectedObjectIndex].Size,
-        schemeShip.AddObjectAt(gridPosition,_selectedListConfig[selectedObjectIndex].ConfigGround[TypeGround.Occupied],
-            _selectedListConfig[selectedObjectIndex].ConfigGround[TypeGround.Buildable],
-            _selectedListConfig[selectedObjectIndex].ID,
+        schemeShip.AddObjectAt(gridPosition,object2inst.ConfigGround[TypeGround.Occupied],
+            object2inst.ConfigGround[TypeGround.Buildable],
+            object2inst.ID,
             _placedObjects.Count-1);
-        
+        StopPlacement();
     }
     
     
@@ -323,7 +481,7 @@ public class PlacementSystem : MonoBehaviour
             return;
         }*/
         //   _OffSetPos = new Vector3(grid.cellSize.x / 2, 0, grid.cellSize.z / 2);
-          _OffSetPos = new Vector3(0.5f, 0, 0.5f);
+          _OffSetPos = new Vector3(-0.25f, 0, -0.25f);
         Debug.Log("gridTo Pos2:"+ _OffSetPos);
         // newPosition+=_OffSetPos;
         Vector3Int gridPosition = grid.WorldToCell(newPosition) ;
@@ -352,13 +510,34 @@ public class PlacementSystem : MonoBehaviour
         /*GridData selectedData = _selectedListConfig[selectedObjectIndex].ID == 0 ? schemeShip : 
             cablesShip;
         */ 
+        
         //selectedData.AddObjectAt(gridPosition,_selectedListConfig[selectedObjectIndex].Size,
+        
+        foreach (var item in _selectedListConfig[selectedObjectIndex].ConfigGround[TypeGround.Occupied])
+        {
+            GameObject cube=Instantiate(debugCube,new Vector3( item.x,0,item.y), quaternion.identity); 
+            cube.transform.localEulerAngles = new Vector3(0,50,0);
+
+            cube.transform.SetParent(partToAdd.transform);
+        }
+        
+        foreach (var item in _selectedListConfig[selectedObjectIndex].ConfigGround[TypeGround.Buildable])
+        {
+            GameObject cube=Instantiate(debugCube,new Vector3( item.x,0,item.y), quaternion.identity); 
+
+            cube.transform.SetParent(partToAdd.transform);
+        }
+
+        // _debugCubes.Add(cube);
+        
         schemeShip.AddObjectAt(gridPosition,_selectedListConfig[selectedObjectIndex].ConfigGround[TypeGround.Occupied],
             _selectedListConfig[selectedObjectIndex].ConfigGround[TypeGround.Buildable],
             _selectedListConfig[selectedObjectIndex].ID,
             _placedObjects.Count-1);
         
         
+        // showBuildAll(partToAdd);
+
         /*if (applyToSprite)
         {
             Transform sp = partToAdd.GetComponentInChildren<SpriteRenderer>().transform;
@@ -396,7 +575,10 @@ public class PlacementSystem : MonoBehaviour
         /*GridData selectedData = _selectedListConfig[selectedObjectIndex].ID == 0 ? schemeShip : 
                 cablesShip;
         */
-
+        foreach (var pos in _selectedListConfig[selectedIndex].ConfigGround[TypeGround.Occupied])
+        {
+            print("occupied pos:" + pos.ToString());
+        }
         return schemeShip.CanPlaceObejctAt2(gridPosition,_selectedListConfig[selectedIndex].ConfigGround[TypeGround.Occupied]);
         
     }
@@ -435,4 +617,44 @@ public class PlacementSystem : MonoBehaviour
         }
     }
     #endregion
-}
+
+   /*  public void DebugGridRepresentation(Vector2Int centre)
+    {
+
+        List<Vector3Int> ocuPos=grid.retur
+       Vector3 radi3= grid.cellSize;
+        float radix=radi3.x;
+        float radiy=radi3.y;
+    string visualGrid = "Visualització del Grid (Actual):\n";
+    
+    // Recorrem de dalt a baix (Y) i d'esquerra a dreta (X)
+    for (float y = centre.y + radiy; y >= centre.y - radiy; y--)
+    {
+        string fila = "";
+        for (float x = centre.x - radix; x <= centre.x + radix; x++)
+        {
+            Vector2Int posActual = new Vector2Int(x, y);
+            
+            // Comprovem què hi ha en aquesta posició dins del teu HashSet d'objectes seleccionats
+            // (Nota: Adapta 'config' al nom de la teva variable de dades actual)
+            var config = _selectedListConfig[selectedObjectIndex].ConfigGround;
+            
+            if (config[TypeGround.Occupied].Contains(posActual))
+            {
+                fila += "[ O ]";
+            }
+            else if (config[TypeGround.Buildable].Contains(posActual))
+            {
+                fila += "[ B ]";
+            }
+            else
+            {
+                fila += "[ X ]";
+            }
+        }
+        visualGrid += fila + "\n";
+    }
+    
+    Debug.Log(visualGrid);
+    }*/
+} 

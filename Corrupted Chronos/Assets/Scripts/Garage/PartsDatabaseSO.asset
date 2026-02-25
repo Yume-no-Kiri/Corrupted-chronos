@@ -13,49 +13,82 @@ MonoBehaviour:
   m_Name: PartsDatabaseSO
   m_EditorClassIdentifier: 
   AllParts:
-  - <Name>k__BackingField: Metralleta
+  - <Name>k__BackingField: Escopeta
     <ID>k__BackingField: 0
     <dictionaryAuxSize>k__BackingField:
     - typeGround: 1
       sizeGround:
+        Origen: {x: 0, y: 0}
         Size: {x: 1, y: 2}
         ExtraSize: []
     - typeGround: 2
       sizeGround:
+        Origen: {x: 0, y: 0}
         Size: {x: 3, y: 4}
         ExtraSize: []
-    <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: aad720e43b3d46d40a7f40a6877f7c31, type: 3}
-  - <Name>k__BackingField: Escopeta
+    <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: 5c27cb9d07c56a444a054e4a978c1ef8, type: 3}
+  - <Name>k__BackingField: Metralleta
     <ID>k__BackingField: 1
     <dictionaryAuxSize>k__BackingField:
     - typeGround: 1
       sizeGround:
+        Origen: {x: 0, y: 0}
         Size: {x: 1, y: 2}
         ExtraSize: []
     - typeGround: 2
       sizeGround:
+        Origen: {x: 0, y: 0}
         Size: {x: 3, y: 4}
-        ExtraSize: []
-    <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: ed32564e70a0da549821e8f91bcbb3af, type: 3}
-  - <Name>k__BackingField: Quadrat Prova
+        ExtraSize:
+        - {x: 5, y: 0}
+    <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: 12447b49dcaf12544860785f83fc9963, type: 3}
+  - <Name>k__BackingField: Quadrat
     <ID>k__BackingField: 2
     <dictionaryAuxSize>k__BackingField:
     - typeGround: 1
       sizeGround:
+        Origen: {x: 0, y: 0}
         Size: {x: 1, y: 1}
         ExtraSize: []
     - typeGround: 2
       sizeGround:
+        Origen: {x: 0, y: 0}
         Size: {x: 3, y: 3}
+        ExtraSize:
+        - {x: 3, y: 0}
+    <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: 0ffb80559a501984687082b46b09c375, type: 3}
+  - <Name>k__BackingField: 3x1
+    <ID>k__BackingField: 3
+    <dictionaryAuxSize>k__BackingField:
+    - typeGround: 1
+      sizeGround:
+        Origen: {x: 0, y: 0}
+        Size: {x: 3, y: 1}
         ExtraSize: []
+    - typeGround: 2
+      sizeGround:
+        Origen: {x: 0, y: 0}
+        Size: {x: 5, y: 3}
+        ExtraSize:
+        - {x: 0, y: 3}
     <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: f09e7fbb6e285d345b48218b683c4cfd, type: 3}
   AllNaus:
-  - <Name>k__BackingField: Nau Basic
+  - <Name>k__BackingField: NauBase
     <ID>k__BackingField: 0
-    <dictionaryAuxSize>k__BackingField: []
+    <dictionaryAuxSize>k__BackingField:
+    - typeGround: 1
+      sizeGround:
+        Origen: {x: 0, y: 0}
+        Size: {x: 2, y: 2}
+        ExtraSize: []
+    - typeGround: 2
+      sizeGround:
+        Origen: {x: 0, y: 0}
+        Size: {x: 4, y: 4}
+        ExtraSize: []
     <PrefabGaratge>k__BackingField: {fileID: 3513957959478190534, guid: 35472b169ec04ca4da0fdada2eac151c, type: 3}
   AllPilots:
-  - <Name>k__BackingField: pilot basic
+  - <Name>k__BackingField: PilotBase
     <ID>k__BackingField: 0
     <dictionaryAuxSize>k__BackingField: []
     <PrefabGaratge>k__BackingField: {fileID: 5587545801459419818, guid: 83692990601c6a14694a3f67c567c435, type: 3}

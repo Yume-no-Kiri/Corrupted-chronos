@@ -478,7 +478,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""28964fd6-4ea6-400f-afe2-b204dcf2c49f"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -531,6 +531,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""14ec10a9-9e44-4498-83bb-df33106e665f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""e98e0053-2959-454f-aa61-18dacaf8206a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -564,6 +582,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""OnExit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1d4fc738-ad9f-49b1-8ff6-fbc6fa813130"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""280a2806-528e-46cc-96ad-f87d01c6a432"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -610,6 +650,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Garage = asset.FindActionMap("Garage", throwIfNotFound: true);
         m_Garage_OnClick = m_Garage.FindAction("OnClick", throwIfNotFound: true);
         m_Garage_OnExit = m_Garage.FindAction("OnExit", throwIfNotFound: true);
+        m_Garage_RotateLeft = m_Garage.FindAction("RotateLeft", throwIfNotFound: true);
+        m_Garage_RotateRight = m_Garage.FindAction("RotateRight", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -1190,6 +1232,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<IGarageActions> m_GarageActionsCallbackInterfaces = new List<IGarageActions>();
     private readonly InputAction m_Garage_OnClick;
     private readonly InputAction m_Garage_OnExit;
+    private readonly InputAction m_Garage_RotateLeft;
+    private readonly InputAction m_Garage_RotateRight;
     /// <summary>
     /// Provides access to input actions defined in input action map "Garage".
     /// </summary>
@@ -1209,6 +1253,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Garage/OnExit".
         /// </summary>
         public InputAction @OnExit => m_Wrapper.m_Garage_OnExit;
+        /// <summary>
+        /// Provides access to the underlying input action "Garage/RotateLeft".
+        /// </summary>
+        public InputAction @RotateLeft => m_Wrapper.m_Garage_RotateLeft;
+        /// <summary>
+        /// Provides access to the underlying input action "Garage/RotateRight".
+        /// </summary>
+        public InputAction @RotateRight => m_Wrapper.m_Garage_RotateRight;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1241,6 +1293,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @OnExit.started += instance.OnOnExit;
             @OnExit.performed += instance.OnOnExit;
             @OnExit.canceled += instance.OnOnExit;
+            @RotateLeft.started += instance.OnRotateLeft;
+            @RotateLeft.performed += instance.OnRotateLeft;
+            @RotateLeft.canceled += instance.OnRotateLeft;
+            @RotateRight.started += instance.OnRotateRight;
+            @RotateRight.performed += instance.OnRotateRight;
+            @RotateRight.canceled += instance.OnRotateRight;
         }
 
         /// <summary>
@@ -1258,6 +1316,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @OnExit.started -= instance.OnOnExit;
             @OnExit.performed -= instance.OnOnExit;
             @OnExit.canceled -= instance.OnOnExit;
+            @RotateLeft.started -= instance.OnRotateLeft;
+            @RotateLeft.performed -= instance.OnRotateLeft;
+            @RotateLeft.canceled -= instance.OnRotateLeft;
+            @RotateRight.started -= instance.OnRotateRight;
+            @RotateRight.performed -= instance.OnRotateRight;
+            @RotateRight.canceled -= instance.OnRotateRight;
         }
 
         /// <summary>
@@ -1455,5 +1519,19 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnOnExit(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "RotateLeft" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRotateLeft(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "RotateRight" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRotateRight(InputAction.CallbackContext context);
     }
 }

@@ -64,6 +64,7 @@ public class GridData
                     canBuild = true;
                 }
             }*/
+            
 
         }
         //si cap posició occupied es buildable, estem col·locant algo on no hauries
@@ -139,6 +140,7 @@ public class GridData
                 returnVal.Add(gridPosition + new Vector3Int(x, 0, y));
             }
         } */
+        if(objectSize==null) Debug.LogError("NO FOTIS ENSERIO ETS NULL?????");
         foreach (var item in objectSize)
         {
             returnVal.Add(gridPosition+ new Vector3Int(item.x,0,item.y));
@@ -200,7 +202,7 @@ public class GridData
     public bool CanPlaceObejctAt(Vector3Int gridPosition, HashSet<Vector2Int> objectSize)
     {
         //veure si té alguna peça en buildable
-        bool r = false, occuped = false;
+       /*  bool r = false, occuped = false;
         bool canBuild = false;
         List<Vector3Int> positionsToOccupy = CalculatePositionsWillOccupy(gridPosition, objectSize);
         foreach (var pos in positionsToOccupy)
@@ -218,8 +220,33 @@ public class GridData
             }
             
         }
+        if (!occuped && canBuild) r=true; */
+        bool r=false;
+         int occupedCount =0;
+        int buildableCount=0;
+        List<Vector3Int> positionsToOccupy = CalculatePositionsWillOccupy(gridPosition, objectSize);
+        int Size=positionsToOccupy.Count();
+        foreach (var pos in positionsToOccupy)
+        {
+            
+            if (IsOcupiedAt(pos))
+            {
+                // occuped.Add(true);
+                //r= false;
+                // break;
+                occupedCount++;
+            }
+            if (isBuildableAt(pos))
+            {
+                buildableCount++;
+                // canBuild = true;
+            }
+            
+        }
+        bool occuped=false,canBuild=false;
+        if(occupedCount>0) occuped=true;
+        if(buildableCount>0) canBuild=true;
         if (!occuped && canBuild) r=true;
-        
         /*List<Vector3Int> positionsToBuild =CalculatePositionsWillBuildable(gridPosition, objectSize, buildableSize);
         foreach (var pos in positionsToBuild)
         {
@@ -231,12 +258,13 @@ public class GridData
     public int CanPlaceObejctAt2(Vector3Int gridPosition, HashSet<Vector2Int> objectSize)
     {
         //veure si té alguna peça en buildable
-        int r = 0;
+        /* int r = 0;
         bool occuped = false;
         bool canBuild = false;
         List<Vector3Int> positionsToOccupy = CalculatePositionsWillOccupy(gridPosition, objectSize);
         foreach (var pos in positionsToOccupy)
         {
+            
             if (IsOcupiedAt(pos))
             {
                 occuped = true;
@@ -250,6 +278,35 @@ public class GridData
             }
             
         }
+        if (!occuped && canBuild) r=1; //green */
+        int r = 0;
+        // List<bool> occuped = new List<bool>();
+        // List<bool> canBuild = new List<bool>();
+        int occupedCount =0;
+        int buildableCount=0;
+        List<Vector3Int> positionsToOccupy = CalculatePositionsWillOccupy(gridPosition, objectSize);
+        int Size=positionsToOccupy.Count();
+        foreach (var pos in positionsToOccupy)
+        {
+            
+            if (IsOcupiedAt(pos))
+            {
+                // occuped.Add(true);
+                //r= false;
+                // break;
+                occupedCount++;
+            }
+            if (isBuildableAt(pos))
+            {
+                buildableCount++;
+                // canBuild = true;
+            }
+            
+        }
+        bool occuped=false,canBuild=false;
+        if(occupedCount>0) occuped=true;
+        if(buildableCount>0) canBuild=true;
+
         if (!occuped && canBuild) r=1; //green
         else if (occuped && canBuild) r = 3; //red
         else if (!occuped && !canBuild) r = 2; //blue

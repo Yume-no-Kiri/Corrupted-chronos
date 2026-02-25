@@ -59,6 +59,14 @@ public class PlacementData
         //typeGround = TypeGround.Buildable;
     }
 
+
+    public List<Vector3Int> returnSTUFF()
+    {
+        return occupiedPositions;
+    }
+
+   
+
     /*Oh boy, gran explicació aquí
      *
      * IRRELEVANT
