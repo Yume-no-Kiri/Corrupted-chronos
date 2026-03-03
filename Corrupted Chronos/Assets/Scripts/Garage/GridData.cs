@@ -12,6 +12,7 @@ public enum TypeGround
     Occupied,
     Buildable,
 
+
     Muzzle, //boquilla de arma
     Magazine, //cargador
     OverHeat,
@@ -19,331 +20,166 @@ public enum TypeGround
 
 } 
 
-public class GroundData
-{
-    public PlacementData PlacementData;
-    public TypeGround TypeGround;
 
-    public GroundData(PlacementData placementData, TypeGround typeGround)
-    {
-        PlacementData = placementData;
-        TypeGround = typeGround;
-    }
-}
+
 
 public class GridData
 {
-    Dictionary<Vector3Int, GroundData> placedObjects = new();
+    //information ground with the aprts
+    PlacementData2 placementData= new PlacementData2();
 
-    #region afegir objectes al mapa
-    //afegir un objecte
-    public void AddObjectAt(Vector3Int gridPosition, HashSet<Vector2Int> objectSize, HashSet<Vector2Int> buildableSize,  int ID, int placedObjectIndex)
+    private Vector3Int _gridPosition= new Vector3Int();
+    private  ObjectData _originalPart= new ObjectData();
+    private int _rotationAdded;
+
+    private bool _lastCheckCanPlace;
+
+    private  ObjectData _updatedPart= new ObjectData();
+
+  
+
+    #region Checker and adder
+    public bool CanPlaceObejctAt(Vector3Int gridPosition, ObjectData part, int rotationToAdd) //Dictionary<TypeGround,Requiriments> partRequires)
     {
-        Debug.Log("______________________new objct____________________");
-        List<Vector3Int> positionWillOccupy = CalculatePositionsWillOccupy(gridPosition, objectSize);
-        List<Vector3Int> positionWillBuildable= CalculatePositionsWillBuildable(gridPosition, objectSize, buildableSize);
-        PlacementData dataOccupy = new PlacementData(positionWillOccupy, ID, placedObjectIndex);
-        
-        //PlacementData dataBuild = new PlacementData(positionWillBuildable);
-        
-        
-        bool canBuild = false;
-        foreach (var pos in positionWillOccupy)
-        {
-            Debug.Log($"{pos.ToString()}");
-            //fes throw, perque per arribar aquí ja s'ha comprovat que es pot
-            if (IsOcupiedAt(pos)){
-                throw new Exception($"Intentes col·locar algo on ja hi ha algo {pos}");
-            }
-            AddOrModifyFirstElement(pos, dataOccupy);
+        Debug.LogWarning("entres a CanPlaceObejctAt???");
 
-            /*if (!esPrimeraPeca)
-            {
-                if (isBuildableAt(pos))
-                {
-                    canBuild = true;
-                }
-            }*/
+        if(AlreadyChecked( gridPosition, part, rotationToAdd))return _lastCheckCanPlace;
+        
+        RecalculatePosition(gridPosition, part, rotationToAdd);  //recalcular tot objectPart position segons gridPosition
+
+        _gridPosition=gridPosition;
+        _originalPart=part;
+        _rotationAdded=rotationToAdd;
+
+
+        
+        _lastCheckCanPlace= placementData.checkRequirement(_updatedPart.ConfigRequires);
+        // _canPlace=true;
+
+        Debug.Log("show positiont will add"+_updatedPart.debugConfigGround());
+        return _lastCheckCanPlace;
+      
+    }
+    public void AddObjectAt(Vector3Int gridPosition, ObjectData part, int rotationToAdd)//wa
+    // wa, int placedObjectIndex)
+    // public void AddObjectAt(Vector3Int gridPosition, HashSet<Vector2Int> objectSize, HashSet<Vector2Int> buildableSize,  int ID, int placedObjectIndex)
+    {
+        Debug.LogWarning("entres a addObjectAt???");
+        if(AlreadyChecked( gridPosition, part, rotationToAdd))
+        {
             
-
+            placementData.AddNewPartData(_updatedPart);
         }
-        //si cap posició occupied es buildable, estem col·locant algo on no hauries
-        //if (!esPrimeraPeca) if (!canBuild) throw new Exception("Intentes col·locar algo on no tens permes construir ");
-
-        
-        //això està malament, hauriem de comprovar si alguna de les superficies que s'ocuparan es buildable, aquío només definim 
-        //data de les que amplien com a buildable
-        //BUGFIX
-        var buildableCopy = new List<Vector3Int>(positionWillBuildable);
-        foreach (var pos in buildableCopy)
+        else
         {
-            Debug.Log($"{pos.ToString()} will build 1");
-            //AddOrModify(pos,dataBuild);
-            AddOrModifySecondElement(pos);
+            if(part==null) Debug.LogError("error estrany de part null");
+            if(part.ConfigGround==null) Debug.LogError("error estrany de configGround null");
+
+            RecalculatePosition(gridPosition,part, rotationToAdd); 
+            _gridPosition=gridPosition;
+            _originalPart=part;
+            _rotationAdded=rotationToAdd;
+  
+
+            placementData.AddNewPartData(_updatedPart);
         }
 
+        Debug.Log("add to position"+ gridPosition.ToString());
+        returnDebugStrings();
+       
     }
-
-    /*occupied + occupied =:( 
-     * occupied + buildable= :) occupied
-     * buildable + occupied = :) occupied
-     * buildable + buildable= :) buildable
-     */
-    private void AddOrModifySecondElement(Vector3Int pos)
+    private bool AlreadyChecked(Vector3Int gridPosition, ObjectData part, int rotationToAdd)
     {
-        if (!placedObjects.ContainsKey(pos))
-        {
-            GroundData newGD = new GroundData(new PlacementData(), TypeGround.Buildable);
-            placedObjects[pos] = newGD;
-        }
-        
-    
+        if(gridPosition==_gridPosition && part==_originalPart && rotationToAdd== _rotationAdded) return true;
+        else return false;
     }
-
-    //el primer element a construir es la nau
-    //mètode per build i occupy
-    public void AddOrModifyFirstElement(Vector3Int pos, PlacementData dataUpdate)
-    {
-        //if (!placedObjects.ContainsKey(pos)){
-            //no tenim informació en aquesta posició
-            //(PlacementData, TypeGround) 
-            GroundData newGD = new GroundData(dataUpdate, TypeGround.Occupied);
-            placedObjects[pos] = newGD;
-            //Debug.Log($"{pos.ToString()} assigned 2");
-
-        //}
-        /*else
-        {
-            //actualitzem informació de la posició 
-            GroundData newGD = new GroundData(dataUpdate, TypeGround.Occupied);
-
-            placedObjects[pos]= newGD;
-            //Debug.Log($"{pos.ToString()} assigned modify 2");
-
-            //PlacementData updatedData = placedObjects[pos].UpdateData(placedObjects[pos], dataOccupy);
-            //placedObjects[pos]= updatedData;
-        }*/
-    }
-    
     #endregion
-    #region calcul occupied o buildable
-    
-    //calcular totes posicions del objecte que ocuapran
-    private List<Vector3Int> CalculatePositionsWillOccupy(Vector3Int gridPosition, HashSet<Vector2Int> objectSize)
+
+    #region Calculations
+    private void RecalculatePosition(Vector3Int gridPosition, ObjectData part, int rotationToAdd)
     {
-        //si es vol afegir rotació algo a fer aquí 
-        List<Vector3Int> returnVal = new();
-        /* for (int x = 0; x < objectSize.x; x++)
+        _updatedPart.ConfigGround = new Dictionary<TypeGround, HashSet<Vector2Int>>();
+        _updatedPart.ConfigRequires = new Dictionary<TypeGround, Requiriments>();
+
+        foreach (var cGround in part.ConfigGround)
         {
-            for (int y = 0; y < objectSize.y; y++)
+            
+            if(cGround.Value==null) Debug.LogError("NO FOTIS ENSERIO ETS NULL?????");
+
+            HashSet<Vector2Int> returnVal = new HashSet<Vector2Int>();
+            foreach (var pos in cGround.Value)
             {
-                returnVal.Add(gridPosition + new Vector3Int(x, 0, y));
+                Vector2Int rotated = ApplyRotation(pos, rotationToAdd);    
+                returnVal.Add(new Vector2Int (gridPosition.x+rotated.x,gridPosition.z+rotated.y));
+                // newConfigGround.Add(item.Key, RecalculatePositionsGridSpace(gridPosition, item.Value));
+               
             }
-        } */
-        if(objectSize==null) Debug.LogError("NO FOTIS ENSERIO ETS NULL?????");
-        foreach (var item in objectSize)
-        {
-            returnVal.Add(gridPosition+ new Vector3Int(item.x,0,item.y));
+             _updatedPart.ConfigGround.Add(cGround.Key,  returnVal);
+
         }
-        
-        return returnVal;
+
+        foreach (var cRequires in _originalPart.ConfigRequires)
+        {
+            if(cRequires.Value.positionsToConnect==null) Debug.LogError("NO FOTIS ENSERIO ETS NULL?????");
+
+            HashSet<Vector2Int> returnVal = new HashSet<Vector2Int>();
+            foreach (var pos in cRequires.Value.positionsToConnect)
+            {
+                Vector2Int rotated = ApplyRotation(pos, rotationToAdd);
+                returnVal.Add(new Vector2Int (gridPosition.x+rotated.x,gridPosition.z+rotated.y));
+            }
+            // Requiriments req=new Requiriments();
+            Requiriments req=new Requiriments(returnVal,  cRequires.Value.nRequires);
+
+            _updatedPart.ConfigRequires.Add(cRequires.Key, req);
+        }
+        // _updatedPart.ConfigRequires=newConfigRequires;
+        Debug.Log("debugMethod final2 recalculate position: "+ _updatedPart.debugConfigGround()+ _updatedPart.debugConfigRequires());
+
+       
+
+    }
+    #endregion
+
+    #region Deleters
+
+    //we could change part with idp and should be hard to do
+    public void DeltePaty(ObjectData part)
+    {
+        //delete an especific part
+        // placementData.DeleteNewPartData(part);
+
     }
 
-    //calcular totes les posicions que deixarà buildable un objecte
-    private List<Vector3Int> CalculatePositionsWillBuildable(Vector3Int gridPosition, HashSet<Vector2Int> objectSize,
-        HashSet<Vector2Int> buildableSize)
+    public void ResetPlacementData()
     {
-        //fer que els extrems, les puntos, no es triin
-
-        List<Vector3Int> returnVal = new();
-        /* Vector2Int overSize= buildableSize- objectSize ;
-        overSize= new Vector2Int(Mathf.Abs(overSize.x),Mathf.Abs(overSize.y));
-        //podria ser que diferents objectes tinguin diferents mètodes per calcular l'espai que deixen poder construïr 
-        for (int x = 0-overSize.x; x < objectSize.x+overSize.x; x++)
-        {
-            for (int y = 0-overSize.y; y < objectSize.y+overSize.y; y++)
-            {
-                returnVal.Add(gridPosition + new Vector3Int(x, 0, y));
-            }
-        } */
-        foreach (var item in buildableSize)
-        {
-            returnVal.Add(gridPosition+ new Vector3Int(item.x,0,item.y));
-        }
-
-
-        return returnVal;
-
-        /*
-        List<Vector3Int> returnVal = new();
-        for (int x = objectSize.x; x < buildableSize.x; x++)
-        {
-            for (int y = objectSize.y; y < objectSize.y; y++)
-            {
-                returnVal.Add(gridPosition + new Vector3Int(x, 0, y));
-            }
-        }
-        for (int x = 0; x > -buildableSize.x; x--)
-        {
-            for (int y = 0; y > -objectSize.y; y--)
-            {
-                returnVal.Add(gridPosition + new Vector3Int(x, 0, y));
-            }
-        }
-        return returnVal;
-        */
+        PlacementData2 newPD2=new PlacementData2();
+        placementData=newPD2;
     }
 
     #endregion
 
-    #region CanPlaceObject
-    //comprovar si afegir object
-    //comprovar occupied i si no es buildable
-    public bool CanPlaceObejctAt(Vector3Int gridPosition, HashSet<Vector2Int> objectSize)
+    #region Rotation
+    private Vector2Int ApplyRotation(Vector2Int pos, int rotationSteps)
     {
-        //veure si té alguna peça en buildable
-       /*  bool r = false, occuped = false;
-        bool canBuild = false;
-        List<Vector3Int> positionsToOccupy = CalculatePositionsWillOccupy(gridPosition, objectSize);
-        foreach (var pos in positionsToOccupy)
+        // rotationSteps: 0=0°, 1=90°, 2=180°, 3=270°
+        return rotationSteps switch
         {
-            if (IsOcupiedAt(pos))
-            {
-                occuped = true;
-               //r= false;
-               break;
-            }
-            
-            if (isBuildableAt(pos))
-            {
-                canBuild = true;
-            }
-            
-        }
-        if (!occuped && canBuild) r=true; */
-        bool r=false;
-         int occupedCount =0;
-        int buildableCount=0;
-        List<Vector3Int> positionsToOccupy = CalculatePositionsWillOccupy(gridPosition, objectSize);
-        int Size=positionsToOccupy.Count();
-        foreach (var pos in positionsToOccupy)
-        {
-            
-            if (IsOcupiedAt(pos))
-            {
-                // occuped.Add(true);
-                //r= false;
-                // break;
-                occupedCount++;
-            }
-            if (isBuildableAt(pos))
-            {
-                buildableCount++;
-                // canBuild = true;
-            }
-            
-        }
-        bool occuped=false,canBuild=false;
-        if(occupedCount>0) occuped=true;
-        if(buildableCount>0) canBuild=true;
-        if (!occuped && canBuild) r=true;
-        /*List<Vector3Int> positionsToBuild =CalculatePositionsWillBuildable(gridPosition, objectSize, buildableSize);
-        foreach (var pos in positionsToBuild)
-        {
-            
-        }*/
-        
-        return r;
+            1 => new Vector2Int(pos.y, -pos.x),  // 90° Dreta
+            2 => new Vector2Int(-pos.x, -pos.y), // 180°
+            3 => new Vector2Int(-pos.y, pos.x),  // 270° (o 90° Esquerra)
+            _ => pos                             // 0° o defecte
+        };
     }
-    public int CanPlaceObejctAt2(Vector3Int gridPosition, HashSet<Vector2Int> objectSize)
+    #endregion
+
+    #region debug
+    public void returnDebugStrings()
     {
-        //veure si té alguna peça en buildable
-        /* int r = 0;
-        bool occuped = false;
-        bool canBuild = false;
-        List<Vector3Int> positionsToOccupy = CalculatePositionsWillOccupy(gridPosition, objectSize);
-        foreach (var pos in positionsToOccupy)
-        {
-            
-            if (IsOcupiedAt(pos))
-            {
-                occuped = true;
-                //r= false;
-                break;
-            }
-            
-            if (isBuildableAt(pos))
-            {
-                canBuild = true;
-            }
-            
-        }
-        if (!occuped && canBuild) r=1; //green */
-        int r = 0;
-        // List<bool> occuped = new List<bool>();
-        // List<bool> canBuild = new List<bool>();
-        int occupedCount =0;
-        int buildableCount=0;
-        List<Vector3Int> positionsToOccupy = CalculatePositionsWillOccupy(gridPosition, objectSize);
-        int Size=positionsToOccupy.Count();
-        foreach (var pos in positionsToOccupy)
-        {
-            
-            if (IsOcupiedAt(pos))
-            {
-                // occuped.Add(true);
-                //r= false;
-                // break;
-                occupedCount++;
-            }
-            if (isBuildableAt(pos))
-            {
-                buildableCount++;
-                // canBuild = true;
-            }
-            
-        }
-        bool occuped=false,canBuild=false;
-        if(occupedCount>0) occuped=true;
-        if(buildableCount>0) canBuild=true;
-
-        if (!occuped && canBuild) r=1; //green
-        else if (occuped && canBuild) r = 3; //red
-        else if (!occuped && !canBuild) r = 2; //blue
-        else if(!occuped && !canBuild) r = 4;
-        
-        /*List<Vector3Int> positionsToBuild =CalculatePositionsWillBuildable(gridPosition, objectSize, buildableSize);
-        foreach (var pos in positionsToBuild)
-        {
-
-        }*/
-        
-        return r;
+        Debug.Log("here it is, the final debug:"+ placementData.debugMethod());
     }
 
     #endregion
 
-    #region si es occupied o buildable
-    private bool IsOcupiedAt(Vector3Int pos)
-    {
-        bool r = false;
-        if (placedObjects.TryGetValue(pos, out var data))
-        {
-            if (data.TypeGround==TypeGround.Occupied) r = true;
-        }
-        return r;
-    }
-
-    private bool isBuildableAt(Vector3Int pos)
-    {
-        bool r = false;
-        if (placedObjects.TryGetValue(pos, out var data))
-        {
-            if (data.TypeGround==TypeGround.Buildable) r = true;
-        }
-        return r;
-    }
-    
-    #endregion
 }
 

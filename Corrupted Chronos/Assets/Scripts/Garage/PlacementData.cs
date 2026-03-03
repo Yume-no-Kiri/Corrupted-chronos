@@ -8,6 +8,7 @@ using UnityEngine;
 #region PlacementData
 public class PlacementData
 {
+    
     //les posicions que ocupen
     public List<Vector3Int> occupiedPositions;
 
@@ -17,16 +18,10 @@ public class PlacementData
     //això serà útil per treure peçes
     public int PlacedObjectIndex { get; private set; }
 
-    //nau, pilot o part, tindran caracteristiques diferents i diferentes variables
+    //nau, pilot o part, tindran caracteristiques diferents i diferentes variables //what
     public ConfigurationNau type { get; private set; }
 
-    //si és una superficie on es pot construir
-    //ja que una posició pot ser buildable per múltiple occupied, una buildable pot tindre informació donada de múltplies occupied objects
-    //list pot tindre duplicats, per no trencar-nos el cap, i tenint en compte que això probablement es refactoritzi, ho deixo en una simple llista
-    //public List<Vector3Int> buildablePositions;
-    //edit després de trencarme el cap:
-    //AQUESTA NO ES BONA MANERA, demoment ho guardo com un segon valor del diccionari, quan vulgui borrar coses veure que faig, pero vull acabar això per la
-    //demo o acabaré en un hospital psiquiatric 
+  
     
    //public TypeGround typeGround;
     
@@ -37,8 +32,7 @@ public class PlacementData
         ID = -1;
         PlacedObjectIndex = -1;
     }
-    public PlacementData(List<Vector3Int> occupiedPositions, int iD,
-        int placedObjectIndex)
+    public PlacementData(List<Vector3Int> occupiedPositions, int iD, int placedObjectIndex)
     {
         //Data Occupied
         //si té un element a sobre, ja no es buildable, és occupied

@@ -271,18 +271,18 @@ public class Player : MonoBehaviour
             float dot= Vector3.Dot(transform.right, mousedir.normalized);
             if (dot > 0)
             {
-                 Debug.Log("rotationSpeed  ___>0___");
+                //  Debug.Log("rotationSpeed  ___>0___");
                 GameManager.Instance.rotationSpeed= GameManager.Instance.rotationSpeedRight ;
             }
             if (dot < 0)
             {
-                Debug.Log("rotationSpeed  ___<0___");
+                // Debug.Log("rotationSpeed  ___<0___");
                 GameManager.Instance.rotationSpeed= GameManager.Instance.rotationSpeedLeft ;
                 
             }
 
             // GameManager.Instance.rotationSpeed = (dot > 0) ?  GameManager.Instance.rotationSpeedRight :  GameManager.Instance.rotationSpeedLeft;
-            Debug.Log("rotationSpeed, dot:"+ dot+" speed"+GameManager.Instance.rotationSpeed);
+            // Debug.Log("rotationSpeed, dot:"+ dot+" speed"+GameManager.Instance.rotationSpeed);
 
             targetRotation = Quaternion.LookRotation(mousedir);
             transform.rotation = Quaternion.RotateTowards(
