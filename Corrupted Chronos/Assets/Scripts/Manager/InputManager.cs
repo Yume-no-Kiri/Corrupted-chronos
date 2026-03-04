@@ -15,6 +15,8 @@ public class InputManager : MonoBehaviour
     
     public event Action OnClick, OnExit;
     public event Action<InputAction.CallbackContext> OnShotLeft, OnShotRight;
+    public event Action<InputAction.CallbackContext> RotateLeft, RotateRight;
+
 
     
     private void Awake()
@@ -25,6 +27,8 @@ public class InputManager : MonoBehaviour
         playerInputActions.Nau.OnShotLeft.performed +=ctx=> OnShotLeft?.Invoke(ctx);
         playerInputActions.Nau.OnShotRight.performed += ctx=> OnShotRight?.Invoke(ctx);
 
+        playerInputActions.Garage.RotateLeft.performed +=ctx=> RotateLeft?.Invoke(ctx);
+        playerInputActions.Garage.RotateRight.performed += ctx=> RotateRight?.Invoke(ctx);
     }
 
     

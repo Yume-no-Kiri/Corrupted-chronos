@@ -6,6 +6,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance{get; private set;}
 
+
+
+    public PartsDatabaseSO dataBaseParts;
+    public InputManager inputManager;
+
     /*
     Guardem tota informació que s'haurà d'anar actualitzant, estats del jugador i coses així
     sobre actualització i acces de valors:
@@ -62,6 +67,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        dataBaseParts.configPositions();
         staminaAct=staminaMax;
         if(Instance == null)
         {
@@ -122,7 +128,7 @@ public class GameManager : MonoBehaviour
                 want2Fly=false;
             }
         }
-        print("staminaAct: "+staminaAct);
+        // print("staminaAct: "+staminaAct);
     }
 
 
