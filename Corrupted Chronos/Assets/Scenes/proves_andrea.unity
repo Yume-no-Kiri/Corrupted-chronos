@@ -735,6 +735,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5315637779929785346, guid: ef2fb929589f0644cb372d605385adb7, type: 3}
+      propertyPath: dialogue_img
+      value: 
+      objectReference: {fileID: 861090063}
+    - target: {fileID: 5315637779929785346, guid: ef2fb929589f0644cb372d605385adb7, type: 3}
       propertyPath: dialogueSprites.Array.size
       value: 10
       objectReference: {fileID: 0}
