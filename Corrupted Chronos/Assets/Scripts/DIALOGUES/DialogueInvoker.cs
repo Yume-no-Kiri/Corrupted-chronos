@@ -13,7 +13,13 @@ public class DialogueInvoker : MonoBehaviour
     [SerializeField]
     public InteractionType ThisInteraction;
 
-
+    private void Awake()
+    {
+        if(branca == "cinem1")
+        {
+            GameEventsManager.instance.dialogue_events.EnterDialogue(branca, 0);
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {

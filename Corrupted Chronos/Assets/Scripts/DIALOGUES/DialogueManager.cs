@@ -11,6 +11,10 @@ public class DialogueManager : MonoBehaviour
 
     private bool dialogue_playing = false;
     private PlayerInputActions playerInputActions;
+    bool shouldChangeScene = false;
+    string pendingSceneName;
+    string image;
+
     private void Awake()
     {
         story = new Story(inkJson.text);
@@ -78,15 +82,21 @@ public class DialogueManager : MonoBehaviour
         if (story.canContinue)  //Haurem de gestionar els tags de darrere la frase # npc:XXXXXXXX # emocio:XXXXXX, s'haur� de crear una funci� que ho gestioni
         {
             string dialogue_line = story.Continue();
-            Debug.Log(dialogue_line);
-
-            //de momemnt imprimim en consola 
-            // OBVIAMENT CANVIAR A PASSAR PER LA UI
-            GameEventsManager.instance.dialogue_events.DisplayDialogue(dialogue_line, story.currentChoices);
+            CheckTags();
+            //Enviar el text a la UI
+            GameEventsManager.instance.dialogue_events.DisplayDialogue(dialogue_line, story.currentChoices,image);
         }
-        else if (story.currentChoices.Count==0)
+        else if (story.currentChoices.Count == 0)
         {
-            ExitDialogue();
+            if (shouldChangeScene)
+            {
+                ExecuteSceneChange();
+                ExitDialogue();
+            }
+            else
+            {
+                ExitDialogue();
+            }
         }
     }
 
@@ -101,4 +111,29 @@ public class DialogueManager : MonoBehaviour
         story.ResetState();
     }
 
+    private void CheckTags()
+    {
+        foreach (string tag in story.currentTags)
+        {
+            string trimmedTag = tag.Trim();
+
+            if (trimmedTag.StartsWith("changeScene:"))
+            {
+                shouldChangeScene = true;
+                //Agafa la segona part del tag
+                pendingSceneName = trimmedTag.Split(':')[1];
+            }
+            if (trimmedTag.StartsWith("scene:"))
+            {
+                image = trimmedTag.Split(':')[1];
+            }
+            // Pel futur: # npc:Fisherman, # emotion:Angry
+        }
+    }
+    private void ExecuteSceneChange()
+    {
+        Debug.Log("CHANGING SCENE");
+        shouldChangeScene = false; 
+        UnityEngine.SceneManagement.SceneManager.LoadScene(pendingSceneName);
+    }
 }
