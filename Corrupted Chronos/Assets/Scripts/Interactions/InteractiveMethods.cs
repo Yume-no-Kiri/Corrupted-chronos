@@ -181,7 +181,7 @@ public class InteractiveMethods : MonoBehaviour
         jugador.transform.position = vector3;
 
 
-        jugador.ClearDetectorsCapa();
+        // jugador.ClearDetectorsCapa();
         
         InteractionType i= InteractionType.PilotNauPosition;
         jugador.SubInteraction(i);

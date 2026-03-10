@@ -38,7 +38,7 @@ public class PlacementSystem : MonoBehaviour
     private GridData schemeShip = new GridData(); //, cablesShip;
     
 
-    private List<GameObject> _placedObjects;
+    // private List<GameObject> _placedObjects;
 
     private GameObject _previewObject;
 
@@ -52,20 +52,24 @@ public class PlacementSystem : MonoBehaviour
     private Vector3 _baseNauPos= Vector3.zero;
     private Vector3 _OffSetPos=  new Vector3(-0.25f, 0, -0.25f);
 
-    [SerializeField] private GameObject player;
-    private Player nauAdded;
+    // [SerializeField] private GameObject player;
+    private GarageAdder garageAdder;
+
+    // private Player nauAdded;
     int rotationToAdd=0;
 
     #region awake, start, update
     private void Awake()
     {
-        _placedObjects = new List<GameObject>();
+        // _placedObjects = new List<GameObject>();
         
     }
 
     private void Start()
     {
+        
         database=GameManager.Instance.dataBaseParts;
+        garageAdder=GameManager.Instance.returnGarageAdder();
         StopPlacement();
         
         FirstStructure();
@@ -172,12 +176,8 @@ public class PlacementSystem : MonoBehaviour
     public void ResetPlacement()
     {
         //this should be looked when player is reworked
-        foreach (var placedObject in _placedObjects) Destroy(placedObject);
-        _placedObjects.Clear();
-        if (nauAdded != null)
-        {    
-            nauAdded.RemovePart();
-        }
+        
+        garageAdder.ResetPlacement();
         schemeShip.ResetPlacementData();
 
 
@@ -188,19 +188,20 @@ public class PlacementSystem : MonoBehaviour
 
     public void SavePlacement()
     {
-        if(!nauAdded) nauAdded = player.GetComponent<Player>();
-        player.transform.rotation=quaternion.identity;
+        // if(!nauAdded) nauAdded = player.GetComponent<Player>();
+        GameManager.Instance.playerInstance.transform.rotation=quaternion.identity;
 
-        if (nauAdded == null) {
+        garageAdder.SavePlacement();
+        /* if (nauAdded == null) {
             Debug.LogError("didn't find nau");
             return;
         }
         if (nauAdded != null)
         {    
             nauAdded.RemovePart();
-        }
+        } */
 
-       Vector3 origin= _placedObjects[0].transform.position;
+       /* Vector3 origin= _placedObjects[0].transform.position;
         if (_placedObjects.Count > 0)
         {
             for (int i = 1; i < _placedObjects.Count; i++)
@@ -209,9 +210,9 @@ public class PlacementSystem : MonoBehaviour
                 
                 nauAdded.AddPart(part,  origin);
             }
-        }
+        } */
 
-        nauAdded.ActivateParts();
+        // nauAdded.ActivateParts();
 
     }
     #endregion
@@ -322,9 +323,10 @@ public class PlacementSystem : MonoBehaviour
 
             var object2inst=_selectedObject;   //_selectedListConfig[selectedObjectIndex];
             if(!object2inst.PrefabGaratge) Debug.LogError("error prefab");
-            if(!_placedObjects[0].transform.Find("Added").transform) Debug.LogError("No podem afegir parts");
-            partToAdd= Instantiate(object2inst.PrefabGaratge, _placedObjects[0].transform.Find("Added").transform);
+           /*  if(!_placedObjects[0].transform.Find("Added").transform) Debug.LogError("No podem afegir parts");
+            partToAdd= Instantiate(object2inst.PrefabGaratge, _placedObjects[0].transform.Find("Added").transform); */
             
+            partToAdd= Instantiate(object2inst.PrefabGaratge, garageAdder.adder.transform);
 
             partToAdd.transform.position = grid.CellToWorld(gridPosition);//+ Vector3Int.FloorToInt(_OffSetPos)
         }
@@ -335,7 +337,7 @@ public class PlacementSystem : MonoBehaviour
         Transform coll = partToAdd.transform.Find("Collisions");
         if (coll != null) coll.gameObject.SetActive(false);
 
-        _placedObjects.Add(partToAdd);
+        // _placedObjects.Add(partToAdd);
         // Debug.Log("placestructure position adding nau:"+gridPosition);    
         schemeShip.AddObjectAt(gridPosition, _selectedObject, rotationToAdd); // _placedObjects.Count-1
         StopPlacement();
@@ -356,14 +358,14 @@ public class PlacementSystem : MonoBehaviour
     
     private void OnEnable()
     {
-        Debug.Log("OnEnable1");
+        /* Debug.Log("OnEnable1");
         if (_placedObjects.Count > 0)
         {
             foreach (GameObject placedObject in _placedObjects)
             {
                 placedObject.SetActive(true);
             }
-        }
+        } */
 
         Debug.Log("OnEnable2");
     }
@@ -371,7 +373,7 @@ public class PlacementSystem : MonoBehaviour
     private void OnDisable()
     {
         StopPlacement();
-        if (_placedObjects!= null)
+        /* if (_placedObjects!= null)
         {
             foreach (GameObject placedObject in _placedObjects)
             {
@@ -381,7 +383,7 @@ public class PlacementSystem : MonoBehaviour
                     placedObject.SetActive(false);
                 }
             }
-        }
+        } */
     }
     #endregion
 

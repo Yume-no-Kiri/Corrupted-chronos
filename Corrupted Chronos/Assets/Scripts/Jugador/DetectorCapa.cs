@@ -39,7 +39,7 @@ public class DetectorCapa : MonoBehaviour
         Debug.Log("LOOOOCK " + other.gameObject.name);
         bool isLock = true;
         _objectsInside.Add(other.gameObject);
-        GetComponentInParent<Player>().DetectorCapaResponse(whatIDetect, isLock, this.gameObject);
+        // GetComponentInParent<Player>().DetectorCapaResponse(whatIDetect, isLock, this.gameObject);
     }
 
     public void ClearObjects()
@@ -55,7 +55,7 @@ public class DetectorCapa : MonoBehaviour
         if (_objectsInside.Count == 0)
         {
             bool isLock = false;
-            GetComponentInParent<Player>().DetectorCapaResponse(whatIDetect, isLock, this.gameObject);
+            // GetComponentInParent<Player>().DetectorCapaResponse(whatIDetect, isLock, this.gameObject);
         }
     }
     

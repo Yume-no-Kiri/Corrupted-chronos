@@ -108,7 +108,7 @@ MonoBehaviour:
         Size: {x: 4, y: 4}
         ExtraSize: []
     <dictionaryAuxRequires>k__BackingField: []
-    <PrefabGaratge>k__BackingField: {fileID: 3513957959478190534, guid: 35472b169ec04ca4da0fdada2eac151c, type: 3}
+    <PrefabGaratge>k__BackingField: {fileID: 3513957959478190534, guid: 0ac8b0c6a54d2f24284a477e5eb8e4e9, type: 3}
   AllPilots:
   - <Name>k__BackingField: PilotBase
     <ID>k__BackingField: 0

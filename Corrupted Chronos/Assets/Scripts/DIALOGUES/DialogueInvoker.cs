@@ -23,7 +23,7 @@ public class DialogueInvoker : MonoBehaviour
             Debug.Log("this is your Jugador" + i.gameObject.name);
             if (i != null)
             {
-                //canvia l'interacció, canviar de pilot nau, nau pilot, entrar sortir de garatge, xarlar, etc...
+                //canvia l'interacciï¿½, canviar de pilot nau, nau pilot, entrar sortir de garatge, xarlar, etc...
                 i.AddInteraction(ThisInteraction);
                 i.AddDialogueInfo(branca, mode);
 
