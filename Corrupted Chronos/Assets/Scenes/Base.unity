@@ -853,8 +853,18 @@ MonoBehaviour:
   stats:
   - name: Hp
     baseValue: 100
-    currentValue: 0
-    additive: []
+    currentValue: 110
+    additive:
+    - type: 0
+      value: 10
+    multiplicative: []
+    exponent: []
+  - name: Damage
+    baseValue: 20
+    currentValue: 20
+    additive:
+    - type: 0
+      value: 10
     multiplicative: []
     exponent: []
 --- !u!4 &287932638

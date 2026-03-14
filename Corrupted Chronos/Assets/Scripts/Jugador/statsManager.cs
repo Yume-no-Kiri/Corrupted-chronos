@@ -5,8 +5,8 @@ using UnityEngine;
 public class statsManager : MonoBehaviour
 {
     //TODO: Recibir un SO con los stats base
+    //TODO: los modificadores deberían tener source
 
-    //public playerStats stats;
     [SerializeField] List<Stat> stats = new();
 
     public void AddModifier(string statName, StatModifier mod)
