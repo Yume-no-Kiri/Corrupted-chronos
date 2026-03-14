@@ -1,0 +1,91 @@
+using UnityEngine;
+
+public class EnemyPair : MonoBehaviour
+{
+    #region Variables
+    public Transform player;
+
+    [Header("Leader Params")]
+    public EnemyUnit leader; //Leader
+    public bool leaderHasTarget;
+    public bool shouldLeaderMove;
+    public Vector3 leaderNextPos;
+    public Transform leaderTarget;
+
+    [Header("Wingman Params")]
+    public EnemyUnit wingman; //Wingman
+    public bool wingmanHasTarget;
+    public bool shouldWingmanMove;
+    public Vector3 wingmanNextPos;
+    public Transform wingmanTarget;
+
+    [Header("Patrol Params")] //Todas las variables son publicas por ahora, pero se pueden cambiar a un SO y darle una referencia al baseState
+    public Vector2 wingmanOffset = new Vector2(4f, 2f); // (x:Back, y:Side)
+    public float patrolRadius = 5f;
+    public float arriveThreshold = 0.1f;
+    public float detectionRadius = 12f;
+    public float detectionAngle = 60f; // grados totales del cono
+    public float detectionTime = 2f; // Tiempo que deben detectar al jugador para cambiar a estado de aggro
+    public bool playerDetected;
+
+    [Header("Attack1 Params")]
+    public float attackDistance = 8f;
+    public float attackDistanceTolerance = 1f;
+
+    //States
+    public baseState patrolling;
+    public baseState attack1;
+
+    public EnemiesStateMachine stateMachine;
+
+    #endregion
+
+    private void Awake()
+    {
+        stateMachine = new EnemiesStateMachine(this);
+        patrolling = new patrollingState(stateMachine);
+        attack1 = new attackingState(stateMachine);
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        stateMachine.initialize(patrolling);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        handleLeader();
+        handleWingman();
+
+        stateMachine.currentState.FrameUpdate();
+    }
+
+    private void FixedUpdate()
+    {
+        stateMachine.currentState.PhysicsUpdate();
+    }
+
+    void handleLeader()
+    {
+        leader.hasLookTarget = leaderHasTarget;
+        leader.lookTarget = leaderTarget;
+
+        leader.hasMoveTarget = shouldLeaderMove;
+        leader.moveTarget = leaderNextPos;
+    }
+
+    void handleWingman()
+    {
+        wingman.hasLookTarget = wingmanHasTarget;
+        wingman.lookTarget = wingmanTarget;
+        wingman.hasMoveTarget = shouldWingmanMove;
+        wingman.moveTarget = wingmanNextPos;
+    }
+
+    public void targetDetected()
+    {
+        stateMachine.changeState(attack1);
+    }
+}

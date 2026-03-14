@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
                 want2Fly=false;
             }
         }
-        // print("staminaAct: "+staminaAct);
+        //print("staminaAct: "+staminaAct);
     }
 
 
