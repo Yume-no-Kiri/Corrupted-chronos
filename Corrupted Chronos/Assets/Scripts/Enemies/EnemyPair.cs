@@ -32,11 +32,19 @@ public class EnemyPair : MonoBehaviour
     public float attackDistance = 8f;
     public float attackDistanceTolerance = 1f;
 
+    [Header("Pressure Formation Params")]
+    public float pressureDistance = 8f;
+    public float pressureDistanceTolerance = 1f;
+    public float minWingmanAngle = 30;
+
     //States
+    public EnemiesStateMachine stateMachine;
+
     public baseState patrolling;
     public baseState attack1;
+    public baseState pressure;
 
-    public EnemiesStateMachine stateMachine;
+    
 
     #endregion
 
@@ -45,6 +53,7 @@ public class EnemyPair : MonoBehaviour
         stateMachine = new EnemiesStateMachine(this);
         patrolling = new patrollingState(stateMachine);
         attack1 = new attackingState(stateMachine);
+        pressure = new pressureState(stateMachine);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -69,23 +78,21 @@ public class EnemyPair : MonoBehaviour
 
     void handleLeader()
     {
-        leader.hasLookTarget = leaderHasTarget;
-        leader.lookTarget = leaderTarget;
-
+        leader._lookTarget = leaderTarget;
         leader.hasMoveTarget = shouldLeaderMove;
         leader.moveTarget = leaderNextPos;
     }
 
     void handleWingman()
     {
-        wingman.hasLookTarget = wingmanHasTarget;
-        wingman.lookTarget = wingmanTarget;
+        wingman._lookTarget = wingmanTarget;
         wingman.hasMoveTarget = shouldWingmanMove;
         wingman.moveTarget = wingmanNextPos;
     }
 
     public void targetDetected()
     {
-        stateMachine.changeState(attack1);
+        //TODO: hacer que se elija un random attack pattern
+        stateMachine.changeState(pressure);
     }
 }

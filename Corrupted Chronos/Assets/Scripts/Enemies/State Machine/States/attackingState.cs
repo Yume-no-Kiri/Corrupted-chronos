@@ -24,22 +24,41 @@ public class attackingState : baseState
 
     public override void FrameUpdate()
     {
-        data.leader.lookTarget = data.player.transform;
-        data.wingman.lookTarget = data.player.transform;
-
         float distToPlayer = Vector3.Distance(data.leader.transform.position, data.player.position);
 
+        // --- CONTROL DE DISTANCIA DEL LIDER ---
         if (Mathf.Abs(distToPlayer - data.attackDistance) > data.attackDistanceTolerance)
         {
             data.leaderNextPos = GenerateAttackPosition();
         }
 
-        // Wingman sigue al líder
+        // --- WINGMAN SIGUE AL LIDER ---
         Vector3 offset =
             (-data.leader.transform.forward * data.wingmanOffset.x) +
             (data.leader.transform.right * data.wingmanOffset.y);
 
         data.wingmanNextPos = data.leader.transform.position + offset;
+
+        // --- ATAQUE DEL LIDER ---
+        bool leaderInRange =
+            distToPlayer <= data.attackDistance + data.attackDistanceTolerance &&
+            distToPlayer >= data.attackDistance - data.attackDistanceTolerance;
+
+        if (leaderInRange)
+        {
+            data.leader.primaryAttack();
+
+            data.leaderTarget = data.player.transform;
+            data.wingmanTarget = data.player.transform;
+        }
+
+        // --- ATAQUE DEL WINGMAN (SI EL JUGADOR SE ACERCA DEMASIADO) ---
+        float wingmanDist = Vector3.Distance(data.wingman.transform.position, data.player.position);
+
+        if (wingmanDist < data.attackDistance * 0.6f) // puedes ajustar este factor
+        {
+            data.wingman.primaryAttack();
+        }
     }
 
     Vector3 GenerateAttackPosition()

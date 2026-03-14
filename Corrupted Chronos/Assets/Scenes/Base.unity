@@ -314,9 +314,8 @@ MonoBehaviour:
   rotationSmoothing: 0
   rotationSpeed: 720
   moveTarget: {x: 516.13, y: 2.16, z: 354.49}
-  lookTarget: {fileID: 1759253822}
+  _lookTarget: {fileID: 0}
   hasMoveTarget: 0
-  hasLookTarget: 0
 --- !u!4 &79266817
 Transform:
   m_ObjectHideFlags: 0
@@ -822,6 +821,57 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5128885e611ca2548812017164f9d781, type: 3}
+--- !u!1 &287932636
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 287932638}
+  - component: {fileID: 287932637}
+  m_Layer: 0
+  m_Name: StatsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &287932637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287932636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e21a81635eefe45aae6211f052dd7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::statsManager
+  stats:
+  - name: Hp
+    baseValue: 100
+    currentValue: 0
+    additive: []
+    multiplicative: []
+    exponent: []
+--- !u!4 &287932638
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287932636}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 512.9469, y: 11.5, z: 300.47336}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &356759221 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5742979045928969330, guid: ef2fb929589f0644cb372d605385adb7, type: 3}
@@ -1287,9 +1337,8 @@ MonoBehaviour:
   rotationSmoothing: 0
   rotationSpeed: 720
   moveTarget: {x: 516.13, y: 2.16, z: 354.49}
-  lookTarget: {fileID: 1759253822}
+  _lookTarget: {fileID: 0}
   hasMoveTarget: 0
-  hasLookTarget: 0
 --- !u!54 &573752541
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3130,14 +3179,14 @@ MonoBehaviour:
   player: {fileID: 1759253822}
   leader: {fileID: 79266815}
   leaderHasTarget: 0
-  shouldLeaderMove: 0
-  leaderNextPos: {x: 0, y: 0, z: 0}
-  leaderTarget: {fileID: 0}
+  shouldLeaderMove: 1
+  leaderNextPos: {x: 469.70905, y: 2.16, z: 269.35687}
+  leaderTarget: {fileID: 1759253822}
   wingman: {fileID: 573752540}
   wingmanHasTarget: 0
-  shouldWingmanMove: 0
-  wingmanNextPos: {x: 0, y: 0, z: 0}
-  wingmanTarget: {fileID: 0}
+  shouldWingmanMove: 1
+  wingmanNextPos: {x: 473.58536, y: 2.16, z: 262.18036}
+  wingmanTarget: {fileID: 1759253822}
   wingmanOffset: {x: 4, y: 2}
   patrolRadius: 30
   arriveThreshold: 0.2
@@ -3147,6 +3196,9 @@ MonoBehaviour:
   playerDetected: 0
   attackDistance: 8
   attackDistanceTolerance: 3
+  pressureDistance: 10
+  pressureDistanceTolerance: 3
+  minWingmanAngle: 30
 --- !u!4 &1478004260 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4034951588921962960, guid: 5128885e611ca2548812017164f9d781, type: 3}
@@ -4625,6 +4677,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 287932638}
   - {fileID: 1365341891}
   - {fileID: 852508115}
   - {fileID: 1544524927}

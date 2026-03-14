@@ -20,12 +20,11 @@ public class EnemyUnit : MonoBehaviour
 
     [Header("References")]
     public Vector3 moveTarget;
-    public Transform lookTarget;
+    public Transform _lookTarget;
     private Rigidbody rb;
 
     [Header("Control")]
     public bool hasMoveTarget;
-    public bool hasLookTarget;
 
     
 
@@ -72,36 +71,6 @@ public class EnemyUnit : MonoBehaviour
     {
         //pew pew
         print("pew pew");
-    }
-
-    #endregion
-
-    #region Public API
-    // ========================
-    // PUBLIC API (para la dupla)
-    // ========================
-
-    public void SetMoveTarget(Vector3 target)
-    {
-        moveTarget = target;
-        hasMoveTarget = true;
-    }
-
-    public void StopMoving()
-    {
-        hasMoveTarget = false;
-        currentVelocity = Vector2.zero;
-    }
-
-    public void SetLookTarget(Transform target)
-    {
-        lookTarget = target;
-        hasLookTarget = true;
-    }
-
-    public void ClearLookTarget()
-    {
-        hasLookTarget = false;
     }
 
     #endregion
@@ -159,9 +128,9 @@ public class EnemyUnit : MonoBehaviour
     {
         Vector3 direction;
 
-        if (hasLookTarget && lookTarget != null)
+        if (_lookTarget != null)
         {
-            direction = lookTarget.position - transform.position;
+            direction = _lookTarget.position - transform.position;
         }
         else if (hasMoveTarget)
         {
