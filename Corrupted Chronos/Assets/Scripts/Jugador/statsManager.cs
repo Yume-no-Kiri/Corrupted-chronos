@@ -7,20 +7,59 @@ public class statsManager : MonoBehaviour
     //TODO: Recibir un SO con los stats base
     //TODO: los modificadores deberían tener source
 
+
+    //El diccionario existe para tener acceso O(1) a cualquier stat
+    Dictionary<Stat.StatType, Stat> statLookup;
+
+    //Esto SE MANTIENE privado
+    //Es una lista para poder editar los stats desde el inspector, pero no se expone a otras clases
     [SerializeField] List<Stat> stats = new();
 
-    public void AddModifier(string statName, StatModifier mod)
+    void Awake()
     {
-        var stat = stats.Find(s => s.name == statName);
-        if (stat != null)
-            stat.AddModifier(mod);
+        statLookup = new Dictionary<Stat.StatType, Stat>();
+
+        foreach (var stat in stats)
+        {
+            statLookup[stat.name] = stat;
+        }
+    }
+
+    public float AddModifier(Stat.StatType type, StatModifier mod)
+    {
+        if (statLookup.TryGetValue(type, out var stat))
+        {
+            return stat.AddModifier(mod);
+        }
+
+        Debug.LogWarning($"Stat {type} not found");
+        return 0f;
+    }
+
+    public float GetStat(Stat.StatType type)
+    {
+        if (statLookup.TryGetValue(type, out var stat))
+            return stat.currentValue;
+
+        Debug.LogWarning($"Stat {type} not found");
+        return 0f;
     }
 }
 
 [Serializable]
 public class Stat
 {
-    public string name;
+    public enum StatType
+    {
+        Health,
+        Shields,
+        ShieldRegen,
+        Damage,
+        Speed,
+        Agility,
+        AttackSpeed
+    }
+    public StatType name;
 
     public float baseValue;
     public float currentValue;
@@ -29,28 +68,27 @@ public class Stat
     [SerializeField] List<StatModifier> multiplicative = new();
     [SerializeField] List<StatModifier> exponent = new();
 
-    public void AddModifier(StatModifier mod)
+    public float AddModifier(StatModifier mod)
     {
-        /*
         switch (mod.type)
         {
-            case ModifierType.Add:
+            case StatModifier.ModifierType.Add:
                 additive.Add(mod);
                 break;
 
-            case ModifierType.Multiply:
+            case StatModifier.ModifierType.Multiply:
                 multiplicative.Add(mod);
                 break;
 
-            case ModifierType.Exponent:
+            case StatModifier.ModifierType.Exponent:
                 exponent.Add(mod);
                 break;
-        }*/
+        }
 
-        Recalculate();
+        return Recalculate();
     }
 
-    void Recalculate()
+    float Recalculate()
     {
         float value = baseValue;
 
@@ -64,6 +102,7 @@ public class Stat
             value = Mathf.Pow(value, m.value);
 
         currentValue = value;
+        return value;
     }
 }
 

@@ -93,6 +93,18 @@ public class EnemyPair : MonoBehaviour
     public void targetDetected()
     {
         //TODO: hacer que se elija un random attack pattern
-        stateMachine.changeState(pressure);
+
+        switch (Random.Range(0,3))
+        {
+            case 0:
+                stateMachine.changeState(attack1);
+                break;
+            case 1:
+                stateMachine.changeState(pressure);
+                break;
+        }
+
+
+        //stateMachine.changeState(pressure);
     }
 }
