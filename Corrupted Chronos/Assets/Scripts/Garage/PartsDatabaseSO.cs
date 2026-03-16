@@ -58,6 +58,7 @@ public struct SizeGround
 [Serializable]
 public class ObjectData
 {
+    //aquí hauriem d'afegir estats i valors de cada arma a modificar
     [field: SerializeField]
     public string Name { get; private set; }
     

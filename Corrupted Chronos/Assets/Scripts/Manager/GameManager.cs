@@ -148,10 +148,10 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public GarageAdder returnGarageAdder()
+    public PartAdder returnGarageAdder()
     {
-        if( playerInstance.GetComponent<GarageAdder>()) Debug.LogError("NO HI HA GARAGEADDER");
-        return playerInstance.GetComponent<GarageAdder>();
+        if( !playerInstance.GetComponent<PartAdder>()) Debug.LogError("NO HI HA GARAGEADDER");
+        return playerInstance.GetComponent<PartAdder>();
     } 
     public GameObject returnAdderParts()
     {

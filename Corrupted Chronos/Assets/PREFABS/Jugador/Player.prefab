@@ -138,9 +138,10 @@ GameObject:
   - component: {fileID: 2079600861506817315}
   - component: {fileID: 8623248332053469821}
   - component: {fileID: 5469871605773485075}
+  - component: {fileID: 2886920527071846068}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -224,6 +225,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   StartAsPilot: 1
   StartInGarage: 1
+  _garageGO: {fileID: 0}
   branca: 
   mode: 0
 --- !u!114 &6779786710766733167
@@ -283,3 +285,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c17800e6853969458b0a1797ff1cc19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GarageAdder
+--- !u!114 &2886920527071846068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7221113274912096352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ef55bc5eb6319e43817dc977890cfc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractiveMethods

@@ -31,10 +31,10 @@ public struct PriorityTGround
                 res.PriorityByTGround.Add(TypeGround.Buildable, 1);  
                 continue;
                 case TypeGround.Magazine:
-                Debug.LogError("No definit");
+                Debug.LogWarning("No definit");
                 continue;
                 default:
-                Debug.LogError("No definit");
+                Debug.LogWarning("No definit");
                 continue;
             }   
         }

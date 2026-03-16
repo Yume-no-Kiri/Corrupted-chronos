@@ -17,7 +17,7 @@ public class DialogueInvoker : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Jugador"))
+        if (other.CompareTag("Player"))
         {
             Player i = other.GetComponentInParent<Player>();
             Debug.Log("this is your Jugador" + i.gameObject.name);
@@ -41,7 +41,7 @@ public class DialogueInvoker : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Jugador"))
+        if (other.CompareTag("Player"))
         {
             Player i = other.GetComponentInParent<Player>();
 

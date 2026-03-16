@@ -520,7 +520,7 @@ public class PlayerOld : MonoBehaviour
         
             if (Physics.Raycast(ray, out hit,300,mask))
             {
-                inputManager.MousePosition= hit.point;
+                inputManager.MousePositionGarage= hit.point;
                 //Debug.Log("BBBBBBBB");
             }
             //Debug.Log("AAAAAAAAAA "+mouse.ToString() );

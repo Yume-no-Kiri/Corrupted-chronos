@@ -113,10 +113,7 @@ public class InteractiveMethods : MonoBehaviour
 
     public void Nau_Pilot_Position(Player jugador)
     {
-        //v1: si HangleChangeInputMap es al update
-       /*  jugador.inputManager.playerInputActions.Nau.Disable();
-        jugador.inputManager.playerInputActions.Pilot.Enable(); */
-
+       
         //v2: HangleChangeInputMap no es al update
         jugador.AccesChangeInputMap(NameInputAction.Nau, false);
         jugador.AccesChangeInputMap(NameInputAction.Pilot, true);
@@ -158,8 +155,8 @@ public class InteractiveMethods : MonoBehaviour
         //degut a que no sempre ontrigger exit s'activa, i la majoria de casos, només volen cridar-ho una vegada, 
         //quan s'activa la interacció l'eliminem 
         //per si les mosques
-        InteractionType i= InteractionType.NauPilot;
-        jugador.SubInteraction(i);
+        /* InteractionType i= InteractionType.NauPilot;
+        jugador.SubInteraction(i); */
     }
     
     public void Pilot_Nau_Position(Player jugador)
@@ -203,8 +200,8 @@ public class InteractiveMethods : MonoBehaviour
         jugador.AccesChangeInputMap(NameInputAction.Pilot, false);
 
 
-        InteractionType i= InteractionType.PilotNau;
-        jugador.SubInteraction(i);
+        /* InteractionType i= InteractionType.PilotNau;
+        jugador.SubInteraction(i); */
     }
     
 
@@ -223,8 +220,8 @@ public class InteractiveMethods : MonoBehaviour
         //degut a que no sempre ontrigger exit s'activa, i la majoria de casos, només volen cridar-ho una vegada, 
         //quan s'activa la interacció l'eliminem 
         //per si les mosques
-        InteractionType i= InteractionType.PnINp;
-        jugador.SubInteraction(i);
+        // InteractionType i= InteractionType.PnINp;
+        // jugador.SubInteraction(i);
 
     }
 

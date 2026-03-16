@@ -140,17 +140,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5555472288932911591, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
   m_PrefabInstance: {fileID: 7022164113323732678}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &263246067 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7786804314962959953, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-  m_PrefabInstance: {fileID: 1331935247994184260}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 487ba4de03f09ac4ba5895d02d169b94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CanvasPlacementSystem
 --- !u!1 &316752368 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4095697942591388805, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
@@ -2019,17 +2008,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 488893378311795848, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1191193961548546323, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
       propertyPath: m_Name
       value: GarageObject
       objectReference: {fileID: 0}
     - target: {fileID: 1191193961548546323, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1287651561758508353, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
       propertyPath: m_IsActive
@@ -2048,10 +2033,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8337461859300868747, guid: 6caf59afb8b12904ab96c3991586afe7, type: 3}
     - target: {fileID: 2088846522459829300, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2088846522459829300, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
       propertyPath: inputManager
       value: 
       objectReference: {fileID: 644119001}
@@ -2059,24 +2040,8 @@ PrefabInstance:
       propertyPath: canShowBuildGrid
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2560757440342768184, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 263246067}
-    - target: {fileID: 2560757440342768184, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartPlacementParts
-      objectReference: {fileID: 0}
-    - target: {fileID: 2560757440342768184, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CanvasPlacementSystem, Assembly-CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 3073732584284406251, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
       propertyPath: m_CellSwizzle
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3250824086345226849, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3461003120754213628, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
@@ -2095,73 +2060,17 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -15.05
       objectReference: {fileID: 0}
-    - target: {fileID: 4490380944569423046, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 263246067}
-    - target: {fileID: 4490380944569423046, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SaveButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 4490380944569423046, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CanvasPlacementSystem, Assembly-CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 5258856883752897990, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
       propertyPath: m_LocalScale.z
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5258856883752897990, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5626527496488665218, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5656858213729936041, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: inputManager
-      value: 
-      objectReference: {fileID: 644119001}
-    - target: {fileID: 6077343066437948455, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 263246067}
-    - target: {fileID: 6077343066437948455, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartPlacementParts
-      objectReference: {fileID: 0}
-    - target: {fileID: 6077343066437948455, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CanvasPlacementSystem, Assembly-CSharp
-      objectReference: {fileID: 0}
     - target: {fileID: 6077343066437948455, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6629608306382612982, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 263246067}
-    - target: {fileID: 6629608306382612982, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ResetButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 6629608306382612982, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CanvasPlacementSystem, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 8458451293797136669, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 263246067}
-    - target: {fileID: 8458451293797136669, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartPlacementParts
-      objectReference: {fileID: 0}
-    - target: {fileID: 8458451293797136669, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CanvasPlacementSystem, Assembly-CSharp
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8458451293797136669, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -2175,15 +2084,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.25
       objectReference: {fileID: 0}
-    - target: {fileID: 8922363332369607028, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 389305853770028214, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
-      insertIndex: 8
+      insertIndex: -1
       addedObject: {fileID: 887956273}
     - targetCorrespondingSourceObject: {fileID: 5258856883752897990, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
       insertIndex: -1

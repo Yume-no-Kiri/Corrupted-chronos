@@ -53,7 +53,9 @@ public class PlacementSystem : MonoBehaviour
     private Vector3 _OffSetPos=  new Vector3(-0.25f, 0, -0.25f);
 
     // [SerializeField] private GameObject player;
-    private GarageAdder garageAdder;
+    private PartAdder partAdder;
+    [SerializeField]
+    private GameObject VisualizeParts;
 
     // private Player nauAdded;
     int rotationToAdd=0;
@@ -69,7 +71,8 @@ public class PlacementSystem : MonoBehaviour
     {
         
         database=GameManager.Instance.dataBaseParts;
-        garageAdder=GameManager.Instance.returnGarageAdder();
+        partAdder=GameManager.Instance.returnGarageAdder();
+        inputManager= GameManager.Instance.inputManager;
         StopPlacement();
         
         FirstStructure();
@@ -83,30 +86,33 @@ public class PlacementSystem : MonoBehaviour
     private void Update()
     {
         if (inputManager.playerInputActions.Garage.enabled)
-        {
-
-            Vector3Int gridPosition = grid.WorldToCell(inputManager.MousePosition);
+        {   
+            Debug.Log("entrem al update de pacemnet system1");
+            Vector3Int gridPosition = grid.WorldToCell(inputManager.MousePositionGarage);
             // Vector3 worldPos = grid.CellToWorld(gridPosition);
-
+            Debug.Log("entrem position mouse:"+inputManager.MousePositionGarage );
             bool placementValidity;
            
             if (_previewObject)
             {
+                Debug.Log("entrem al update de pacemnet system2");
+
                 if(_selectedObject!= null){ 
                     placementValidity = CheckPlacementValidity(gridPosition,_selectedObject);
                 }
                 else return;
                 
-    
+                Debug.Log("entrem al update de pacemnet system3");
                 // Ara apliques la rotació visual al GameObject
                 float angle = rotationToAdd * 90f;
                 _previewObject.transform.rotation = Quaternion.Euler(0, angle, 0);
 
                 cellIndicator.SetActive(false);
                 _previewObject.transform.position = grid.CellToWorld(gridPosition)+ new Vector3(0,0.5f,0);
-               
+                Debug.Log("entrem position _preview object:"+_previewObject.transform.position.ToString());
                 foreach (var sr in _previewObject.GetComponentsInChildren<SpriteRenderer>())
                 {
+                    Debug.Log("entrem al update de pacemnet system4");
                     if (placementValidity)
                     {
                         sr.color = Color.green; 
@@ -116,6 +122,7 @@ public class PlacementSystem : MonoBehaviour
                         sr.color = Color.red;
                     }
                 }
+                Debug.Log("entrem al update de pacemnet system5");
             }
             else
             {
@@ -155,71 +162,29 @@ public class PlacementSystem : MonoBehaviour
         
     }
     #endregion
-    
 
-    #region botons to place
-
-    public void StartPlacementParts(int id)
-    {
-        StartPlacementGeneral(id, ConfigurationNau.Parts);
-    }
-    public void StartPlacementNau(int id)
-    {
-        StartPlacementGeneral(id, ConfigurationNau.Naus);
-    }
-    public void StartPlacementTraveler(int id)
-    {
-        StartPlacementGeneral(id, ConfigurationNau.Pilots);
-    }
-
-
-    public void ResetPlacement()
-    {
-        //this should be looked when player is reworked
-        
-        garageAdder.ResetPlacement();
-        schemeShip.ResetPlacementData();
-
-
-        FirstStructure();
-        // StopPlacement();
-        
-    }
-
-    public void SavePlacement()
-    {
-        // if(!nauAdded) nauAdded = player.GetComponent<Player>();
-        GameManager.Instance.playerInstance.transform.rotation=quaternion.identity;
-
-        garageAdder.SavePlacement();
-        /* if (nauAdded == null) {
-            Debug.LogError("didn't find nau");
-            return;
-        }
-        if (nauAdded != null)
-        {    
-            nauAdded.RemovePart();
-        } */
-
-       /* Vector3 origin= _placedObjects[0].transform.position;
-        if (_placedObjects.Count > 0)
-        {
-            for (int i = 1; i < _placedObjects.Count; i++)
-            {
-                GameObject part=_placedObjects[i];
-                
-                nauAdded.AddPart(part,  origin);
-            }
-        } */
-
-        // nauAdded.ActivateParts();
-
-    }
-    #endregion
 
     
     #region place stuff
+    void FirstStructure()
+    {
+       
+        StartPlacementGeneral(0,ConfigurationNau.Naus);
+        PlaceStructure( true);
+        StopPlacement();
+    }
+    
+
     //els botons no permeten mètodes on es passen més de 2 parametres
+    bool CheckPlacementValidity(Vector3Int gridPosition, ObjectData partAColocar)
+    {
+        if(partAColocar==null) return false;
+        
+        // Debug.LogWarning("entres dintre de check placement validity???");
+        return schemeShip.CanPlaceObejctAt(gridPosition,partAColocar, rotationToAdd);
+        
+    }
+
     public void StartPlacementGeneral(int id, ConfigurationNau config)
     {
         switch (config)
@@ -282,38 +247,36 @@ public class PlacementSystem : MonoBehaviour
         
     }
     
-    void FirstStructure()
-    {
-       
-        StartPlacementGeneral(0,ConfigurationNau.Naus);
-        PlaceStructure( true);
-        StopPlacement();
-    }
-    
+ 
    //quan un objecte seleccionat fem click al terreny o primera estructura
     private void PlaceStructure( bool firstStructure=false)
     {
         Vector3Int gridPosition;
         GameObject partToAdd;
         if(firstStructure){ 
+
+            //això aniria a garageAdder o potser no instanciar encara, només instanciar al garatge i quan es doni a save es guarda a garageAdder
             _baseNauPos=schemePlain.GetComponent<Renderer>().bounds.center;
            
             if(_baseNauPos== Vector3.zero)  Debug.LogError("error amb _baseNausPos?");
 
             Vector3 newPosition=_baseNauPos- new Vector3(-0.5f,0,-0.5f);
             gridPosition = grid.WorldToCell(newPosition);
-            partToAdd = Instantiate(_selectedListConfig[selectedObjectIndex].PrefabGaratge);
+            partToAdd = Instantiate(_selectedListConfig[selectedObjectIndex].PrefabGaratge, VisualizeParts.gameObject.transform);
             Debug.Log("placestructure position instantiate nau:"+gridPosition);
             partToAdd.transform.position = grid.CellToWorld(gridPosition) + _OffSetPos;//+ Vector3Int.FloorToInt(_OffSetPos)
             Debug.Log("placestructure position instantiate nau:"+ grid.CellToWorld(gridPosition) + _OffSetPos);
-        
+
+            // GameManager.Instance.playerInstance.
+
         }else{ 
+            //això aniria a garageAdder
             if (inputManager.IsPointerOverUI())
             {
                 Debug.Log("Pointer over UI");
                 return;
             }
-            gridPosition = grid.WorldToCell(inputManager.MousePosition);
+            gridPosition = grid.WorldToCell(inputManager.MousePositionGarage);
             // Debug.Log("gridTo Pos PlaceStructure:"+ gridPosition);
 
             bool placementValidity=false;
@@ -326,7 +289,7 @@ public class PlacementSystem : MonoBehaviour
            /*  if(!_placedObjects[0].transform.Find("Added").transform) Debug.LogError("No podem afegir parts");
             partToAdd= Instantiate(object2inst.PrefabGaratge, _placedObjects[0].transform.Find("Added").transform); */
             
-            partToAdd= Instantiate(object2inst.PrefabGaratge, garageAdder.adder.transform);
+            partToAdd= Instantiate(object2inst.PrefabGaratge, VisualizeParts.gameObject.transform);
 
             partToAdd.transform.position = grid.CellToWorld(gridPosition);//+ Vector3Int.FloorToInt(_OffSetPos)
         }
@@ -337,21 +300,68 @@ public class PlacementSystem : MonoBehaviour
         Transform coll = partToAdd.transform.Find("Collisions");
         if (coll != null) coll.gameObject.SetActive(false);
 
-        // _placedObjects.Add(partToAdd);
+        //aquesta està malament
+        // if(!firstStructure)  garageAdder.CreatePart(partToAdd, grid.CellToWorld(gridPosition));
+        // Vector3 relativePos = partToAdd.transform.position - _baseNauPos.transform.position;
+        // Debug.Log("position will spawn PS:"+ relativePos.ToString());
+        partAdder.AddPart(partToAdd,grid.CellToWorld(gridPosition),partToAdd.transform.localRotation );
+
+        
+
+
         // Debug.Log("placestructure position adding nau:"+gridPosition);    
         schemeShip.AddObjectAt(gridPosition, _selectedObject, rotationToAdd); // _placedObjects.Count-1
         StopPlacement();
     }
 
-    bool CheckPlacementValidity(Vector3Int gridPosition, ObjectData partAColocar)
+
+  
+
+    public void ResetPlacement()
     {
-        if(partAColocar==null) return false;
+        //this should be looked when player is reworked
         
-        // Debug.LogWarning("entres dintre de check placement validity???");
-        return schemeShip.CanPlaceObejctAt(gridPosition,partAColocar, rotationToAdd);
+        partAdder.ResetPlacement();
+        schemeShip.ResetPlacementData();
+
+        foreach(Transform child in VisualizeParts.transform)
+        {
+            Destroy(child.gameObject);   
+        }
+
+        FirstStructure();
+        // StopPlacement();
         
     }
-  
+
+    public void SavePlacement()
+    {
+        // if(!nauAdded) nauAdded = player.GetComponent<Player>();
+        GameManager.Instance.playerInstance.transform.rotation=quaternion.identity;
+
+        partAdder.SavePlacement();
+        // nauAdded.ActivateParts();
+
+        /* if (nauAdded == null) {
+            Debug.LogError("didn't find nau");
+            return;
+        }
+        if (nauAdded != null)
+        {    
+            nauAdded.RemovePart();
+        } 
+        
+        Vector3 origin= _placedObjects[0].transform.position;
+        if (_placedObjects.Count > 0)
+        {
+            for (int i = 1; i < _placedObjects.Count; i++)
+            {
+                GameObject part=_placedObjects[i];
+                
+                nauAdded.AddPart(part,  origin);
+            }
+        } */
+    }
     #endregion
  
     #region enable/disable
@@ -414,5 +424,21 @@ public class PlacementSystem : MonoBehaviour
         }
     }
   
+    #endregion
+
+     #region botons to place
+
+    /* public void StartPlacementParts(int id)
+    {
+        StartPlacementGeneral(id, ConfigurationNau.Parts);
+    }
+    public void StartPlacementNau(int id)
+    {
+        StartPlacementGeneral(id, ConfigurationNau.Naus);
+    }
+    public void StartPlacementTraveler(int id)
+    {
+        StartPlacementGeneral(id, ConfigurationNau.Pilots);
+    } */
     #endregion
 } 

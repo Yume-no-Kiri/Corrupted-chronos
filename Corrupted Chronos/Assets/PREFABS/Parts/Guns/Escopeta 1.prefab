@@ -213,6 +213,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7589288795423491174}
   - component: {fileID: 5971455534803147072}
+  - component: {fileID: 6119229187638868060}
   m_Layer: 0
   m_Name: Escopeta 1
   m_TagString: Jugador
@@ -254,6 +255,18 @@ MonoBehaviour:
   typeName: Escopeta
   firepoint: {fileID: 698397631943366705}
   bulletPrefab: {fileID: 8735485520253785074, guid: 8284973a34c69d346b031d28dea8d7a6, type: 3}
+--- !u!114 &6119229187638868060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5216852073179350294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95d58e615063e3945ba5d8ee1e7ce3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DebugScript
 --- !u!1 &8084476889223222862
 GameObject:
   m_ObjectHideFlags: 0

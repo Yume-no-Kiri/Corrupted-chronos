@@ -21,7 +21,7 @@ public class ShipLook : MonoBehaviour
     {
         mainCamera = Camera.main;
 
-        // Inicializamos el ángulo actual con la rotación Y existente
+        // Inicializamos el ï¿½ngulo actual con la rotaciï¿½n Y existente
         currentAngle = transform.eulerAngles.y;
         xOffset = transform.eulerAngles.x;
         zOffset = transform.eulerAngles.z;
@@ -39,6 +39,7 @@ public class ShipLook : MonoBehaviour
 
     private void UpdateTargetAngle()
     {
+        //update this to use inputManager from the gameManager
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
         Vector2 shipScreenPos = mainCamera.WorldToScreenPoint(transform.position);
 

@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     // [SerializeField]
     private PilotMovement pilotMovement;
 
-    private GarageAdder garageAdder;
+    private PartAdder garageAdder;
 
 
     public InputManager inputManager { get; private set; }
@@ -36,6 +36,8 @@ public class Player : MonoBehaviour
     //if diferent naus and pilots, should change stats then i would get a script with stats change? 
     private GameObject _nauGO;
     private GameObject _pilotGO;
+    //maybe canviar a garageAdder, pero resulta més fàcil aquí demoment 
+    [SerializeField] private GameObject _adderGO;
     [SerializeField] private GameObject _garageGO;
 
     private PartsDatabaseSO _database;
@@ -53,7 +55,8 @@ public class Player : MonoBehaviour
         shipMovement=GetComponent<ShipMovement>();
         shipLook= GetComponent<ShipLook>();
         pilotMovement=GetComponent<PilotMovement>();
-        garageAdder=GetComponent<GarageAdder>();
+        garageAdder=GetComponent<PartAdder>();
+        interactiveMethods= GetComponent<InteractiveMethods>();
    
 
     }
@@ -65,6 +68,7 @@ public class Player : MonoBehaviour
         if(inputManager==null) Debug.LogError("LA CONCHA DE LA LORA");
         _database=GameManager.Instance.dataBaseParts;
        
+        
 
         _nauGO = Instantiate(_database.AllNaus[0].PrefabGaratge, new Vector3(0, 0, 0), quaternion.identity);
         _pilotGO= Instantiate(_database.AllPilots[0].PrefabGaratge,new Vector3(0, 0, 0), quaternion.identity);
@@ -72,14 +76,20 @@ public class Player : MonoBehaviour
         _pilotGO.transform.SetParent(this.transform,false);
         
 
-
-        interactiveMethods= gameObject.AddComponent<InteractiveMethods>();
+        // _adderGO=_nauGO.transform.Find("AdderPart").gameObject;
+        garageAdder.AssignAdder(_adderGO,_nauGO);
+        // interactiveMethods= gameObject.AddComponent<InteractiveMethods>();
         whatsToInteract = new List<InteractionType>();
 
+        inputManager.playerInputActions.Global.Enable();
+        inputManager.playerInputActions.Global.Interactua.performed += Interact;
 
         // shipMovement.SetUpShipMovement(inputManager.playerInputActions.Nau);
         //hauria de fer el mateix per el moviment del pilot
-        ApplyChangeInputMap(StartAsPilot,false);
+        ChangePilot(StartAsPilot);
+        ChangeNau(!StartAsPilot);
+        ChangeGarage(StartInGarage);
+        // ApplyChangeInputMap(StartAsPilot,false);
         /* if (StartAsPilot)
         {
             inputManager.playerInputActions.Nau.Disable();
@@ -111,9 +121,9 @@ public class Player : MonoBehaviour
     }
 
 
-    public void ApplyChangeInputMap(bool isPilot,bool isGarage)
+    public void ChangeGarage(bool activateGarage)
     {
-        if (isGarage)
+        if (activateGarage)
         {
             inputManager.playerInputActions.Garage.Enable();
             garageAdder.enabled=true;
@@ -127,41 +137,114 @@ public class Player : MonoBehaviour
             garageAdder.enabled=false;
             _garageGO.SetActive(false);
             //falta desactivar càmera garage i activar inmotion Camera
-
-
-
-            if (isPilot)
-            {
-                inputManager.playerInputActions.Nau.Disable();
-                shipMovement.enabled=false;
-                shipLook.enabled=false;
-                _nauGO.SetActive(false);
-
-                
-                inputManager.playerInputActions.Pilot.Enable();
-                pilotMovement.enabled=true;
-                _pilotGO.SetActive(true);
-            }
-            else
-            {
-                inputManager.playerInputActions.Nau.Enable();
-                shipMovement.enabled=true;
-                shipLook.enabled=true;
-                _nauGO.SetActive(true);
-
-                inputManager.playerInputActions.Pilot.Disable();
-                pilotMovement.enabled=false;
-                _pilotGO.SetActive(false);
-                
-            }
         }
     }
 
-    public void AccesChangeInputMap(NameInputAction inputMap, bool enableIt)
+    public void ChangePilot(bool activate)
+    {
+        
+        if (activate)
+        {
+           /*  inputManager.playerInputActions.Nau.Disable();
+            shipMovement.enabled=false;
+            shipLook.enabled=false;
+            _nauGO.SetActive(false); */
+
+            
+            inputManager.playerInputActions.Pilot.Enable();
+            pilotMovement.enabled=true;
+            _pilotGO.SetActive(true);
+        }
+        else
+        {
+            /* inputManager.playerInputActions.Nau.Enable();
+            shipMovement.enabled=true;
+            shipLook.enabled=true;
+            _nauGO.SetActive(true); */
+
+            inputManager.playerInputActions.Pilot.Disable();
+            pilotMovement.enabled=false;
+            _pilotGO.SetActive(false);
+            
+        }
+    }
+
+    public void ChangeNau(bool activate)
+    {
+        if (activate)
+        {
+            inputManager.playerInputActions.Nau.Enable();
+            shipMovement.enabled=true;
+            shipLook.enabled=true;
+            _nauGO.SetActive(true);
+        }
+        else
+        {
+            inputManager.playerInputActions.Nau.Disable();
+            shipMovement.enabled=false;
+            shipLook.enabled=false;
+            _nauGO.SetActive(false);
+        }
+    }
+
+    public void AccesChangeInputMap(NameInputAction inputMap, bool enableIt=true)
     {
          string mapName = inputMap.ToString();
         
-        InputActionMap targetMap = inputManager.playerInputActions.asset.FindActionMap(mapName);
+        // InputActionMap targetMap = inputManager.playerInputActions.asset.FindActionMap(mapName);
+
+
+
+        switch (inputMap)
+        {
+           
+            case NameInputAction.Garage:
+                if (enableIt)
+                {
+                    ChangeGarage(true);
+                    // targetMap.Enable();
+                }
+                else
+                {
+                    ChangeGarage(false);
+
+                    // targetMap.Disable();
+                }
+            break;
+            case NameInputAction.Nau:
+                if (enableIt)
+                {
+                    ChangeNau(true);
+                    /* targetMap.Enable();
+                    ChangePilot(false); */
+                }
+                else
+                {
+                    ChangeNau(false);
+                    // targetMap.Disable();
+                    
+                }
+            break;
+            case NameInputAction.Pilot:
+                if (enableIt)
+                {
+                    ChangePilot(true);
+                    // // targetMap.Enable();
+                    // ChangePilot(true);
+                }
+                else
+                {
+                    ChangePilot(false);
+                    // targetMap.Disable();
+                    
+                }
+            break;
+
+            default:
+            Debug.LogError("you should not be here");
+            break;
+        }
+
 
         // targetMap.Enable();
         //modificar el script que feia interaccions dinamiques
@@ -279,4 +362,13 @@ public class Player : MonoBehaviour
         this.mode = mode;   
     }
     #endregion
+
+    public Camera returnCameraGarage()
+    {
+        return _garageGO.GetComponentInChildren<Camera>();
+    }
+    /* public GameObject returnNau()
+    {
+        return _nauGO;
+    } */
 }
