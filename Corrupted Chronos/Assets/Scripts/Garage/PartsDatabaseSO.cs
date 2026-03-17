@@ -55,6 +55,7 @@ public struct SizeGround
 
 
 
+//probalement hauria de modificar una mica aixo, un objecte del inventari, pot ser item o pot ser part, inclús podrien ser els 2 a la vegada 
 [Serializable]
 public class ObjectData
 {

@@ -275,7 +275,7 @@ public class InteractiveMethods : MonoBehaviour
         
         //basicament, passem a nau o pilot.
         DoInteraction(estatAnterior,jugador);
-        jugador.CloseGarage();
+        // jugador.CloseGarage();
         
         InteractionType i= InteractionType.CloseGarage;
         jugador.SubInteraction(i);
