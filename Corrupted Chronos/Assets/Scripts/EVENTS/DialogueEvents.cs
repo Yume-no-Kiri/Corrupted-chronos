@@ -36,13 +36,13 @@ public class DialogueEvents
         }
     }
 
-    public event Action<string, List<Ink.Runtime.Choice>> onDisplayDialogue;
+    public event Action<string, List<Ink.Runtime.Choice>, string> onDisplayDialogue;
 
-    public void DisplayDialogue(string dialogue_line, List<Ink.Runtime.Choice> dialogue_choices)
+    public void DisplayDialogue(string dialogue_line, List<Ink.Runtime.Choice> dialogue_choices, string image)
     {
         if (onDisplayDialogue != null)
         {
-            onDisplayDialogue(dialogue_line, dialogue_choices);
+            onDisplayDialogue(dialogue_line, dialogue_choices, image);
         }
     }
 

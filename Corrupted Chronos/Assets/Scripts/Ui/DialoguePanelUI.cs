@@ -3,17 +3,21 @@ using Ink.Runtime;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialoguePanelUI : MonoBehaviour
 {
     [Header("Components:")]
 
     [SerializeField] private GameObject content_parent;
+    [SerializeField] private bool showing=false;
     [SerializeField] private TextMeshProUGUI dialogue_text;
+    [SerializeField] private Image dialogue_img;
     [SerializeField] private DialogueChioceButton[] choice_buttons;
+    [SerializeField] private List<Sprite> dialogueSprites;
     private void Awake()
     {
-        content_parent.SetActive(false);
+        content_parent.SetActive(showing);
         ResetPanel();
     }
 
@@ -43,11 +47,15 @@ public class DialoguePanelUI : MonoBehaviour
         ResetPanel();
     }    
 
-    private void DisplayDialogue(string text, List<Choice> dialogue_choices)
+    private void DisplayDialogue(string text, List<Choice> dialogue_choices, string image)
     {
         Debug.Log(text);
         dialogue_text.text = text;
-
+        Sprite foundSprite = dialogueSprites.Find(s => s.name == image);
+        if (foundSprite != null)
+        {
+            dialogue_img.sprite = foundSprite;
+        }
         if (dialogue_choices.Count>choice_buttons.Length)
         {
             Debug.LogError("Falten opcions de tria");
