@@ -6,6 +6,7 @@ public class statsManager : MonoBehaviour
 {
     //TODO: Recibir un SO con los stats base
     //TODO: los modificadores deberían tener source
+    //TODO: Stats que dependan de otras stats (ej: daño que dependa de speed)
 
 
     //El diccionario existe para tener acceso O(1) a cualquier stat
