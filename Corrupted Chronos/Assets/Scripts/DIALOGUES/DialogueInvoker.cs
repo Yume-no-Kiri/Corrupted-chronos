@@ -23,13 +23,13 @@ public class DialogueInvoker : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Jugador"))
+        if (other.CompareTag("Player"))
         {
             Player i = other.GetComponentInParent<Player>();
             Debug.Log("this is your Jugador" + i.gameObject.name);
             if (i != null)
             {
-                //canvia l'interacció, canviar de pilot nau, nau pilot, entrar sortir de garatge, xarlar, etc...
+                //canvia l'interacciï¿½, canviar de pilot nau, nau pilot, entrar sortir de garatge, xarlar, etc...
                 i.AddInteraction(ThisInteraction);
                 i.AddDialogueInfo(branca, mode);
 
@@ -47,7 +47,7 @@ public class DialogueInvoker : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Jugador"))
+        if (other.CompareTag("Player"))
         {
             Player i = other.GetComponentInParent<Player>();
 

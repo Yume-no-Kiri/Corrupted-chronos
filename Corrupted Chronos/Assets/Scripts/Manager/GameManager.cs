@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using Ink.Parsed;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -11,6 +13,7 @@ public class GameManager : MonoBehaviour
     public PartsDatabaseSO dataBaseParts;
     public InputManager inputManager;
 
+    public GameObject playerInstance;
     /*
     Guardem tota informació que s'haurà d'anar actualitzant, estats del jugador i coses així
     sobre actualització i acces de valors:
@@ -36,7 +39,7 @@ public class GameManager : MonoBehaviour
     public float staminaMoveUPUseQuantity=5f;
 
 
-    public float moveSpeedNau=10f;
+    public float moveSpeedNau=100f;
     [NonSerialized]
 
     public float moveSpeedPilot=4f;
@@ -142,5 +145,16 @@ public class GameManager : MonoBehaviour
     public void MoveUpStamina()
     {
         staminaAct-=staminaMoveUPUseQuantity; 
+    }
+
+
+    public PartAdder returnGarageAdder()
+    {
+        if( !playerInstance.GetComponent<PartAdder>()) Debug.LogError("NO HI HA GARAGEADDER");
+        return playerInstance.GetComponent<PartAdder>();
+    } 
+    public GameObject returnAdderParts()
+    {
+        return playerInstance.transform.Find("AdderParts").gameObject;
     }
 }

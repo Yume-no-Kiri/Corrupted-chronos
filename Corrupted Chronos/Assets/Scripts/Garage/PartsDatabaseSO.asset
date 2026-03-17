@@ -92,7 +92,7 @@ MonoBehaviour:
         ExtraSize:
         - {x: 0, y: 3}
     <dictionaryAuxRequires>k__BackingField: []
-    <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: f09e7fbb6e285d345b48218b683c4cfd, type: 3}
+    <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: dec252b1e0c5fad4c853a54183756f7d, type: 3}
   AllNaus:
   - <Name>k__BackingField: NauBase
     <ID>k__BackingField: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
         Size: {x: 4, y: 4}
         ExtraSize: []
     <dictionaryAuxRequires>k__BackingField: []
-    <PrefabGaratge>k__BackingField: {fileID: 3513957959478190534, guid: 35472b169ec04ca4da0fdada2eac151c, type: 3}
+    <PrefabGaratge>k__BackingField: {fileID: 3513957959478190534, guid: 0ac8b0c6a54d2f24284a477e5eb8e4e9, type: 3}
   AllPilots:
   - <Name>k__BackingField: PilotBase
     <ID>k__BackingField: 0

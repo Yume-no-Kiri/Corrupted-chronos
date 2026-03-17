@@ -5,8 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Interactive
-  - Jugador
   - NPC
+  - Collectable
   layers:
   - Default
   - TransparentFX

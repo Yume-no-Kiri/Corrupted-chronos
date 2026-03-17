@@ -10,9 +10,13 @@ public class InputManager : MonoBehaviour
     public PlayerInputActions playerInputActions;
 
     
-    public Vector3 MousePosition;
-
+    //potser això canviar-ho de lloc
+    public Vector3 MousePositionGarage;
+    private Camera cameraGarage;
+    private Vector3 mousePos;
     
+    
+
     public event Action OnClick, OnExit;
     public event Action<InputAction.CallbackContext> OnShotLeft, OnShotRight;
     public event Action<InputAction.CallbackContext> RotateLeft, RotateRight;
@@ -29,19 +33,39 @@ public class InputManager : MonoBehaviour
 
         playerInputActions.Garage.RotateLeft.performed +=ctx=> RotateLeft?.Invoke(ctx);
         playerInputActions.Garage.RotateRight.performed += ctx=> RotateRight?.Invoke(ctx);
+        // playerInputActions.
+        // OnActionStatusChange
     }
 
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        cameraGarage=GameManager.Instance.playerInstance.GetComponent<Player>().returnCameraGarage();
     }
 
     // Update is called once per frame
     void Update()
     {
+       
+        mousePos = playerInputActions.Global.MousePosition.ReadValue<Vector2>();
 
+        if (playerInputActions.Garage.enabled)
+        {
+            //Camera camGarage = _garage.GetComponentInChildren<Camera>();
+            
+            mousePos.z = cameraGarage.nearClipPlane;
+        
+            Ray ray = cameraGarage.ScreenPointToRay(mousePos);
+            RaycastHit hit;
+            LayerMask mask = LayerMask.GetMask("Default");
+        
+            if (Physics.Raycast(ray, out hit,300,mask))
+            {
+                MousePositionGarage= hit.point;
+                //Debug.Log("BBBBBBBB");
+            }
+        }
     }
     
 

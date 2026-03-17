@@ -28,7 +28,7 @@ public class InteractionScriptAdder : MonoBehaviour
         Debug.Log("Player entered");
 
         //comprovem que es jugador
-        if (other.CompareTag("Jugador"))
+        if (other.CompareTag("Player"))
         {
             
             //trigger detecta nau o pilot, pero no el seu pare player, qeu l'escript que ens interessa
@@ -57,7 +57,7 @@ public class InteractionScriptAdder : MonoBehaviour
         //moltes vegades al desactivar objectes aquest mètode no es cridara
         Debug.Log("Player left");
 
-        if (other.CompareTag("Jugador"))
+        if (other.CompareTag("Player"))
         {
             Player i= other.GetComponentInParent<Player>();
 

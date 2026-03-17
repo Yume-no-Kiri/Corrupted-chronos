@@ -15,20 +15,19 @@ public class EachPartScript : MonoBehaviour
     [SerializeField] private Transform firepoint;
     [SerializeField] private GameObject bulletPrefab;
     
-    
-    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public PartActions Activate()
     { 
         
         //el script que afegeix només s'activa quan player.cs ho diu
         //Possible millora futura: Crear molts scripts, per cada acció, una part està formada per multiples d'aquests scripts,
         //Part actions o EachPartScript(aquest script), poddrien controlar amb llistes totes aquestes coses
+        PartActions ScriptPart=null;
         componentType = Type.GetType(typeName);
         if (componentType != null)
         {
             gameObject.AddComponent(componentType);
-            PartActions ScriptPart= gameObject.GetComponent<PartActions>();
+            ScriptPart= gameObject.GetComponent<PartActions>();
             ScriptPart.PassVariables(firepoint, bulletPrefab);
             
         }
@@ -36,6 +35,7 @@ public class EachPartScript : MonoBehaviour
         {
             Debug.LogError($"Cannot find component type {typeName}");
         }
+        return ScriptPart;
         
     }
 

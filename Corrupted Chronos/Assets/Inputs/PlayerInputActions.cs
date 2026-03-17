@@ -143,7 +143,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""id"": ""71c904c3-5ea5-4082-92c6-45004b5a6427"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=10)"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
@@ -472,6 +472,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""15e95c57-a8b2-4373-a5de-5a8a147ce311"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -505,6 +514,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Pausa"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a9437c54-ae3a-469a-b2ed-a666602c2700"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -646,6 +666,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Global_Interactua = m_Global.FindAction("Interactua", throwIfNotFound: true);
         m_Global_MousePosition = m_Global.FindAction("Mouse Position", throwIfNotFound: true);
         m_Global_Pausa = m_Global.FindAction("Pausa", throwIfNotFound: true);
+        m_Global_Inventory = m_Global.FindAction("Inventory", throwIfNotFound: true);
         // Garage
         m_Garage = asset.FindActionMap("Garage", throwIfNotFound: true);
         m_Garage_OnClick = m_Garage.FindAction("OnClick", throwIfNotFound: true);
@@ -1115,6 +1136,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Global_Interactua;
     private readonly InputAction m_Global_MousePosition;
     private readonly InputAction m_Global_Pausa;
+    private readonly InputAction m_Global_Inventory;
     /// <summary>
     /// Provides access to input actions defined in input action map "Global".
     /// </summary>
@@ -1138,6 +1160,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Global/Pausa".
         /// </summary>
         public InputAction @Pausa => m_Wrapper.m_Global_Pausa;
+        /// <summary>
+        /// Provides access to the underlying input action "Global/Inventory".
+        /// </summary>
+        public InputAction @Inventory => m_Wrapper.m_Global_Inventory;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1173,6 +1199,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Pausa.started += instance.OnPausa;
             @Pausa.performed += instance.OnPausa;
             @Pausa.canceled += instance.OnPausa;
+            @Inventory.started += instance.OnInventory;
+            @Inventory.performed += instance.OnInventory;
+            @Inventory.canceled += instance.OnInventory;
         }
 
         /// <summary>
@@ -1193,6 +1222,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Pausa.started -= instance.OnPausa;
             @Pausa.performed -= instance.OnPausa;
             @Pausa.canceled -= instance.OnPausa;
+            @Inventory.started -= instance.OnInventory;
+            @Inventory.performed -= instance.OnInventory;
+            @Inventory.canceled -= instance.OnInventory;
         }
 
         /// <summary>
@@ -1497,6 +1529,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPausa(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Inventory" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInventory(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Garage" which allows adding and removing callbacks.
