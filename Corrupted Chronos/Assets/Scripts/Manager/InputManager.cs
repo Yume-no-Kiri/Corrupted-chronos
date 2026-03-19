@@ -16,11 +16,12 @@ public class InputManager : MonoBehaviour
     private Vector3 mousePos;
     
     
-
+    public event Action<ItemData> AddNewItem;
     public event Action OnClick, OnExit;
     public event Action<InputAction.CallbackContext> OnShotLeft, OnShotRight;
     public event Action<InputAction.CallbackContext> RotateLeft, RotateRight;
-
+    
+    public event Action OpenInventory;
 
     
     private void Awake()
@@ -33,6 +34,8 @@ public class InputManager : MonoBehaviour
 
         playerInputActions.Garage.RotateLeft.performed +=ctx=> RotateLeft?.Invoke(ctx);
         playerInputActions.Garage.RotateRight.performed += ctx=> RotateRight?.Invoke(ctx);
+        playerInputActions.Global.OpenInventory.performed += ctx=>OpenInventory?.Invoke();
+        
         // playerInputActions.
         // OnActionStatusChange
     }
@@ -97,5 +100,11 @@ public class InputManager : MonoBehaviour
     }
     
     
-    
+    public void CallAddNewItem(ItemData item)
+    {
+        AddNewItem?.Invoke(item);
+    }
+
+
+
 }

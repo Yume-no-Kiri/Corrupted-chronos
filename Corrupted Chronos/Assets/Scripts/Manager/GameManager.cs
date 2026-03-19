@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance{get; private set;}
 
 
-
+    public ItemDataBase itemDataBase;
     public PartsDatabaseSO dataBaseParts;
     public InputManager inputManager;
 
@@ -63,10 +63,7 @@ public class GameManager : MonoBehaviour
     //variable que respon gameManager i contesta a si es pot volar, osigui usar la stamina
     public bool staminaInUse { get; private set;}
 
-    //modificar segons si implementem speeds diferents segons on estan els propulsors
-    
 
-    //podriem tenir referencia del objecte player si fos necesari
 
     private void Awake()
     {

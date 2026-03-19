@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 6779786710766733167}
   - component: {fileID: 2079600861506817315}
   - component: {fileID: 8623248332053469821}
+  - component: {fileID: 633893326407123072}
   - component: {fileID: 5469871605773485075}
   - component: {fileID: 2886920527071846068}
   m_Layer: 0
@@ -185,7 +186,7 @@ CharacterController:
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.02
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &4899295930387407433
@@ -223,8 +224,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2e9e4ef28420d74ba42133a0db574e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  StartAsPilot: 1
-  StartInGarage: 1
+  StartAsPilot: 0
+  StartInGarage: 0
+  _adderGO: {fileID: 4095697942591388805}
   _garageGO: {fileID: 0}
   branca: 
   mode: 0
@@ -273,6 +275,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipLook
   rotationSmoothing: 10
   canRotate: 1
+--- !u!114 &633893326407123072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7221113274912096352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7186f7fb77015b541bc7e4b526bd1ab6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
 --- !u!114 &5469871605773485075
 MonoBehaviour:
   m_ObjectHideFlags: 0

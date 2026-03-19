@@ -9,12 +9,18 @@ public class EachPartScript : MonoBehaviour
 {
     [Tooltip("Acaba'l amb .cs")]
     [SerializeField] private string typeName;
+    [SerializeField] private bool ActivateOnStart=false;
+
     private Type componentType;
     
     //variables per partaccions.cs
     [SerializeField] private Transform firepoint;
     [SerializeField] private GameObject bulletPrefab;
-    
+
+    void Start()
+    {
+        if(ActivateOnStart) Activate();
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public PartActions Activate()
     { 
@@ -28,7 +34,7 @@ public class EachPartScript : MonoBehaviour
         {
             gameObject.AddComponent(componentType);
             ScriptPart= gameObject.GetComponent<PartActions>();
-            ScriptPart.PassVariables(firepoint, bulletPrefab);
+            if(ScriptPart)   ScriptPart.PassVariables(firepoint, bulletPrefab);
             
         }
         else

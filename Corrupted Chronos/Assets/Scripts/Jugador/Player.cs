@@ -27,9 +27,8 @@ public class Player : MonoBehaviour
     private ShipLook shipLook;
     // [SerializeField]
     private PilotMovement pilotMovement;
-
     private PartAdder garageAdder;
-
+    private InventoryManager inventoryManager;
 
     public InputManager inputManager { get; private set; }
 
@@ -39,6 +38,8 @@ public class Player : MonoBehaviour
     //maybe canviar a garageAdder, pero resulta més fàcil aquí demoment 
     [SerializeField] private GameObject _adderGO;
     [SerializeField] private GameObject _garageGO;
+    [SerializeField] private GameObject _inventoryGO;
+
 
     private PartsDatabaseSO _database;
 
@@ -57,7 +58,7 @@ public class Player : MonoBehaviour
         pilotMovement=GetComponent<PilotMovement>();
         garageAdder=GetComponent<PartAdder>();
         interactiveMethods= GetComponent<InteractiveMethods>();
-   
+        inventoryManager= GetComponent<InventoryManager>();
 
     }
     void Start()
@@ -86,7 +87,10 @@ public class Player : MonoBehaviour
       
         shipMovement.SetUpShipMovement(inputManager.playerInputActions.Nau);
         pilotMovement.SetUpPilotMovement(inputManager.playerInputActions.Pilot);
+    
+         GameManager.Instance.inputManager.OpenInventory+=ChangeInventory;
     }
+
 
     void Update()
     {
@@ -146,6 +150,23 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void ChangeInventory(bool activate)
+    {
+        if (activate)
+        {
+            inputManager.playerInputActions.Inventory.Enable();
+            // inve.enabled=true;
+            // shipLook.enabled=true;
+            _inventoryGO.SetActive(true);
+        }
+        else
+        {
+            inputManager.playerInputActions.Inventory.Disable();
+            // shipMovement.enabled=false;
+            // shipLook.enabled=false;
+            _inventoryGO.SetActive(false);
+        }
+    }
     public void AccesChangeInputMap(NameInputAction inputMap, bool enableIt=true)
     {
         //  string mapName = inputMap.ToString();
@@ -163,11 +184,29 @@ public class Player : MonoBehaviour
                 if (enableIt)ChangePilot(true);
                 else ChangePilot(false);                    
             break;
-
+            case NameInputAction.Inventory:
+                if (enableIt)ChangeInventory(true);
+                else ChangeInventory(false);                    
+            break;
             default:
             Debug.LogError("you should not be here");
             break;
         }
+    }
+
+
+
+    private void ChangeInventory()
+    {
+        //probablement també s'hauria de desactivar player o col·locar això a interactive methods
+        if (inputManager.playerInputActions.Inventory.enabled)
+        {
+            AccesChangeInputMap(NameInputAction.Inventory,false);
+        }else
+        {
+            AccesChangeInputMap(NameInputAction.Inventory,true);
+        }
+        
     }
 
     #endregion

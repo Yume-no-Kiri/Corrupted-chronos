@@ -59,6 +59,7 @@ public class PartActions : MonoBehaviour
 
     public virtual void DoShot( InputAction.CallbackContext ctx)
     {
+        
         throw new System.NotImplementedException();
     }
 

@@ -35,7 +35,8 @@ public enum InteractionType
 public enum NameInputAction{
     Nau,
     Pilot,
-    Garage
+    Garage,
+    Inventory //no es un interactive method, solo accessible en player
 }
 
 

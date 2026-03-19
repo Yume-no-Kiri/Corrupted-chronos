@@ -174,8 +174,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 770118656710209681, guid: 988633b9bd2b3b34f8e9b9648aea9bb7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8637722}
   m_SourcePrefab: {fileID: 100100000, guid: 988633b9bd2b3b34f8e9b9648aea9bb7, type: 3}
+--- !u!1 &8637721 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 770118656710209681, guid: 988633b9bd2b3b34f8e9b9648aea9bb7, type: 3}
+  m_PrefabInstance: {fileID: 8637720}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8637722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8637721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1e5b3ad05c89214e9be48b42f1896bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EachPartScript
+  typeName: EnergyItem
+  ActivateOnStart: 1
+  firepoint: {fileID: 0}
+  bulletPrefab: {fileID: 0}
 --- !u!1 &9730579
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,11 +447,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &316752368 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4095697942591388805, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
-  m_PrefabInstance: {fileID: 7022164113323732678}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &320209676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1944,7 +1963,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1244444236
 Transform:
   m_ObjectHideFlags: 0
@@ -3061,40 +3080,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 386046898150387216, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
-      propertyPath: m_SkinWidth
-      value: 0.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 386046898150387216, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
-      propertyPath: m_MinMoveDistance
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3844986670581943828, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
-      propertyPath: _adderGO
-      value: 
-      objectReference: {fileID: 316752368}
     - target: {fileID: 3844986670581943828, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
       propertyPath: _garageGO
       value: 
       objectReference: {fileID: 1591361505}
     - target: {fileID: 3844986670581943828, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
-      propertyPath: StartAsPilot
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3844986670581943828, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
-      propertyPath: StartInGarage
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: _inventoryGO
+      value: 
+      objectReference: {fileID: 1244444235}
     - target: {fileID: 3844986670581943828, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
       propertyPath: ComencaComPilot
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4095697942591388805, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
       propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5469871605773485075, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
-      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5555472288932911591, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
@@ -3141,17 +3140,9 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6779786710766733167, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
-      propertyPath: canMove
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7221113274912096352, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8623248332053469821, guid: 3bf9ee30679e75a4fb23523d52f7e5f3, type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:

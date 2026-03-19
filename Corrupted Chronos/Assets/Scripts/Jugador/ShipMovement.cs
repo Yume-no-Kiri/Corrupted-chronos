@@ -139,7 +139,7 @@ public class ShipMovement : MonoBehaviour
 
         controller.Move(finalVelocity * Time.deltaTime);
         // controller.Move(new Vector3(5, 0, 0) * Time.deltaTime);
-        Debug.Log("ss final velocity:"+ finalVelocity.ToString());
+        // Debug.Log("ss final velocity:"+ finalVelocity.ToString());
     }
 
 
