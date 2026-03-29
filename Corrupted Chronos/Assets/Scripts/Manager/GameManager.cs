@@ -87,7 +87,16 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        //Para crear un nuevo modificador
+        statsManager.instance.AddModifier(Stat.StatType.Stamina, new StatModifier()
+        {
+            type = StatModifier.ModifierType.Add,
+            value = 2.5f,
+            source = null
+        });
+
+        //Para obtener un stat
+        statsManager.instance.GetStat(Stat.StatType.Stamina);
     }
 
     // Update is called once per frame
@@ -98,7 +107,7 @@ public class GameManager : MonoBehaviour
         if (StaminaRegen)
         {
             //regenerem
-            staminaAct+=staminaRegenQuantity*Time.deltaTime;
+            staminaAct += staminaRegenQuantity*Time.deltaTime;
 
             //si màxim apaguem
             if (staminaAct>= staminaMax)

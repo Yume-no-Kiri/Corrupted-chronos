@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class EnemyUnit : MonoBehaviour
+public abstract class EnemyUnit : MonoBehaviour
 {
     #region variables
     [Header("Health")]
@@ -23,16 +23,30 @@ public class EnemyUnit : MonoBehaviour
     public Transform _lookTarget;
     private Rigidbody rb;
 
+    [Header("Enemy Properties")]
+    public GameObject projectile;
+    public float fireRate = 1f;
+
     [Header("Control")]
     public bool hasMoveTarget;
-
-    
 
     //Private Variables
     private Vector3 currentVelocity;
     private GameObject obj;
     private float fixedX;
     private float fixedZ;
+    private float lastFireTime;
+
+    protected bool CanFire()
+    {
+        return Time.time >= lastFireTime + (1f / fireRate);
+    }
+
+    protected void RegisterFire()
+    {
+        lastFireTime = Time.time;
+    }
+
     #endregion
 
     private void Awake()
@@ -67,18 +81,13 @@ public class EnemyUnit : MonoBehaviour
         throw new System.NotImplementedException();
     }
 
-    public void primaryAttack()
-    {
-        //pew pew
-        print("pew pew");
-    }
+    public abstract void primaryAttack();
+
+    public abstract void secondarySkill();
 
     #endregion
 
     #region Internal Logic
-    // ========================
-    // INTERNAL LOGIC
-    // ========================
     private void HandleMovement()
     {
         if (!hasMoveTarget)
@@ -168,5 +177,6 @@ public class EnemyUnit : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(fixedX, newYaw, fixedZ);
     }
+
     #endregion
 }

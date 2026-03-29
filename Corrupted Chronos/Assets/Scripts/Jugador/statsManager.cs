@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class statsManager : MonoBehaviour
 {
+    public static statsManager instance;
+
     //TODO: Recibir un SO con los stats base
     //TODO: los modificadores deberían tener source
     //TODO: Stats que dependan de otras stats (ej: daño que dependa de speed)
@@ -24,6 +26,15 @@ public class statsManager : MonoBehaviour
         {
             statLookup[stat.name] = stat;
         }
+
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
     }
 
     public float AddModifier(Stat.StatType type, StatModifier mod)
@@ -35,6 +46,9 @@ public class statsManager : MonoBehaviour
 
         Debug.LogWarning($"Stat {type} not found");
         return 0f;
+    }
+
+    public void RemoveModifier() { 
     }
 
     public float GetStat(Stat.StatType type)
@@ -53,6 +67,7 @@ public class Stat
     public enum StatType
     {
         Health,
+        Stamina,
         Shields,
         ShieldRegen,
         Damage,
@@ -87,6 +102,23 @@ public class Stat
         }
 
         return Recalculate();
+    }
+
+    public void removeModifier(StatModifier mod)
+    {
+        switch (mod.type)
+        {
+            case StatModifier.ModifierType.Add:
+                additive.Remove(mod);
+                break;
+            case StatModifier.ModifierType.Multiply:
+                multiplicative.Remove(mod);
+                break;
+            case StatModifier.ModifierType.Exponent:
+                exponent.Remove(mod);
+                break;
+        }
+        Recalculate();
     }
 
     float Recalculate()
