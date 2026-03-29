@@ -15,8 +15,9 @@ public class DialogueInvoker : MonoBehaviour
 
     private void Awake()
     {
-        if (branca == "cinem1" || branca=="cinemF")
+        if (branca == "cinem1" || branca=="cinemF"|| branca== "fisherman")
         {
+
             GameEventsManager.instance.dialogue_events.EnterDialogue(branca, 0);
         }
     }

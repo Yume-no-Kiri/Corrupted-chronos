@@ -1,61 +1,3 @@
-VAR next_scene = "Main_menu"
-
-
-
-=== npc1 === //node
-//si encara no ha acceptat la missio
-HI  //text tal qual
-I will give you a very important quest.
-Do you accept?
-* [YES]
-    Nice!
-* [NO]
-    -> npc1
-//Si ja ha acceptat la misió
-What are you waiting for?
-
-//completada
-Perfect you have done it!
-    
-    
-
-- -> END //final diàleg
-
-=== npc2 ===
-    //si no has iniciat la quest
-    ...
-    //si has iniciat la quest
-    Nice you completed the quest!
-
-- -> END
-
-=== garatge ===
-    //si no has iniciat la quest
-    ...
-    //si has iniciat la quest
-   Hola... Aquí pots equipar diferents armes a la nau.
-    Pel moment tens disponible la metralleta i l'escopeta.
-    La característica principal de la metralleta és el seu tir ràpid.
-    Per activar-la fes clic esquerre.
-    L'escopeta és una arma que té múltiples dispars però de poc abast.
-    Per activar-la clic dret
-
-- -> END
-=== npc_pres===
-    Benvingut a Corrupted chronos!
-    La teva missió serà la d'alliberar la galàxia.
-    De moment ves al garatge que es troba aquí a sota.
-    Ell et dirà quines opcions tens.
-
-- -> END
-=== tir ===
-    Et trobes en la zona de tir amic.
-    Aquí podràs practicar la teva destresa amb les armes.
-    Que pensaves que enviaríem a qualsevol a lluitar?
-    Estaves ben equivocat, vinga comença.
-
-- -> END
-
 ==cinem1==
   So… you found the book. #scene:1
   Inside lies the truth of what happened... and the price we paid to survive.#scene:2
@@ -79,4 +21,110 @@ Perfect you have done it!
     This is what you need to create runes; they will give you more power in battle. Use them wisely. Fisherman never learned how to create them… so don’t blame him for not showing them…#scene:7
     I'm sorry, as said, I always wanted a peaceful life…. \n You always wanted that, and I loved it. But now, the galaxy is corrupted, and you are the one that can save us. With this new power you will be able to do many new things#scene:8
     Keep going; your adventure must continue…. #scene:9 #changeScene:Main_menu
-- ->END    
+- ->END 
+// --- VARIABLES ---
+VAR pillars_broken = 0  //Update by code
+VAR met_fisherman = false
+
+=== fisherman ===
+{
+    - pillars_broken == 0:
+        -> zero_pillars
+    - pillars_broken == 1:
+        -> one_pillar
+    - pillars_broken == 2:
+        -> two_pillars
+    - pillars_broken == 3:
+        -> three_pillars
+}
+
+// --- PILLAR 0 ---
+=== zero_pillars ===
+{ met_fisherman:
+    Come on, go. HAHAHA.
+    -> END
+}
+~ met_fisherman = true
+The keeper talked to me about your plan… You are brave if you think you can defeat that guy.
+Maybe I’m just too foolish to know when I’m outmatched. A hero’s got to start somewhere, right?
+HAHAHA, I like you. If you can crack a joke with the abyss staring you in the face, you might just have a chance.
+I will do my best.
+Go for it, break the seals; I’ll wait for you here.
+Don’t let those fishes escape; I want to eat some when this ends.
+HAHAHA.
+-> END
+
+// --- PILLAR 1 ---
+=== one_pillar ===
+{ met_fisherman:
+    You made it?
+    I destroyed the biggest pillar in history!
+    Haha, I’m sorry to tell you this, but all have the same size?
+    HUH? Are you kidding me? All the same size?
+    Oh lord, and you are the spark of hope we all need? Come on go destroy the others.
+    HAHAHA, don’t worry, I will make it; I just came to check if you were alright.
+    Don't worry about me and go.
+    -> END
+}
+~ met_fisherman = true
+The keeper talked to me about your plan… You are brave if you think you can defeat that guy.
+Or a fool that destroyed one accumulation of rocks while pretending to know what was being made. A true hero!
+Accumulation of rocks? Oh, HAHAHA, you already broke one of the pillars. I like you; something tells me you will make it.
+I will try at least.
+There are already two more rocks to be broken; come on, go.
+Of course, man, and don’t let those fishes escape; I want to eat some when this ends.
+HAHAHA.
+-> END
+
+// --- PILLAR 2 ---
+=== two_pillars ===
+{ met_fisherman:
+    You are here again; you made it?
+    There is one that escapes my sight. I think that one is playing hide and seek.
+    You know… Rocks can’t move?
+    But those are special, aren’t they? So… maybe they… move?
+    Trust me, “hero”, they don’t move. Come on, move your spaceship and complete the job.
+    Okay, okay, don’t get angry… See you!
+    -> END
+}
+~ met_fisherman = true
+The keeper talked to me about your plan… You are brave if you think you can defeat that guy.
+I'm just the strongest hero you can find and the most handsome. Already destroyed two… what are they called… waterpillars? Well, those rocks on the water…
+HAHAHA, joking about this situation with death upon your soul. You have my support; you have a chance against the beast.
+I will work hard for it.
+There is one more caterpillar there. Go on, I’ll wait for you here.
+Thank you, and don’t let those fishes escape; I want to eat some when this ends.
+HAHAHA.
+-> END
+
+// --- PILLAR 3 (FINAL) ---
+=== three_pillars ===
+{ not met_fisherman:
+    The keeper talked to me about your plan… You are brave if you think you can defeat that guy.
+    - else:
+    You are here again. Have you destroyed all three pillars?
+}
+~ met_fisherman = true
+
+May the chronos bless you as the time to suffer in battle has come; oh lord, offer us your power.
+Huh? What are you blabbing about, kid?
+Well, they have always told me to say something epic before an important battle… Was it too much?
+HAHAHA, you truly know how to break the tension.
+Mission accomplished, heh. Now, the work comes in. I’ve destroyed all the pillars. It’s time.
+So, you made it… Tell me, are you afraid?
+Yes, I’d be an idiot not to be; that creature is a nightmare.
+It really is, but the sea waited for so long to get the freedom you will provide. It can tell you are the saviour in that corrupted chronos we all live in.
+You can talk to the sea? How long have you been alone?
+HAHAHA, you may think I just lost my mind, but I'm a water ohexa as Umiko was. We can sense in a very precise way the element we have affinity with. That’s why I made myself a fisherman; there is no bad fishing day, HAHAHA.
+But you can use your power for something more… heroic?
+That’s true, boy, but I never wanted that. I love peaceful days. I don’t want my name to be remembered. certainly this power was given to me by fault…
+Or maybe this is what you think. As far as I know, you will help me summon the Kraken again. All was written; you needed to be here at this moment.
+I don't believe in fate, but perhaps you are right. You need me to call the beast out of the seal…
+You don’t need to take big fights to be considered a hero. Don’t blame yourself for having this power. From what I can tell, eating is also important, and having someone that will always provide food will be a very useful way of power usage. Not all is war.
+Thank you. You are such a hero, aren't you?
+HAHAHA, I just try to get the morale up. We have a tough fight to do.
+HYes, here we go. Are you ready?
+Ready!
+"Great lord of the ocean, hear our chants falling for the star upon us, the ones that will set this corruption away are imploring you, OPEN YOUR DOORS!”
+
+-> END
