@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class baseState
 {
-    public baseState(EnemiesStateMachine s)
+    public baseState(baseStateMachine s)
     {
         this.stateMachine = s;
     }
 
-    EnemiesStateMachine stateMachine;
+    baseStateMachine stateMachine;
 
     //Called By State Machine upon entering state
     public virtual void EnterState()

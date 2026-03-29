@@ -1,11 +1,9 @@
 using UnityEngine;
 
-public class EnemiesStateMachine
+public class baseStateMachine
 {
-    public EnemyPair enemyPair;
-    public EnemiesStateMachine(EnemyPair p)
+    public baseStateMachine()
     {
-        enemyPair = p;
     }
 
     public baseState currentState { get; private set; }

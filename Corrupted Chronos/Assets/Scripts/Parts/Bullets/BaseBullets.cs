@@ -2,59 +2,52 @@ using Ink;
 using UnityEngine;
 using System;
 
-//probablement implementar un enum per diferents tipus de Bales
+//probablement implementar un enum per diferents tipus de Bales (No creo que sea necesario)
 //potser canviar-li el nom
 
 //classe general, del que venen els diferents projectils, revisar en un futur
 public struct InformationBullet
 {
-    public int mal;
-    public float penetration;    //classe d'armadura? si l'enemic té menor armadura que la penetration, l'atravesa
-    public float distEfec;  //distEfectiva: distania per rebre el mal maxim, passat distEfec, hi ha reducció del mal fins distMax, on mal bala desapareix
+    public int damage;
+    public float penetration;
+    public float distEffec;
     public float distMax;
     public float speed;
 
-    
-
-    public InformationBullet ConstInformationBullet()
+    public static InformationBullet Default(bulletStatsSO so)
     {
-        mal=5;
-        penetration=5f;
-        distEfec=10f;
-        distMax = 20f;
-        speed =10f;
-        return this;
+        return new InformationBullet
+        {
+            damage = so.damage,
+            penetration = so.penetration,
+            distEffec = so.distEffective,
+            distMax = so.distMax,
+            speed = so.speed
+        };
     }
 }
 
 
 public class BaseBullets : MonoBehaviour
 {
-    
     [HideInInspector] public Vector3 iniPos;
-     
 
-    //depen de que potser volem passar-li info al nostre creador, quan matem a un enemic, quan atravessem etc...
-    GameObject myCreator;
+    public bulletStatsSO statsSO;
+    public GameObject myCreator;
     private Rigidbody rb;
+    private SpriteRenderer spr;
 
-   public InformationBullet statsBullet;
-   /*  protected int mal; */
+    public InformationBullet statsBullet;
 
-    //classe d'armadura? si l'enemic té menor armadura que la penetration, l'atravesa
-   /*  private float penetration=5f;
-
-
-    private float distEfec=10f;
-    private float distMax = 20f;
-    private float speed =10f;
- */
-    
     void Awake()
-    {
-        
+    {       
         rb = GetComponent<Rigidbody>();
-        statsBullet= new InformationBullet().ConstInformationBullet();
+        statsBullet = InformationBullet.Default(statsSO);
+        spr = GetComponent<SpriteRenderer>();
+        if (statsSO.sprite != null)
+        {
+            spr.sprite = statsSO.sprite;
+        }       
     }
 
     void Start()
@@ -64,7 +57,7 @@ public class BaseBullets : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.linearVelocity=transform.right*statsBullet.speed;
+        rb.linearVelocity = transform.forward * statsBullet.speed;
         float distance = Vector3.Distance(iniPos, this.transform.position);
         //Debug.Log("Distance: " + distance +"__iniPos: "+iniPos+ "__transform.position: " + this.transform.position);
         if (distance > statsBullet.distMax)
@@ -73,15 +66,15 @@ public class BaseBullets : MonoBehaviour
         }
     }
     
-    public int RetornaMal()
+    public int ReturnDamage()
     {
-        return statsBullet.mal;
+        return statsBullet.damage;
     }
     public void DefinirBala(int nouMalBala, float distancia)
     {
         // Debug.Log($"mal0 {mal} naumal0{nouMalBala}");
 
-        statsBullet.mal += nouMalBala;
+        statsBullet.damage += nouMalBala;
         statsBullet.distMax+= distancia;
         //Debug.Log($"mal1 {mal} naumal1{nouMalBala}");
 
@@ -93,7 +86,5 @@ public class BaseBullets : MonoBehaviour
 
         statsBullet=statsBase;
         //Debug.Log($"mal1 {mal} naumal1{nouMalBala}");
-
-    }
-    
+    }  
 }
