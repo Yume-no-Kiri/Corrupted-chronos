@@ -16,10 +16,7 @@ public enum TypeGround
     Muzzle, //boquilla de arma
     Magazine, //cargador
     OverHeat,
-
-
 } 
-
 
 
 
@@ -29,17 +26,17 @@ public class GridData
     PlacementData2 placementData= new PlacementData2();
 
     private Vector3Int _gridPosition= new Vector3Int();
-    private  ObjectData _originalPart= new ObjectData();
+    private  PlacementDataItem _originalPart= new PlacementDataItem();
     private int _rotationAdded;
 
     private bool _lastCheckCanPlace;
 
-    private  ObjectData _updatedPart= new ObjectData();
+    private  PlacementDataItem _updatedPart= new PlacementDataItem();
 
   
 
     #region Checker and adder
-    public bool CanPlaceObejctAt(Vector3Int gridPosition, ObjectData part, int rotationToAdd) //Dictionary<TypeGround,Requiriments> partRequires)
+    public bool CanPlaceObejctAt(Vector3Int gridPosition, PlacementDataItem part, int rotationToAdd) //Dictionary<TypeGround,Requiriments> partRequires)
     {
         Debug.LogWarning("entres a CanPlaceObejctAt???");
 
@@ -60,7 +57,16 @@ public class GridData
         return _lastCheckCanPlace;
       
     }
-    public void AddObjectAt(Vector3Int gridPosition, ObjectData part, int rotationToAdd)//wa
+
+    public void HasPlacedPart(Vector3Int gridPosition)
+    {
+        /* 
+
+         */
+
+        //  placementData.
+    }
+    public void AddObjectAt(Vector3Int gridPosition, PlacementDataItem part, int rotationToAdd)//wa
     // wa, int placedObjectIndex)
     // public void AddObjectAt(Vector3Int gridPosition, HashSet<Vector2Int> objectSize, HashSet<Vector2Int> buildableSize,  int ID, int placedObjectIndex)
     {
@@ -88,7 +94,7 @@ public class GridData
         returnDebugStrings();
        
     }
-    private bool AlreadyChecked(Vector3Int gridPosition, ObjectData part, int rotationToAdd)
+    private bool AlreadyChecked(Vector3Int gridPosition, PlacementDataItem part, int rotationToAdd)
     {
         if(gridPosition==_gridPosition && part==_originalPart && rotationToAdd== _rotationAdded) return true;
         else return false;
@@ -96,7 +102,7 @@ public class GridData
     #endregion
 
     #region Calculations
-    private void RecalculatePosition(Vector3Int gridPosition, ObjectData part, int rotationToAdd)
+    private void RecalculatePosition(Vector3Int gridPosition, PlacementDataItem part, int rotationToAdd)
     {
         _updatedPart.ConfigGround = new Dictionary<TypeGround, HashSet<Vector2Int>>();
         _updatedPart.ConfigRequires = new Dictionary<TypeGround, Requiriments>();
@@ -144,7 +150,7 @@ public class GridData
     #region Deleters
 
     //we could change part with idp and should be hard to do
-    public void DeltePaty(ObjectData part)
+    public void DeletePart(PlacementDataItem part)
     {
         //delete an especific part
         // placementData.DeleteNewPartData(part);

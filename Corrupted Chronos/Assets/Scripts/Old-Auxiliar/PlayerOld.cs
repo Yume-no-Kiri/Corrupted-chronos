@@ -815,13 +815,13 @@ public class PlayerOld : MonoBehaviour
     
     public void RemovePart()
     {
-        PartActions pa;
+        PartBase pa;
 
         Transform ToRemove = _nau.transform.Find("Added");
         foreach (Transform child in ToRemove.transform)
         {
             
-            pa = child.gameObject.GetComponent<PartActions>();
+            pa = child.gameObject.GetComponent<PartBase>();
             switch (pa.GetTypePart())
             {
                 case TypePart.Mele:
@@ -863,12 +863,12 @@ public class PlayerOld : MonoBehaviour
 
     public void ActivateParts()
     {
-        PartActions pa;
+        PartBase pa;
         foreach (GameObject part in AddedParts)
         {
             //no estic segur de que part actions segui lo millor per invocar aquests mètodes,
             //revisar explicació escrita en EachPartScript per futur REFACTORITZACIÓ
-            pa = part.GetComponent<PartActions>();
+            pa = part.GetComponent<PartBase>();
             switch (pa.GetTypePart())
             {
                 case TypePart.Mele:

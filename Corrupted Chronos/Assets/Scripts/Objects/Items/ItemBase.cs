@@ -28,7 +28,7 @@ public class ItemBase : MonoBehaviour
 }
 
 
-public class HealthItem: ItemBase
+public class LifeItem: ItemBase
 {
     protected override void Activate()
     {

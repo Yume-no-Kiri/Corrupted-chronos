@@ -4,10 +4,13 @@ using UnityEngine;
 public class CollectItems : MonoBehaviour
 {
     private SphereCollider getterItems;
+
+    private InventoryManager inventoryManager;
     // private Player player;
 
     void Awake()
     {
+        inventoryManager=GetComponentInParent<InventoryManager>();
         getterItems=GetComponent<SphereCollider>();
         // player=GetComponentInParent<Player>();
     }
@@ -32,7 +35,10 @@ public class CollectItems : MonoBehaviour
             //guardar scripteable object a una llista de player, en inventoryPlayer probablement
             //eliminar objecte real
             Debug.Log("objecte detectat");
-            GameManager.Instance.inputManager.CallAddNewItem(itemBase.GetScipteableObject());
+            if (inventoryManager.AddItem(itemBase.GetScipteableObject()))
+            {
+                Destroy(other.gameObject);            
+            }
         }
     }
 }

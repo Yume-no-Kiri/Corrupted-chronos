@@ -6,15 +6,17 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 
 
 
 public class PlacementSystem : MonoBehaviour
 {
-    //[SerializeField]
-    //private InputManager inputManager;
-    
+    //usefull for the placemnet system
+    public event Action PlacedPart, CancelledPart;
+
+
     [SerializeField]
     private GameObject mouseIndicator, cellIndicator;
     
@@ -30,9 +32,9 @@ public class PlacementSystem : MonoBehaviour
     //index del objecte segons la llista de parts tots
     private int selectedObjectIndex = -1;
 
-    private ObjectData _selectedObject=null;
+    private PlacementDataItem _selectedObject=null;
 
-    private List<ObjectData> _selectedListConfig;
+    private List<PlacementDataItem> _selectedListConfig;
 
     //el esquema, amb parts afeguides de la nau
     private GridData schemeShip = new GridData(); //, cablesShip;
@@ -126,8 +128,18 @@ public class PlacementSystem : MonoBehaviour
             }
             else
             {
-                cellIndicator.SetActive(true);
                 cellIndicator.transform.position = grid.CellToWorld(gridPosition);
+
+                // if(  grid.CellToWorld(gridPosition)+ new Vector3(0,0.5f,0))
+                /* 
+                if hi ha part en position and click esquerra
+                    activarModeEliminarPart
+
+                si enModeEliminarPart and Selected slot (o ailgo així)
+                    actualitzar grid data coses
+                    ...
+                 */
+
 
             }
             
@@ -176,8 +188,9 @@ public class PlacementSystem : MonoBehaviour
     
 
     //els botons no permeten mètodes on es passen més de 2 parametres
-    bool CheckPlacementValidity(Vector3Int gridPosition, ObjectData partAColocar)
+    bool CheckPlacementValidity(Vector3Int gridPosition, PlacementDataItem partAColocar)
     {
+        if(inputManager.IsPointerOverUI()) return false;
         if(partAColocar==null) return false;
         
         // Debug.LogWarning("entres dintre de check placement validity???");
@@ -225,8 +238,8 @@ public class PlacementSystem : MonoBehaviour
         Transform coll = _previewObject.transform.Find("Collisions");
         if (coll != null) coll.gameObject.SetActive(false);
 
-        inputManager.OnClick += ()=> PlaceStructure();
-        inputManager.OnExit += StopPlacement;
+        inputManager.OnClick += ButtonPlaceStructure;
+        inputManager.OnExit += ButtonStopStructure;
         
     }
     
@@ -242,14 +255,31 @@ public class PlacementSystem : MonoBehaviour
         _selectedObject=null;
 
         
-        inputManager.OnClick -= ()=> PlaceStructure();
-        inputManager.OnExit -= StopPlacement;
+        inputManager.OnClick -= ButtonPlaceStructure;
+        inputManager.OnExit -= ButtonStopStructure;
+
+        cellIndicator.SetActive(true);
         
     }
     
- 
+    public void ButtonStopStructure()
+    {
+        CancelledPart?.Invoke();
+        StopPlacement();
+    }
+    public void ButtonPlaceStructure()
+    {
+        if (PlaceStructure())
+        {
+            PlacedPart?.Invoke();
+        }
+        
+        
+    }
+
+
    //quan un objecte seleccionat fem click al terreny o primera estructura
-    private void PlaceStructure( bool firstStructure=false)
+    private bool PlaceStructure( bool firstStructure=false)
     {
         Vector3Int gridPosition;
         GameObject partToAdd;
@@ -274,7 +304,7 @@ public class PlacementSystem : MonoBehaviour
             if (inputManager.IsPointerOverUI())
             {
                 Debug.Log("Pointer over UI");
-                return;
+                return false;
             }
             gridPosition = grid.WorldToCell(inputManager.MousePositionGarage);
             // Debug.Log("gridTo Pos PlaceStructure:"+ gridPosition);
@@ -282,7 +312,7 @@ public class PlacementSystem : MonoBehaviour
             bool placementValidity=false;
             if(_selectedObject!=null) placementValidity = CheckPlacementValidity(gridPosition, _selectedObject);
 
-            if (!placementValidity) return;
+            if (!placementValidity) return false;
 
             var object2inst=_selectedObject;   //_selectedListConfig[selectedObjectIndex];
             if(!object2inst.PrefabGaratge) Debug.LogError("error prefab");
@@ -312,6 +342,7 @@ public class PlacementSystem : MonoBehaviour
         // Debug.Log("placestructure position adding nau:"+gridPosition);    
         schemeShip.AddObjectAt(gridPosition, _selectedObject, rotationToAdd); // _placedObjects.Count-1
         StopPlacement();
+        return true;
     }
 
 

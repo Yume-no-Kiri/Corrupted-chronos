@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
 {
    
 
+
     [Header("player v2 variables:")]
     [SerializeField] 
     private bool StartAsPilot = true;
@@ -84,7 +85,7 @@ public class Player : MonoBehaviour
         ChangePilot(StartAsPilot);
         ChangeNau(!StartAsPilot);
         ChangeGarage(StartInGarage);
-      
+        ChangeInventory(false);
         shipMovement.SetUpShipMovement(inputManager.playerInputActions.Nau);
         pilotMovement.SetUpPilotMovement(inputManager.playerInputActions.Pilot);
     
@@ -97,7 +98,75 @@ public class Player : MonoBehaviour
         
     }
 
-    #region change map
+   
+ 
+
+
+    #region Interaccions dinamiques
+    private void ChangeInventory()
+    {
+        //actual activemap should be saved to be deactive or activate later
+        //should pause the game
+        if (inputManager.playerInputActions.Inventory.enabled)
+        {
+            AccesChangeInputMap(NameInputAction.Inventory,false);
+            AccesChangeInputMap(NameInputAction.Nau,true);
+
+        }else
+        {
+            AccesChangeInputMap(NameInputAction.Nau,false);
+            AccesChangeInputMap(NameInputAction.Inventory,true);
+        }
+        
+    }
+
+    //Interacció amb objectes del escenari o coses especials
+    void Interact(InputAction.CallbackContext context)
+    {
+        Debug.Log("you press F");
+        //revsiar aquesta part, per veure 
+        interactiveMethods.DoInteractions(whatsToInteract,this);
+        
+    }
+    
+    //afegeix mètodes a interactuar i treu mètodes a interactuar
+    public void AddInteraction(InteractionType type)
+    {
+        Debug.Log("added");
+        if (!whatsToInteract.Contains(type))
+        {
+            whatsToInteract.Add(type);
+
+        }
+    }
+
+    
+    public void SubInteraction(InteractionType type)
+    {
+        if (whatsToInteract.Contains(type))
+        {
+            whatsToInteract.Remove(type);
+        }
+        
+    }
+    public void AddDialogueInfo(string branca, int mode)
+    {
+        this.branca = branca;
+        this.mode = mode;   
+    }
+    #endregion
+
+    public Camera returnCameraGarage()
+    {
+        return _garageGO.GetComponentInChildren<Camera>();
+    }
+
+    public PlacementSystem returnPlacementSystem()
+    {
+        return _garageGO.GetComponent<PlacementSystem>();
+    }
+
+     #region change map/move to interactive methods o new script
     public void ChangeGarage(bool activateGarage)
     {
         if (activateGarage)
@@ -155,6 +224,7 @@ public class Player : MonoBehaviour
         if (activate)
         {
             inputManager.playerInputActions.Inventory.Enable();
+            inventoryManager.OnActivate();
             // inve.enabled=true;
             // shipLook.enabled=true;
             _inventoryGO.SetActive(true);
@@ -162,6 +232,7 @@ public class Player : MonoBehaviour
         else
         {
             inputManager.playerInputActions.Inventory.Disable();
+            inventoryManager.OnDeactivate();
             // shipMovement.enabled=false;
             // shipLook.enabled=false;
             _inventoryGO.SetActive(false);
@@ -194,63 +265,7 @@ public class Player : MonoBehaviour
         }
     }
 
-
-
-    private void ChangeInventory()
-    {
-        //probablement també s'hauria de desactivar player o col·locar això a interactive methods
-        if (inputManager.playerInputActions.Inventory.enabled)
-        {
-            AccesChangeInputMap(NameInputAction.Inventory,false);
-        }else
-        {
-            AccesChangeInputMap(NameInputAction.Inventory,true);
-        }
-        
-    }
-
     #endregion
 
-    #region Interaccions dinamiques
-    //Interacció amb objectes del escenari o coses especials
-    void Interact(InputAction.CallbackContext context)
-    {
-        Debug.Log("you press F");
-        //revsiar aquesta part, per veure 
-        interactiveMethods.DoInteractions(whatsToInteract,this);
-        
-    }
-    
-    //afegeix mètodes a interactuar i treu mètodes a interactuar
-    public void AddInteraction(InteractionType type)
-    {
-        Debug.Log("added");
-        if (!whatsToInteract.Contains(type))
-        {
-            whatsToInteract.Add(type);
-
-        }
-    }
-
-    
-    public void SubInteraction(InteractionType type)
-    {
-        if (whatsToInteract.Contains(type))
-        {
-            whatsToInteract.Remove(type);
-        }
-        
-    }
-    public void AddDialogueInfo(string branca, int mode)
-    {
-        this.branca = branca;
-        this.mode = mode;   
-    }
-    #endregion
-
-    public Camera returnCameraGarage()
-    {
-        return _garageGO.GetComponentInChildren<Camera>();
-    }
 
 }

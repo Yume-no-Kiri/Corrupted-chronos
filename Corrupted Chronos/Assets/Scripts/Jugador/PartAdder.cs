@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class PartAdder : MonoBehaviour
 {
-    //TODO: Acabar de revisar la relació de placementSystem i aquest script, pues per agregar 
-    // parts necesito saber quines parts agregades tinc i només es troba a placement system
+    
+    //to activate, enable parts with the movement, shoting, etc
     #region called from placement system
     private List<PartPosition> ToAddParts ;
 
@@ -79,7 +79,7 @@ public class PartAdder : MonoBehaviour
     public void ActivateParts()
     {
         //acabar
-        PartActions pa;
+        PartBase pa;
         foreach (Transform part in adder.transform)
         {
             //no estic segur de que part actions segui lo millor per invocar aquests mètodes,
@@ -107,13 +107,13 @@ public class PartAdder : MonoBehaviour
 
   public void RemovePart()
     {
-        PartActions pa;
+        PartBase pa;
 
         // Transform ToRemove = _nauGO.transform.Find("Added");
         foreach (Transform child in adder.transform)
         {
             
-            pa = child.gameObject.GetComponent<PartActions>();
+            pa = child.gameObject.GetComponent<PartBase>();
             switch (pa.GetTypePart())
             {
                 case TypePart.Mele:

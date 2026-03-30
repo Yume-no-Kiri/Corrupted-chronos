@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance{get; private set;}
 
 
+    public PlacementSystem placementSystem;
     public ItemDataBase itemDataBase;
     public PartsDatabaseSO dataBaseParts;
     public InputManager inputManager;
@@ -64,10 +65,13 @@ public class GameManager : MonoBehaviour
     public bool staminaInUse { get; private set;}
 
 
+    //to ceate items and parts, so we can identify diferent items and parts even if they are the same but repeated
+    private int _countIDP=0;
 
     private void Awake()
     {
-        dataBaseParts.configPositions();
+        dataBaseParts.StartConfigPositions();
+        itemDataBase.StartConfigItem();
         staminaAct=staminaMax;
         if(Instance == null)
         {
@@ -153,5 +157,12 @@ public class GameManager : MonoBehaviour
     public GameObject returnAdderParts()
     {
         return playerInstance.transform.Find("AdderParts").gameObject;
+    }
+
+    //revisar que es cridi correctament
+    public int GiveNextIdp()
+    {
+        _countIDP++;
+        return _countIDP;
     }
 }

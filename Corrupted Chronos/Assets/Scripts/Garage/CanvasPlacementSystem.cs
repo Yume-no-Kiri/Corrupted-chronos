@@ -5,7 +5,7 @@ public class CanvasPlacementSystem : MonoBehaviour
 {
     PlacementSystem placementSystem;
 
-
+    //todo probably merge with inventoryManager/or complement it
 
     void Start()
     {
