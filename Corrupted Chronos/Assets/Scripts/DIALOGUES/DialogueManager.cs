@@ -1,12 +1,13 @@
 using System;
 using UnityEngine;
 using Ink.Runtime;
+using Ink.Parsed;
 public class DialogueManager : MonoBehaviour
 {
     [Header("Ink file")]
     [SerializeField] private TextAsset inkJson;
 
-    private Story story;
+    private Ink.Runtime.Story story;
     private int current_choice = -1;
 
     private bool dialogue_playing = false;
@@ -14,12 +15,13 @@ public class DialogueManager : MonoBehaviour
     bool shouldChangeScene = false;
     string pendingSceneName;
     string image;
+    public int pillars=0;
 
     private void Awake()
     {
-        story = new Story(inkJson.text);
+        story = new Ink.Runtime.Story(inkJson.text);
         playerInputActions = new PlayerInputActions();
-
+        story.variablesState["pillars_broken"]=pillars;
         playerInputActions.UI.submit.performed += ctx => ContinueOrExitStory(); //REVISAR
     }
   
@@ -136,4 +138,14 @@ public class DialogueManager : MonoBehaviour
         shouldChangeScene = false; 
         UnityEngine.SceneManagement.SceneManager.LoadScene(pendingSceneName);
     }
+
+
+
+    //Funcions per actualitzar variables de INK
+    public void UpdatePillars(int count)
+    {
+        // "pillars_broken" must match the name in your .ink file exactly
+        story.variablesState["pillars_broken"] = count;
+    }
+
 }
