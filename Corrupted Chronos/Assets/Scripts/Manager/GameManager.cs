@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance{get; private set;}
 
 
-
+    public PlacementSystem placementSystem;
+    public ItemDataBase itemDataBase;
     public PartsDatabaseSO dataBaseParts;
     public InputManager inputManager;
 
@@ -63,14 +64,14 @@ public class GameManager : MonoBehaviour
     //variable que respon gameManager i contesta a si es pot volar, osigui usar la stamina
     public bool staminaInUse { get; private set;}
 
-    //modificar segons si implementem speeds diferents segons on estan els propulsors
-    
 
-    //podriem tenir referencia del objecte player si fos necesari
+    //to ceate items and parts, so we can identify diferent items and parts even if they are the same but repeated
+    private int _countIDP=0;
 
     private void Awake()
     {
-        dataBaseParts.configPositions();
+        dataBaseParts.StartConfigPositions();
+        itemDataBase.StartConfigItem();
         staminaAct=staminaMax;
         if(Instance == null)
         {
@@ -165,5 +166,12 @@ public class GameManager : MonoBehaviour
     public GameObject returnAdderParts()
     {
         return playerInstance.transform.Find("AdderParts").gameObject;
+    }
+
+    //revisar que es cridi correctament
+    public int GiveNextIdp()
+    {
+        _countIDP++;
+        return _countIDP;
     }
 }

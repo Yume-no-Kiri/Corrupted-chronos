@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
 {
    
 
+
     [Header("player v2 variables:")]
     [SerializeField] 
     private bool StartAsPilot = true;
@@ -27,9 +28,8 @@ public class Player : MonoBehaviour
     private ShipLook shipLook;
     // [SerializeField]
     private PilotMovement pilotMovement;
-
     private PartAdder garageAdder;
-
+    private InventoryManager inventoryManager;
 
     public InputManager inputManager { get; private set; }
 
@@ -39,6 +39,8 @@ public class Player : MonoBehaviour
     //maybe canviar a garageAdder, pero resulta més fàcil aquí demoment 
     [SerializeField] private GameObject _adderGO;
     [SerializeField] private GameObject _garageGO;
+    [SerializeField] private GameObject _inventoryGO;
+
 
     private PartsDatabaseSO _database;
 
@@ -57,7 +59,7 @@ public class Player : MonoBehaviour
         pilotMovement=GetComponent<PilotMovement>();
         garageAdder=GetComponent<PartAdder>();
         interactiveMethods= GetComponent<InteractiveMethods>();
-   
+        inventoryManager= GetComponent<InventoryManager>();
 
     }
     void Start()
@@ -83,17 +85,88 @@ public class Player : MonoBehaviour
         ChangePilot(StartAsPilot);
         ChangeNau(!StartAsPilot);
         ChangeGarage(StartInGarage);
-      
+        ChangeInventory(false);
         shipMovement.SetUpShipMovement(inputManager.playerInputActions.Nau);
         pilotMovement.SetUpPilotMovement(inputManager.playerInputActions.Pilot);
+    
+         GameManager.Instance.inputManager.OpenInventory+=ChangeInventory;
     }
+
 
     void Update()
     {
         
     }
 
-    #region change map
+   
+ 
+
+
+    #region Interaccions dinamiques
+    private void ChangeInventory()
+    {
+        //actual activemap should be saved to be deactive or activate later
+        //should pause the game
+        if (inputManager.playerInputActions.Inventory.enabled)
+        {
+            AccesChangeInputMap(NameInputAction.Inventory,false);
+            AccesChangeInputMap(NameInputAction.Nau,true);
+
+        }else
+        {
+            AccesChangeInputMap(NameInputAction.Nau,false);
+            AccesChangeInputMap(NameInputAction.Inventory,true);
+        }
+        
+    }
+
+    //Interacció amb objectes del escenari o coses especials
+    void Interact(InputAction.CallbackContext context)
+    {
+        Debug.Log("you press F");
+        //revsiar aquesta part, per veure 
+        interactiveMethods.DoInteractions(whatsToInteract,this);
+        
+    }
+    
+    //afegeix mètodes a interactuar i treu mètodes a interactuar
+    public void AddInteraction(InteractionType type)
+    {
+        Debug.Log("added");
+        if (!whatsToInteract.Contains(type))
+        {
+            whatsToInteract.Add(type);
+
+        }
+    }
+
+    
+    public void SubInteraction(InteractionType type)
+    {
+        if (whatsToInteract.Contains(type))
+        {
+            whatsToInteract.Remove(type);
+        }
+        
+    }
+    public void AddDialogueInfo(string branca, int mode)
+    {
+        this.branca = branca;
+        this.mode = mode;   
+    }
+    #endregion
+
+    public Camera returnCameraGarage()
+    {
+        return _garageGO.GetComponentInChildren<Camera>();
+    }
+
+    public PlacementSystem returnPlacementSystem()
+    {
+        return _garageGO.GetComponent<PlacementSystem>();
+    }
+
+     #region change map/move to interactive methods o new script
     public void ChangeGarage(bool activateGarage)
     {
         if (activateGarage)
@@ -146,6 +219,25 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void ChangeInventory(bool activate)
+    {
+        if (activate)
+        {
+            inputManager.playerInputActions.Inventory.Enable();
+            inventoryManager.OnActivate();
+            // inve.enabled=true;
+            // shipLook.enabled=true;
+            _inventoryGO.SetActive(true);
+        }
+        else
+        {
+            inputManager.playerInputActions.Inventory.Disable();
+            inventoryManager.OnDeactivate();
+            // shipMovement.enabled=false;
+            // shipLook.enabled=false;
+            _inventoryGO.SetActive(false);
+        }
+    }
     public void AccesChangeInputMap(NameInputAction inputMap, bool enableIt=true)
     {
         //  string mapName = inputMap.ToString();
@@ -163,7 +255,10 @@ public class Player : MonoBehaviour
                 if (enableIt)ChangePilot(true);
                 else ChangePilot(false);                    
             break;
-
+            case NameInputAction.Inventory:
+                if (enableIt)ChangeInventory(true);
+                else ChangeInventory(false);                    
+            break;
             default:
             Debug.LogError("you should not be here");
             break;
@@ -172,46 +267,5 @@ public class Player : MonoBehaviour
 
     #endregion
 
-    #region Interaccions dinamiques
-    //Interacció amb objectes del escenari o coses especials
-    void Interact(InputAction.CallbackContext context)
-    {
-        Debug.Log("you press F");
-        //revsiar aquesta part, per veure 
-        interactiveMethods.DoInteractions(whatsToInteract,this);
-        
-    }
-    
-    //afegeix mètodes a interactuar i treu mètodes a interactuar
-    public void AddInteraction(InteractionType type)
-    {
-        Debug.Log("added");
-        if (!whatsToInteract.Contains(type))
-        {
-            whatsToInteract.Add(type);
-
-        }
-    }
-
-    
-    public void SubInteraction(InteractionType type)
-    {
-        if (whatsToInteract.Contains(type))
-        {
-            whatsToInteract.Remove(type);
-        }
-        
-    }
-    public void AddDialogueInfo(string branca, int mode)
-    {
-        this.branca = branca;
-        this.mode = mode;   
-    }
-    #endregion
-
-    public Camera returnCameraGarage()
-    {
-        return _garageGO.GetComponentInChildren<Camera>();
-    }
 
 }

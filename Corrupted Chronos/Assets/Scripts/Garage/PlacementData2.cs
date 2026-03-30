@@ -6,6 +6,10 @@ using Unity.IO.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
 
+
+
+
+
 public struct PriorityTGround
 {
     public Dictionary<TypeGround, int> PriorityByTGround;
@@ -47,15 +51,32 @@ public struct PriorityTGround
     }
 }
 
+struct Node
+{
+   public int myIDP;
+   public int profundity;
+   public List<int> connections;
+
+
+    public Node FirstStructure(int idp)
+    {
+        Node node;
+        node.myIDP=idp;
+        node.profundity=0;
+        node.connections=new List<int>();
+        return node;
+    }
+}
 
 public class PlacementData2
 {
 
-    Dictionary<int, ObjectData> AllAddedParts= new();
+    Dictionary<int, PlacementDataItem> AllAddedParts= new();
 
 
     //I should make something to relate parts with parts, nodes with nodes, so deleting a node should only be on the extremes, and it could also be used to detect influence, probably a struct
     // ?? PositionInfluence/ NodeTreeParts
+    Dictionary<int, Node> TreeParts= new();
 
     private Dictionary<Vector2Int, List<TypeGround>> AllPositionsTGround = new();
 
@@ -64,7 +85,6 @@ public class PlacementData2
 
     
     //there should be a better idp creator, but this could work atm
-    private int _givenIDP=0;
 
    
    private PriorityTGround _priorityTGround=new PriorityTGround();
@@ -188,7 +208,7 @@ public class PlacementData2
 
     #endregion
 
-    public void AddNewPartData(ObjectData part)
+    public void AddNewPartData(PlacementDataItem part)
     {
         if (_priorityTGround.PriorityByTGround == null || _priorityTGround.PriorityByTGround.Count()==0) {
             _priorityTGround = PriorityTGround.CreateDefault();
@@ -196,7 +216,8 @@ public class PlacementData2
 
         Debug.LogWarning("entrem a addnewpartdata");
         //create id and relationate objectdata
-        int thisIdp=_givenIDP++;
+        int thisIdp=GameManager.Instance.GiveNextIdp(); //_givenIDP++;
+        
         AllAddedParts.Add(thisIdp,part);
         part.AssignIDP(thisIdp);
         //should add thisIdp to information of the part
@@ -232,7 +253,7 @@ public class PlacementData2
     }
 
     //not actually implemented, it could be part o idp
-    public void DeleteNewPartData(ObjectData part)
+    public void DeleteNewPartData(PlacementDataItem part)
     {
         //obtain id with objectdata
         int thisIDP;

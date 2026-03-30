@@ -57,7 +57,7 @@ public struct SizeGround
 
 //probalement hauria de modificar una mica aixo, un objecte del inventari, pot ser item o pot ser part, inclús podrien ser els 2 a la vegada 
 [Serializable]
-public class ObjectData
+public class PlacementDataItem
 {
     //aquí hauriem d'afegir estats i valors de cada arma a modificar
     [field: SerializeField]
@@ -328,14 +328,14 @@ public class ObjectData
 [CreateAssetMenu(fileName = "PartsDatabaseSO", menuName = "Scriptable Objects/PartsDatabaseSO")]
 public class PartsDatabaseSO : ScriptableObject
 {
-    public List<ObjectData> AllParts;
-    public List<ObjectData> AllNaus;
+    public List<PlacementDataItem> AllParts;
+    public List<PlacementDataItem> AllNaus;
     
     //els pilots son més simples, no necesitem quan ocupen
-    public List<ObjectData> AllPilots;
+    public List<PlacementDataItem> AllPilots;
 
     //no es un monobehavior, no hi ha start, toca cridar-ho
-    public void configPositions()
+    public void StartConfigPositions()
     {
         Debug.LogWarning("ENTREM A CONFIG POSITONS" + AllParts.Count);
         foreach (var item in AllParts)

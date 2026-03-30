@@ -9,27 +9,34 @@ public class EachPartScript : MonoBehaviour
 {
     [Tooltip("Acaba'l amb .cs")]
     [SerializeField] private string typeName;
+    [SerializeField] private bool ActivateOnStart=false;
+
     private Type componentType;
     
-    //variables per partaccions.cs
+    //should be upgrated, mutlple firepoint, firepoints with size
     [SerializeField] private Transform firepoint;
     [SerializeField] private GameObject bulletPrefab;
-    
+
+    void Start()
+    {
+        if(ActivateOnStart) Activate();
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public PartActions Activate()
+    public PartBase Activate()
     { 
         
-        //el script que afegeix només s'activa quan player.cs ho diu
-        //Possible millora futura: Crear molts scripts, per cada acció, una part està formada per multiples d'aquests scripts,
-        //Part actions o EachPartScript(aquest script), poddrien controlar amb llistes totes aquestes coses
-        PartActions ScriptPart=null;
+        
+        PartBase ScriptPart=null;
+        // ItemBase itemBase=null;
         componentType = Type.GetType(typeName);
         if (componentType != null)
         {
+            //dd PartBase or ItemBase
             gameObject.AddComponent(componentType);
-            ScriptPart= gameObject.GetComponent<PartActions>();
-            ScriptPart.PassVariables(firepoint, bulletPrefab);
-            
+            ScriptPart= gameObject.GetComponent<PartBase>();
+            if(ScriptPart)   ScriptPart.PassVariables(firepoint, bulletPrefab);
+            // itemBase=
+
         }
         else
         {

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3153467435659635585}
   - component: {fileID: 4963851911993327594}
+  - component: {fileID: 7220529343001519196}
   m_Layer: 0
   m_Name: LifeItem
   m_TagString: Collectable
@@ -54,6 +55,22 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7220529343001519196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770118656710209681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1e5b3ad05c89214e9be48b42f1896bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EachPartScript
+  typeName: LifeItem
+  ActivateOnStart: 1
+  firepoint: {fileID: 0}
+  bulletPrefab: {fileID: 0}
 --- !u!1 &5410672573435433716
 GameObject:
   m_ObjectHideFlags: 0

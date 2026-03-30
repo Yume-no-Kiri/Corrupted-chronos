@@ -21,8 +21,15 @@ public enum TypePart
 
 
 //classe general, del que venen les diferents parts, revisar en un futur
-public class PartActions : MonoBehaviour
+public class PartBase : MonoBehaviour
 {
+
+
+/*     protected string nameItem;
+    protected ItemData itemData;
+ */
+
+    
     //Ha d'haver una millor manera de guardar l'informació de cada part 
     
     //private InputManager inputManager;
@@ -43,9 +50,18 @@ public class PartActions : MonoBehaviour
      protected int cargador = 5;
      protected int contCargador = 5;
      protected int malBala = 1;
-    
-    
-    
+
+    /* void Awake()
+    {
+        nameItem=this.GetType().Name;
+        itemData= GameManager.Instance.itemDataBase.ReturnItemDataByName(nameItem);
+
+    }
+    public ItemData GetScipteableObject()
+    {
+        return itemData;
+    } */
+
     public TypePart GetTypePart()
     {
         return typePart;
@@ -59,6 +75,7 @@ public class PartActions : MonoBehaviour
 
     public virtual void DoShot( InputAction.CallbackContext ctx)
     {
+        
         throw new System.NotImplementedException();
     }
 
@@ -72,7 +89,7 @@ public class PartActions : MonoBehaviour
     
 }
 
-public class Metralleta : PartActions
+public class Metralleta : PartBase
 {
     void Awake()
     {
@@ -115,7 +132,7 @@ public class Metralleta : PartActions
     
 }
 
-public class Escopeta : PartActions
+public class Escopeta : PartBase
 {
     void Awake()
     {
