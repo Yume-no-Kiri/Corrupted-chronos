@@ -934,6 +934,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c5cc709a3294a349bacc5a2d8c2c77c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &789565597 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2088846522459829300, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
+  m_PrefabInstance: {fileID: 1331935247994184260}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbcf0590bed927847895b2f5c334a3b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &829035842
 GameObject:
   m_ObjectHideFlags: 0
@@ -2495,6 +2506,10 @@ PrefabInstance:
       propertyPath: playerInstance
       value: 
       objectReference: {fileID: 243018658}
+    - target: {fileID: 3244175610523324399, guid: 46448501ad07e5c4d9534c246cb6568c, type: 3}
+      propertyPath: placementSystem
+      value: 
+      objectReference: {fileID: 789565597}
     - target: {fileID: 3597735251795134900, guid: 46448501ad07e5c4d9534c246cb6568c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 14.09741

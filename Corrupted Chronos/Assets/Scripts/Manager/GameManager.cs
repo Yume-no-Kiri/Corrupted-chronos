@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         //Para crear un nuevo modificador
-        statsManager.instance.AddModifier(Stat.StatType.Stamina, new StatModifier()
+        /* statsManager.instance.AddModifier(Stat.StatType.Stamina, new StatModifier()
         {
             type = StatModifier.ModifierType.Add,
             value = 2.5f,
@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
         });
 
         //Para obtener un stat
-        statsManager.instance.GetStat(Stat.StatType.Stamina);
+        statsManager.instance.GetStat(Stat.StatType.Stamina); */
     }
 
     // Update is called once per frame

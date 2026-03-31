@@ -39,6 +39,10 @@ public class BaseBullets : MonoBehaviour
 
     public InformationBullet statsBullet;
 
+    public BaseBullets()
+    {
+    }
+
     void Awake()
     {       
         rb = GetComponent<Rigidbody>();
