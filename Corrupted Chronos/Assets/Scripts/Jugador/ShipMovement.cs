@@ -36,6 +36,8 @@ public class ShipMovement : MonoBehaviour
 
     private float currentSpeedMultiplier = 1f;
     private float targetSpeedMultiplier = 1f;
+    private Vector3 externalForce= Vector3.zero;
+
 
     private void Awake()
     {
@@ -73,6 +75,16 @@ public class ShipMovement : MonoBehaviour
         SmoothDirection();
         if (canBoost)
         {   SmoothBoost();}
+
+        if (externalForce.magnitude > 0.01f)
+        {
+            externalForce = Vector3.Lerp(externalForce, Vector3.zero, GameManager.Instance.knockbackResistance * Time.deltaTime);
+        }
+        else
+        {
+            externalForce = Vector3.zero; // Forcem el zero per estalviar càlculs quan és molt petita
+        }
+
         ApplyMovement();
         // Debug.Log("ss does update work? 2");
 
@@ -134,7 +146,7 @@ public class ShipMovement : MonoBehaviour
 
     private void ApplyMovement()
     {
-        Vector3 finalVelocity = currentMoveVector * moveSpeed * currentSpeedMultiplier;
+        Vector3 finalVelocity = currentMoveVector * moveSpeed * currentSpeedMultiplier+externalForce;
 
 
         controller.Move(finalVelocity * Time.deltaTime);
@@ -142,6 +154,11 @@ public class ShipMovement : MonoBehaviour
         // Debug.Log("ss final velocity:"+ finalVelocity.ToString());
     }
 
+    public void AddKnockback(Vector3 dir, float force) {
+        externalForce += dir.normalized * force*1.3f;
+        Debug.LogWarning("enter do knockback dir:"+dir.ToString()+" force:"+force);
+        Debug.LogWarning("externalForce:"+ externalForce.ToString());
+    }
 
     //all method
       private void GetInputNau()

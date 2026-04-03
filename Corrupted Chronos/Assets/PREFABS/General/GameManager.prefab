@@ -44,6 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc0687afe0a08ad4e82f8325fe6b7596, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  bulletDatabase: {fileID: 11400000, guid: 8d93152657ce5ed468e2d1218b59a662, type: 2}
+  placementSystem: {fileID: 0}
+  itemDataBase: {fileID: 11400000, guid: a3dd33327b57ddd408c40a1f8f23e147, type: 2}
+  dataBaseParts: {fileID: 11400000, guid: cae380d3cf3bdd44d8267c7a1d4cd998, type: 2}
+  inputManager: {fileID: 0}
+  playerInstance: {fileID: 0}
   health: 0
   staminaMax: 100
   staminaAct: 0

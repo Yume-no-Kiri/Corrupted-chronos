@@ -33,6 +33,7 @@ public class PilotMovement : MonoBehaviour
     private float currentSpeedMultiplier = 1f;
     private float targetSpeedMultiplier = 1f;
 
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -63,6 +64,8 @@ public class PilotMovement : MonoBehaviour
         SmoothDirection();
         // if (canBoost)
         //     SmoothBoost();
+        
+
         ApplyMovement();
     }
 
@@ -104,6 +107,7 @@ public class PilotMovement : MonoBehaviour
         Vector3 finalVelocity = currentMoveVector * moveSpeed * currentSpeedMultiplier;
         controller.Move(finalVelocity * Time.deltaTime);
     }
+   
 
     private void GetInputPilot()
     {

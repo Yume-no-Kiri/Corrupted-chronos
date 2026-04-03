@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance{get; private set;}
 
 
+    public BulletDatabase bulletDatabase;
+    // public GameObject HitboxBulletPrefab;
     public PlacementSystem placementSystem;
     public ItemDataBase itemDataBase;
     public PartsDatabaseSO dataBaseParts;
@@ -38,6 +40,8 @@ public class GameManager : MonoBehaviour
     public Coroutine CoroutineStamina;
 
     public float staminaMoveUPUseQuantity=5f;
+
+    public float knockbackResistance=1f;
 
 
     public float moveSpeedNau=100f;
