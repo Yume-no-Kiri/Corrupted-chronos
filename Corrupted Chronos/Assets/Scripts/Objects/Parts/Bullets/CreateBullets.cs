@@ -8,6 +8,8 @@ public enum AllPresetBullets
 
 }
 
+//waveGenerator has this and it works
+
 public class CreateBullet: MonoBehaviour
 {
     private GameObject EmptyBullet;

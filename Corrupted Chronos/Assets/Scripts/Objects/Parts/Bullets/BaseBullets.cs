@@ -69,15 +69,7 @@ public class BaseBullets : MonoBehaviour
 
     private void Awake()
     {
-        // statsSO= Resources.Load<bulletStatsSO>("Combat/BasicBulletData");
-        // statsSO = GameManager.Instance.bulletDatabase.ReturnBulletStatsSO("BasicBullet");
-
-        // AssignSO();
-
-        // hitboxBullets.Add( FirstHitboxBullet.transform.GetComponent<HitboxBullet>()); 
-        // hitboxBullets[0].OnCollisionEnterHitbox+=callCollisionEnter;
-        // listColisionEnter.Add(hitboxBullets[0].OnCollisionEnterHitbox);
-        // listColisionEnter.Add(hitboxBullets[0].OnCollisionEnterHitbox);
+        
         rb = GetComponent<Rigidbody>();
         spr = GetComponentInChildren<SpriteRenderer>();
 

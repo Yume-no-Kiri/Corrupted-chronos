@@ -40,10 +40,8 @@ public class NewMonoBehaviourScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Tentacle.SetActive(true);
-        IndicatorToRise.SetActive(false);
-        
-        StartCoroutine(SplashAttack());
+      
+        // RiseTentacle();
     }
 
     // Update is called once per frame
@@ -68,14 +66,14 @@ public class NewMonoBehaviourScript : MonoBehaviour
     #region SplashAttack
 
     /* 
-     call:
-        Tentacle.SetActive(true);
-        IndicatorToRise.SetActive(false);
+     call in start:
         
          StartCoroutine(SplashAttack());
      */
     IEnumerator SplashAttack()
     {
+        Tentacle.SetActive(true);
+        IndicatorToRise.SetActive(false);
         yield return StartCoroutine(PrepSplash());
         yield return StartCoroutine(DoingSplash());
         yield return StartCoroutine(RecoverSplash());
@@ -138,16 +136,16 @@ public class NewMonoBehaviourScript : MonoBehaviour
 
     #region tentacle rise
     /* 
-        call:
-         Tentacle.SetActive(false);
-        IndicatorToRise.SetActive(true);
-        
+        call in start:
         RiseTentacle();
     */
 
     public void RiseTentacle()
     {
         Tentacle.SetActive(false);
+        IndicatorToRise.SetActive(true);
+
+        // Tentacle.SetActive(false);
         IndicatorToRise.transform.localScale=initialRiseRange;
         StartCoroutine(TentacleRise());
     }

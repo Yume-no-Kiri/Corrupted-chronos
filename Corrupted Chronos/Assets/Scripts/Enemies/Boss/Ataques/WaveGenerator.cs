@@ -6,7 +6,7 @@ using UnityEngine;
 //this shoudl generate the waves, still work in progress
 public class WaveGenerator : MonoBehaviour
 {
-    GameObject waveBullet;
+    // GameObject waveBullet;
 
     public float TimeBetweenShots=1;
 

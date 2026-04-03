@@ -28,7 +28,8 @@ public class BossAttacks : MonoBehaviour
         PosDown+= transform.position;
         Lazer.SetActive(false);
        
-       
+        // StartCoroutine(WaterLazer(transform.rotation.eulerAngles));
+        StartCoroutine(HeadUpAndDown());
     }
 
     // Update is called once per frame
@@ -71,7 +72,11 @@ public class BossAttacks : MonoBehaviour
 
     #region up and down attack
 
-    /*  To call it in update:
+    /*
+        to call it in start only one:
+        StartCoroutine(HeadUpAndDown());
+    
+      To call it in update consecutivamente:
         if (coroutine == null)
         {
             coroutine= StartCoroutine(HeadUpAndDown());

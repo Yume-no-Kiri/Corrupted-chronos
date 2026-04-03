@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
 
     public float staminaMoveUPUseQuantity=5f;
 
-    public float knockbackResistance=1f;
+    public float knockbackResistance=2f;
 
 
     public float moveSpeedNau=100f;
