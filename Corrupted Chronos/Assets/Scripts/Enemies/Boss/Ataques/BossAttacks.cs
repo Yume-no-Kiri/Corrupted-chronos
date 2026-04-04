@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 public class BossAttacks : MonoBehaviour
@@ -27,9 +28,6 @@ public class BossAttacks : MonoBehaviour
         PosUp+= transform.position;
         PosDown+= transform.position;
         Lazer.SetActive(false);
-       
-        // StartCoroutine(WaterLazer(transform.rotation.eulerAngles));
-        StartCoroutine(HeadUpAndDown());
     }
 
     // Update is called once per frame
@@ -46,7 +44,7 @@ public class BossAttacks : MonoBehaviour
     /* call in start:
         StartCoroutine(WaterLazer(transform.rotation.eulerAngles));
      */
-    IEnumerator WaterLazer(Vector3 rotOri)
+    public IEnumerator WaterLazer(Vector3 rotOri)
     {
         Lazer.SetActive(true);
         yield return StartCoroutine(TurnLazer(rotOri));
@@ -82,7 +80,7 @@ public class BossAttacks : MonoBehaviour
             coroutine= StartCoroutine(HeadUpAndDown());
 
         } */
-    IEnumerator HeadUpAndDown()
+    public IEnumerator HeadUpAndDown()
     {
         yield return StartCoroutine(HeadUp());
         yield return StartCoroutine(HeadDown());
@@ -115,3 +113,26 @@ public class BossAttacks : MonoBehaviour
     }
     #endregion
 }
+
+#if UNITY_EDITOR
+
+[CustomEditor(typeof(BossAttacks))]
+
+public class BossAttacksEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        BossAttacks script = (BossAttacks)target;
+        if (GUILayout.Button("Test Water Lazer"))
+        {
+            script.StartCoroutine(script.WaterLazer(script.transform.rotation.eulerAngles));
+        }
+        if (GUILayout.Button("Test Up and Down"))
+        {
+            script.StartCoroutine(script.HeadUpAndDown());
+        }
+    }
+}
+
+#endif

@@ -1,7 +1,8 @@
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class TentacleAttack : MonoBehaviour
 {
     
     public GameObject Tentacle;
@@ -39,38 +40,40 @@ public class NewMonoBehaviourScript : MonoBehaviour
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
-    {
-      
-        // RiseTentacle();
+    { 
+        RiseTentacle();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Direction=GameManager.Instance.playerInstance.transform.position-this.transform.position;
-        float angle =Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg;
-        Vector3 anglesActuals = Tentacle.transform.eulerAngles;
-        rotationToAdd.y=angle;
-        
-        // anglesActuals.y = angle;
-        
-
-        Tentacle.transform.eulerAngles=rotationToAdd;
+        if (GameManager.Instance != null && GameManager.Instance.playerInstance != null)
+        {
+            Direction = GameManager.Instance.playerInstance.transform.position - this.transform.position;
+            float angle = Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg;
+            Vector3 anglesActuals = Tentacle.transform.eulerAngles;
+            rotationToAdd.y = angle;
+            Tentacle.transform.eulerAngles = rotationToAdd;
+        }
     }
     #region DirectAttack
     //here he should add the methods to do the direct attack
 
+    public IEnumerable DirectAttack()
+    {
+        print("Direct Attack not implemented yet.");
+        return null;
+    }
     #endregion
-
 
     #region SplashAttack
 
     /* 
      call in start:
-        
+
          StartCoroutine(SplashAttack());
-     */
-    IEnumerator SplashAttack()
+    */
+    public IEnumerator SplashAttack()
     {
         Tentacle.SetActive(true);
         IndicatorToRise.SetActive(false);
@@ -132,8 +135,6 @@ public class NewMonoBehaviourScript : MonoBehaviour
     }
     #endregion
 
-
-
     #region tentacle rise
     /* 
         call in start:
@@ -175,3 +176,27 @@ public class NewMonoBehaviourScript : MonoBehaviour
         //Detect player and do damage
     }
 }
+
+
+#if UNITY_EDITOR
+
+[CustomEditor(typeof(TentacleAttack))]
+
+public class TentacleAttackEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        TentacleAttack script = (TentacleAttack)target;
+        if (GUILayout.Button("Test Splash Attack"))
+        {
+            script.StartCoroutine(script.SplashAttack());
+        }
+        if (GUILayout.Button("Test Direct Attack"))
+        {
+            script.DirectAttack();
+        }
+    }
+}
+
+#endif
