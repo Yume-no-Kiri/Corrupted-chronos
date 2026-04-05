@@ -1,3 +1,4 @@
+// Parusing System;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,7 +58,7 @@ public struct SizeGround
 
 //probalement hauria de modificar una mica aixo, un objecte del inventari, pot ser item o pot ser part, inclús podrien ser els 2 a la vegada 
 [Serializable]
-public class PlacementDataItem
+public class PlacementDataSO
 {
     //aquí hauriem d'afegir estats i valors de cada arma a modificar
     [field: SerializeField]
@@ -85,7 +86,7 @@ public class PlacementDataItem
     public Dictionary<TypeGround,Requiriments> ConfigRequires= new Dictionary<TypeGround, Requiriments>();
 
 
-
+    //THIS SHOULD PROBABLY BE DELETED AND USE THE ONE FROM THE ALLOBJECT INSTED
     //possible fix: 2 prefabs, un de garatge i un amb la funcionalitat en si 
     [field: SerializeField]
     public GameObject PrefabGaratge { get; private set; }
@@ -325,14 +326,14 @@ public class PlacementDataItem
 }
 
 //això estaria millor (?) si gran part de les variables les escrivís en codi i no al inspector
-[CreateAssetMenu(fileName = "PartsDatabaseSO", menuName = "Scriptable Objects/PartsDatabaseSO")]
-public class PartsDatabaseSO : ScriptableObject
+[CreateAssetMenu(fileName = "PlacementDatabaseSO", menuName = "Scriptable Objects/PlacementDatabaseSO")]
+public class PlacementDatabaseSO : ScriptableObject
 {
-    public List<PlacementDataItem> AllParts;
-    public List<PlacementDataItem> AllNaus;
+    public List<PlacementDataSO> AllParts;
+    public List<PlacementDataSO> AllNaus;
     
     //els pilots son més simples, no necesitem quan ocupen
-    public List<PlacementDataItem> AllPilots;
+    public List<PlacementDataSO> AllPilots;
 
     //no es un monobehavior, no hi ha start, toca cridar-ho
     public void StartConfigPositions()

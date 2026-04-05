@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// [CreateAssetMenu(fileName = "AllObjects", menuName = "Scriptable Objects/AllObjects")]
+
+//exists allObjectMB
 [Serializable]
-public class AllObjects /*  : ScriptableObject */
+public class AllObjectSO /*  : ScriptableObject */
 {
 
     [field: SerializeField]
@@ -18,17 +19,21 @@ public class AllObjects /*  : ScriptableObject */
     public int ID { get; private set; } */
 
 
-    //I should make the ID the same, two strings or two ints, 
-    public bool canBePlaced;
-    public int IDplacementData;
-    public PlacementDataItem placementDataItem{get; private set;} 
-
-
     // public bool isItem;
-    public string IDitemName;
-    public ItemData ItemData{get; private set;}
+    public string IDItemName;
+    public TakableDataSO takableData{get; private set;}
 
     public int IDP { get; private set; }
+
+    
+    //I should make the ID the same, two strings or two ints, 
+    public bool canBePlaced;
+    public int IDPlacementData=-1;
+    public PlacementDataSO placementDataItem{get; private set;} 
+    
+    // we should create consructors for each defined part?
+
+
 
 }
 
@@ -36,7 +41,18 @@ public class AllObjects /*  : ScriptableObject */
 public class AllObjectsDataBase : ScriptableObject
 {
     [field: SerializeField]
-    public List<AllObjects> AllObjects = new List<AllObjects>();
+    public List<AllObjectSO> AllObjects = new List<AllObjectSO>();
 
+    public void FinishCreateList()
+    {
+        foreach (var item in AllObjects)
+        {
+            //AssignTakableData
+            // takableData= GameManager.Instance.itemDataBase.ReturnItemDataByName(nameItem);
+
+
+            //AssignPlacementData
+        }
+    }
 
 }

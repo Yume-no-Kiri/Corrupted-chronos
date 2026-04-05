@@ -13,13 +13,23 @@ MonoBehaviour:
   m_Name: AllObjectsDataBase
   m_EditorClassIdentifier: Assembly-CSharp::AllObjectsDataBase
   AllObjects:
-  - nameShow: 
-    <NameID>k__BackingField: 
+  - nameShow: Energy Item
+    <NameID>k__BackingField: EnergyItemObj
+    IDItemName: EnergyItem
     canBePlaced: 0
-    IDplacementData: 0
-    IDitemName: 
-  - nameShow: 
-    <NameID>k__BackingField: 
+    IDPlacementData: -1
+  - nameShow: Life Item
+    <NameID>k__BackingField: LifeItemObj
+    IDItemName: LifeItem
     canBePlaced: 0
-    IDplacementData: 0
-    IDitemName: 
+    IDPlacementData: -1
+  - nameShow: Escopeta
+    <NameID>k__BackingField: 
+    IDItemName: 
+    canBePlaced: 1
+    IDPlacementData: 0
+  - nameShow: Metralleta
+    <NameID>k__BackingField: 
+    IDItemName: 
+    canBePlaced: 0
+    IDPlacementData: 1

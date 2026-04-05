@@ -21,7 +21,7 @@ public enum TypePart
 
 
 //classe general, del que venen les diferents parts, revisar en un futur
-public class PartBase : MonoBehaviour
+public class GunBase : AllObjectMB
 {
 
 
@@ -89,7 +89,7 @@ public class PartBase : MonoBehaviour
     
 }
 
-public class Metralleta : PartBase
+public class Metralleta : GunBase
 {
     void Awake()
     {
@@ -132,7 +132,7 @@ public class Metralleta : PartBase
     
 }
 
-public class Escopeta : PartBase
+public class Escopeta : GunBase
 {
     void Awake()
     {

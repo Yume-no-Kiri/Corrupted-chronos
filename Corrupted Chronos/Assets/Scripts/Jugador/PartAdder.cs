@@ -79,7 +79,7 @@ public class PartAdder : MonoBehaviour
     public void ActivateParts()
     {
         //acabar
-        PartBase pa;
+        GunBase pa;
         foreach (Transform part in adder.transform)
         {
             //no estic segur de que part actions segui lo millor per invocar aquests mètodes,
@@ -107,13 +107,13 @@ public class PartAdder : MonoBehaviour
 
   public void RemovePart()
     {
-        PartBase pa;
+        GunBase pa;
 
         // Transform ToRemove = _nauGO.transform.Find("Added");
         foreach (Transform child in adder.transform)
         {
             
-            pa = child.gameObject.GetComponent<PartBase>();
+            pa = child.gameObject.GetComponent<GunBase>();
             switch (pa.GetTypePart())
             {
                 case TypePart.Mele:

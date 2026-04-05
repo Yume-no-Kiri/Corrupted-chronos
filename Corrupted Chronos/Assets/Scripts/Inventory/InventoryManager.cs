@@ -110,8 +110,10 @@ public class InventoryManager : MonoBehaviour
     }
 
 
-    public bool AddItem(ItemData newItem)
+    public bool AddItem(AllObjectSO newItem)
     {   
+        Debug.Log("newItem sprite"+newItem.takableData.sprite.name);
+
         for (int i = 0; i < listSlots.Length; i++)
         {
             if (!listSlots[i].HasItem())
@@ -190,7 +192,7 @@ public class InventoryManager : MonoBehaviour
                 else
                 {
                     //intercanvia
-                    ItemData aux=slotInventory.thisItem;
+                    AllObjectSO aux=slotInventory.thisItem;
                     selectedSlot.DeactivateSelectedEffect();
                     slotInventory.AddItem(selectedSlot.thisItem);
                     selectedSlot.AddItem(aux);

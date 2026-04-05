@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _inventoryGO;
 
 
-    private PartsDatabaseSO _database;
+    private PlacementDatabaseSO _database;
 
     //interactive
     InteractiveMethods interactiveMethods;
@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
     {        
         inputManager=GameManager.Instance.inputManager;
         if(inputManager==null) Debug.LogError("LA CONCHA DE LA LORA");
-        _database=GameManager.Instance.dataBaseParts;
+        _database=GameManager.Instance.placementDataBase;
 
         _nauGO = Instantiate(_database.AllNaus[0].PrefabGaratge, new Vector3(0, 0, 0), quaternion.identity);
         _pilotGO= Instantiate(_database.AllPilots[0].PrefabGaratge,new Vector3(0, 0, 0), quaternion.identity);

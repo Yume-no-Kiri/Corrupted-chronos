@@ -31,12 +31,13 @@ public class CollectItems : MonoBehaviour
         Debug.Log("objecte enter"+other.gameObject.tag);
         if (other.gameObject.CompareTag("Collectable"))
         {
-            ItemBase itemBase=other.gameObject.GetComponent<ItemBase>();
+            AllObjectMB itemBase=other.gameObject.GetComponent<AllObjectMB>();
             //guardar scripteable object a una llista de player, en inventoryPlayer probablement
             //eliminar objecte real
             Debug.Log("objecte detectat");
-            if (inventoryManager.AddItem(itemBase.GetScipteableObject()))
+            if (inventoryManager.AddItem(itemBase.ReturnAllObjectSO()))
             {
+                Debug.Log("itemBase.GetScipteableObject() sprite"+itemBase.ReturnTakableDataSO().sprite.name);
                 Destroy(other.gameObject);            
             }
         }

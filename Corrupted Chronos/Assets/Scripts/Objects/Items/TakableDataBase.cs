@@ -4,10 +4,9 @@ using UnityEngine;
 
 
 
-//change nom, això també ha d'anar a parts
 [Serializable]
 // [CreateAssetMenu(fileName = "ItemData", menuName = "Scriptable Objects/ItemData")]
-public class ItemData
+public class TakableDataSO
 {
     // [field: SerializeField]
 
@@ -20,33 +19,22 @@ public class ItemData
     /* public bool canBePlaced;
     public PlacementDataItem placementDataItem{get; private set;} 
 
- */    public bool isItem;
+ */ 
+    // public bool isItem;
     // some class for active
 
-
-    //hauria de tenir el monobehvious a instnaciar 
     
-    // public int idAux;    
-    // public ItemBase myItemBase;
-
-    public void DefinePlacementData()
-    {
-        /* if (canBePlaced)
-        {
-            //algo per acabar de definir
-        } */
-    }
 }
 
-[CreateAssetMenu(fileName = "ItemDataBase", menuName = "Scriptable Objects/ItemDataBase")]
-public class ItemDataBase : ScriptableObject
+[CreateAssetMenu(fileName = "TakableDataBase", menuName = "Scriptable Objects/TakableDataBase")]
+public class TakableDataBase : ScriptableObject
 {
 
     [field: SerializeField]
-    public List<ItemData> listItemsAux;
+    public List<TakableDataSO> listItemsAux;
 
     //he de fer una conversió a diccionari
-    public Dictionary<string, ItemData> listItems= new Dictionary<string, ItemData>();
+    public Dictionary<string, TakableDataSO> listItems= new Dictionary<string, TakableDataSO>();
 
     #region Change to usable values
     public void StartConfigItem()
@@ -59,7 +47,7 @@ public class ItemDataBase : ScriptableObject
     }
     #endregion
 
-    public ItemData ReturnItemDataByName(string name)
+    public TakableDataSO ReturnItemDataByName(string name)
     {
         if (listItems.ContainsKey(name))
         {

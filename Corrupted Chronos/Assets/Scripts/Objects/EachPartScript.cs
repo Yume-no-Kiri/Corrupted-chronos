@@ -22,20 +22,31 @@ public class EachPartScript : MonoBehaviour
         if(ActivateOnStart) Activate();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public PartBase Activate()
+    public GunBase Activate()
     { 
         
         
-        PartBase ScriptPart=null;
+        GunBase ScriptPart=null;
         // ItemBase itemBase=null;
         componentType = Type.GetType(typeName);
         if (componentType != null)
         {
             //dd PartBase or ItemBase
+            if (!componentType.IsSubclassOf(Type.GetType("AllObjectMB")))
+            {
+                Debug.LogError("tipus d'script a afegir no es correcte");
+            }
+            
             gameObject.AddComponent(componentType);
-            ScriptPart= gameObject.GetComponent<PartBase>();
-            if(ScriptPart)   ScriptPart.PassVariables(firepoint, bulletPrefab);
-            // itemBase=
+            
+
+            if (!componentType.IsSubclassOf(Type.GetType("GunBase")))
+            {
+                ScriptPart= gameObject.GetComponent<GunBase>();
+                if(ScriptPart)   ScriptPart.PassVariables(firepoint, bulletPrefab);
+                else Debug.LogError("es fill de GunBase pero no es GunBase (wtf)");
+            }
+            
 
         }
         else

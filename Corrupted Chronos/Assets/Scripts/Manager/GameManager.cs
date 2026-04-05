@@ -12,8 +12,8 @@ public class GameManager : MonoBehaviour
     public BulletDatabase bulletDatabase;
     // public GameObject HitboxBulletPrefab;
     public PlacementSystem placementSystem;
-    public ItemDataBase itemDataBase;
-    public PartsDatabaseSO dataBaseParts;
+    public TakableDataBase takableDataBase;
+    public PlacementDatabaseSO placementDataBase;
     public InputManager inputManager;
 
     public GameObject playerInstance;
@@ -74,8 +74,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        dataBaseParts.StartConfigPositions();
-        itemDataBase.StartConfigItem();
+        placementDataBase.StartConfigPositions();
+        takableDataBase.StartConfigItem();
         staminaAct=staminaMax;
         if(Instance == null)
         {

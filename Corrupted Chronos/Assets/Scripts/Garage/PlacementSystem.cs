@@ -27,14 +27,14 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private Grid grid;
 
-    private PartsDatabaseSO database;
+    private PlacementDatabaseSO database;
 
     //index del objecte segons la llista de parts tots
     private int selectedObjectIndex = -1;
 
-    private PlacementDataItem _selectedObject=null;
+    private PlacementDataSO _selectedObject=null;
 
-    private List<PlacementDataItem> _selectedListConfig;
+    private List<PlacementDataSO> _selectedListConfig;
 
     //el esquema, amb parts afeguides de la nau
     private GridData schemeShip = new GridData(); //, cablesShip;
@@ -72,7 +72,7 @@ public class PlacementSystem : MonoBehaviour
     private void Start()
     {
         
-        database=GameManager.Instance.dataBaseParts;
+        database=GameManager.Instance.placementDataBase;
         partAdder=GameManager.Instance.returnGarageAdder();
         inputManager= GameManager.Instance.inputManager;
         StopPlacement();
@@ -94,7 +94,7 @@ public class PlacementSystem : MonoBehaviour
             // Vector3 worldPos = grid.CellToWorld(gridPosition);
             Debug.Log("entrem position mouse:"+inputManager.MousePositionGarage );
             bool placementValidity;
-           
+            if(inputManager.IsPointerOverUI()) return;
             if (_previewObject)
             {
                 Debug.Log("entrem al update de pacemnet system2");
@@ -188,7 +188,7 @@ public class PlacementSystem : MonoBehaviour
     
 
     //els botons no permeten mètodes on es passen més de 2 parametres
-    bool CheckPlacementValidity(Vector3Int gridPosition, PlacementDataItem partAColocar)
+    bool CheckPlacementValidity(Vector3Int gridPosition, PlacementDataSO partAColocar)
     {
         if(inputManager.IsPointerOverUI()) return false;
         if(partAColocar==null) return false;
