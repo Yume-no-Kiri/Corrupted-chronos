@@ -3,7 +3,8 @@ using UnityEngine;
 public enum AllPresetBullets
 {
     Basic,
-    Wave
+    Wave, 
+    Null
 
 
 }
@@ -12,7 +13,10 @@ public enum AllPresetBullets
 
 public class CreateBullet: MonoBehaviour
 {
-    private GameObject EmptyBullet;
+
+    public AllPresetBullets allPresetBullets=AllPresetBullets.Null;
+    public bool CreateMySelf=false;
+    // private GameObject EmptyBullet;
 
     // public AllPresetBullets presetBullets;
 
@@ -25,31 +29,39 @@ public class CreateBullet: MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected void Start()
     {
-        EmptyBullet=GameManager.Instance.bulletDatabase.emptyBullet;
-
+        if(CreateMySelf) Activate();
+        // EmptyBullet=GameManager.Instance.bulletDatabase.emptyBullet;
+        
     }
 
-    public GameObject SelectPreset(AllPresetBullets presetBullets )
+    public void Activate()
     {
-        GameObject newBullet=EmptyBullet;
+        SelectPreset(allPresetBullets);
+    }
+
+    public void SelectPreset(AllPresetBullets presetBullets )
+    {
+        // GameObject newBullet=EmptyBullet;
         switch (presetBullets)
         {
             case AllPresetBullets.Basic:
                 // newBullet.GetComponent<BaseBullets>().statsSO = 
-                newBullet.GetComponent<BaseBullets>().AssignSO(GameManager.Instance.bulletDatabase.ReturnBulletStatsSO("BasicBullet"));
-                newBullet.AddComponent<DamageEB>();
+                this.gameObject.GetComponent<BaseBullets>().AssignSO(GameManager.Instance.bulletDatabase.ReturnBulletStatsSO("BasicBullet"));
+                this.gameObject.AddComponent<DamageEB>();
             break;
             case AllPresetBullets.Wave:
                 // newBullet.GetComponent<BaseBullets>().statsSO=;
-                newBullet.GetComponent<BaseBullets>().AssignSO(GameManager.Instance.bulletDatabase.ReturnBulletStatsSO("WaveBullet"));
-                newBullet.AddComponent<KnockbackEB>();
+                this.gameObject.GetComponent<BaseBullets>().AssignSO(GameManager.Instance.bulletDatabase.ReturnBulletStatsSO("WaveBullet"));
+                this.gameObject.AddComponent<KnockbackEB>();
 
+            break;
+            case AllPresetBullets.Null:
             break;
             default:
             Debug.LogError("no tipo bala");
             break;
         }
-        return newBullet;
+        // return newBullet;
     }
 
     // Update is called once per frame

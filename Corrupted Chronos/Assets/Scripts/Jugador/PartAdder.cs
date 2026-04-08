@@ -86,7 +86,7 @@ public class PartAdder : MonoBehaviour
             //revisar explicació escrita en EachPartScript per futur REFACTORITZACIÓ
            
             // pa = part.GetComponent<PartActions>();
-            pa= part.GetComponent<EachPartScript>().Activate();
+            pa= part.GetComponent<EachPartScript>().ActivateGun();
             switch (pa.GetTypePart())
             {
                 case TypePart.Mele:

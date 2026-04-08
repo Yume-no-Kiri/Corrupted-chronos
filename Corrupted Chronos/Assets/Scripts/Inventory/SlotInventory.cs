@@ -74,8 +74,8 @@ public class SlotInventory : MonoBehaviour
 
     public bool CanBePlaced()
     {
-        // return thisItem.canBePlaced;
-        return false;
+        return thisItem.canBePlaced;
+        // return false;
     }
     public void ShowSprite()
     {
@@ -84,7 +84,7 @@ public class SlotInventory : MonoBehaviour
             return;
         }else{
             
-            renderItem.sprite =thisItem.takableData.sprite;
+            renderItem.sprite =thisItem.takableDataSO.sprite;
             renderItem.enabled=true;
         }
     }

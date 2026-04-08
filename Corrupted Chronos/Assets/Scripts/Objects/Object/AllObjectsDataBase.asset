@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25fc2034e4aa7fe4693919ea94617980, type: 3}
+  m_Name: AllObjectsDataBase
+  m_EditorClassIdentifier: Assembly-CSharp::AllObjectsDataBase
+  AllObjects:
+  - nameShow: Life Object
+    NameID: LifeObject
+    IDItemName: LifeItem
+    takableDataSO:
+      nameShow: life item
+      nameID: LifeItem
+      sprite: {fileID: 21300000, guid: 343693fb7abe6ee4098fa62514b9a458, type: 3}
+      toInstanciate: {fileID: 770118656710209681, guid: 988633b9bd2b3b34f8e9b9648aea9bb7, type: 3}
+    canBePlaced: 0
+    IDPlacementData: -1
+    placementDataItemSO:
+      <Name>k__BackingField: 
+      <ID>k__BackingField: 0
+      <dictionaryAuxSize>k__BackingField: []
+      <dictionaryAuxRequires>k__BackingField: []
+      <PrefabGaratge>k__BackingField: {fileID: 0}
+  - nameShow: Energy Object
+    NameID: EnergyObject
+    IDItemName: EnergyItem
+    takableDataSO:
+      nameShow: energy item
+      nameID: EnergyItem
+      sprite: {fileID: 21300000, guid: 34ea344e4bf86c049a8a434b62a3c480, type: 3}
+      toInstanciate: {fileID: 4565051072455466545, guid: 7f7bdfa6d601d72429b5320cae061f78, type: 3}
+    canBePlaced: 0
+    IDPlacementData: -1
+    placementDataItemSO:
+      <Name>k__BackingField: 
+      <ID>k__BackingField: 0
+      <dictionaryAuxSize>k__BackingField: []
+      <dictionaryAuxRequires>k__BackingField: []
+      <PrefabGaratge>k__BackingField: {fileID: 0}
+  - nameShow: Escopeta Object
+    NameID: EscopetaObject
+    IDItemName: EscopetaItem
+    takableDataSO:
+      nameShow: escopeta item
+      nameID: EscopetaItem
+      sprite: {fileID: 21300000, guid: 02ba87a75cac2a74ab8e5abc0f6eaae8, type: 3}
+      toInstanciate: {fileID: 770118656710209681, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
+    canBePlaced: 1
+    IDPlacementData: 0
+    placementDataItemSO:
+      <Name>k__BackingField: Escopeta
+      <ID>k__BackingField: 0
+      <dictionaryAuxSize>k__BackingField:
+      - typeGround: 1
+        sizeGround:
+          Origen: {x: 0, y: 0}
+          Size: {x: 1, y: 2}
+          ExtraSize: []
+      - typeGround: 2
+        sizeGround:
+          Origen: {x: 0, y: 0}
+          Size: {x: 3, y: 4}
+          ExtraSize: []
+      <dictionaryAuxRequires>k__BackingField:
+      - typeGround: 2
+        sizeGround:
+          Origen: {x: 0, y: 0}
+          Size: {x: 1, y: 2}
+          ExtraSize: []
+        nRequires: 1
+      <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: 5c27cb9d07c56a444a054e4a978c1ef8, type: 3}

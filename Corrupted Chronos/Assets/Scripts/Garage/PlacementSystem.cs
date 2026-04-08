@@ -211,37 +211,61 @@ public class PlacementSystem : MonoBehaviour
                 selectedObjectIndex = _selectedListConfig.FindIndex(data => data.ID == id);
                 break;
             case ConfigurationNau.Pilots:
-                _selectedListConfig= database.AllPilots;
+                _selectedListConfig = database.AllPilots;
                 selectedObjectIndex = _selectedListConfig.FindIndex(data => data.ID == id);
                 break;
             default:
                 Debug.LogError("Configuració no possible, placementSystem.CS switch");
                 break;
         }
-        
-        
+
+
         if (selectedObjectIndex < 0)
         {
             Debug.LogError(id + " no existe");
             return;
         }
- 
-        if(_previewObject !=null)          Destroy(_previewObject);
-        _previewObject= Instantiate(_selectedListConfig[selectedObjectIndex].PrefabGaratge);
 
-        
-        _selectedObject=_selectedListConfig[selectedObjectIndex];
-        Debug.LogWarning("això va 1?"+ _selectedListConfig[selectedObjectIndex].ConfigGround[TypeGround.Occupied].Count);
 
+        _selectedObject = _selectedListConfig[selectedObjectIndex];
+        StartPlacementGeneral2();
+
+    }
+    public void StartPlacementGeneral(PlacementDataSO specificPart)
+    {
+       /*  _selectedListConfig= database.AllParts;
+        selectedObjectIndex = _selectedListConfig.FindIndex(data => data.ID == specificPart.ID);
+ */     
+        _selectedObject=specificPart;
+        StartPlacementGeneral2();
+       /*  if(_previewObject !=null)          Destroy(_previewObject);
+        _previewObject= Instantiate(specificPart.PrefabGaratge);
+
+        _selectedObject=specificPart;
+        Debug.LogWarning("això va 1?"+ _selectedObject.ConfigGround[TypeGround.Occupied].Count);
         Debug.LogWarning("això va 2?"+ _selectedObject.ConfigGround[TypeGround.Occupied].Count);
 
         Transform coll = _previewObject.transform.Find("Collisions");
         if (coll != null) coll.gameObject.SetActive(false);
 
         inputManager.OnClick += ButtonPlaceStructure;
-        inputManager.OnExit += ButtonStopStructure;
-        
+        inputManager.OnExit += ButtonStopStructure; */
     }
+    private void StartPlacementGeneral2()
+    {
+        if (_previewObject != null) Destroy(_previewObject);
+        _previewObject = Instantiate(_selectedObject.PrefabGaratge);
+        Debug.LogWarning("això va 1?" + _selectedObject.ConfigGround[TypeGround.Occupied].Count);
+        Debug.LogWarning("això va 2?" + _selectedObject.ConfigGround[TypeGround.Occupied].Count);
+
+        Transform coll = _previewObject.transform.Find("Collisions");
+        if (coll != null) coll.gameObject.SetActive(false);
+
+        inputManager.OnClick += ButtonPlaceStructure;
+        inputManager.OnExit += ButtonStopStructure;
+    }
+
+   
     
 
     //escape de colocar parts

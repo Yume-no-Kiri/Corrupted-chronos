@@ -2,6 +2,15 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
+//when a new effect is addded has to be integrated here
+public enum AllEffectsBullets
+{
+    KnockbackEB,
+    DamageEB
+}
+
+
+
 //all the effects for the bullets, someeffects could depen on other effects(holly shit)
 //to add a new collider/trigger with it's own logic make it son of AddHitboxEB
 public class EffectsBullets : MonoBehaviour

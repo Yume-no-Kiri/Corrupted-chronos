@@ -71,6 +71,12 @@ public class InventoryManager : MonoBehaviour
         placementSystem.CancelledPart+=CancelledItem;
     }
 
+    void OnDestroy()
+    {
+        inputManager.PrimaryClick-=moveItem;
+        placementSystem.PlacedPart-=PlacedItem;
+        placementSystem.CancelledPart-=CancelledItem;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -112,7 +118,7 @@ public class InventoryManager : MonoBehaviour
 
     public bool AddItem(AllObjectSO newItem)
     {   
-        Debug.Log("newItem sprite"+newItem.takableData.sprite.name);
+        Debug.Log("newItem sprite"+newItem.takableDataSO.sprite.name);
 
         for (int i = 0; i < listSlots.Length; i++)
         {
@@ -156,6 +162,7 @@ public class InventoryManager : MonoBehaviour
     //això funcionaria inclús sent de diferents inventaris
     private void moveItem(SlotInventory slotInventory)
     {
+        // if(!inputManager.IsPointerOverUI()) return;
         if(!inputManager.IsPointerOverUI()) return;
         if (!selectedSlot)
         { 
@@ -171,7 +178,9 @@ public class InventoryManager : MonoBehaviour
             if (slotInventory.CanBePlaced())
             {
                 //this should come from the information of the part
-                placementSystem.StartPlacementGeneral(0, ConfigurationNau.Parts);
+                // placementSystem.StartPlacementGeneral(0, ConfigurationNau.Parts);
+                placementSystem.StartPlacementGeneral(slotInventory.thisItem.placementDataItemSO);
+
             }
         }
         else

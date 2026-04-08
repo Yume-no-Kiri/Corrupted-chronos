@@ -482,7 +482,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 0.735849, g: 0.56245345, b: 0.47621924, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1535,6 +1535,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d43654bed96e280499b7a663c5f02b53, type: 3}
+--- !u!1001 &924531185
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 770118656710209681, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
+      propertyPath: m_Name
+      value: 'EscopetaTakable '
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153467435659635585, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.5168242
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153467435659635585, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 9.81
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153467435659635585, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 91.93452
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153467435659635585, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153467435659635585, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153467435659635585, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153467435659635585, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153467435659635585, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153467435659635585, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153467435659635585, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
 --- !u!1001 &928627416
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2124,6 +2181,7 @@ GameObject:
   - component: {fileID: 1302203656}
   - component: {fileID: 1302203655}
   - component: {fileID: 1302203657}
+  - component: {fileID: 1302203658}
   m_Layer: 5
   m_Name: InventorySlots
   m_TagString: Untagged
@@ -2221,6 +2279,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
   m_HorizontalFit: 0
   m_VerticalFit: 0
+--- !u!114 &1302203658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302203652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &1591361505 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1191193961548546323, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
@@ -2532,6 +2607,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ace98b2255f7afb48ad2ed148acc977c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreateBullet
+  allPresetBullets: 0
+  CreateMySelf: 0
 --- !u!114 &2006770776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2786,7 +2863,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1191193961548546323, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1287651561758508353, guid: 50a879ee0c750d5428f7f6cd5339050a, type: 3}
       propertyPath: m_IsActive
@@ -3602,3 +3679,4 @@ SceneRoots:
   - {fileID: 3905832149232454075}
   - {fileID: 2006770777}
   - {fileID: 3800546578730524313}
+  - {fileID: 924531185}

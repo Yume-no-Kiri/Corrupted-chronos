@@ -49,6 +49,8 @@ public class TakableDataBase : ScriptableObject
 
     public TakableDataSO ReturnItemDataByName(string name)
     {
+        // Debug.Log("awake come here inside1");
+
         if (listItems.ContainsKey(name))
         {
             return listItems[name];

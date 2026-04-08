@@ -17,17 +17,20 @@ public class EachPartScript : MonoBehaviour
     [SerializeField] private Transform firepoint;
     [SerializeField] private GameObject bulletPrefab;
 
+
+    private bool componentAdded=false;
     void Start()
     {
-        if(ActivateOnStart) Activate();
+        Activate();
+        // if(ActivateOnStart) Activate();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public GunBase Activate()
+    public void Activate()
     { 
         
         
         GunBase ScriptPart=null;
-        // ItemBase itemBase=null;
+        // ItemBase itemBase=null;sempre p
         componentType = Type.GetType(typeName);
         if (componentType != null)
         {
@@ -36,27 +39,38 @@ public class EachPartScript : MonoBehaviour
             {
                 Debug.LogError("tipus d'script a afegir no es correcte");
             }
-            
-            gameObject.AddComponent(componentType);
-            
-
-            if (!componentType.IsSubclassOf(Type.GetType("GunBase")))
+            if (!this.GetComponent(componentType))
             {
-                ScriptPart= gameObject.GetComponent<GunBase>();
-                if(ScriptPart)   ScriptPart.PassVariables(firepoint, bulletPrefab);
-                else Debug.LogError("es fill de GunBase pero no es GunBase (wtf)");
+                gameObject.AddComponent(componentType);
+
             }
             
-
+            componentAdded=true;
         }
         else
         {
             Debug.LogError($"Cannot find component type {typeName}");
         }
-        return ScriptPart;
+        // return ScriptPart;
         
     }
 
+    public GunBase ActivateGun() 
+    {
+        GunBase ScriptPart=null;
+
+        if(!componentAdded) Activate();
+        if (componentType.IsSubclassOf(Type.GetType("GunBase")))
+        {
+            ScriptPart= gameObject.GetComponent<GunBase>();
+            if(ScriptPart)   ScriptPart.PassVariables(firepoint, bulletPrefab);
+            // else Debug.LogError("es fill de GunBase pero no es GunBase (wtf)");
+        }/* else{
+            
+            Debug.LogWarning("possible ereror");
+        } */
+        return ScriptPart;
+    }
     // Update is called once per frame
     void Update()
     {

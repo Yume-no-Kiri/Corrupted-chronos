@@ -4,7 +4,7 @@ using UnityEngine;
 /// This is the basic script for the object, IT belongs to allObjectSO
 /// </summary>
 //GunBase is child of ItemBase
-public class AllObjectMB : MonoBehaviour
+public abstract class AllObjectMB : MonoBehaviour
 {
     public AllObjectSO allObjectSO{get; private set;}
 
@@ -14,16 +14,19 @@ public class AllObjectMB : MonoBehaviour
 
     public PlacementDataSO placementData{get; private set;}
 
+    //this is the nameID of the AllObjectSO database
+    public string ObjectNameID= "";
+
     public void DefineObject(AllObjectSO allObjectSO)
     {
         this.allObjectSO= allObjectSO;
 
         nameShow=allObjectSO.nameShow;
     
-        takableData=allObjectSO.takableData;
+        takableData=allObjectSO.takableDataSO;
         if (allObjectSO.canBePlaced)
         {
-            placementData=allObjectSO.placementDataItem;
+            placementData=allObjectSO.placementDataItemSO;
         }
         else
         {
@@ -31,8 +34,11 @@ public class AllObjectMB : MonoBehaviour
         }
 
     }
-    void Awake()
+    protected abstract void OnEnable();
+
+    protected virtual void Start()
     {
+        DefineObject(GameManager.Instance.allObjectsDataBase.ReturnObjectSOByName(ObjectNameID));
        /*  nameItem=this.GetType().Name;
          */// ObjectData=GameManager.Instance.
     }
@@ -66,6 +72,10 @@ public class AllObjectMB : MonoBehaviour
 
 public class LifeItem: AllObjectMB
 {
+    protected override void OnEnable()
+    {
+        ObjectNameID="LifeObject";
+    }
     protected override void Activate()
     {
         Debug.Log("health item activate");
@@ -75,12 +85,19 @@ public class LifeItem: AllObjectMB
         Debug.Log("health item deactivate");
     }
 
+   
 }
 
 public class EnergyItem: AllObjectMB
 {
-    void Start()
+    protected override void OnEnable()
     {
+        ObjectNameID="EnergyObject";
+    }
+
+    protected override void Start()
+    {
+        base.Start();
         Debug.Log("energy item start");
     }
     protected override void Activate()

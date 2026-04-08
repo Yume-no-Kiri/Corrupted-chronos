@@ -19,6 +19,7 @@ public class InputManager : MonoBehaviour
     // public SlotInventory SlotSelected;
     // public Vector3 MousePositionInventory;
 
+
     private Camera cameraGarage;
     [SerializeField]
     private Camera cameraGameplay;
@@ -122,6 +123,7 @@ public class InputManager : MonoBehaviour
 
     //odio aquest puto mètode
     //Millorar en un futur
+    
     private SlotInventory GetUIObjectSotaRatoli()
     {
         PointerEventData eventData = new PointerEventData(EventSystem.current);
@@ -132,20 +134,20 @@ public class InputManager : MonoBehaviour
         SlotInventory slotActual=null;
         foreach (var item in resultats)
         {
-            // Debug.Log("eo jdetect "+item.gameObject.name);
-            if (item.gameObject.name == "Marc")
-            {
+            Debug.Log("eo jdetect "+item.gameObject.name);
+            // if (item.gameObject.name == "Marc")
+            // {
                 slotActual=item.gameObject.GetComponentInParent<SlotInventory>();
                 // Debug.Log("eo slotSelected"+ SlotSelected.name);
-                if(slotActual==false) Debug.LogError("aaaaaaaa");
+                // if(slotActual==false) //Debug.LogError("aaaaaaaa");
                 return slotActual;
-            }
-            else
-            {
+            // }
+            // else
+            // {
             //    Debug.Log("eo not slotSelected"+ SlotSelected);
 
                 // SlotSelected=null;
-            }
+            // }
             // Debug.Log("eo slotSelected"+ SlotSelected);
             // if(item.gameObject.GetComponent())
         }

@@ -8,15 +8,22 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance{get; private set;}
 
-
-    public BulletDatabase bulletDatabase;
-    // public GameObject HitboxBulletPrefab;
-    public PlacementSystem placementSystem;
+    [Header("DataBases")]
+    public AllObjectsDataBase allObjectsDataBase;
     public TakableDataBase takableDataBase;
     public PlacementDatabaseSO placementDataBase;
+    public BulletDatabase bulletDatabase;
+
+    [Header("Manager")]
+    // public GameObject HitboxBulletPrefab;
+    public PlacementSystem placementSystem;
+    
     public InputManager inputManager;
 
     public GameObject playerInstance;
+
+    [Header("Variables that should be in statsManager")]
+
     /*
     Guardem tota informació que s'haurà d'anar actualitzant, estats del jugador i coses així
     sobre actualització i acces de valors:
@@ -74,9 +81,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        placementDataBase.StartConfigPositions();
-        takableDataBase.StartConfigItem();
-        staminaAct=staminaMax;
+        
         if(Instance == null)
         {
             Instance=this;
@@ -86,6 +91,13 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        placementDataBase.StartConfigPositions();
+        takableDataBase.StartConfigItem();
+        allObjectsDataBase.StartConfigObject();
+
+        staminaAct=staminaMax;
+        
     }
 
 
