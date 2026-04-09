@@ -140,6 +140,7 @@ public class Metralleta : GunBase
         if (canShot && ctx.performed)
         {
             Debug.Log("Transfrom.position: " + transform.position);
+            Shot();
             StartCoroutine(ShotIE());
         }
         
@@ -147,7 +148,7 @@ public class Metralleta : GunBase
         Debug.Log("AQUÍ INSTANCIES BALA");
     }
 
-    private IEnumerator ShotIE()
+    public void Shot()
     {
         Quaternion rotationWithOffset = firepoint.GetComponentInParent<Transform>().rotation * Quaternion.Euler(0, 90, 90);
 
@@ -156,6 +157,12 @@ public class Metralleta : GunBase
         // bulletInstanceInstantiate(bulletPrefab, firepoint.position, rotationWithOffset);
         BaseBullets bulletInfo = bulletInstance.Last().GetComponent<BaseBullets>();
         bulletInfo.DefinirBala(1, +3);
+        
+        bulletInstance= new List<GameObject>();
+    }
+
+    private IEnumerator ShotIE()
+    {
         
         canShot = false;
         //Debug.Log($"t2s: {t2s-t2s %PlayerStats.CooldownBalaJugador}");
@@ -175,7 +182,7 @@ public class Escopeta : GunBase
 
     void Awake()
     {
-        StatsGun.t2s = 0.25f;
+        StatsGun.t2s = 1f;
         StatsGun.t2s2=0;
         StatsGun.cargador = -1;
         StatsGun.contCargador=-1;
@@ -189,6 +196,7 @@ public class Escopeta : GunBase
         if (canShot && ctx.performed)
         {
             Debug.Log("Transfrom.position: " + transform.position);
+            Shot();
             StartCoroutine(ShotIE());
         }
         
@@ -196,7 +204,7 @@ public class Escopeta : GunBase
         Debug.Log("AQUÍ INSTANCIES BALA");
     }
 
-    private IEnumerator ShotIE()
+    private void Shot()
     {
         int valor = 10;
         int nbullets = 5;
@@ -214,9 +222,21 @@ public class Escopeta : GunBase
             // .allPresetBullets= Activate();
 
             // bulletInfo.DefinirBala(1, -8 );
+            // bulletInstance.Last().gameObject.SetActive(false);
             valor =10;
 
         }
+        bulletInstance= new List<GameObject>();
+
+    }
+
+    private IEnumerator ShotIE()
+    {
+        
+       /*  for (int i = 0; i < nbullets; i++)
+        {
+            bulletInstance[i].gameObject.SetActive(true);
+        } */
         
         canShot = false;
         yield return new WaitForSeconds(StatsGun.t2s);

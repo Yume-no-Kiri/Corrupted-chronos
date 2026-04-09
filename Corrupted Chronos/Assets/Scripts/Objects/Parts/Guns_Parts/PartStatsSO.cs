@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 
-/* Explication: COME TO THIS LATER
+/* Explication: CAME AND RETHINK OF THIS LATER
     This script was made to save the stats of the parts, similar to the system of the bullets, but the stats of the parts, can be definied in each
     monobehaviour, I think this is just innecesary complex 
  */

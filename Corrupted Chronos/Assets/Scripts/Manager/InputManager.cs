@@ -44,10 +44,11 @@ public class InputManager : MonoBehaviour
         playerInputActions.Garage.OnExit.performed += CallOnExit;
         playerInputActions.Nau.OnShotLeft.performed +=ctx=> OnShotLeft?.Invoke(ctx);
         playerInputActions.Nau.OnShotRight.performed += ctx=> OnShotRight?.Invoke(ctx);
+        
+        playerInputActions.AccesInventory.OpenInventory.performed += ctx=>OpenInventory?.Invoke();
 
         playerInputActions.Garage.RotateLeft.performed +=ctx=> RotateLeft?.Invoke(ctx);
         playerInputActions.Garage.RotateRight.performed += ctx=> RotateRight?.Invoke(ctx);
-        playerInputActions.Global.OpenInventory.performed += ctx=>OpenInventory?.Invoke();
 
         playerInputActions.Inventory.PrimaryClick.performed += ctx=>PrimaryClick?.Invoke(GetUIObjectSotaRatoli());
         playerInputActions.Inventory.SecondaryClick.performed += ctx=>SecondaryClick?.Invoke(GetUIObjectSotaRatoli());

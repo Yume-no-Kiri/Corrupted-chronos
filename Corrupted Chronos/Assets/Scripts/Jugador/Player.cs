@@ -174,12 +174,19 @@ public class Player : MonoBehaviour
             inputManager.playerInputActions.Garage.Enable();
             garageAdder.enabled=true;
             _garageGO.SetActive(true);
-           
+
+            ChangeInventory(true);
+            inputManager.playerInputActions.AccesInventory.Disable();
+            // AccesChangeInputMap(NameInputAction.Inventory,false);
 
         }else{
             inputManager.playerInputActions.Garage.Disable();
             garageAdder.enabled=false;
             _garageGO.SetActive(false);
+
+            ChangeInventory(false);
+            inputManager.playerInputActions.AccesInventory.Enable();
+
         }
     }
 

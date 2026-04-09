@@ -190,7 +190,7 @@ public class BaseBullets : MonoBehaviour
             OnMaxRange?.Invoke();
             //should pass how far are we from distMax?
             AwayDistMax(distance);
-            Debug.LogWarning("SHOULD DELETE BULLET");
+            // Debug.LogWarning("SHOULD DELETE BULLET");
         }
     }
     

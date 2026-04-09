@@ -42,6 +42,10 @@ public class InventoryManager : MonoBehaviour
     SlotInventory selectedSlot;
     SlotInventory[] listSlots;
     [SerializeField] private GameObject inventoryCanvas;
+
+    private GameObject inventoryGeneral;
+    private GameObject inventoryPart;
+
     private InputManager inputManager;
 
     [SerializeField] int nslots;
@@ -104,7 +108,7 @@ public class InventoryManager : MonoBehaviour
     private SlotInventory[] CreateSlotsInventory()
     {
         SlotInventory[] listSlot= new SlotInventory[nslots];
-        GameObject dad= inventoryCanvas.transform.GetChild(0).GetChild(1).gameObject;
+        GameObject dad= inventoryCanvas.transform.GetChild(1).GetChild(0).GetChild(0).GetChild(0).gameObject;
         for (int i = 0; i < nslots; i++)
         {
             SlotInventory newSlot=Instantiate(prefabSlot, dad.transform);
@@ -187,7 +191,7 @@ public class InventoryManager : MonoBehaviour
         {
             if(slotInventory==null)
             {
-                DeselectItemSlot();
+                // DeselectItemSlot();
                 return;
             }
             else if(slotInventory!=selectedSlot){
