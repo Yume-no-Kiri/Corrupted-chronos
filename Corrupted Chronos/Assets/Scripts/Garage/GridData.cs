@@ -74,7 +74,7 @@ public class GridData
         if(AlreadyChecked( gridPosition, part, rotationToAdd))
         {
             
-            placementData.AddNewPartData(_updatedPart);
+            placementData.AddNewPartData(_updatedPart, part.IDP);
         }
         else
         {
@@ -87,7 +87,7 @@ public class GridData
             _rotationAdded=rotationToAdd;
   
 
-            placementData.AddNewPartData(_updatedPart);
+            placementData.AddNewPartData(_updatedPart, part.IDP);
         }
 
         Debug.Log("add to position"+ gridPosition.ToString());

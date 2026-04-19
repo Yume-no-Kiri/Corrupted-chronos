@@ -10,6 +10,10 @@ public class HitboxBullet : MonoBehaviour
     public event Action<Collision,GameObject> OnCollisionEnterHitbox;
     public event Action<Collider,GameObject> OnTriggerEnterHitbox;
 
+    void Awake()
+    {
+        Physics.IgnoreCollision(GetComponent<Collider>(), GetComponent<Collider>(), true);
+    }
     void OnCollisionEnter(Collision collision)
     {
         OnCollisionEnterHitbox?.Invoke(collision,this.gameObject);

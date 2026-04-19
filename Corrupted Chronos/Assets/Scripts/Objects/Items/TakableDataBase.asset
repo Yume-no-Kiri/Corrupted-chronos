@@ -25,3 +25,7 @@ MonoBehaviour:
     nameID: EscopetaItem
     sprite: {fileID: 21300000, guid: 02ba87a75cac2a74ab8e5abc0f6eaae8, type: 3}
     toInstanciate: {fileID: 770118656710209681, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
+  - nameShow: metralleta item
+    nameID: MetralletaItem
+    sprite: {fileID: 21300000, guid: be53604266cff7a4289669b53f010798, type: 3}
+    toInstanciate: {fileID: 770118656710209681, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}

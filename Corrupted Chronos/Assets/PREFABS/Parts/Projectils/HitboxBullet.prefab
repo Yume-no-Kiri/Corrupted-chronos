@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2148214401149206334}
   - component: {fileID: 8111356177590477323}
   - component: {fileID: 5022796837851332598}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HitboxBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0

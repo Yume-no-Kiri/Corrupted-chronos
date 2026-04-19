@@ -52,11 +52,12 @@ public class GunBase : AllObjectMB
     //private InputManager inputManager;
     protected TypePart typePart;
 
-    
+    protected int IDP;
+
     //potser guardar en llista si s'hagues de fer algo especial no se
     protected List<GameObject> bulletInstance=new List<GameObject>();
 
-    protected Transform firepoint;
+    protected List<Transform> firepoint= new List<Transform>();
     protected GameObject bulletPrefab;
     // protected VisualEffect shoot_vfx;
     protected List<AllEffectsBullets> addedEffects= new List<AllEffectsBullets>();
@@ -64,6 +65,8 @@ public class GunBase : AllObjectMB
     protected bool canShot = true;
      
     public InformationPart StatsGun;
+
+    // hauriem de tenir algo per l'inventari
 
     public TypePart GetTypePart()
     {
@@ -86,7 +89,7 @@ public class GunBase : AllObjectMB
 
     public void PassVariables(Transform firepoint,GameObject bulletPrefab)
     {
-        this.firepoint = firepoint;
+        this.firepoint.Add(firepoint);
         this.bulletPrefab = bulletPrefab;
     }
 
@@ -105,7 +108,14 @@ public class GunBase : AllObjectMB
     
         
     }
-    
+    public void AssignIDP(int newIDP)
+    {
+        IDP=newIDP;
+    }
+    public int ReturnIDP()
+    {
+        return IDP;
+    }
     
 }
 
@@ -150,15 +160,19 @@ public class Metralleta : GunBase
 
     public void Shot()
     {
-        Quaternion rotationWithOffset = firepoint.GetComponentInParent<Transform>().rotation * Quaternion.Euler(0, 90, 90);
+        foreach (var item in firepoint)
+        {
+            Quaternion rotationWithOffset = item.GetComponentInParent<Transform>().rotation * Quaternion.Euler(0, 90, 90);
 
-        CreateBullet(firepoint.position,rotationWithOffset);
+            CreateBullet(item.position,rotationWithOffset);
 
-        // bulletInstanceInstantiate(bulletPrefab, firepoint.position, rotationWithOffset);
-        BaseBullets bulletInfo = bulletInstance.Last().GetComponent<BaseBullets>();
-        bulletInfo.DefinirBala(1, +3);
-        
-        bulletInstance= new List<GameObject>();
+            // bulletInstanceInstantiate(bulletPrefab, firepoint.position, rotationWithOffset);
+            BaseBullets bulletInfo = bulletInstance.Last().GetComponent<BaseBullets>();
+            bulletInfo.DefinirBala(1, +3);
+            
+            bulletInstance= new List<GameObject>();
+        }
+       
     }
 
     private IEnumerator ShotIE()
@@ -208,23 +222,26 @@ public class Escopeta : GunBase
     {
         int valor = 10;
         int nbullets = 5;
-        for (int i = 0; i < nbullets; i++)
+         foreach (var item in firepoint)
         {
-            valor *= i;
-            Quaternion rotationWithOffset = firepoint.GetComponentInParent<Transform>().rotation * Quaternion.Euler((-20+valor), 90, 90);
+            for (int i = 0; i < nbullets; i++)
+            {
+                valor *= i;
+                Quaternion rotationWithOffset = item.GetComponentInParent<Transform>().rotation * Quaternion.Euler((-20+valor), 90, 90);
 
-            CreateBullet(firepoint.position,rotationWithOffset);
-            /* bulletInstance = Instantiate(bulletPrefab, firepoint.position, rotationWithOffset);
-            BaseBullets bulletInfo = bulletInstance.GetComponent<BaseBullets>(); */
+                CreateBullet(item.position,rotationWithOffset);
+                /* bulletInstance = Instantiate(bulletPrefab, firepoint.position, rotationWithOffset);
+                BaseBullets bulletInfo = bulletInstance.GetComponent<BaseBullets>(); */
 
-            // bulletInstance.GetComponent<CreateBullet>()
-            
-            // .allPresetBullets= Activate();
+                // bulletInstance.GetComponent<CreateBullet>()
+                
+                // .allPresetBullets= Activate();
 
-            // bulletInfo.DefinirBala(1, -8 );
-            // bulletInstance.Last().gameObject.SetActive(false);
-            valor =10;
+                // bulletInfo.DefinirBala(1, -8 );
+                // bulletInstance.Last().gameObject.SetActive(false);
+                valor =10;
 
+            }
         }
         bulletInstance= new List<GameObject>();
 

@@ -12,11 +12,14 @@ public abstract class AllObjectMB : MonoBehaviour
     // protected string nameItem;
     public TakableDataSO takableData{get; private set;}
 
+    //actualment aquest té IDP, s'hauria de moure enrere fins a tindre'l més accesible
     public PlacementDataSO placementData{get; private set;}
 
     //this is the nameID of the AllObjectSO database
     public string ObjectNameID= "";
 
+    //it's in gunbase 
+    // public int IDP=-1;
     public void DefineObject(AllObjectSO allObjectSO)
     {
         this.allObjectSO= allObjectSO;
@@ -58,12 +61,12 @@ public abstract class AllObjectMB : MonoBehaviour
         return placementData;
     }
 
-    protected virtual void Activate()
+    public virtual void ActivateSlotEffect()
     {
         //afegeix totes les bonificacions
     }
 
-    protected virtual void Deactivate()
+    public virtual void DeactivateSlotEffect()
     {
         //treu totes les bonificacions        
     }    
@@ -76,11 +79,11 @@ public class LifeItem: AllObjectMB
     {
         ObjectNameID="LifeObject";
     }
-    protected override void Activate()
+    public override void ActivateSlotEffect()
     {
         Debug.Log("health item activate");
     }
-    protected override void Deactivate()
+    public override void DeactivateSlotEffect()
     {
         Debug.Log("health item deactivate");
     }
@@ -98,15 +101,16 @@ public class EnergyItem: AllObjectMB
     protected override void Start()
     {
         base.Start();
-        Debug.Log("energy item start");
+        // Debug.Log("energy item start");
     }
-    protected override void Activate()
+    public override void ActivateSlotEffect()
     {
-        Debug.Log("energy item activate");
+        Debug.LogError("energy item activate");
     }
-    protected override void Deactivate()
+    public override void DeactivateSlotEffect()
     {
         Debug.Log("energy item deactivate");
     }
 
 }
+

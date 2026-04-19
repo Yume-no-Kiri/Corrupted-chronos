@@ -35,7 +35,7 @@ public class CollectItems : MonoBehaviour
             //guardar scripteable object a una llista de player, en inventoryPlayer probablement
             //eliminar objecte real
             Debug.Log("objecte detectat");
-            if (inventoryManager.AddItem(itemBase.ReturnAllObjectSO()))
+            if (inventoryManager.AddItemSpaceShip(itemBase.ReturnAllObjectSO()))
             {
                 Debug.Log("itemBase.GetScipteableObject() sprite"+itemBase.ReturnTakableDataSO().sprite.name);
                 Destroy(other.gameObject);            

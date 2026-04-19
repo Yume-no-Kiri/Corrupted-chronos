@@ -12,12 +12,3 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: BasicStats
   m_EditorClassIdentifier: Assembly-CSharp::BasicStatsSO
-  sprite: {fileID: 0}
-  damage: 10
-  penetration: 5
-  distEffective: 10
-  distMax: 15
-  speed: 4
-  knockback: 4
-  hitEffects: []
-  trailEffects: []

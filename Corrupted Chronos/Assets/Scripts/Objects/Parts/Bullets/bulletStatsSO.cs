@@ -93,7 +93,7 @@ public class BasicStatsSO: BulletStatsSO
         penetration=5;//dudo de como usar-lo
         distEffective=10;
         distMax=15;
-        speed=4;
+        speed=7;
         knockback=4;
     }
 

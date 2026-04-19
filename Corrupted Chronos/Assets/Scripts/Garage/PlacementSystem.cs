@@ -16,6 +16,7 @@ public class PlacementSystem : MonoBehaviour
     //usefull for the placemnet system
     public event Action PlacedPart, CancelledPart;
 
+    public event Action<int> IDPinCursor;
 
     [SerializeField]
     private GameObject mouseIndicator, cellIndicator;
@@ -81,6 +82,8 @@ public class PlacementSystem : MonoBehaviour
         
         GameManager.Instance.inputManager.RotateLeft+=RotateLeft; 
         GameManager.Instance.inputManager.RotateRight+=RotateRight; 
+
+        inputManager.OnClick += OpenInventory;
 
         
     }
@@ -261,6 +264,8 @@ public class PlacementSystem : MonoBehaviour
         Transform coll = _previewObject.transform.Find("Collisions");
         if (coll != null) coll.gameObject.SetActive(false);
 
+        inputManager.OnClick -= OpenInventory;//algo per detectar objecte per sota i obrir inventari
+
         inputManager.OnClick += ButtonPlaceStructure;
         inputManager.OnExit += ButtonStopStructure;
     }
@@ -281,6 +286,8 @@ public class PlacementSystem : MonoBehaviour
         
         inputManager.OnClick -= ButtonPlaceStructure;
         inputManager.OnExit -= ButtonStopStructure;
+
+        inputManager.OnClick += OpenInventory;//algo per detectar objecte per sota i obrir inventari
 
         cellIndicator.SetActive(true);
         
@@ -354,17 +361,27 @@ public class PlacementSystem : MonoBehaviour
         Transform coll = partToAdd.transform.Find("Collisions");
         if (coll != null) coll.gameObject.SetActive(false);
 
-        //aquesta està malament
-        // if(!firstStructure)  garageAdder.CreatePart(partToAdd, grid.CellToWorld(gridPosition));
-        // Vector3 relativePos = partToAdd.transform.position - _baseNauPos.transform.position;
-        // Debug.Log("position will spawn PS:"+ relativePos.ToString());
-        partAdder.AddPart(partToAdd,grid.CellToWorld(gridPosition),partToAdd.transform.localRotation );
-
-        
+       
+      
+        int thisIdp=GameManager.Instance.GiveNextIdp(); //_givenIDP++;
+        // AllAddedParts.Add(thisIdp,part);
 
 
+        //maybe move into allobject
+        _selectedObject.AssignIDP(thisIdp);
+        if(!firstStructure){      
+           partToAdd.GetComponent<EachPartScript>().AssignIDP(thisIdp);
+           GameManager.Instance.playerInstance.GetComponent<InventoryManager>().CreateInventory(thisIdp);
+            //also creates inventory
+        }
+        //should add thisIdp to information of the part
+
+
+        partAdder.AddPart(partToAdd,grid.CellToWorld(gridPosition),partToAdd.transform.localRotation, thisIdp );
         // Debug.Log("placestructure position adding nau:"+gridPosition);    
         schemeShip.AddObjectAt(gridPosition, _selectedObject, rotationToAdd); // _placedObjects.Count-1
+        
+       
         StopPlacement();
         return true;
     }
@@ -418,7 +435,36 @@ public class PlacementSystem : MonoBehaviour
         } */
     }
     #endregion
- 
+    #region Inventory
+
+    public void OpenInventory()
+    {
+        //raycast per sota en cellIndicator
+        //accedir gunBase i obtenir IDp 
+        //
+        Vector3 origen = inputManager.MousePositionGarage;
+        origen+=new Vector3(0,1,0);
+        Vector3 direccio = Vector3.down;
+
+        if (Physics.Raycast(origen, direccio, out RaycastHit hit, 3f))
+        {
+            int idpInventory;
+            // Debug.Log("Terra detectada eureka: " + hit.collider.name);
+            if (hit.collider.gameObject.GetComponentInParent<GunBase>())
+            {
+                // Debug.Log("eureka");
+                idpInventory=hit.collider.gameObject.GetComponentInParent<GunBase>().ReturnIDP();
+                IDPinCursor?.Invoke(idpInventory); 
+            }
+            
+
+        }
+    }
+
+    #endregion
+
+
+
     #region enable/disable
     
     private void OnEnable()

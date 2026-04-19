@@ -77,3 +77,35 @@ MonoBehaviour:
           ExtraSize: []
         nRequires: 1
       <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: 5c27cb9d07c56a444a054e4a978c1ef8, type: 3}
+  - nameShow: Metralleta Object
+    NameID: MetralletaObject
+    IDItemName: MetralletaItem
+    takableDataSO:
+      nameShow: escopeta item
+      nameID: EscopetaItem
+      sprite: {fileID: 21300000, guid: 02ba87a75cac2a74ab8e5abc0f6eaae8, type: 3}
+      toInstanciate: {fileID: 770118656710209681, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
+    canBePlaced: 1
+    IDPlacementData: 1
+    placementDataItemSO:
+      <Name>k__BackingField: Escopeta
+      <ID>k__BackingField: 0
+      <dictionaryAuxSize>k__BackingField:
+      - typeGround: 1
+        sizeGround:
+          Origen: {x: 0, y: 0}
+          Size: {x: 1, y: 2}
+          ExtraSize: []
+      - typeGround: 2
+        sizeGround:
+          Origen: {x: 0, y: 0}
+          Size: {x: 3, y: 4}
+          ExtraSize: []
+      <dictionaryAuxRequires>k__BackingField:
+      - typeGround: 2
+        sizeGround:
+          Origen: {x: 0, y: 0}
+          Size: {x: 1, y: 2}
+          ExtraSize: []
+        nRequires: 1
+      <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: 5c27cb9d07c56a444a054e4a978c1ef8, type: 3}

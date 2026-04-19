@@ -18,6 +18,7 @@ public class EachPartScript : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
 
 
+    private int IDPtoGive=-1;
     private bool componentAdded=false;
     void Start()
     {
@@ -39,13 +40,23 @@ public class EachPartScript : MonoBehaviour
             {
                 Debug.LogError("tipus d'script a afegir no es correcte");
             }
+            
             if (!this.GetComponent(componentType))
             {
                 gameObject.AddComponent(componentType);
 
             }
-            
+            if (componentType.IsSubclassOf(Type.GetType("GunBase")))
+            {
+                ScriptPart= gameObject.GetComponent<GunBase>();
+                if (IDPtoGive == -1)
+                {
+                    IDPtoGive=GameManager.Instance.GiveNextIdp();
+                }
+                ScriptPart.AssignIDP(IDPtoGive);
+            }
             componentAdded=true;
+            
         }
         else
         {
@@ -63,13 +74,33 @@ public class EachPartScript : MonoBehaviour
         if (componentType.IsSubclassOf(Type.GetType("GunBase")))
         {
             ScriptPart= gameObject.GetComponent<GunBase>();
-            if(ScriptPart)   ScriptPart.PassVariables(firepoint, bulletPrefab);
-            // else Debug.LogError("es fill de GunBase pero no es GunBase (wtf)");
+            
+            if(ScriptPart) { 
+                ScriptPart.PassVariables(firepoint, bulletPrefab);
+            }// else Debug.LogError("es fill de GunBase pero no es GunBase (wtf)");
         }/* else{
             
             Debug.LogWarning("possible ereror");
         } */
         return ScriptPart;
+    }
+
+    public void AssignIDP(int newIDP)
+    {
+        if (IDPtoGive == -1)
+        {
+            IDPtoGive=newIDP;
+        }
+        else
+        {
+            Debug.LogError("trying to assign IDP when it's already assign");
+        }
+        
+    }
+
+    public int ReturnIDP()
+    {
+        return IDPtoGive;
     }
     // Update is called once per frame
     void Update()

@@ -208,22 +208,36 @@ public class PlacementData2
 
     #endregion
 
-    public void AddNewPartData(PlacementDataSO part)
+    public void AddNewPartData(PlacementDataSO part,int newIDP)
     {
+        part.AssignIDP(newIDP);
         if (_priorityTGround.PriorityByTGround == null || _priorityTGround.PriorityByTGround.Count()==0) {
             _priorityTGround = PriorityTGround.CreateDefault();
         }
 
         Debug.LogWarning("entrem a addnewpartdata");
         //create id and relationate objectdata
-        int thisIdp=GameManager.Instance.GiveNextIdp(); //_givenIDP++;
-        
-        AllAddedParts.Add(thisIdp,part);
-        part.AssignIDP(thisIdp);
-        //should add thisIdp to information of the part
+        /*  int thisIdp=GameManager.Instance.GiveNextIdp(); //_givenIDP++;
+         AllAddedParts.Add(thisIdp,part);
+         part.AssignIDP(thisIdp);
+         //also creates inventory
 
 
-        //complete allPositionground with configGround
+         //should add thisIdp to information of the part
+  */
+        if (AllAddedParts.ContainsKey(part.IDP))
+        {
+            if (AllAddedParts[part.IDP] != part)
+            {
+                Debug.LogError(" DIFERENT PART AMB MATEIXA IDP");
+            }
+            else
+            {
+                Debug.LogError("mateix idp diferent part??????");
+            }
+        }else{
+            AllAddedParts.Add(part.IDP,part);
+        }//complete allPositionground with configGround
         Debug.LogWarning("before configGround");
 
         var configGround= part.ConfigGround;

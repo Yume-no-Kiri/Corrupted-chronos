@@ -11,9 +11,7 @@ public class AllObjectSO /*  : ScriptableObject */
     [ SerializeField]
     public string NameID;// { get; private set; }
     
-    //Deberiamos estructurar como hacemos el id
-    /* [field: SerializeField]
-    public int ID { get; private set; } */
+    // this is not so, could save idp
 
 
     // public bool isItem;
