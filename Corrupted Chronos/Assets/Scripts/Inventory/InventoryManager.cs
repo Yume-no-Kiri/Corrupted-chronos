@@ -324,6 +324,7 @@ public class InventoryManager : MonoBehaviour
                     selectedSlot=null;
                     //intercanvia
                 }
+                placementSystem.ButtonStopStructure();
             }
         }
 
