@@ -1,0 +1,183 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1984119951892247514
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2078074452518014636}
+  - component: {fileID: 353729894752764819}
+  m_Layer: 0
+  m_Name: Kraken
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2078074452518014636
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984119951892247514}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.94426, y: 9, z: 80.74735}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1146468321145298055}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &353729894752764819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984119951892247514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13f2aaad4c87a5748bd39731ae86ad7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KrakenController
+  player: {fileID: 0}
+  head: {fileID: 5800884662343017610}
+  spawnedTentacles: []
+  maxTentacles: 24
+  tentacles:
+  - {fileID: 3832673896462394985, guid: 3fa73bcdff13b7641bb3e527fde3e671, type: 3}
+--- !u!1001 &8166385767145309297
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2078074452518014636}
+    m_Modifications:
+    - target: {fileID: 6143719003983928649, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6143719003983928649, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7707732207850111560, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8012713658049165269, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_Name
+      value: HeadBoss
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.1554022
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.539932
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99996537
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.008320758
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -0.953
+      objectReference: {fileID: 0}
+    - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6658616720313079411, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4255966439122513193}
+    - targetCorrespondingSourceObject: {fileID: 6658616720313079411, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2027804689757227876}
+  m_SourcePrefab: {fileID: 100100000, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+--- !u!4 &1146468321145298055 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+  m_PrefabInstance: {fileID: 8166385767145309297}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3259757541990355458 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6658616720313079411, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+  m_PrefabInstance: {fileID: 8166385767145309297}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4255966439122513193
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3259757541990355458}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2cc833ba9a9035147b2b090d988c5978, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2027804689757227876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3259757541990355458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bf5857ff2279084ea8cca1387a66762, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KrakenActions
+--- !u!114 &5800884662343017610 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2437631897983459579, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+  m_PrefabInstance: {fileID: 8166385767145309297}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7ea7664cda2db24d9012c46b1a4e4ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossAttacks
