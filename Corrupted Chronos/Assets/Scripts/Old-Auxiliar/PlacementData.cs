@@ -1,12 +1,10 @@
 
 
-//cada objecte tindrà això
 using System.Collections.Generic;
 using UnityEngine;
 
-//potser separar això en un script sol
 #region PlacementData
-public class PlacementData
+public class PlacementDataOld
 {
     
     //les posicions que ocupen
@@ -26,13 +24,13 @@ public class PlacementData
    //public TypeGround typeGround;
     
     //constructor
-    public PlacementData()
+    public PlacementDataOld()
     {
         occupiedPositions = new();
         ID = -1;
         PlacedObjectIndex = -1;
     }
-    public PlacementData(List<Vector3Int> occupiedPositions, int iD, int placedObjectIndex)
+    public PlacementDataOld(List<Vector3Int> occupiedPositions, int iD, int placedObjectIndex)
     {
         //Data Occupied
         //si té un element a sobre, ja no es buildable, és occupied
@@ -43,7 +41,7 @@ public class PlacementData
         //typeGround = TypeGround.Occupied;
     }
 
-    public PlacementData( List<Vector3Int> buildablePositions){
+    public PlacementDataOld( List<Vector3Int> buildablePositions){
         //Data Buildable
         //si elements son inicialitzats, no s'han assignat
         //this.buildablePositions = buildablePositions;

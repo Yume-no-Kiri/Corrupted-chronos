@@ -62,7 +62,7 @@ public class PlayerOld : MonoBehaviour
     public GameObject pointAddNau;
     private GameObject _nau;
     private GameObject _pilot;
-    private PartsDatabaseSO _database;
+    private PlacementDatabaseSO _database;
     [SerializeField]
     private Vector3 spawnPosition;
     [SerializeField]
@@ -165,7 +165,7 @@ public class PlayerOld : MonoBehaviour
         inputManager=GameManager.Instance.inputManager;
 
         if (inputManager == null){Debug.LogError("aaaaAAAA inputmanager");}
-        _database=GameManager.Instance.dataBaseParts;
+        _database=GameManager.Instance.placementDataBase;
 
         _nau = Instantiate(_database.AllNaus[0].PrefabGaratge, new Vector3(0, 0, 0), quaternion.identity);
         _pilot= Instantiate(_database.AllPilots[0].PrefabGaratge,new Vector3(0, 0, 0), quaternion.identity);
@@ -815,13 +815,13 @@ public class PlayerOld : MonoBehaviour
     
     public void RemovePart()
     {
-        PartBase pa;
+        GunBase pa;
 
         Transform ToRemove = _nau.transform.Find("Added");
         foreach (Transform child in ToRemove.transform)
         {
             
-            pa = child.gameObject.GetComponent<PartBase>();
+            pa = child.gameObject.GetComponent<GunBase>();
             switch (pa.GetTypePart())
             {
                 case TypePart.Mele:
@@ -863,12 +863,12 @@ public class PlayerOld : MonoBehaviour
 
     public void ActivateParts()
     {
-        PartBase pa;
+        GunBase pa;
         foreach (GameObject part in AddedParts)
         {
             //no estic segur de que part actions segui lo millor per invocar aquests mètodes,
             //revisar explicació escrita en EachPartScript per futur REFACTORITZACIÓ
-            pa = part.GetComponent<PartBase>();
+            pa = part.GetComponent<GunBase>();
             switch (pa.GetTypePart())
             {
                 case TypePart.Mele:

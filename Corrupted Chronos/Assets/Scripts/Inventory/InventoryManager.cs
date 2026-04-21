@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Ink.Runtime;
 using Unity.Mathematics;
 using UnityEditor.PackageManager;
 using UnityEngine;
@@ -10,44 +12,91 @@ public class InventoryManager : MonoBehaviour
 {
 
     PlacementSystem placementSystem;
-
-
-    //COntendria llistes d'inventaris
-    //connectar amb Player
-
-
-    /* public struct inventory{
-        gameobject qui és owner
-        maxslots
-        allslots contenedor
-
-        void inicar el inventari
-        void buidar el inventari
-
-    }
-
-
-    necesito informació de cada inventari, 
-    -A qui li perteneix, diccionari
-    -Slots disponibles, 
-    -?ara mateix no, pero hauré de fer que hi hagin slots especials i restrintius
-    */
-    // int maxslots=3;
-    //objetos que tenemos
-
-    // List<ItemData>
-    // ItemData[] listItems;
-    //slots fisicos
-
-    SlotInventory selectedSlot;
-    SlotInventory[] listSlots;
-    [SerializeField] private GameObject inventoryCanvas;
     private InputManager inputManager;
 
-    [SerializeField] int nslots;
+
+    //I think, not fully sure about it:
+    //to save a part into the inventari de idp gets deleted because it turns into scripteable object, so an inventaary has to be empty to quit a part
+    Inventory inventorySpaceship=new Inventory();
+    
+    Dictionary<int, Inventory> MapInventory= new Dictionary<int, Inventory>(); //idp, inventory
+     public struct Inventory{
+        // gameobject qui és owner
+        int maxSlots;
+        GameObject visualizer;
+        SlotInventory[] listSlots;
+        //    -?ara mateix no, pero hauré de fer que hi hagin slots especials i restrintius
+
+        /*  void inicar el inventari
+        void buidar el inventari */
+
+        public static Inventory CreateInventory(GameObject canvas, int nslots, SlotInventory[] slots)
+        {
+            Inventory inventory= new Inventory();
+            inventory.maxSlots=nslots;
+            inventory.visualizer=canvas;
+            inventory.listSlots=slots;
+
+            return inventory;
+        }
+
+        public bool AddItem(AllObjectSO newItem)
+        {   
+            Debug.Log("newItem sprite"+newItem.takableDataSO.sprite.name);
+
+            for (int i = 0; i < listSlots.Length; i++)
+            {
+                if (!listSlots[i].HasItem())
+                {
+                    listSlots[i].AddItem(newItem);
+                    return true; 
+                }
+            }
+            return false; 
+        }
+        
+
+        public void ShowOff()
+        {
+            visualizer.SetActive(false);
+        }
+
+        public void ShowOn()
+        {
+            visualizer.SetActive(true);
+        }
+
+        internal bool isDefault()
+        {
+            if(visualizer==null) return true;
+            return false;
+        }
+
+        internal SlotInventory[] ReturnListSlots()
+        {
+            return listSlots;
+        }
+
+        internal GameObject ReturnVisualizer()
+        {
+            return visualizer;
+        }
+    }
+    
+    SlotInventory selectedSlot;
+    
+    // SlotInventory[] listSlots;
+    [SerializeField] private GameObject inventoryCanvas;
+
+    [SerializeField] private GameObject inventoryGeneral;
+    [SerializeField] private GameObject inventoryPart;
+
+    [SerializeField] int MaxSlotsShip;
     [SerializeField] private SlotInventory prefabSlot;
 
+    private int InventoryOpened=-1;
 
+    private Coroutine dontCallTwice=null; //bugfix
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -56,12 +105,12 @@ public class InventoryManager : MonoBehaviour
 
         inputManager= GameManager.Instance.inputManager;
         inputManager.PrimaryClick+=moveItem;
+        placementSystem.IDPinCursor+=OpenInventory;
+       
 
-        /* foreach (var item in inventoryCanvas.transform.GetChild(0).GetChild(1).GetComponentsInChildren<SlotInventory>())
-        {
-            Destroy(item);
-        } */
-        listSlots= CreateSlotsInventory();
+        CreateSpaceShipInventory();
+
+        // listSlots= CreateSlotsInventory();
 
         // listSlots= inventoryCanvas.transform.GetChild(0).GetChild(1).GetComponentsInChildren<SlotInventory>();
 
@@ -71,6 +120,15 @@ public class InventoryManager : MonoBehaviour
         placementSystem.CancelledPart+=CancelledItem;
     }
 
+    void OnDestroy()
+    {
+        inputManager.PrimaryClick-=moveItem;
+        placementSystem.IDPinCursor-=OpenInventory;
+
+
+        placementSystem.PlacedPart-=PlacedItem;
+        placementSystem.CancelledPart-=CancelledItem;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -95,10 +153,62 @@ public class InventoryManager : MonoBehaviour
         if(AddItem(item));
         // listItems.Add(item);
     } */
-    private SlotInventory[] CreateSlotsInventory()
+
+
+    public void OpenInventory(int actIDP)
     {
+        if(actIDP==0 ||!MapInventory.ContainsKey(actIDP) ) {
+            // Debug.LogError("idp of ship");
+            return;
+        }
+        if (InventoryOpened != -1)
+        {
+            MapInventory[actIDP].ShowOff();
+            InventoryOpened=-1;
+        }
+        if (MapInventory.ContainsKey(actIDP))
+        {
+            MapInventory[actIDP].ShowOn();
+            InventoryOpened=actIDP;
+        }
+    }
+
+    public void CreateInventory(int newIDP)
+    {
+        Debug.Log("inventory create for itemm:"+newIDP);
+        GameObject canvas= Instantiate(inventoryPart,inventoryCanvas.transform);
+        MapInventory.Add(newIDP, Inventory.CreateInventory(canvas, 3, CreateSlotsInventory(canvas, 3)));
+        MapInventory[newIDP].ShowOff();
+    }
+
+    private void CreateSpaceShipInventory()
+    {
+        
+        
+        SlotInventory[] listSlot= new SlotInventory[MaxSlotsShip];
+        //this is inventoryGeneral
+        // inventoryGeneral=inventoryCanvas.transform.GetChild(1).gameObject;
+        GameObject dad= inventoryGeneral.transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
+        for (int i = 0; i < MaxSlotsShip; i++)
+        {
+            SlotInventory newSlot=Instantiate(prefabSlot, dad.transform);
+            newSlot.gameObject.transform.SetParent(dad.transform,false);
+            listSlot[i]=newSlot;
+        }
+        inventorySpaceship=Inventory.CreateInventory(inventoryGeneral,MaxSlotsShip,listSlot);
+        // return listSlot;
+    }
+
+
+    private SlotInventory[] CreateSlotsInventory(GameObject canvas, int nslots)
+    {
+        
+        // inventoryCanvas
+
         SlotInventory[] listSlot= new SlotInventory[nslots];
-        GameObject dad= inventoryCanvas.transform.GetChild(0).GetChild(1).gameObject;
+        //this is inventoryGeneral
+        GameObject dad= canvas.transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
+
         for (int i = 0; i < nslots; i++)
         {
             SlotInventory newSlot=Instantiate(prefabSlot, dad.transform);
@@ -110,8 +220,12 @@ public class InventoryManager : MonoBehaviour
     }
 
 
-    public bool AddItem(ItemData newItem)
+    public bool AddItemSpaceShip(AllObjectSO newItem)
     {   
+        return inventorySpaceship.AddItem(newItem);
+
+        /* Debug.Log("newItem sprite"+newItem.takableDataSO.sprite.name);
+
         for (int i = 0; i < listSlots.Length; i++)
         {
             if (!listSlots[i].HasItem())
@@ -120,7 +234,16 @@ public class InventoryManager : MonoBehaviour
                 return true; 
             }
         }
-        return false; 
+        return false;  */
+    }
+
+    public Inventory? ReturnInventory(int actIDP)
+    {
+        if(MapInventory.ContainsKey(actIDP))
+        {
+            return MapInventory[actIDP];
+        }
+        return null;
     }
 
     #region called by player
@@ -154,6 +277,7 @@ public class InventoryManager : MonoBehaviour
     //això funcionaria inclús sent de diferents inventaris
     private void moveItem(SlotInventory slotInventory)
     {
+        // if(!inputManager.IsPointerOverUI()) return;
         if(!inputManager.IsPointerOverUI()) return;
         if (!selectedSlot)
         { 
@@ -169,14 +293,16 @@ public class InventoryManager : MonoBehaviour
             if (slotInventory.CanBePlaced())
             {
                 //this should come from the information of the part
-                placementSystem.StartPlacementGeneral(0, ConfigurationNau.Parts);
+                // placementSystem.StartPlacementGeneral(0, ConfigurationNau.Parts);
+                placementSystem.StartPlacementGeneral(slotInventory.thisItem.placementDataItemSO);
+
             }
         }
         else
         {
             if(slotInventory==null)
             {
-                DeselectItemSlot();
+                // DeselectItemSlot();
                 return;
             }
             else if(slotInventory!=selectedSlot){
@@ -190,7 +316,7 @@ public class InventoryManager : MonoBehaviour
                 else
                 {
                     //intercanvia
-                    ItemData aux=slotInventory.thisItem;
+                    AllObjectSO aux=slotInventory.thisItem;
                     selectedSlot.DeactivateSelectedEffect();
                     slotInventory.AddItem(selectedSlot.thisItem);
                     selectedSlot.AddItem(aux);
@@ -198,6 +324,7 @@ public class InventoryManager : MonoBehaviour
                     selectedSlot=null;
                     //intercanvia
                 }
+                placementSystem.ButtonStopStructure();
             }
         }
 
@@ -206,8 +333,22 @@ public class InventoryManager : MonoBehaviour
 
     private void DeselectItemSlot()
     {
-        selectedSlot.DeactivateSelectedEffect();
-        selectedSlot = null;
+        if(!selectedSlot) return;
+        if (dontCallTwice==null)
+        {
+            Debug.Log("entering deselect");
+            selectedSlot.DeactivateSelectedEffect();
+            selectedSlot = null;
+            dontCallTwice= StartCoroutine(DontCallTwice());
+        }
+        
+    
+    }
+
+    private IEnumerator DontCallTwice()
+    {
+        yield return new WaitForSeconds(0.2f);
+        dontCallTwice=null;
     }
 
     private void DeleteItemSlot()

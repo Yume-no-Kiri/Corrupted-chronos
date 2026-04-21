@@ -44,10 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc0687afe0a08ad4e82f8325fe6b7596, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  allObjectsDataBase: {fileID: 11400000, guid: 02a2c52866e567d4f974584d3a49ba26, type: 2}
+  takableDataBase: {fileID: 11400000, guid: a3dd33327b57ddd408c40a1f8f23e147, type: 2}
+  placementDataBase: {fileID: 11400000, guid: cae380d3cf3bdd44d8267c7a1d4cd998, type: 2}
   bulletDatabase: {fileID: 11400000, guid: 8d93152657ce5ed468e2d1218b59a662, type: 2}
   placementSystem: {fileID: 0}
-  itemDataBase: {fileID: 11400000, guid: a3dd33327b57ddd408c40a1f8f23e147, type: 2}
-  dataBaseParts: {fileID: 11400000, guid: cae380d3cf3bdd44d8267c7a1d4cd998, type: 2}
   inputManager: {fileID: 0}
   playerInstance: {fileID: 0}
   health: 0
@@ -58,6 +59,7 @@ MonoBehaviour:
   staminaTime2Regen: 2
   StaminaRegen: 0
   staminaMoveUPUseQuantity: 5
+  knockbackResistance: 2
   moveSpeedNau: 10
   dashingForce: 20
   want2Fly: 0

@@ -19,6 +19,7 @@ public class InputManager : MonoBehaviour
     // public SlotInventory SlotSelected;
     // public Vector3 MousePositionInventory;
 
+
     private Camera cameraGarage;
     [SerializeField]
     private Camera cameraGameplay;
@@ -43,10 +44,11 @@ public class InputManager : MonoBehaviour
         playerInputActions.Garage.OnExit.performed += CallOnExit;
         playerInputActions.Nau.OnShotLeft.performed +=ctx=> OnShotLeft?.Invoke(ctx);
         playerInputActions.Nau.OnShotRight.performed += ctx=> OnShotRight?.Invoke(ctx);
+        
+        playerInputActions.AccesInventory.OpenInventory.performed += ctx=>OpenInventory?.Invoke();
 
         playerInputActions.Garage.RotateLeft.performed +=ctx=> RotateLeft?.Invoke(ctx);
         playerInputActions.Garage.RotateRight.performed += ctx=> RotateRight?.Invoke(ctx);
-        playerInputActions.Global.OpenInventory.performed += ctx=>OpenInventory?.Invoke();
 
         playerInputActions.Inventory.PrimaryClick.performed += ctx=>PrimaryClick?.Invoke(GetUIObjectSotaRatoli());
         playerInputActions.Inventory.SecondaryClick.performed += ctx=>SecondaryClick?.Invoke(GetUIObjectSotaRatoli());
@@ -122,6 +124,7 @@ public class InputManager : MonoBehaviour
 
     //odio aquest puto mètode
     //Millorar en un futur
+    
     private SlotInventory GetUIObjectSotaRatoli()
     {
         PointerEventData eventData = new PointerEventData(EventSystem.current);
@@ -132,20 +135,20 @@ public class InputManager : MonoBehaviour
         SlotInventory slotActual=null;
         foreach (var item in resultats)
         {
-            // Debug.Log("eo jdetect "+item.gameObject.name);
-            if (item.gameObject.name == "Marc")
-            {
+            Debug.Log("eo jdetect "+item.gameObject.name);
+            // if (item.gameObject.name == "Marc")
+            // {
                 slotActual=item.gameObject.GetComponentInParent<SlotInventory>();
                 // Debug.Log("eo slotSelected"+ SlotSelected.name);
-                if(slotActual==false) Debug.LogError("aaaaaaaa");
+                // if(slotActual==false) //Debug.LogError("aaaaaaaa");
                 return slotActual;
-            }
-            else
-            {
+            // }
+            // else
+            // {
             //    Debug.Log("eo not slotSelected"+ SlotSelected);
 
                 // SlotSelected=null;
-            }
+            // }
             // Debug.Log("eo slotSelected"+ SlotSelected);
             // if(item.gameObject.GetComponent())
         }

@@ -16,6 +16,7 @@ public class PlacementSystem : MonoBehaviour
     //usefull for the placemnet system
     public event Action PlacedPart, CancelledPart;
 
+    public event Action<int> IDPinCursor;
 
     [SerializeField]
     private GameObject mouseIndicator, cellIndicator;
@@ -27,14 +28,14 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField]
     private Grid grid;
 
-    private PartsDatabaseSO database;
+    private PlacementDatabaseSO database;
 
     //index del objecte segons la llista de parts tots
     private int selectedObjectIndex = -1;
 
-    private PlacementDataItem _selectedObject=null;
+    private PlacementDataSO _selectedObject=null;
 
-    private List<PlacementDataItem> _selectedListConfig;
+    private List<PlacementDataSO> _selectedListConfig;
 
     //el esquema, amb parts afeguides de la nau
     private GridData schemeShip = new GridData(); //, cablesShip;
@@ -72,7 +73,7 @@ public class PlacementSystem : MonoBehaviour
     private void Start()
     {
         
-        database=GameManager.Instance.dataBaseParts;
+        database=GameManager.Instance.placementDataBase;
         partAdder=GameManager.Instance.returnGarageAdder();
         inputManager= GameManager.Instance.inputManager;
         StopPlacement();
@@ -81,6 +82,8 @@ public class PlacementSystem : MonoBehaviour
         
         GameManager.Instance.inputManager.RotateLeft+=RotateLeft; 
         GameManager.Instance.inputManager.RotateRight+=RotateRight; 
+
+        inputManager.OnClick += OpenInventory;
 
         
     }
@@ -94,7 +97,7 @@ public class PlacementSystem : MonoBehaviour
             // Vector3 worldPos = grid.CellToWorld(gridPosition);
             Debug.Log("entrem position mouse:"+inputManager.MousePositionGarage );
             bool placementValidity;
-           
+            if(inputManager.IsPointerOverUI()) return;
             if (_previewObject)
             {
                 Debug.Log("entrem al update de pacemnet system2");
@@ -188,7 +191,7 @@ public class PlacementSystem : MonoBehaviour
     
 
     //els botons no permeten mètodes on es passen més de 2 parametres
-    bool CheckPlacementValidity(Vector3Int gridPosition, PlacementDataItem partAColocar)
+    bool CheckPlacementValidity(Vector3Int gridPosition, PlacementDataSO partAColocar)
     {
         if(inputManager.IsPointerOverUI()) return false;
         if(partAColocar==null) return false;
@@ -211,37 +214,63 @@ public class PlacementSystem : MonoBehaviour
                 selectedObjectIndex = _selectedListConfig.FindIndex(data => data.ID == id);
                 break;
             case ConfigurationNau.Pilots:
-                _selectedListConfig= database.AllPilots;
+                _selectedListConfig = database.AllPilots;
                 selectedObjectIndex = _selectedListConfig.FindIndex(data => data.ID == id);
                 break;
             default:
                 Debug.LogError("Configuració no possible, placementSystem.CS switch");
                 break;
         }
-        
-        
+
+
         if (selectedObjectIndex < 0)
         {
             Debug.LogError(id + " no existe");
             return;
         }
- 
-        if(_previewObject !=null)          Destroy(_previewObject);
-        _previewObject= Instantiate(_selectedListConfig[selectedObjectIndex].PrefabGaratge);
 
-        
-        _selectedObject=_selectedListConfig[selectedObjectIndex];
-        Debug.LogWarning("això va 1?"+ _selectedListConfig[selectedObjectIndex].ConfigGround[TypeGround.Occupied].Count);
 
+        _selectedObject = _selectedListConfig[selectedObjectIndex];
+        StartPlacementGeneral2();
+
+    }
+    public void StartPlacementGeneral(PlacementDataSO specificPart)
+    {
+       /*  _selectedListConfig= database.AllParts;
+        selectedObjectIndex = _selectedListConfig.FindIndex(data => data.ID == specificPart.ID);
+ */     
+        _selectedObject=specificPart;
+        StartPlacementGeneral2();
+       /*  if(_previewObject !=null)          Destroy(_previewObject);
+        _previewObject= Instantiate(specificPart.PrefabGaratge);
+
+        _selectedObject=specificPart;
+        Debug.LogWarning("això va 1?"+ _selectedObject.ConfigGround[TypeGround.Occupied].Count);
         Debug.LogWarning("això va 2?"+ _selectedObject.ConfigGround[TypeGround.Occupied].Count);
 
         Transform coll = _previewObject.transform.Find("Collisions");
         if (coll != null) coll.gameObject.SetActive(false);
 
         inputManager.OnClick += ButtonPlaceStructure;
-        inputManager.OnExit += ButtonStopStructure;
-        
+        inputManager.OnExit += ButtonStopStructure; */
     }
+    private void StartPlacementGeneral2()
+    {
+        if (_previewObject != null) Destroy(_previewObject);
+        _previewObject = Instantiate(_selectedObject.PrefabGaratge);
+        Debug.LogWarning("això va 1?" + _selectedObject.ConfigGround[TypeGround.Occupied].Count);
+        Debug.LogWarning("això va 2?" + _selectedObject.ConfigGround[TypeGround.Occupied].Count);
+
+        Transform coll = _previewObject.transform.Find("Collisions");
+        if (coll != null) coll.gameObject.SetActive(false);
+
+        inputManager.OnClick -= OpenInventory;//algo per detectar objecte per sota i obrir inventari
+
+        inputManager.OnClick += ButtonPlaceStructure;
+        inputManager.OnExit += ButtonStopStructure;
+    }
+
+   
     
 
     //escape de colocar parts
@@ -257,6 +286,8 @@ public class PlacementSystem : MonoBehaviour
         
         inputManager.OnClick -= ButtonPlaceStructure;
         inputManager.OnExit -= ButtonStopStructure;
+
+        inputManager.OnClick += OpenInventory;//algo per detectar objecte per sota i obrir inventari
 
         cellIndicator.SetActive(true);
         
@@ -330,17 +361,27 @@ public class PlacementSystem : MonoBehaviour
         Transform coll = partToAdd.transform.Find("Collisions");
         if (coll != null) coll.gameObject.SetActive(false);
 
-        //aquesta està malament
-        // if(!firstStructure)  garageAdder.CreatePart(partToAdd, grid.CellToWorld(gridPosition));
-        // Vector3 relativePos = partToAdd.transform.position - _baseNauPos.transform.position;
-        // Debug.Log("position will spawn PS:"+ relativePos.ToString());
-        partAdder.AddPart(partToAdd,grid.CellToWorld(gridPosition),partToAdd.transform.localRotation );
-
-        
+       
+      
+        int thisIdp=GameManager.Instance.GiveNextIdp(); //_givenIDP++;
+        // AllAddedParts.Add(thisIdp,part);
 
 
+        //maybe move into allobject
+        _selectedObject.AssignIDP(thisIdp);
+        if(!firstStructure){      
+           partToAdd.GetComponent<EachPartScript>().AssignIDP(thisIdp);
+           GameManager.Instance.playerInstance.GetComponent<InventoryManager>().CreateInventory(thisIdp);
+            //also creates inventory
+        }
+        //should add thisIdp to information of the part
+
+
+        partAdder.AddPart(partToAdd,grid.CellToWorld(gridPosition),partToAdd.transform.localRotation, thisIdp );
         // Debug.Log("placestructure position adding nau:"+gridPosition);    
         schemeShip.AddObjectAt(gridPosition, _selectedObject, rotationToAdd); // _placedObjects.Count-1
+        
+       
         StopPlacement();
         return true;
     }
@@ -394,7 +435,36 @@ public class PlacementSystem : MonoBehaviour
         } */
     }
     #endregion
- 
+    #region Inventory
+
+    public void OpenInventory()
+    {
+        //raycast per sota en cellIndicator
+        //accedir gunBase i obtenir IDp 
+        //
+        Vector3 origen = inputManager.MousePositionGarage;
+        origen+=new Vector3(0,1,0);
+        Vector3 direccio = Vector3.down;
+
+        if (Physics.Raycast(origen, direccio, out RaycastHit hit, 3f))
+        {
+            int idpInventory;
+            // Debug.Log("Terra detectada eureka: " + hit.collider.name);
+            if (hit.collider.gameObject.GetComponentInParent<GunBase>())
+            {
+                // Debug.Log("eureka");
+                idpInventory=hit.collider.gameObject.GetComponentInParent<GunBase>().ReturnIDP();
+                IDPinCursor?.Invoke(idpInventory); 
+            }
+            
+
+        }
+    }
+
+    #endregion
+
+
+
     #region enable/disable
     
     private void OnEnable()

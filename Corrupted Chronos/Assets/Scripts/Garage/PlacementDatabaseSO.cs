@@ -1,3 +1,4 @@
+// Parusing System;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,7 +6,7 @@ using System.Diagnostics;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-
+#region auxiliar enums and structs
 public enum ConfigurationNau
 {
     Parts,
@@ -13,12 +14,35 @@ public enum ConfigurationNau
     Pilots
 } 
 
+//informació del terra
+[Serializable]
+public struct SizeGround
+{
+    public Vector2Int Origen;
+    public Vector2Int Size ;
+    public List<Vector2Int> ExtraSize;
+
+    public SizeGround(Vector2Int ori, Vector2Int size, List<Vector2Int> esize)
+    {
+        this.Origen=ori;
+        this.Size=size;
+        this.ExtraSize=esize;
+    }
+
+
+}
 //auxiliar, usable al inspector
 [Serializable]
 public struct DictionaryAuxSize
 {
     public TypeGround typeGround;
     public SizeGround sizeGround;
+
+    public DictionaryAuxSize(TypeGround tground, SizeGround sground )
+    {
+        this.typeGround=tground;
+        this.sizeGround=sground;
+    }
 }
 [Serializable]
 public struct DictionaryAuxRequires
@@ -27,7 +51,12 @@ public struct DictionaryAuxRequires
     public SizeGround sizeGround;
     public int nRequires;
 
-    
+     public DictionaryAuxRequires(TypeGround tground, SizeGround sground, int nrequires )
+    {
+        this.typeGround=tground;
+        this.sizeGround=sground;
+        this.nRequires=nrequires;
+    }
 }
 
 public struct Requiriments
@@ -43,21 +72,13 @@ public struct Requiriments
     }
 
 }
-//informació del terra
-[Serializable]
-public struct SizeGround
-{
-    public Vector2Int Origen;
-    public Vector2Int Size ;
-    public List<Vector2Int> ExtraSize;
-
-}
+#endregion
 
 
 
 //probalement hauria de modificar una mica aixo, un objecte del inventari, pot ser item o pot ser part, inclús podrien ser els 2 a la vegada 
 [Serializable]
-public class PlacementDataItem
+public class PlacementDataSO
 {
     //aquí hauriem d'afegir estats i valors de cada arma a modificar
     [field: SerializeField]
@@ -85,7 +106,7 @@ public class PlacementDataItem
     public Dictionary<TypeGround,Requiriments> ConfigRequires= new Dictionary<TypeGround, Requiriments>();
 
 
-
+    //THIS SHOULD PROBABLY BE DELETED AND USE THE ONE FROM THE ALLOBJECT INSTED
     //possible fix: 2 prefabs, un de garatge i un amb la funcionalitat en si 
     [field: SerializeField]
     public GameObject PrefabGaratge { get; private set; }
@@ -93,6 +114,25 @@ public class PlacementDataItem
     // [field: SerializeField]
     // public GameObject PrefabJugable { get; private set; }
 
+
+
+    #region Constructors
+    //I should return to this constructor, but I see it like a very hard work, i will do it later 
+
+    /* public  PlacementDataSO()
+    {
+        // "this" serveix per diferenciar la variable de la classe del paràmetre
+        this.Name = "Escopeta";
+        this.ID = 0;
+
+
+        this.dictionaryAuxSize.Add(new DictionaryAuxSize(TypeGround.Occupied, new SizeGround(new Vector2Int(0,0), new Vector2Int(1,2), null)));
+        this.dictionaryAuxSize.Add(new DictionaryAuxSize(TypeGround.Buildable, new SizeGround(new Vector2Int(0,0), new Vector2Int(3,4), null)));
+        this.dictionaryAuxRequires.Add(new DictionaryAuxRequires(TypeGround.Buildable, new SizeGround(new Vector2Int(0,0), new Vector2Int(1,2), null),1));
+        // Debug.Log($"S'ha creat una nova dada per: {nom}");
+    } */
+
+    #endregion
 
     #region Change to usable values
     /* Canvi de valors del inspector a valors hashset de sizeGround de les posicions
@@ -197,8 +237,12 @@ public class PlacementDataItem
         IDP=idp;
     }
 
+    
+
+
     #endregion
 
+    #region  debugs
     public string debugConfigGround()
     {
         if (ConfigGround == null || ConfigGround.Count == 0) return "Configuració buida";
@@ -294,7 +338,6 @@ public class PlacementDataItem
 
         if (reqMap.Count == 0) return "Els requeriments no tenen posicions assignades.";
 
-        // 2. Generar el string visual
         string res = "--- DEBUG REQUERIMENTS DE LA PEÇA ---\n";
         res += "Mínims exigits: ";
         foreach(var kvp in countMap) res += $"[{kvp.Key}: {kvp.Value}] ";
@@ -322,17 +365,20 @@ public class PlacementDataItem
 
         return res;
     }
+    #endregion
+
+
 }
 
 //això estaria millor (?) si gran part de les variables les escrivís en codi i no al inspector
-[CreateAssetMenu(fileName = "PartsDatabaseSO", menuName = "Scriptable Objects/PartsDatabaseSO")]
-public class PartsDatabaseSO : ScriptableObject
+[CreateAssetMenu(fileName = "PlacementDatabaseSO", menuName = "Scriptable Objects/PlacementDatabaseSO")]
+public class PlacementDatabaseSO : ScriptableObject
 {
-    public List<PlacementDataItem> AllParts;
-    public List<PlacementDataItem> AllNaus;
+    public List<PlacementDataSO> AllParts;
+    public List<PlacementDataSO> AllNaus;
     
     //els pilots son més simples, no necesitem quan ocupen
-    public List<PlacementDataItem> AllPilots;
+    public List<PlacementDataSO> AllPilots;
 
     //no es un monobehavior, no hi ha start, toca cridar-ho
     public void StartConfigPositions()
@@ -350,4 +396,12 @@ public class PartsDatabaseSO : ScriptableObject
         }
         Debug.LogWarning("ENDED CONFIG POSITIONS");
     }
+
+    public PlacementDataSO ReturnPartDataById(int ID)
+    {
+        return AllParts[ID];
+    }
+
+
+
 }

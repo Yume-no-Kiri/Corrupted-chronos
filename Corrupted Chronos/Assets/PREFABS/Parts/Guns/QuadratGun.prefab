@@ -157,7 +157,7 @@ GameObject:
   - component: {fileID: 7589288795423491174}
   - component: {fileID: 5971455534803147072}
   m_Layer: 0
-  m_Name: Quadrat 1
+  m_Name: QuadratGun
   m_TagString: Jugador
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeName: Metralleta
+  ActivateOnStart: 0
   firepoint: {fileID: 698397631943366705}
   bulletPrefab: {fileID: 8735485520253785074, guid: 8284973a34c69d346b031d28dea8d7a6, type: 3}
 --- !u!1 &8084476889223222862

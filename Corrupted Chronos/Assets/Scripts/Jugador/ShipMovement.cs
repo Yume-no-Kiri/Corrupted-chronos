@@ -106,6 +106,10 @@ public class ShipMovement : MonoBehaviour
         if(moveDown!=null || moveUp != null){        
             inputDownUp =- moveDown.ReadValue<float>();
             inputDownUp += moveUp.ReadValue<float>();
+            if (inputDownUp > 0){
+
+                GameManager.Instance.MoveUpStamina();
+            }
             Debug.Log("ss move down UP"+inputDownUp.ToString());
 
         }
@@ -158,6 +162,18 @@ public class ShipMovement : MonoBehaviour
         externalForce += dir.normalized * force*1.3f;
         Debug.LogWarning("enter do knockback dir:"+dir.ToString()+" force:"+force);
         Debug.LogWarning("externalForce:"+ externalForce.ToString());
+    }
+
+    void toFly()
+    {
+        /* if (!lockDown)
+        {
+            GameManager.Instance.want2Fly=true;
+        }
+        else
+        {
+            GameManager.Instance.want2Fly=false;
+        } */
     }
 
     //all method

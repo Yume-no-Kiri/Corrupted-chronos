@@ -30,6 +30,12 @@ public class CanvasPlacementSystem : MonoBehaviour
         placementSystem.StartPlacementGeneral(id, ConfigurationNau.Pilots);
     }
 
+    public void StartPlacement()
+    {
+        
+    }
+
+
     public void SaveButton()
     {
         placementSystem.SavePlacement();

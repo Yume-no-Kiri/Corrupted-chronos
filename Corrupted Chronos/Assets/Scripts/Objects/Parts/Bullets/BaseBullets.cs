@@ -19,17 +19,42 @@ public struct InformationBullet
 
     public static InformationBullet Default(BulletStatsSO so)
     {
-        // so.Define();
+        if (so == null)
+        {
+             return new InformationBullet
+            {
+                damage = 0,
+                penetration = 0,
+                distEffec = 0,
+                distMax = 0,
+                speed = 0,
+                knockback= 0
+            };
+        }else{
+            return new InformationBullet
+            {
+                damage = so.damage,
+                penetration = so.penetration,
+                distEffec = so.distEffective,
+                distMax = so.distMax,
+                speed = so.speed,
+                knockback= so.knockback
+            };
+        }
+    }
+
+   /*  public static InformationBullet empty()
+    {
         return new InformationBullet
         {
-            damage = so.damage,
-            penetration = so.penetration,
-            distEffec = so.distEffective,
+            damage=0,
+            penetration=0,
+            distEffec=0,
             distMax = so.distMax,
             speed = so.speed,
             knockback= so.knockback
-        };
-    }
+        }
+    } */
 
     public void PlusDamage(int nouMal)
     {
@@ -51,7 +76,7 @@ public class BaseBullets : MonoBehaviour
     private SpriteRenderer spr;
 
     public InformationBullet StatsBullet{get; private set;}
-    public BulletStatsSO statsSO;
+    [HideInInspector] public BulletStatsSO statsSO;
 
     // public GameObject FirstHitboxBullet;
 
@@ -85,6 +110,7 @@ public class BaseBullets : MonoBehaviour
         }
     }
 
+    #region add effect collider
     public void GetsNewID(GameObject Hitbox)
     {
         //centrilized colliders reciever
@@ -131,6 +157,7 @@ public class BaseBullets : MonoBehaviour
         Destroy(Hitbox);
 
     }
+    #endregion 
 
     //should change and upgrade this funciton with what it needs the next modular effects for the bullets
    /*  public void addNewHitboxBullet(HitboxBullet newHitboxBullet){
@@ -143,7 +170,7 @@ public class BaseBullets : MonoBehaviour
         iniPos = this.transform.position;
     }
 
-    protected virtual void FixedUpdate()
+    protected void FixedUpdate()
     {
         // if(StatsBullet==null) return;
         Debug.LogWarning("statsbullet speed:"+StatsBullet.speed);
@@ -154,15 +181,16 @@ public class BaseBullets : MonoBehaviour
         {
             OnEffectiveRange?.Invoke();
 
-        }else if(distance> StatsBullet.distEffec)
+        }else if(distance> StatsBullet.distEffec&& distance < StatsBullet.distMax)
         {
             //should pass how far are we from distEffect?
             OnDecliveRange?.Invoke();
-        }else if(distance > StatsBullet.distMax)
+        } else if(distance > StatsBullet.distMax)
         {
             OnMaxRange?.Invoke();
             //should pass how far are we from distMax?
             AwayDistMax(distance);
+            // Debug.LogWarning("SHOULD DELETE BULLET");
         }
     }
     

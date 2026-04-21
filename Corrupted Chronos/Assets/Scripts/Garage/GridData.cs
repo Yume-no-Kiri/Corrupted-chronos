@@ -26,17 +26,17 @@ public class GridData
     PlacementData2 placementData= new PlacementData2();
 
     private Vector3Int _gridPosition= new Vector3Int();
-    private  PlacementDataItem _originalPart= new PlacementDataItem();
+    private  PlacementDataSO _originalPart= new PlacementDataSO();
     private int _rotationAdded;
 
     private bool _lastCheckCanPlace;
 
-    private  PlacementDataItem _updatedPart= new PlacementDataItem();
+    private  PlacementDataSO _updatedPart= new PlacementDataSO();
 
   
 
     #region Checker and adder
-    public bool CanPlaceObejctAt(Vector3Int gridPosition, PlacementDataItem part, int rotationToAdd) //Dictionary<TypeGround,Requiriments> partRequires)
+    public bool CanPlaceObejctAt(Vector3Int gridPosition, PlacementDataSO part, int rotationToAdd) //Dictionary<TypeGround,Requiriments> partRequires)
     {
         Debug.LogWarning("entres a CanPlaceObejctAt???");
 
@@ -66,7 +66,7 @@ public class GridData
 
         //  placementData.
     }
-    public void AddObjectAt(Vector3Int gridPosition, PlacementDataItem part, int rotationToAdd)//wa
+    public void AddObjectAt(Vector3Int gridPosition, PlacementDataSO part, int rotationToAdd)//wa
     // wa, int placedObjectIndex)
     // public void AddObjectAt(Vector3Int gridPosition, HashSet<Vector2Int> objectSize, HashSet<Vector2Int> buildableSize,  int ID, int placedObjectIndex)
     {
@@ -74,7 +74,7 @@ public class GridData
         if(AlreadyChecked( gridPosition, part, rotationToAdd))
         {
             
-            placementData.AddNewPartData(_updatedPart);
+            placementData.AddNewPartData(_updatedPart, part.IDP);
         }
         else
         {
@@ -87,14 +87,14 @@ public class GridData
             _rotationAdded=rotationToAdd;
   
 
-            placementData.AddNewPartData(_updatedPart);
+            placementData.AddNewPartData(_updatedPart, part.IDP);
         }
 
         Debug.Log("add to position"+ gridPosition.ToString());
         returnDebugStrings();
        
     }
-    private bool AlreadyChecked(Vector3Int gridPosition, PlacementDataItem part, int rotationToAdd)
+    private bool AlreadyChecked(Vector3Int gridPosition, PlacementDataSO part, int rotationToAdd)
     {
         if(gridPosition==_gridPosition && part==_originalPart && rotationToAdd== _rotationAdded) return true;
         else return false;
@@ -102,7 +102,7 @@ public class GridData
     #endregion
 
     #region Calculations
-    private void RecalculatePosition(Vector3Int gridPosition, PlacementDataItem part, int rotationToAdd)
+    private void RecalculatePosition(Vector3Int gridPosition, PlacementDataSO part, int rotationToAdd)
     {
         _updatedPart.ConfigGround = new Dictionary<TypeGround, HashSet<Vector2Int>>();
         _updatedPart.ConfigRequires = new Dictionary<TypeGround, Requiriments>();
@@ -150,7 +150,7 @@ public class GridData
     #region Deleters
 
     //we could change part with idp and should be hard to do
-    public void DeletePart(PlacementDataItem part)
+    public void DeletePart(PlacementDataSO part)
     {
         //delete an especific part
         // placementData.DeleteNewPartData(part);

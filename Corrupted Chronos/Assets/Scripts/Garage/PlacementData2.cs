@@ -71,7 +71,7 @@ struct Node
 public class PlacementData2
 {
 
-    Dictionary<int, PlacementDataItem> AllAddedParts= new();
+    Dictionary<int, PlacementDataSO> AllAddedParts= new();
 
 
     //I should make something to relate parts with parts, nodes with nodes, so deleting a node should only be on the extremes, and it could also be used to detect influence, probably a struct
@@ -208,22 +208,36 @@ public class PlacementData2
 
     #endregion
 
-    public void AddNewPartData(PlacementDataItem part)
+    public void AddNewPartData(PlacementDataSO part,int newIDP)
     {
+        part.AssignIDP(newIDP);
         if (_priorityTGround.PriorityByTGround == null || _priorityTGround.PriorityByTGround.Count()==0) {
             _priorityTGround = PriorityTGround.CreateDefault();
         }
 
         Debug.LogWarning("entrem a addnewpartdata");
         //create id and relationate objectdata
-        int thisIdp=GameManager.Instance.GiveNextIdp(); //_givenIDP++;
-        
-        AllAddedParts.Add(thisIdp,part);
-        part.AssignIDP(thisIdp);
-        //should add thisIdp to information of the part
+        /*  int thisIdp=GameManager.Instance.GiveNextIdp(); //_givenIDP++;
+         AllAddedParts.Add(thisIdp,part);
+         part.AssignIDP(thisIdp);
+         //also creates inventory
 
 
-        //complete allPositionground with configGround
+         //should add thisIdp to information of the part
+  */
+        if (AllAddedParts.ContainsKey(part.IDP))
+        {
+            if (AllAddedParts[part.IDP] != part)
+            {
+                Debug.LogError(" DIFERENT PART AMB MATEIXA IDP");
+            }
+            else
+            {
+                Debug.LogError("mateix idp diferent part??????");
+            }
+        }else{
+            AllAddedParts.Add(part.IDP,part);
+        }//complete allPositionground with configGround
         Debug.LogWarning("before configGround");
 
         var configGround= part.ConfigGround;
@@ -253,7 +267,7 @@ public class PlacementData2
     }
 
     //not actually implemented, it could be part o idp
-    public void DeleteNewPartData(PlacementDataItem part)
+    public void DeleteNewPartData(PlacementDataSO part)
     {
         //obtain id with objectdata
         int thisIDP;

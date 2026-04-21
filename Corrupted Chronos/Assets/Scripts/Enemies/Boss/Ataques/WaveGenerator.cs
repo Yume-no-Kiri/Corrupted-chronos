@@ -23,7 +23,7 @@ public class WaveGenerator : MonoBehaviour
 
     }
 
-    public void SelectPreset(GameObject inst, AllPresetBullets presetBullets )
+    /* public void SelectPreset(GameObject inst, AllPresetBullets presetBullets )
     {
         // GameObject newBullet=EmptyBullet;
         switch (presetBullets)
@@ -44,7 +44,7 @@ public class WaveGenerator : MonoBehaviour
             break;
         }
         // return newBullet;
-    }
+    } */
     // Update is called once per frame
     void Update()
     {
@@ -59,7 +59,8 @@ public class WaveGenerator : MonoBehaviour
     {
         yield return new WaitForSeconds(TimeBetweenShots);
         bulletInst=Instantiate(EmptyBullet,transform.position, quaternion.identity, null);
-        SelectPreset(bulletInst, allPresetBullets);
+        bulletInst.GetComponent<CreateBullet>().allPresetBullets=allPresetBullets;  //SelectPreset(bulletInst, allPresetBullets);
+        bulletInst.GetComponent<CreateBullet>().Activate();
         coroutine=null;
     }
 

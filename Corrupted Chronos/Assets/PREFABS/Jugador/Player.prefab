@@ -228,6 +228,7 @@ MonoBehaviour:
   StartInGarage: 0
   _adderGO: {fileID: 4095697942591388805}
   _garageGO: {fileID: 0}
+  _inventoryGO: {fileID: 0}
   branca: 
   mode: 0
 --- !u!114 &6779786710766733167
@@ -287,6 +288,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7186f7fb77015b541bc7e4b526bd1ab6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
+  inventoryCanvas: {fileID: 0}
+  inventoryGeneral: {fileID: 0}
+  inventoryPart: {fileID: 5332171544622127361, guid: 53bc8f1868b5df74084b707ce255258e, type: 3}
+  MaxSlotsShip: 10
+  prefabSlot: {fileID: 6455839196844056278, guid: 0ecb04942a763fb428c619fa0940decc, type: 3}
 --- !u!114 &5469871605773485075
 MonoBehaviour:
   m_ObjectHideFlags: 0

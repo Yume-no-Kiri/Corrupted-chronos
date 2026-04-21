@@ -16,19 +16,28 @@ public class SlotInventory : MonoBehaviour
         void treure/moure item
     }  */
     private Button button;
-    public ItemData thisItem {get; private set; }
-    private Image renderItem;
+    public AllObjectSO thisItem {get; private set; }
+    private Image renderItem=null;
    
     private bool hasItem=false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
+    void OnEnable()
     {
-        // button=transform.GetComponentInChildren<Button>();
-        renderItem=transform.GetChild(1).GetComponent<Image>();
-        renderItem.sprite=null;
-        renderItem.enabled=false;
-        thisItem=null;
+        SaveRenderItem();
     }
+
+    private void SaveRenderItem()
+    {
+        if (renderItem == null)
+        {
+            // button=transform.GetComponentInChildren<Button>();
+            renderItem = transform.GetChild(1).GetComponent<Image>();
+            renderItem.sprite = null;
+            renderItem.enabled = false;
+            thisItem = null;
+        }
+    }
+
     void Start()
     {
         // button.onClick.AddListener(ButtonPressed);
@@ -43,8 +52,10 @@ public class SlotInventory : MonoBehaviour
     {
         Debug.Log("buttonpressed");
     }
-    public void AddItem(ItemData newItem)
+    public void AddItem(AllObjectSO newItem)
     {
+        SaveRenderItem();
+
         thisItem=newItem;
         hasItem=true;
         ShowSprite();
@@ -63,8 +74,8 @@ public class SlotInventory : MonoBehaviour
 
     public bool CanBePlaced()
     {
-        // return thisItem.canBePlaced;
-        return false;
+        return thisItem.canBePlaced;
+        // return false;
     }
     public void ShowSprite()
     {
@@ -72,13 +83,15 @@ public class SlotInventory : MonoBehaviour
         {
             return;
         }else{
-            renderItem.sprite =thisItem.sprite;
+            
+            renderItem.sprite =thisItem.takableDataSO.sprite;
             renderItem.enabled=true;
         }
     }
 
     public void HideSprite()
     {
+        // SaveRenderItem();
         if(!HasItem())
         {
             return;

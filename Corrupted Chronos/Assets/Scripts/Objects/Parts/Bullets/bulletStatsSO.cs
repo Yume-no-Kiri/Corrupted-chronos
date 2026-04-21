@@ -8,6 +8,12 @@ public struct ListBullets
 {
     public string NameBullet;
     public BulletStatsSO bulletStatsSO;
+
+    public ListBullets(string name, BulletStatsSO stats)
+    {
+        this.NameBullet = name;
+        this.bulletStatsSO = stats;
+    }
 }
 
 //Make this better in the future
@@ -35,6 +41,12 @@ public class BulletDatabase : ScriptableObject {
         return bulletStatsSO;
     }
 
+    /* public void CreateList()
+    {
+        ListBullets novaBala = new ListBullets("WaveBullet", new BulletStatsSO(AllPresetBullets.Wave));   
+
+    }   */
+
 }
 
 [CreateAssetMenu(menuName = "Bullet/BulletStats")]
@@ -53,9 +65,13 @@ public class BulletStatsSO : ScriptableObject
     [Header("Gameobjects")]
     public GameObject[] hitEffects;
     public GameObject[] trailEffects;
+
+
+    
 }
 
-[CreateAssetMenu(menuName = "Bullet/WaveBulletData")]
+//Defined in the ScripteableObject in project
+[CreateAssetMenu(fileName="WaveStats", menuName = "Bullet/WaveBulletStats")]
 public class WaveStatsSO: BulletStatsSO
 {
     public WaveStatsSO(){
@@ -69,7 +85,7 @@ public class WaveStatsSO: BulletStatsSO
 
 }
 
-[CreateAssetMenu(menuName = "Bullet/BasicBulletData")]
+[CreateAssetMenu(fileName="BasicStats", menuName = "Bullet/BasicBulletStats")]
 public class BasicStatsSO: BulletStatsSO
 {
     public BasicStatsSO(){
@@ -77,7 +93,7 @@ public class BasicStatsSO: BulletStatsSO
         penetration=5;//dudo de como usar-lo
         distEffective=10;
         distMax=15;
-        speed=2;
+        speed=7;
         knockback=4;
     }
 
