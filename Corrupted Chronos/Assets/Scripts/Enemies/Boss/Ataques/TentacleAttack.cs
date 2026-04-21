@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TentacleAttack : MonoBehaviour
 {
-    
+    Animator anim;
     public GameObject Tentacle;
 
     private Vector3 rotationToAdd= Vector3.zero;
@@ -17,6 +17,8 @@ public class TentacleAttack : MonoBehaviour
 
     public GameObject IndicatorToRise;
     //should add damage
+
+    public bool independent;
     
 
     [Header ("General Attack")]
@@ -35,14 +37,15 @@ public class TentacleAttack : MonoBehaviour
 
 
     public Vector3 Direction;
-    
 
+    private float attackTimer;
+    public float attackCooldown=5f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    { 
-        RiseTentacle();
+    private void Awake()
+    {
+        anim = GetComponentInChildren<Animator>();
     }
+
 
     // Update is called once per frame
     void Update()
@@ -52,27 +55,64 @@ public class TentacleAttack : MonoBehaviour
             Direction = GameManager.Instance.playerInstance.transform.position - this.transform.position;
             float angle = Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg;
             Vector3 anglesActuals = Tentacle.transform.eulerAngles;
-            rotationToAdd.y = angle;
+            rotationToAdd.y = angle-90;
             Tentacle.transform.eulerAngles = rotationToAdd;
         }
+
+        if (independent)
+        {
+            attackTimer += Time.deltaTime;
+            if (attackTimer >= attackCooldown)
+            {
+                attackTimer = 0f;
+                switch (Random.Range(0, 4))
+                {
+                    case 0:
+                        SplashAttack();
+                    break;
+                    case 1:
+                        DirectAttack();
+                    break;
+                    case 2:
+                        SpinAttack();
+                        break;
+                    case 3:
+                        SplashAttack();
+                        break;
+                }
+            }
+        }
     }
-    #region DirectAttack
+
     //here he should add the methods to do the direct attack
 
-    public IEnumerable DirectAttack()
-    {
-        print("Direct Attack not implemented yet.");
-        return null;
-    }
-    #endregion
 
-    #region SplashAttack
+    public void slamAttack()
+    {
+        anim.SetTrigger("Attack1");
+    }
+
+    public void DirectAttack()
+    {
+        anim.SetTrigger("Attack2");
+    }
+
+    public void SpinAttack()
+    {
+        anim.SetTrigger("Attack3");
+    }
+
+    public void SplashAttack()
+    {
+        anim.SetTrigger("Attack4");
+    }
+
 
     /* 
      call in start:
 
          StartCoroutine(SplashAttack());
-    */
+    
     public IEnumerator SplashAttack()
     {
         Tentacle.SetActive(true);
@@ -133,44 +173,8 @@ public class TentacleAttack : MonoBehaviour
         }
         // yield return new WaitForSeconds(TimeRecoverSA);
     }
-    #endregion
-
-    #region tentacle rise
-    /* 
-        call in start:
-        RiseTentacle();
     */
 
-    public void RiseTentacle()
-    {
-        Tentacle.SetActive(false);
-        IndicatorToRise.SetActive(true);
-
-        // Tentacle.SetActive(false);
-        IndicatorToRise.transform.localScale=initialRiseRange;
-        StartCoroutine(TentacleRise());
-    }
-
-
-    IEnumerator TentacleRise(){
-        // Vector3 escalaInicial = IndicatorToRise.transform.localScale;
-        float timePassed = 0f;
-
-        while (timePassed < Time2Rise)
-        {
-            float progressio = timePassed / Time2Rise;
-            IndicatorToRise.transform.localScale = Vector3.Lerp(initialRiseRange, finalRiseRange, progressio);
-            timePassed += Time.deltaTime;
-            yield return null;
-        }
-        
-        IndicatorToRise.SetActive(false);
-        Tentacle.SetActive(true);
-
-    }
-    #endregion
-
-    
     void OnCollisionEnter(Collision collision)
     {
         //Detect player and do damage
@@ -188,13 +192,21 @@ public class TentacleAttackEditor : Editor
     {
         base.OnInspectorGUI();
         TentacleAttack script = (TentacleAttack)target;
-        if (GUILayout.Button("Test Splash Attack"))
+        if (GUILayout.Button("Slam Attack"))
         {
-            script.StartCoroutine(script.SplashAttack());
+            script.slamAttack();
         }
-        if (GUILayout.Button("Test Direct Attack"))
+        if (GUILayout.Button("Direct Attack"))
         {
             script.DirectAttack();
+        }
+        if (GUILayout.Button("Spin Attack"))
+        {
+            script.SpinAttack();
+        }
+        if (GUILayout.Button("Splash Attack"))
+        {
+            script.SplashAttack();
         }
     }
 }

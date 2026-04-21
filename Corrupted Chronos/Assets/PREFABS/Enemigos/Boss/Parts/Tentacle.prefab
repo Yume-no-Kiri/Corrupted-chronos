@@ -52,6 +52,7 @@ MonoBehaviour:
   initialRiseRange: {x: 1, y: 1, z: 1}
   finalRiseRange: {x: 3, y: 3, z: 3}
   IndicatorToRise: {fileID: 5268965640938555463}
+  independent: 1
   TimeBetweenAttacks: 3
   TimePrepSA: 2
   RotPrepSA: {x: -45, y: 0, z: 0}
@@ -60,6 +61,7 @@ MonoBehaviour:
   TimeRecoverSA: 3
   RotRecoverSA: {x: 0, y: 0, z: 0}
   Direction: {x: 0, y: 0, z: 0}
+  attackCooldown: 5
 --- !u!1 &5268965640938555463
 GameObject:
   m_ObjectHideFlags: 0

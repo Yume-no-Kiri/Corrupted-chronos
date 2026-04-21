@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class baseKrakenState : baseState
 {
-    public baseKrakenState(EnemiesStateMachine s) : base(s)
+    public baseKrakenState(krakenStateMachine s) : base(s)
     {
 
     }
@@ -35,17 +35,5 @@ public class baseKrakenState : baseState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

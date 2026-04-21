@@ -379,6 +379,54 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5128885e611ca2548812017164f9d781, type: 3}
+--- !u!1 &175544215
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 175544217}
+  - component: {fileID: 175544216}
+  m_Layer: 0
+  m_Name: Kraken
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &175544216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175544215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13f2aaad4c87a5748bd39731ae86ad7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KrakenController
+  player: {fileID: 0}
+  head: {fileID: 388876531}
+  spawnedTentacles: []
+  tentacles: []
+--- !u!4 &175544217
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 175544215}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 504.30978, y: -8.15217, z: 367.4018}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &179192382
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,13 +678,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2437631897983459579, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: TimeTurn
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2437631897983459579, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: Time2Down
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5052305194005017213, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7707732207850111560, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8012713658049165269, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
       propertyPath: m_Name
       value: HeadBoss
       objectReference: {fileID: 0}
     - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 508.57318
+      value: 508.4239
       objectReference: {fileID: 0}
     - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
       propertyPath: m_LocalPosition.y
@@ -644,23 +708,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 356.4653
+      value: 356.59702
       objectReference: {fileID: 0}
     - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6354047
+      value: 0.99939525
       objectReference: {fileID: 0}
     - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7721793
+      value: 0.034773268
       objectReference: {fileID: 0}
     - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -668,7 +732,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 101.1
+      value: 3.986
       objectReference: {fileID: 0}
     - target: {fileID: 9132673646305351926, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -830,6 +894,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5742979045928969330, guid: ef2fb929589f0644cb372d605385adb7, type: 3}
   m_PrefabInstance: {fileID: 983584286}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &388876531 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2437631897983459579, guid: 052b88244eb89674fb0a69fa111a3018, type: 3}
+  m_PrefabInstance: {fileID: 249792869}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7ea7664cda2db24d9012c46b1a4e4ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossAttacks
 --- !u!20 &438499621 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 5735484070636312041, guid: e6d48fc411ccbc648afc8a426912bceb, type: 3}
@@ -4558,6 +4633,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyPair
       objectReference: {fileID: 0}
+    - target: {fileID: 3854820168874236224, guid: 82ed4fd0ef8e01c41a1731099ca80540, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4376079635632382832, guid: 82ed4fd0ef8e01c41a1731099ca80540, type: 3}
       propertyPath: leader
       value: 
@@ -4710,5 +4789,6 @@ SceneRoots:
   - {fileID: 1917123583}
   - {fileID: 26294362}
   - {fileID: 1292164169}
-  - {fileID: 923384444}
   - {fileID: 249792869}
+  - {fileID: 923384444}
+  - {fileID: 175544217}

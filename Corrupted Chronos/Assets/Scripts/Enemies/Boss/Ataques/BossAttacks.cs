@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
@@ -5,45 +6,63 @@ using UnityEngine;
 public class BossAttacks : MonoBehaviour
 {
     public GameObject headGO;
+    Animator anim;
 
-    [Header ("up and down Attack")]
-    public float Time2Up=2;
-    public Vector3 PosUp;
-
-    public float Time2Down=0.5f;
-    public Vector3 PosDown;
-
-    [Header ("water lazer Attack")]
-    public GameObject Lazer;
-    public float TimeTurn=2f;
-    
-    [Header ("Move kraken")]
+    [Header("Move kraken")]
+    public Vector3 newPos;
 
 
-    private Coroutine coroutine=null;
     // private Vector3 PosStart;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        PosUp+= transform.position;
-        PosDown+= transform.position;
-        Lazer.SetActive(false);
+        anim = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-       
+        
+
+        
+
     }
 
     #region move kraken
 
+    //Funcion la que se activa por el StateMachine
+    //NO ES LA DE EL ANIMADOR
+    public void krakenMove()
+    {
+        anim.SetTrigger("ChangePosition");
+        newPos=generateNewPosition();
+    }
+
+    //Usada por el animator, cambia la posición del kraken en el momento correcto de la animación
+    public void teleportKraken()
+    {
+        this.gameObject.transform.position = generateNewPosition();
+    }
+
+    public Vector3 generateNewPosition()
+    {
+        return new Vector3(Random.Range(-20, 20), transform.position.y, Random.Range(-20, 20));
+    }
+
+
     #endregion
 
-    #region water lazer
+    #region water laser
+
+    public void WaterLaser()
+    {
+        anim.SetTrigger("SpinAttack");
+    }
+     
+
     /* call in start:
         StartCoroutine(WaterLazer(transform.rotation.eulerAngles));
-     */
+     
     public IEnumerator WaterLazer(Vector3 rotOri)
     {
         Lazer.SetActive(true);
@@ -64,11 +83,21 @@ public class BossAttacks : MonoBehaviour
             timePassed += Time.deltaTime;
             yield return null;
         }
-    }
+    }*/
 
     #endregion 
 
     #region up and down attack
+
+    public void HeadUpAndDown()
+    {
+        anim.SetTrigger("HeadAttack");
+    }
+
+    public void generateWaves()
+    {
+
+    }
 
     /*
         to call it in start only one:
@@ -79,7 +108,7 @@ public class BossAttacks : MonoBehaviour
         {
             coroutine= StartCoroutine(HeadUpAndDown());
 
-        } */
+        } 
     public IEnumerator HeadUpAndDown()
     {
         yield return StartCoroutine(HeadUp());
@@ -110,7 +139,7 @@ public class BossAttacks : MonoBehaviour
             yield return null;
         }
         //HERE GENERATE WAVES
-    }
+    }*/
     #endregion
 }
 
@@ -126,11 +155,19 @@ public class BossAttacksEditor : Editor
         BossAttacks script = (BossAttacks)target;
         if (GUILayout.Button("Test Water Lazer"))
         {
-            script.StartCoroutine(script.WaterLazer(script.transform.rotation.eulerAngles));
+            script.WaterLaser();
         }
         if (GUILayout.Button("Test Up and Down"))
         {
-            script.StartCoroutine(script.HeadUpAndDown());
+            script.HeadUpAndDown();
+        }
+        if (GUILayout.Button("Kraken Move"))
+        {
+            script.krakenMove();
+        }
+        if (GUILayout.Button("Teleport"))
+        {
+            script.teleportKraken();
         }
     }
 }
