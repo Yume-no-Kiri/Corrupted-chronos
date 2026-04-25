@@ -20,7 +20,7 @@ public struct ListBullets
 [CreateAssetMenu(menuName = "Bullet/BulletDatabase")]
 public class BulletDatabase : ScriptableObject {
 
-    public GameObject emptyBullet;
+    public GameObject GeneralBullet;
     public GameObject hitboxBullet;
 
     public List<ListBullets> listStatsPresetsBullets= new List<ListBullets>();
@@ -55,46 +55,16 @@ public class BulletStatsSO : ScriptableObject
     [Header("Bullet Properties")]
     [Tooltip("The name of the bullet")]
     public Sprite sprite;
-    public int damage;
-    public float penetration;
-    public float distEffective;
-    public float distMax;
-    public float speed;
-    public float knockback;
+    public int Damage;
+    public float AttackSpeed;
+    public float Penetration;
+    public float DistEffec;
+    public float DistMax;
+    public float Knockback;
 
     [Header("Gameobjects")]
-    public GameObject[] hitEffects;
-    public GameObject[] trailEffects;
-
+    public List<EffectsAdd> Effects;
 
     
 }
 
-//Defined in the ScripteableObject in project
-[CreateAssetMenu(fileName="WaveStats", menuName = "Bullet/WaveBulletStats")]
-public class WaveStatsSO: BulletStatsSO
-{
-    public WaveStatsSO(){
-        damage=0;
-        penetration=5;//dudo de como usar-lo
-        distEffective=10;
-        distMax=15;
-        speed=1;
-        knockback=10;
-    }
-
-}
-
-[CreateAssetMenu(fileName="BasicStats", menuName = "Bullet/BasicBulletStats")]
-public class BasicStatsSO: BulletStatsSO
-{
-    public BasicStatsSO(){
-        damage=10;
-        penetration=5;//dudo de como usar-lo
-        distEffective=10;
-        distMax=15;
-        speed=7;
-        knockback=4;
-    }
-
-}

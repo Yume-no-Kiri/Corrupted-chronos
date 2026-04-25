@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: BasicStats
-  m_EditorClassIdentifier: Assembly-CSharp::BasicStatsSO
+  m_Name: RedWaveStats
+  m_EditorClassIdentifier: Assembly-CSharp::RedWaveStatsSO
   sprite: {fileID: 0}
-  damage: 10
-  penetration: 5
-  distEffective: 10
-  distMax: 15
-  speed: 10
-  knockback: 4
+  Damage: 10
+  AttackSpeed: 7
+  Penetration: 5
+  DistEffec: 10
+  DistMax: 15
+  Knockback: 10

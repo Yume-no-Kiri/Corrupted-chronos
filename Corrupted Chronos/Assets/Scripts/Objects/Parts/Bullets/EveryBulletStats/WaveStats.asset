@@ -19,5 +19,6 @@ MonoBehaviour:
   distMax: 15
   speed: 1
   knockback: 10
-  hitEffects: []
-  trailEffects: []
+  Effects:
+  - BaseBullets
+  - KnockbackEB

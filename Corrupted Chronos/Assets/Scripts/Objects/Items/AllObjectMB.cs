@@ -106,6 +106,7 @@ public class EnergyItem: AllObjectMB
     public override void ActivateSlotEffect()
     {
         Debug.LogError("energy item activate");
+        
     }
     public override void DeactivateSlotEffect()
     {

@@ -116,7 +116,7 @@ public class PartAdder : MonoBehaviour
                 case TypePart.ShootableLeft:
                     GameManager.Instance.inputManager.OnShotLeft += pa.DoShot;
                     break;
-                case TypePart.ShootableRight:
+                case TypePart.ShootableRight: 
                     GameManager.Instance.inputManager.OnShotRight += pa.DoShot;
                     break;
             }

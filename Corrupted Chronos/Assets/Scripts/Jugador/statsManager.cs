@@ -7,26 +7,20 @@ public class statsManager : MonoBehaviour
     public static statsManager instance;
 
     //TODO: Recibir un SO con los stats base
-    //TODO: los modificadores deberían tener source
-    //TODO: Stats que dependan de otras stats (ej: daño que dependa de speed)
+    //TODO: los modificadores deberï¿½an tener source
+    //TODO: Stats que dependan de otras stats (ej: daï¿½o que dependa de speed)
 
 
     //El diccionario existe para tener acceso O(1) a cualquier stat
-    Dictionary<Stat.StatType, Stat> statLookup;
+    Dictionary<Stat.StatTypeGaneral, Stat> statLookup;
+    Dictionary<int, Dictionary<Stat.StatTypeGun, Stat>> statEachGun;
 
     //Esto SE MANTIENE privado
     //Es una lista para poder editar los stats desde el inspector, pero no se expone a otras clases
-    [SerializeField] List<Stat> stats = new();
-
+    // [SerializeField] List<Stat> stats = new();
+    [SerializeField] private BaseStatsSO dadesBase;
     void Awake()
     {
-        statLookup = new Dictionary<Stat.StatType, Stat>();
-
-        foreach (var stat in stats)
-        {
-            statLookup[stat.name] = stat;
-        }
-
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
@@ -35,9 +29,27 @@ public class statsManager : MonoBehaviour
         {
             instance = this;
         }
+
+        statLookup = new Dictionary<Stat.StatTypeGaneral, Stat>();
+
+        if(dadesBase != null)
+        {
+            foreach (var item in dadesBase.defaultStats)
+            {
+                Stat novaStat = new Stat {
+                    name = item.type,
+                    baseValue = item.value,
+                    currentValue = item.value
+                };
+                statLookup[item.type] = novaStat;
+
+            }
+        }
+   
+    
     }
 
-    public float AddModifier(Stat.StatType type, StatModifier mod)
+    public float AddModifier(Stat.StatTypeGaneral type, StatModifier mod)
     {
         if (statLookup.TryGetValue(type, out var stat))
         {
@@ -51,7 +63,7 @@ public class statsManager : MonoBehaviour
     public void RemoveModifier() { 
     }
 
-    public float GetStat(Stat.StatType type)
+    public float GetStat(Stat.StatTypeGaneral type)
     {
         if (statLookup.TryGetValue(type, out var stat))
             return stat.currentValue;
@@ -59,23 +71,80 @@ public class statsManager : MonoBehaviour
         Debug.LogWarning($"Stat {type} not found");
         return 0f;
     }
+    public float GetStat(Stat.StatTypeGaneral type, int idp)
+    {
+        float finalValue=0;
+
+        if (statLookup.TryGetValue(type, out var stat1))
+            {finalValue+= stat1.currentValue;}
+        if(statEachGun.ContainsKey(idp)){
+            if (statEachGun[idp].TryGetValue((Stat.StatTypeGun)type, out var stat3))
+                {finalValue+= stat3.currentValue;}
+        }
+        // Debug.LogWarning($"Stat {type} not found");
+        return finalValue;
+    }
+
 }
 
 [Serializable]
 public class Stat
 {
-    public enum StatType
+    public enum StatTypeGaneral
     {
+        //ship:
         Health,
         Stamina,
         Shields,
         ShieldRegen,
-        Damage,
         Speed,
         Agility,
-        AttackSpeed
+
+        // guns
+        TimeBetweenShots,
+        Magazine,
+        Accuraccy,
+
+        // bullet
+        Damage,
+        AttackSpeed,
+        Penetration,
+        DistEffec,
+        DistMax,
+        Knockback,
+
     }
-    public StatType name;
+    public enum StatTypeGun
+    {
+         // guns
+        TimeBetweenShots,
+        Magazine,
+        Accuraccy,
+
+        // bullet
+        Damage,
+        BulletSpeed,
+        Penetration,
+        DistEffec,
+        DistMax,
+        Knockback,
+    }
+
+    /* public enum StatTypeBullet
+    {
+
+        // bullet
+        Damage,
+        AttackSpeed,
+        Penetration,
+        DistEffec,
+        DistMax,
+        Knockback,
+    } */
+
+
+
+    public StatTypeGaneral name;
 
     public float baseValue;
     public float currentValue;
@@ -153,4 +222,15 @@ public class StatModifier
     public float value;
     public object source;
 }
+[CreateAssetMenu(fileName = "BaseStats", menuName = "Stats/BaseStats")]
+public class BaseStatsSO : ScriptableObject
+{
+    [Serializable]
+    public struct StatInit
+    {
+        public Stat.StatTypeGaneral type;
+        public float value;
+    }
 
+    public List<StatInit> defaultStats;
+}

@@ -10,8 +10,8 @@ public class WaveGenerator : MonoBehaviour
 
     public float TimeBetweenShots=1;
 
-    public AllPresetBullets allPresetBullets;
-    private GameObject EmptyBullet;
+    // public AllPresetBullets allPresetBullets;
+    private GameObject GeneralBullet;
 
     private GameObject bulletInst;
     private Coroutine coroutine=null;
@@ -19,33 +19,9 @@ public class WaveGenerator : MonoBehaviour
     void Start()
     {
       
-        EmptyBullet=GameManager.Instance.bulletDatabase.emptyBullet;
+        GeneralBullet=GameManager.Instance.bulletDatabase.GeneralBullet;
 
     }
-
-    /* public void SelectPreset(GameObject inst, AllPresetBullets presetBullets )
-    {
-        // GameObject newBullet=EmptyBullet;
-        switch (presetBullets)
-        {
-            case AllPresetBullets.Basic:
-                // newBullet.GetComponent<BaseBullets>().statsSO = 
-                inst.GetComponent<BaseBullets>().AssignSO(GameManager.Instance.bulletDatabase.ReturnBulletStatsSO("BasicBullet"));
-                inst.AddComponent<DamageEB>();
-            break;
-            case AllPresetBullets.Wave:
-                // newBullet.GetComponent<BaseBullets>().statsSO=;
-                inst.GetComponent<BaseBullets>().AssignSO(GameManager.Instance.bulletDatabase.ReturnBulletStatsSO("WaveBullet"));
-                inst.AddComponent<KnockbackEB>();
-
-            break;
-            default:
-            Debug.LogError("no tipo bala");
-            break;
-        }
-        // return newBullet;
-    } */
-    // Update is called once per frame
     void Update()
     {
         if (coroutine == null)
@@ -58,9 +34,8 @@ public class WaveGenerator : MonoBehaviour
     IEnumerator Wait2shot()
     {
         yield return new WaitForSeconds(TimeBetweenShots);
-        bulletInst=Instantiate(EmptyBullet,transform.position, quaternion.identity, null);
-        bulletInst.GetComponent<CreateBullet>().allPresetBullets=allPresetBullets;  //SelectPreset(bulletInst, allPresetBullets);
-        bulletInst.GetComponent<CreateBullet>().Activate();
+        bulletInst=Instantiate(GeneralBullet,transform.position, quaternion.identity, null);
+        bulletInst.GetComponent<CreateBullet>().Setup(false,"WaveBullet");
         coroutine=null;
     }
 

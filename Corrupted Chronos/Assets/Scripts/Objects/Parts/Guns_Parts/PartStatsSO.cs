@@ -9,21 +9,23 @@ using UnityEngine;
     This script was made to save the stats of the parts, similar to the system of the bullets, but the stats of the parts, can be definied in each
     monobehaviour, I think this is just innecesary complex 
  */
-/* 
-[Serializable]
+
+/* [Serializable]
 public struct ListParts
 {
     public string NamePart;
     public PartsStatsSO bulletStatsSO;
-}
+} */
+// public class 
 
-
-[CreateAssetMenu(menuName = "Parts/PartDatabase")]
-public class PartDatabase : ScriptableObject
+// [CreateAssetMenu(menuName = "Stats/GunBaseStatsSO")]
+public class GunBaseStatsSO : ScriptableObject
 {
-    public List<ListParts> listBaseStatsParts = new List<ListParts>();
+    Dictionary<Stat.StatTypeGun, Stat> statEachGun;
 
-    public PartsStatsSO ReturnPartStatsSO(string name)
+    // public List<ListParts> listBaseStatsParts = new List<ListParts>();
+
+    /* public PartsStatsSO ReturnPartStatsSO(string name)
     {
         PartsStatsSO partsStatsSO=null;
         foreach (var item in listBaseStatsParts)
@@ -35,9 +37,9 @@ public class PartDatabase : ScriptableObject
             }
         }
         return partsStatsSO;
-    }
+    } */
 }
-
+/* 
 [CreateAssetMenu(menuName = "Parts/PartStats")]
 public class PartsStatsSO: ScriptableObject
 {
@@ -47,11 +49,11 @@ public class PartsStatsSO: ScriptableObject
     public float t2s2;// = 1f;
     public int cargador;// = 5;
     public int contCargador;
-}
+} */
 
-[CreateAssetMenu(fileName="EscopetaStats",menuName = "Parts/EscopetaPartStats")]
-public class EscopetaStatsSO: PartsStatsSO
+[CreateAssetMenu(fileName="EscopetaStats",menuName = "Stats/EscopetaPartStats")]
+public class EscopetaStatsSO: GunBaseStatsSO
 {}
-[CreateAssetMenu(fileName="MetralletaStats",menuName = "Parts/MetralletaPartStats")]
-public class MetralletaStatsSO: PartsStatsSO
-{} */
+[CreateAssetMenu(fileName="MetralletaStats",menuName = "Stats/MetralletaPartStats")]
+public class MetralletaStatsSO: GunBaseStatsSO
+{}

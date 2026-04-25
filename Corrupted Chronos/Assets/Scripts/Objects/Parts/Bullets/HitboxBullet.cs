@@ -4,6 +4,9 @@ using UnityEngine;
 public class HitboxBullet : MonoBehaviour
 {
 
+    //name of the collider
+    // public string name;
+
     public Collider BoxCollision;
     public Collider BoxTrigger;
 
@@ -12,7 +15,7 @@ public class HitboxBullet : MonoBehaviour
 
     void Awake()
     {
-        Physics.IgnoreCollision(GetComponent<Collider>(), GetComponent<Collider>(), true);
+        // Physics.IgnoreCollision(GetComponent<Collider>(), GetComponent<Collider>(), true);
     }
     void OnCollisionEnter(Collision collision)
     {

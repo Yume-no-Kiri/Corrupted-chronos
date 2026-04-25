@@ -1,3 +1,4 @@
+using System;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,110 +12,121 @@ public enum AllEffectsBullets
 
 
 
+
 //all the effects for the bullets, someeffects could depen on other effects(holly shit)
 //to add a new collider/trigger with it's own logic make it son of AddHitboxEB
 public class EffectsBullets : MonoBehaviour
 {
-    // protected int myHitboxID=-1;
-    // protected GameObject 
+    
     protected BaseBullets baseBullets;
-    protected GameObject hitboxBulletGO;
-    protected GameObject hitboxBulletInst;
+    protected GameObject prefabHitboxBox;
+    protected GameObject prefabHitboxSphere;
 
+    public string OpposedTag;
+    public string CreatedTag;
 
+    protected GameObject hitboxUsed;
     protected virtual void Awake()
     {
         baseBullets= this.gameObject.GetComponent<BaseBullets>();
-
-        hitboxBulletGO= GameManager.Instance.bulletDatabase.hitboxBullet;// Resources.Load<GameObject>("HitboxBullet");
-
+        baseBullets.ReturnTags(out OpposedTag,out CreatedTag);
+        prefabHitboxBox= GameManager.Instance.bulletDatabase.hitboxBullet;// Resources.Load<GameObject>("HitboxBullet");
+        // hitboxBulletGOSphere= GameManager.Instance.bulletDatabase.hitboxBullet; //no implementat
     }
-    
-}
-
-
-
-#region HitboxEffects
-public class AddHitboxEB: EffectsBullets
-{
-   protected override void Awake()
+    public virtual void Setup(NameHitboxInBullet name=NameHitboxInBullet.Null)
     {
-        base.Awake();
-        hitboxBulletInst=Instantiate(hitboxBulletGO,baseBullets.gameObject.transform.position,baseBullets.gameObject.transform.rotation,baseBullets.gameObject.transform);
-        baseBullets.GetsNewID(hitboxBulletInst);
+        GameObject go;
+        if (name == NameHitboxInBullet.Null)
+        {
+            //baseBullets.getlasthitbox donarà un collider i amb collider ho faig
+            go= baseBullets.GetLastHitbox();
+            //with this
+            baseBullets.dicCollisionEnter[go]+=HitboxCollisionEnter;
+            baseBullets.dicTriggerEnter[go]+=HitboxTriggerEnter;  
+           
+        }
+        else
+        {
+            
+            go=baseBullets.GetNametHitbox(name);
 
-        baseBullets.dicCollisionEnter[hitboxBulletInst]+=HitboxCollisionEnter;
-        baseBullets.dicTriggerEnter[hitboxBulletInst]+=HitboxTriggerEnter;  
+            baseBullets.dicCollisionEnter[go]+=HitboxCollisionEnter;
+            baseBullets.dicTriggerEnter[go]+=HitboxTriggerEnter;  
+            
+        }
+        hitboxUsed=go;
     }
-
-    protected virtual void HitboxCollisionEnter(Collision collision){
-
+    protected virtual void OnDestroy()
+    {
+        baseBullets.dicCollisionEnter[hitboxUsed]-=HitboxCollisionEnter;
+        baseBullets.dicTriggerEnter[hitboxUsed]-=HitboxTriggerEnter;  
     }
-
+    protected virtual void HitboxCollisionEnter(Collision collision)
+    {
+        
+    }
     protected virtual void HitboxTriggerEnter(Collider trigger)
     {
         
     }
 
-
-    private void OnDestroy() {
-        
-        baseBullets.DeletesThisID(hitboxBulletInst);
-        //probably deletes the bullet to
-    }
 }
-public class DamageEB: AddHitboxEB
+
+
+
+#region HitboxEffects
+
+//makes the hitbox eable to do damage
+public class DamageEB: EffectsBullets
 {
+    public event Action OnImpact;
+
+
+
     protected override void Awake()
     {
         base.Awake();
-        //change size probably?
+        //gets last hitbox added, 
+
     }
+   /*  public override void Setup(NameHitboxInBullet name = NameHitboxInBullet.Null)
+    {
+       
+    } */
     //or maybe in collision and not on trigger
     protected override void HitboxTriggerEnter(Collider trigger)
     {
-        if (trigger.CompareTag("Enemy"))
+        //mayeb not only enemy also player
+        if (trigger.CompareTag(OpposedTag))
         {
             DoDamage(trigger);
         }
     }
 
-     public void DoDamage(Collider trigger)
+    public void DoDamage(Collider trigger)
     {
         Debug.Log("DO DAMAGE ENEMY");
-        
+        //get component enemy or player
+        //call method lossHealth
+        OnImpact?.Invoke();
+
     }
 }
 
-public class KnockbackEB: AddHitboxEB
+//knockback when impacted with player //easy to make a new one for the enemys
+public class KnockbackEB: EffectsBullets
 {
-
-
     protected override void Awake()
-    {
-        base.Awake();
-
-    }
-
-
+    {   base.Awake();    }
     protected override void HitboxTriggerEnter(Collider trigger)
     {
-        if (trigger.CompareTag("Player"))
+        if (trigger.CompareTag(OpposedTag))
         {
             DoKnockback(trigger);
         }
     }
-
-    public void DoKnockback(Collider trigger)
+    public virtual void DoKnockback(Collider trigger)
     {
-        /* Rigidbody rbVictima = trigger.gameObject.GetComponent<Rigidbody>();
-        if(rbVictima==null) return;
-        Vector3 direccio = trigger.transform.position - transform.position;
-        
-        direccio.y = 0; 
-        direccio = direccio.normalized;
-    
-        rbVictima.AddForce(direccio * baseBullets.statsBullet.knockback, ForceMode.Impulse); */
         CharacterController controller = trigger.GetComponent<CharacterController>();
         if(controller==null) {
             Debug.LogError("controller not found");
@@ -128,10 +140,32 @@ public class KnockbackEB: AddHitboxEB
         Vector3 direccio = trigger.transform.position - transform.position;
         shipMovement.AddKnockback(direccio,baseBullets.StatsBullet.knockback);
 
-        // Destroy(this);
-
     }
-
-
 }
+
+
+//explosion when impacted with enemy
+/* public class ExplosionEB: EffectsBullets
+{
+    protected override void Awake()
+    {
+        base.Awake();
+        baseBullets.GetComponent<DamageEB>().OnImpact+=()=> hitboxUsed.SetActive(true);//Explosion;
+    }
+    public override void Setup(NameHitboxInBullet name = NameHitboxInBullet.Null)
+    {
+        base.Setup(name);
+        hitboxUsed.SetActive(false);
+    }
+    protected override void OnDestroy() {
+        base.Awake();
+    }
+    /* public void Explosion()
+    {
+        hitboxUsed.SetActive(true);
+    } */
+
+// } */
+
+
 #endregion

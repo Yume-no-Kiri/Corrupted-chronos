@@ -11,10 +11,10 @@ using System.Linq;
 public struct InformationBullet
 {
     public int damage;
+    public float speed;
     public float penetration;
     public float distEffec;
     public float distMax;
-    public float speed;
     public float knockback;
 
     public static InformationBullet Default(BulletStatsSO so)
@@ -33,12 +33,12 @@ public struct InformationBullet
         }else{
             return new InformationBullet
             {
-                damage = so.damage,
-                penetration = so.penetration,
-                distEffec = so.distEffective,
-                distMax = so.distMax,
-                speed = so.speed,
-                knockback= so.knockback
+                damage = so.Damage,
+                penetration = so.Penetration,
+                distEffec = so.DistEffec,
+                distMax = so.DistMax,
+                speed = so.AttackSpeed,
+                knockback= so.Knockback
             };
         }
     }
@@ -80,15 +80,22 @@ public class BaseBullets : MonoBehaviour
 
     // public GameObject FirstHitboxBullet;
 
+    private string EnemyTag="Enemy";
+    private string PlayerTag="Player";
+    [HideInInspector]public string OpposedTag;
+    [HideInInspector]public string CreatedTag;
+
     public event Action OnEffectiveRange;
     public event Action OnDecliveRange;
     public event Action OnMaxRange;
+
     public Dictionary<GameObject,Action<Collision>> dicCollisionEnter = new Dictionary<GameObject,Action<Collision>>();
     public Dictionary<GameObject,Action<Collider>> dicTriggerEnter = new Dictionary<GameObject,Action<Collider>>();
 
 
 
     public List<GameObject> hitboxBullets= new List<GameObject>();
+    public Dictionary<NameHitboxInBullet, GameObject> NameHitboxBullets= new Dictionary<NameHitboxInBullet, GameObject>();
 
     // public InformationBullet StatsBullet { get => statsBullet; set => statsBullet = value; }
 
@@ -99,7 +106,12 @@ public class BaseBullets : MonoBehaviour
         spr = GetComponentInChildren<SpriteRenderer>();
 
     }
+    protected virtual void Start()
+    {
+        iniPos = this.transform.position;
+    }
 
+    #region assigners
     public void AssignSO(BulletStatsSO newBulletSO)
     {
         statsSO= newBulletSO;
@@ -110,19 +122,90 @@ public class BaseBullets : MonoBehaviour
         }
     }
 
+    public void AssignTarget(string Owner)
+    {
+        CreatedTag=Owner;
+        if (Owner == EnemyTag) {OpposedTag=PlayerTag;}
+        else { OpposedTag=PlayerTag; }
+    }
+    public void DefinirBala(int nouMalBala, float distancia)
+    {
+        // Debug.Log($"mal0 {mal} naumal0{nouMalBala}");
+        // StatsBullet.damage+= nouMalBala;
+        StatsBullet.PlusDamage(nouMalBala);
+        // StatsBullet.damage += nouMalBala;
+        StatsBullet.PlusDistMaz( distancia);
+        //Debug.Log($"mal1 {mal} naumal1{nouMalBala}");
+
+    }
+    #endregion
+
+    #region returners
+    public GameObject GetLastHitbox()
+    {
+        return hitboxBullets.Last();
+    }
+ 
+    public GameObject GetNametHitbox(NameHitboxInBullet name)
+    {
+        if (NameHitboxBullets.ContainsKey(name))
+        {
+            return NameHitboxBullets[name];
+        }
+        else
+        {
+            throw new Exception("no existe {name.ToString} hitbox");
+        }
+    }
+    public int ReturnDamage()
+    {
+        return StatsBullet.damage;
+    }
+
+    public void ReturnTags(out string opposedTag,out string createdTag)
+    {
+        opposedTag=OpposedTag;
+        createdTag=CreatedTag;
+    }
+    #endregion
+
     #region add effect collider
-    public void GetsNewID(GameObject Hitbox)
+    public void GetsNewID(GameObject Hitbox, NameHitboxInBullet name)
     {
         //centrilized colliders reciever
         /*An effect bullet creates a new htibox and sents (OnCollisionEnterHitbox, OnTriggerEnterHitbox) when detect something,
         this script recieve it and send (dicCollisionEnter[hitbox.gameObject], dicTriggerEnter[hitbox.gameObject]),
-        the effect bullet that created the new hitbox recieve (dicCollisionEnter[hitbox.gameObject], dicTriggerEnter[hitbox.gameObject])
-        and does what it should do
+        multiple effect bullets can be subscirved to the same collider
+        some of this more important colliders are saves with a name, in a dictionary 
         */
 
         HitboxBullet newScript= Hitbox.GetComponent<HitboxBullet>();
         hitboxBullets.Add(Hitbox);
+        if (!NameHitboxBullets.ContainsKey(name))
+        {
+            //segons els noms fer diferentes coses
+            NameHitboxBullets.Add(name, Hitbox);
+            switch (name)
+            {
+                case NameHitboxInBullet.Null:
+                    Debug.LogError("this shouldn't happen");
+                    break;
+                /* case NameHitboxInBullet.AfterDeath:
+                    Hitbox.SetActive(false);
+                    break;*/
+                default: 
+                break;
+            }
 
+        }
+        else
+        {
+            Hitbox.transform.SetParent(NameHitboxBullets[name].transform);
+            Debug.LogError("revisar això pot ser problema");
+            //perque ja existeix un collider per això, pot ser innecesari
+        }
+
+        //revisar això
         dicCollisionEnter[Hitbox] = delegate { };
         dicTriggerEnter[Hitbox] = delegate { };
        
@@ -157,19 +240,12 @@ public class BaseBullets : MonoBehaviour
         Destroy(Hitbox);
 
     }
+
+
     #endregion 
 
-    //should change and upgrade this funciton with what it needs the next modular effects for the bullets
-   /*  public void addNewHitboxBullet(HitboxBullet newHitboxBullet){
-        hitboxBullets.Add( newHitboxBullet); 
-    } */
-    
 
-    protected virtual void Start()
-    {
-        iniPos = this.transform.position;
-    }
-
+    #region invokers
     protected void FixedUpdate()
     {
         // if(StatsBullet==null) return;
@@ -193,8 +269,6 @@ public class BaseBullets : MonoBehaviour
             // Debug.LogWarning("SHOULD DELETE BULLET");
         }
     }
-    
-
     protected virtual void AwayDistMax(float distance)
     {
         Destroy(this.gameObject);
@@ -206,28 +280,9 @@ public class BaseBullets : MonoBehaviour
         //reduction damage or something
     }
 
-    public int ReturnDamage()
-    {
-        return StatsBullet.damage;
-    }
-    public void DefinirBala(int nouMalBala, float distancia)
-    {
-        // Debug.Log($"mal0 {mal} naumal0{nouMalBala}");
-        // StatsBullet.damage+= nouMalBala;
-        StatsBullet.PlusDamage(nouMalBala);
-        // StatsBullet.damage += nouMalBala;
-        StatsBullet.PlusDistMaz( distancia);
-        //Debug.Log($"mal1 {mal} naumal1{nouMalBala}");
+    #endregion
 
-    }
-    
-    public void DefinirBala(InformationBullet statsBase)
-    {
-        // Debug.Log($"mal0 {mal} naumal0{nouMalBala}");
 
-        StatsBullet=statsBase;
-        //Debug.Log($"mal1 {mal} naumal1{nouMalBala}");
-    }  
 }
 
 

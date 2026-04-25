@@ -44,34 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7e21a81635eefe45aae6211f052dd7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::statsManager
-  stats:
-  - name: 0
-    baseValue: 100
-    currentValue: 0
-    additive: []
-    multiplicative: []
-    exponent: []
-  - name: 1
-    baseValue: 20
-    currentValue: 0
-    additive: []
-    multiplicative: []
-    exponent: []
-  - name: 2
-    baseValue: 5
-    currentValue: 0
-    additive: []
-    multiplicative: []
-    exponent: []
-  - name: 3
-    baseValue: 5
-    currentValue: 0
-    additive: []
-    multiplicative: []
-    exponent: []
-  - name: 4
-    baseValue: 5
-    currentValue: 0
-    additive: []
-    multiplicative: []
-    exponent: []
+  dadesBase: {fileID: 11400000, guid: b6ce49d920fb114419483a619783f222, type: 2}

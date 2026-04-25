@@ -16,8 +16,6 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
    
-
-
     [Header("player v2 variables:")]
     [SerializeField] 
     private bool StartAsPilot = true;

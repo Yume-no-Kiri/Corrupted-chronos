@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2578536099165887941}
   - component: {fileID: 2148214401149206334}
-  - component: {fileID: 8111356177590477323}
-  - component: {fileID: 5022796837851332598}
+  - component: {fileID: -3182990587739028491}
+  - component: {fileID: 4218120752122259673}
   m_Layer: 8
-  m_Name: HitboxBullet
+  m_Name: HitboxBulletSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,10 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7524b496abccea94d93ab8c1ec4f501b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HitboxBullet
-  BoxCollision: {fileID: 8111356177590477323}
-  BoxTrigger: {fileID: 5022796837851332598}
---- !u!65 &8111356177590477323
-BoxCollider:
+  BoxCollision: {fileID: -3182990587739028491}
+  BoxTrigger: {fileID: 4218120752122259673}
+--- !u!135 &-3182990587739028491
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -67,10 +67,10 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5, y: 0.5, z: 1}
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &5022796837851332598
-BoxCollider:
+--- !u!135 &4218120752122259673
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -88,5 +88,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.6, y: 0.6, z: 1.2}
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
