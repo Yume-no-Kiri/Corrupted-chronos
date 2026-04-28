@@ -24,13 +24,18 @@ public class EffectsBullets : MonoBehaviour
 
     public string OpposedTag;
     public string CreatedTag;
+    public bool IsFromPlayer;
 
     protected GameObject hitboxUsed;
+
+    public AllInformationBullet AllInfoBullet{get; private set;}
+    
     protected virtual void Awake()
     {
         baseBullets= this.gameObject.GetComponent<BaseBullets>();
-        baseBullets.ReturnTags(out OpposedTag,out CreatedTag);
-        prefabHitboxBox= GameManager.Instance.bulletDatabase.hitboxBullet;// Resources.Load<GameObject>("HitboxBullet");
+        baseBullets.ReturnTags(out OpposedTag,out CreatedTag, out IsFromPlayer);
+        prefabHitboxBox= statsManager.instance.listBulletStats.hitboxBullet;// Resources.Load<GameObject>("HitboxBullet");
+        AllInfoBullet= baseBullets.ReturnFinalStats();
         // hitboxBulletGOSphere= GameManager.Instance.bulletDatabase.hitboxBullet; //no implementat
     }
     public virtual void Setup(NameHitboxInBullet name=NameHitboxInBullet.Null)
@@ -127,6 +132,10 @@ public class KnockbackEB: EffectsBullets
     }
     public virtual void DoKnockback(Collider trigger)
     {
+        
+
+        //Modifify this, a script with a knockback, recieve damage, and other methods similars, and enemy and player have it,
+        //this gets the script and do the stuff
         CharacterController controller = trigger.GetComponent<CharacterController>();
         if(controller==null) {
             Debug.LogError("controller not found");
@@ -138,14 +147,35 @@ public class KnockbackEB: EffectsBullets
             return;
         }
         Vector3 direccio = trigger.transform.position - transform.position;
-        shipMovement.AddKnockback(direccio,baseBullets.StatsBullet.knockback);
+        shipMovement.AddKnockback(direccio,AllInfoBullet.StatsBullet[Stat.StatTypeBullet.Knockback]);
 
     }
 }
 
 
+
+public class FollowOpposedEB: EffectsBullets
+{
+    
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
+    protected override void HitboxTriggerEnter(Collider trigger)
+    {
+
+        if (trigger.CompareTag(OpposedTag))
+        {
+            
+        }
+    }
+
+
+}
+/* 
 //explosion when impacted with enemy
-/* public class ExplosionEB: EffectsBullets
+public class ExplosionEB: EffectsBullets
 {
     protected override void Awake()
     {

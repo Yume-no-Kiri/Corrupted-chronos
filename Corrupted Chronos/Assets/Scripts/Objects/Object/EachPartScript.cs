@@ -97,7 +97,10 @@ public class EachPartScript : MonoBehaviour
         }
         
     }
-
+    public string returnName()
+    {
+        return typeName;
+    }
     public int ReturnIDP()
     {
         return IDPtoGive;

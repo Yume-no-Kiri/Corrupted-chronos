@@ -7,7 +7,8 @@ public enum NameHitboxInBullet
     Body,
     Tail, 
     AfterDeath, //have travelled and don't impacted
-    AfterImpact //have travelled and impacted
+    AfterImpact, //have travelled and impacted
+    Detectors
 }
 
 public class AddHitboxList : MonoBehaviour
@@ -27,6 +28,10 @@ public class AddHitboxEB: EffectsBullets
         hitboxUsed=Instantiate(prefabHitboxBox,baseBullets.gameObject.transform.position,baseBullets.gameObject.transform.rotation,baseBullets.gameObject.transform);
         baseBullets.GetsNewID(hitboxUsed, name);
 
+        if (name==NameHitboxInBullet.Detectors)
+        {
+            hitboxUsed.GetComponent<HitboxBullet>().DeactivateCollider();
+        }
        /*  baseBullets.dicCollisionEnter[hitboxBulletInst]+=HitboxCollisionEnter;
         baseBullets.dicTriggerEnter[hitboxBulletInst]+=HitboxTriggerEnter;  */ 
     }

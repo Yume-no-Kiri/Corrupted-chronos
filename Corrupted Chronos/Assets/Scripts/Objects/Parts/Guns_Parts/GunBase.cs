@@ -18,17 +18,17 @@ public enum TypePart
     
 }
 [Serializable]
-public struct InformationPart
+/* public struct InformationPart
 {
     //start capa1
-    public InformationBullet informationBullet;
-    public float timeBetweenShots;// = 1f;
+    public InformationBullet informationBullet; */
+    /* public float timeBetweenShots;// = 1f;
     public float magazine;
     public float accuraccy;
     
     public float t2s2;// = 1f;
     public int cargador;// = 5;
-    public int contCargador;// = 5;
+    public int contCargador;// = 5; */
 
     // public float timeBetweenShots;
 
@@ -49,7 +49,7 @@ public struct InformationPart
     } */
 
     //més variables de part
-}
+// }
 
 
 //classe general, del que venen les diferents parts, revisar en un futur
@@ -66,15 +66,19 @@ public class GunBase : AllObjectMB
 
     protected List<Transform> firepoint= new List<Transform>();
     protected GameObject bulletPrefab;
-    public string NameStatsPrefab;
+    public string NameStatsBullet;
 
     // protected VisualEffect shoot_vfx;
     // protected List<AllEffectsBullets> addedEffects= new List<AllEffectsBullets>();
     protected List<EffectsAdd> addedEffects= new List<EffectsAdd>();
 
     protected bool canShot = true;
+
+    protected AllInformationBullet BaseStatsBullet;
      
-    public InformationPart StatsGun;
+    // public InformationPart StatsGun;
+
+    // Dictionary<Stat.StatTypeGun, Stat> NewStatsGun;
 
     // hauriem de tenir algo per l'inventari
 
@@ -99,7 +103,14 @@ public class GunBase : AllObjectMB
         
         throw new System.NotImplementedException();
     }
+    protected void DefineBulletStats(){
+        AllInformationBullet? allInformationBullet= statsManager.instance.listBulletStats.ReturnBulletStatsSO(NameStatsBullet);
 
+        if (allInformationBullet != null)
+        {
+            BaseStatsBullet= allInformationBullet.Value;  
+        }else Debug.LogError("bullet not found");
+    }
     public void PassVariables(Transform firepoint,GameObject bulletPrefab)
     {
         this.firepoint.Add(firepoint);
@@ -110,8 +121,11 @@ public class GunBase : AllObjectMB
     public void CreateBullet(Vector3 spawnPoint, quaternion rotation)
     {
         //crear bullet prefab
+        AllInformationBullet finalStats= statsManager.instance.ReturnFinalStatsBullet(IDP, BaseStatsBullet);
+        
+
         bulletInstance.Add(Instantiate(bulletPrefab, spawnPoint, rotation));
-        bulletInstance.Last().GetComponent<CreateBullet>().Setup(true,NameStatsPrefab);
+        bulletInstance.Last().GetComponent<CreateBullet>().Setup(true,finalStats);
         //afegir effectes de items
         foreach (var item in addedEffects)
         {
@@ -144,16 +158,17 @@ public class Metralleta : GunBase
     protected override void OnEnable()
     {
         ObjectNameID="MetralletaObject";
-        NameStatsPrefab="BasicBullet";
+        NameStatsBullet="BasicBullet";
+        DefineBulletStats();
     }
 
     void Awake()
     {
-        StatsGun.timeBetweenShots = 0.25f;
+        /* StatsGun.timeBetweenShots = 0.25f;
         StatsGun.t2s2=0;
         StatsGun.cargador = -1;
         StatsGun.contCargador=-1;
-        StatsGun.informationBullet=InformationBullet.Default(null);
+        StatsGun.informationBullet=InformationBullet.Default(null); */
         
         // public int contCargador = 5;
         
@@ -188,8 +203,8 @@ public class Metralleta : GunBase
             CreateBullet(item.position,rotationWithOffset);
 
             // bulletInstanceInstantiate(bulletPrefab, firepoint.position, rotationWithOffset);
-            BaseBullets bulletInfo = bulletInstance.Last().GetComponent<BaseBullets>();
-            bulletInfo.DefinirBala(1, +3);
+            // BaseBullets bulletInfo = bulletInstance.Last().GetComponent<BaseBullets>();
+            // bulletInfo.DefinirBala(1, +3);
             
             bulletInstance= new List<GameObject>();
         }
@@ -201,7 +216,7 @@ public class Metralleta : GunBase
         
         canShot = false;
         //Debug.Log($"t2s: {t2s-t2s %PlayerStats.CooldownBalaJugador}");
-        yield return new WaitForSeconds(StatsGun.timeBetweenShots);
+        yield return new WaitForSeconds(statsManager.instance.GetShipGunBulletStat(Stat.StatTypeGeneral.TimeBetweenShots, IDP, BaseStatsBullet));// StatsGun.timeBetweenShots);
         canShot = true;
     }
     
@@ -213,17 +228,19 @@ public class Escopeta : GunBase
     protected override void OnEnable()
     {
         ObjectNameID="EscopetaObject";
-        NameStatsPrefab="BasicBullet";
+        NameStatsBullet="BasicBullet";
+        DefineBulletStats();
+
     }
 
     void Awake()
     {
-        StatsGun.timeBetweenShots = 1f;
+        /* StatsGun.timeBetweenShots = 1f;
         StatsGun.t2s2=0;
         StatsGun.cargador = -1;
         StatsGun.contCargador=-1;
         StatsGun.informationBullet=InformationBullet.Default(null);
-
+ */
         typePart= TypePart.ShootableRight;
     }
 
@@ -278,7 +295,7 @@ public class Escopeta : GunBase
         } */
         
         canShot = false;
-        yield return new WaitForSeconds(StatsGun.timeBetweenShots);
+        yield return new WaitForSeconds(statsManager.instance.GetShipGunBulletStat(Stat.StatTypeGeneral.TimeBetweenShots, IDP, BaseStatsBullet));
         canShot = true;
     }   
 }

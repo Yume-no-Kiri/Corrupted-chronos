@@ -12,7 +12,9 @@ public class GameManager : MonoBehaviour
     public AllObjectsDataBase allObjectsDataBase;
     public TakableDataBase takableDataBase;
     public PlacementDatabaseSO placementDataBase;
-    public BulletDatabase bulletDatabase;
+
+    // [Header ("Stats")]
+    // public ListPartStats partDatabase;
 
     [Header("Manager")]
     // public GameObject HitboxBulletPrefab;

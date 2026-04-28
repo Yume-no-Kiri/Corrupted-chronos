@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4783677293229633617}
   - component: {fileID: 4080332700811385721}
+  - component: {fileID: 3991987869386337423}
+  - component: {fileID: 3241525284459898178}
   m_Layer: 0
   m_Name: StatsManager
   m_TagString: Untagged
@@ -45,3 +47,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::statsManager
   dadesBase: {fileID: 11400000, guid: b6ce49d920fb114419483a619783f222, type: 2}
+  <listPartStats>k__BackingField: {fileID: 3991987869386337423}
+  <listBulletStats>k__BackingField: {fileID: 3241525284459898178}
+--- !u!114 &3991987869386337423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3225840522299087944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b8d562ef042fb3489a7f350794db50d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PartsStatsSO
+  listStatsGuns:
+  - NameGun: Escopeta
+    gunStatsSO: {fileID: 11400000, guid: 940007e2617f3df408d5914568b422e3, type: 2}
+  - NameGun: Metralleta
+    gunStatsSO: {fileID: 11400000, guid: 9952c088c6070fd48acde196bdf300da, type: 2}
+--- !u!114 &3241525284459898178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3225840522299087944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43ad01d1292f3a844a7a7ea800f53169, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ListBulletStats
+  GeneralBullet: {fileID: 8735485520253785074, guid: dd9dd7e0bda9d634dab941c77780f51e, type: 3}
+  hitboxBullet: {fileID: 3453512002583704404, guid: 97140fe1604de0643a4d101182c4d60d, type: 3}
+  auxListStatsBullets:
+  - NameBullet: BasicBullet
+    bulletStatsSO: {fileID: 11400000, guid: d8fc3bd9b01731a4ba2cb484327156db, type: 2}
+  - NameBullet: WaveBullet
+    bulletStatsSO: {fileID: 11400000, guid: c43793c5b6f233847bbc0d64c0473fa3, type: 2}
+  - NameBullet: RedWaveBullet
+    bulletStatsSO: {fileID: 11400000, guid: fbb44f64c573d2446b14da83101cedff, type: 2}

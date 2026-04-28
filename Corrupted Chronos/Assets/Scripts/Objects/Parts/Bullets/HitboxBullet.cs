@@ -32,5 +32,10 @@ public class HitboxBullet : MonoBehaviour
         BoxTrigger.transform.localScale=size;
     }
 
+    public void DeactivateCollider()
+    {
+        BoxCollision.enabled=false;
+    }
+
     //probably methods to change the boxCollision and boxCollider parameters
 }

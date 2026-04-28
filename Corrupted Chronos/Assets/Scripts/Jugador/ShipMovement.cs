@@ -22,7 +22,7 @@ public class ShipMovement : MonoBehaviour
 
 
     // [Header("Movement")]
-    private float moveSpeed;
+    // private float moveSpeed;
     // [SerializeField] private float boostMultiplier = 2f;
 
     [Header("Smoothing")]
@@ -92,7 +92,7 @@ public class ShipMovement : MonoBehaviour
 
     private void ReadInput()
     {
-        moveSpeed=GameManager.Instance.moveSpeedNau;
+        // moveSpeed=GameManager.Instance.moveSpeedNau;
         Vector2 inputMove=Vector2.zero;
         Debug.Log("ss Do you enter");
         if (moveAction != null)
@@ -150,7 +150,7 @@ public class ShipMovement : MonoBehaviour
 
     private void ApplyMovement()
     {
-        Vector3 finalVelocity = currentMoveVector * moveSpeed * currentSpeedMultiplier+externalForce;
+        Vector3 finalVelocity = currentMoveVector * statsManager.instance.GetShipStat(Stat.StatTypeGeneral.Speed) * currentSpeedMultiplier+externalForce;
 
 
         controller.Move(finalVelocity * Time.deltaTime);

@@ -8,7 +8,7 @@ using System.Linq;
 //potser canviar-li el nom
 
 //classe general, del que venen els diferents projectils, revisar en un futur
-public struct InformationBullet
+/* public struct InformationBullet
 {
     public int damage;
     public float speed;
@@ -41,7 +41,7 @@ public struct InformationBullet
                 knockback= so.Knockback
             };
         }
-    }
+    } */
 
    /*  public static InformationBullet empty()
     {
@@ -56,7 +56,7 @@ public struct InformationBullet
         }
     } */
 
-    public void PlusDamage(int nouMal)
+   /*  public void PlusDamage(int nouMal)
     {
         damage+=nouMal;
     }
@@ -64,7 +64,7 @@ public struct InformationBullet
     {
         distMax+=dist;
     }
-}
+} */
 
 
 public class BaseBullets : MonoBehaviour
@@ -75,8 +75,8 @@ public class BaseBullets : MonoBehaviour
     private Rigidbody rb;
     private SpriteRenderer spr;
 
-    public InformationBullet StatsBullet{get; private set;}
-    [HideInInspector] public BulletStatsSO statsSO;
+    public AllInformationBullet AllInfoBullet{get; private set;}
+    // [HideInInspector] public Dictionary<Stat.StatTypeBullet, Stat> statsSO;
 
     // public GameObject FirstHitboxBullet;
 
@@ -84,6 +84,7 @@ public class BaseBullets : MonoBehaviour
     private string PlayerTag="Player";
     [HideInInspector]public string OpposedTag;
     [HideInInspector]public string CreatedTag;
+    private bool fromPlayer;
 
     public event Action OnEffectiveRange;
     public event Action OnDecliveRange;
@@ -101,7 +102,7 @@ public class BaseBullets : MonoBehaviour
 
     private void Awake()
     {
-        
+        AllInfoBullet=new AllInformationBullet();
         rb = GetComponent<Rigidbody>();
         spr = GetComponentInChildren<SpriteRenderer>();
 
@@ -112,32 +113,32 @@ public class BaseBullets : MonoBehaviour
     }
 
     #region assigners
-    public void AssignSO(BulletStatsSO newBulletSO)
+    public void AssignSO(AllInformationBullet newBulletSO)
     {
-        statsSO= newBulletSO;
-        StatsBullet = InformationBullet.Default(statsSO);
-        if (statsSO.sprite != null)
+        // statsSO= newBulletSO.StatsBullet;
+        AllInfoBullet=newBulletSO;
+        // StatsBullet = AllInformationBullet.Default(statsSO);
+        if (AllInfoBullet.sprite != null)
         {
-            spr.sprite = statsSO.sprite;
+            spr.sprite = AllInfoBullet.sprite;
         }
+        newBulletSO.Debuger();
+
     }
 
     public void AssignTarget(string Owner)
     {
         CreatedTag=Owner;
-        if (Owner == EnemyTag) {OpposedTag=PlayerTag;}
-        else { OpposedTag=PlayerTag; }
+        if (Owner == EnemyTag) {
+            OpposedTag=PlayerTag;
+            fromPlayer=false;
+        }
+        else {
+            OpposedTag=EnemyTag;
+            fromPlayer=true;
+        }
     }
-    public void DefinirBala(int nouMalBala, float distancia)
-    {
-        // Debug.Log($"mal0 {mal} naumal0{nouMalBala}");
-        // StatsBullet.damage+= nouMalBala;
-        StatsBullet.PlusDamage(nouMalBala);
-        // StatsBullet.damage += nouMalBala;
-        StatsBullet.PlusDistMaz( distancia);
-        //Debug.Log($"mal1 {mal} naumal1{nouMalBala}");
 
-    }
     #endregion
 
     #region returners
@@ -157,15 +158,16 @@ public class BaseBullets : MonoBehaviour
             throw new Exception("no existe {name.ToString} hitbox");
         }
     }
-    public int ReturnDamage()
+    public float ReturnDamage()
     {
-        return StatsBullet.damage;
+        return AllInfoBullet.StatsBullet[Stat.StatTypeBullet.Damage];
     }
 
-    public void ReturnTags(out string opposedTag,out string createdTag)
+    public void ReturnTags(out string opposedTag,out string createdTag, out bool isFromPlayer)
     {
         opposedTag=OpposedTag;
         createdTag=CreatedTag;
+        isFromPlayer= fromPlayer;
     }
     #endregion
 
@@ -248,26 +250,30 @@ public class BaseBullets : MonoBehaviour
     #region invokers
     protected void FixedUpdate()
     {
-        // if(StatsBullet==null) return;
-        Debug.LogWarning("statsbullet speed:"+StatsBullet.speed);
-        rb.linearVelocity = transform.forward * StatsBullet.speed;
-        float distance = Vector3.Distance(iniPos, this.transform.position);
-        //Debug.Log("Distance: " + distance +"__iniPos: "+iniPos+ "__transform.position: " + this.transform.position);
-        if(distance< StatsBullet.distEffec)
+        if(!AllInfoBullet.IsEmpty())
         {
-            OnEffectiveRange?.Invoke();
+            // if(StatsBullet==null) return;
+            Debug.LogWarning("statsbullet speed:"+AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSpeed]);
+            rb.linearVelocity = transform.forward * AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSpeed];
+            float distance = Vector3.Distance(iniPos, this.transform.position);
+            //Debug.Log("Distance: " + distance +"__iniPos: "+iniPos+ "__transform.position: " + this.transform.position);
+            if(distance< AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistEffec])
+            {
+                OnEffectiveRange?.Invoke();
 
-        }else if(distance> StatsBullet.distEffec&& distance < StatsBullet.distMax)
-        {
-            //should pass how far are we from distEffect?
-            OnDecliveRange?.Invoke();
-        } else if(distance > StatsBullet.distMax)
-        {
-            OnMaxRange?.Invoke();
-            //should pass how far are we from distMax?
-            AwayDistMax(distance);
-            // Debug.LogWarning("SHOULD DELETE BULLET");
+            }else if(distance> AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistEffec]&& distance < AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistMax])
+            {
+                //should pass how far are we from distEffect?
+                OnDecliveRange?.Invoke();
+            } else if(distance > AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistMax])
+            {
+                OnMaxRange?.Invoke();
+                //should pass how far are we from distMax?
+                AwayDistMax(distance);
+                // Debug.LogWarning("SHOULD DELETE BULLET");
+            }
         }
+     
     }
     protected virtual void AwayDistMax(float distance)
     {
@@ -278,6 +284,11 @@ public class BaseBullets : MonoBehaviour
     protected virtual void AwayDistEffec (float distance)
     {
         //reduction damage or something
+    }
+
+    public AllInformationBullet ReturnFinalStats()
+    {
+        return AllInfoBullet;
     }
 
     #endregion

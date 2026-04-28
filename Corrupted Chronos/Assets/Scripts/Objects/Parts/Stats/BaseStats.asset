@@ -10,24 +10,36 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: BasicStats
-  m_EditorClassIdentifier: Assembly-CSharp::BasicStatsSO
-  sprite: {fileID: 21300000, guid: 64f2e000382566d44b5fdc32a28c2d3c, type: 3}
-  Effects:
-  - nameEffect: AddHitboxEB
-    setup: 2
-  - nameEffect: DamageEB
-    setup: 2
-  BulletStats:
+  m_Name: BaseStats
+  m_EditorClassIdentifier: Assembly-CSharp::BaseStatsSO
+  defaultStats:
   - type: 0
-    value: 10
+    value: 100
   - type: 1
-    value: 10
+    value: 50
   - type: 2
-    value: -1
+    value: 5
   - type: 3
     value: 10
   - type: 4
-    value: 15
+    value: 10
   - type: 5
+    value: -1
+  - type: 6
+    value: 2
+  - type: 7
+    value: -1
+  - type: 8
+    value: 0
+  - type: 9
+    value: 0
+  - type: 10
+    value: 0
+  - type: 11
+    value: -1
+  - type: 12
+    value: 0
+  - type: 13
+    value: 0
+  - type: 14
     value: 0

@@ -370,12 +370,15 @@ public class PlacementSystem : MonoBehaviour
         //maybe move into allobject
         _selectedObject.AssignIDP(thisIdp);
         if(!firstStructure){      
-           partToAdd.GetComponent<EachPartScript>().AssignIDP(thisIdp);
-           GameManager.Instance.playerInstance.GetComponent<InventoryManager>().CreateInventory(thisIdp);
+            partToAdd.GetComponent<EachPartScript>().AssignIDP(thisIdp);
+            GameManager.Instance.playerInstance.GetComponent<InventoryManager>().CreateInventory(thisIdp);
+            Debug.Log("what is partadded:"+partToAdd.name.ToString());
+            statsManager.instance.CreateStatsGun(partToAdd.GetComponent<EachPartScript>().returnName() ,thisIdp);
+            //
             //also creates inventory
         }
-        //should add thisIdp to information of the part
 
+        //stuff witht the stats
 
         partAdder.AddPart(partToAdd,grid.CellToWorld(gridPosition),partToAdd.transform.localRotation, thisIdp );
         // Debug.Log("placestructure position adding nau:"+gridPosition);    

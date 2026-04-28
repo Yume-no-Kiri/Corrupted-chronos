@@ -12,10 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: RedWaveStats
   m_EditorClassIdentifier: Assembly-CSharp::RedWaveStatsSO
-  sprite: {fileID: 0}
-  Damage: 10
-  AttackSpeed: 7
-  Penetration: 5
-  DistEffec: 10
-  DistMax: 15
-  Knockback: 10
+  sprite: {fileID: 21300000, guid: 15b75ac4df3c7c94c9ece0e241ff0aed, type: 3}
+  Effects:
+  - nameEffect: AddHitboxEB
+    setup: 2
+  - nameEffect: KnockbackEB
+    setup: 2
+  - nameEffect: DamageEB
+    setup: 2
+  BulletStats:
+  - type: 0
+    value: 10
+  - type: 1
+    value: 10
+  - type: 2
+    value: -1
+  - type: 3
+    value: 10
+  - type: 4
+    value: 15
+  - type: 5
+    value: 10

@@ -19,7 +19,7 @@ public class WaveGenerator : MonoBehaviour
     void Start()
     {
       
-        GeneralBullet=GameManager.Instance.bulletDatabase.GeneralBullet;
+        GeneralBullet=statsManager.instance.listBulletStats.GeneralBullet;
 
     }
     void Update()

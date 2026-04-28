@@ -3,25 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
-
-/* Explication: CAME AND RETHINK OF THIS LATER
-    This script was made to save the stats of the parts, similar to the system of the bullets, but the stats of the parts, can be definied in each
-    monobehaviour, I think this is just innecesary complex 
- */
-
-/* [Serializable]
-public struct ListParts
+public class PartBaseStatsSO : ScriptableObject
 {
-    public string NamePart;
-    public PartsStatsSO bulletStatsSO;
-} */
-// public class 
+    [Serializable]
+    public struct StatInit
+    {
+        public Stat.StatTypeGun type;
+        public float value;
+    }
 
-// [CreateAssetMenu(menuName = "Stats/GunBaseStatsSO")]
-public class GunBaseStatsSO : ScriptableObject
-{
-    Dictionary<Stat.StatTypeGun, Stat> statEachGun;
+    public List<StatInit> GunStats;
+
+
+    private void Reset()
+    {
+        var names = System.Enum.GetValues(typeof(Stat.StatTypeGun));
+        GunStats = new List<StatInit>();
+
+        foreach (Stat.StatTypeGun t in names)
+        {
+            GunStats.Add(new StatInit { type = t, value = 0 });
+        }
+    }
 
     // public List<ListParts> listBaseStatsParts = new List<ListParts>();
 
@@ -52,8 +55,8 @@ public class PartsStatsSO: ScriptableObject
 } */
 
 [CreateAssetMenu(fileName="EscopetaStats",menuName = "Stats/EscopetaPartStats")]
-public class EscopetaStatsSO: GunBaseStatsSO
+public class EscopetaStatsSO: PartBaseStatsSO
 {}
 [CreateAssetMenu(fileName="MetralletaStats",menuName = "Stats/MetralletaPartStats")]
-public class MetralletaStatsSO: GunBaseStatsSO
+public class MetralletaStatsSO: PartBaseStatsSO
 {}
