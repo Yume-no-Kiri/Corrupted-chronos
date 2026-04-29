@@ -63,10 +63,21 @@ public class statsManager : MonoBehaviour
 
     public void CreateStatsGun(string name, int idp)
     {
-        Dictionary<Stat.StatTypeGun, Stat> newStats= listPartStats.ReturnStatsByName(name);
-        if(newStats!= new Dictionary<Stat.StatTypeGun, Stat>())
+        Dictionary<Stat.StatTypeGun, Stat> baseStats= listPartStats.ReturnStatsByName(name);
+        if (baseStats != null && baseStats.Count > 0)
         {
-            statEachGun[idp]=newStats;
+            Dictionary<Stat.StatTypeGun, Stat> independentStats = new Dictionary<Stat.StatTypeGun, Stat>();
+
+            foreach (var kvp in baseStats)
+            {
+                //creem una copia de les stats base, si no, modiifcariem les stats/*  */
+                independentStats[kvp.Key] = new Stat {
+                    name = kvp.Value.name,
+                    baseValue = kvp.Value.baseValue,
+                    currentValue = kvp.Value.baseValue
+                };
+            }
+            statEachGun[idp] = independentStats;
         }
         else {Debug.LogError("don't found gun stats");}
     }
@@ -82,9 +93,39 @@ public class statsManager : MonoBehaviour
         return 0f;
     }
 
-    public void RemoveModifier() { 
+    public void RemoveModifier(Stat.StatTypeGeneral type, StatModifier mod)
+    {
+        if (statLookup.TryGetValue(type, out var stat))
+        {
+            stat.removeModifier(mod);
+        }
     }
 
+    public float AddModifier(int modifyIDP, Stat.StatTypeGun type, StatModifier mod)
+    {
+        if(statEachGun.TryGetValue(modifyIDP, out var gun )){
+            if (gun.TryGetValue(type, out var stat))
+            {
+                return stat.AddModifier(mod);
+            }
+        }
+        Debug.LogWarning($"Stat {type} not found");
+        return 0f;
+    }
+    public void RemoveModifier(int modifyIDP, Stat.StatTypeGun type, StatModifier mod)
+    {
+        if (statEachGun.TryGetValue(modifyIDP, out var gunStats))
+        {
+            if (gunStats.TryGetValue(type, out var stat))
+            {
+                stat.removeModifier(mod);
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"No es pot treure el modificador: ID d'arma {modifyIDP} no trobada.");
+        }
+    }
     /* ia diu:
     Si aquest mètode es crida moltes vegades (per exemple, cada cop que dispares), fer ToString() i TryParse és una mica costós.
      Una solució més professional seria crear un Diccionari de traducció estàtic un sol cop:
@@ -197,9 +238,10 @@ public class statsManager : MonoBehaviour
     {
         float finalValue=0;
         if (statLookup.TryGetValue(type, out var stat1))
-            {
-                finalValue+= stat1.currentValue;}
-                Debug.Log("stats ShipGunBullet "+ type+" base:"+stat1.currentValue+" finalValue:"+finalValue);
+        {
+            finalValue+= stat1.currentValue;
+        }
+        Debug.Log("stats ShipGunBullet "+ type+" idp:"+idp+ " base:"+stat1.currentValue+" finalValue:"+finalValue);
 
         if(statEachGun.ContainsKey(idp)){
             // if(StatExistsGun(type)) {
@@ -209,7 +251,7 @@ public class statsManager : MonoBehaviour
                 {
 
                     finalValue+= stat2.currentValue;
-                    Debug.Log("stats ShipGunBullet "+ type+" gun:"+stat2.currentValue+ " finalValue:"+finalValue);
+                    Debug.Log("stats ShipGunBullet "+ type+" idp:"+idp+" gun:"+stat2.currentValue+ " finalValue:"+finalValue);
 
                 }
             }
@@ -222,12 +264,12 @@ public class statsManager : MonoBehaviour
             {
 
                 finalValue+=stat3; //no se modifica les dades de les bullets
-                Debug.Log("stats ShipGunBullet "+ type+" bullet:"+stat3+ " finalValue:"+finalValue);
+                Debug.Log("stats ShipGunBullet "+ type+" idp:"+idp+" bullet:"+stat3+ " finalValue:"+finalValue);
 
             }
         }
         // Debug.LogWarning($"Stat {type} not found");
-        Debug.Log("stats ShipGunBullet "+ type+" final:"+finalValue);
+        Debug.Log("stats ShipGunBullet "+ type+" idp:"+idp+" final:"+finalValue);
 
         return finalValue;
     }
@@ -368,6 +410,14 @@ public class StatModifier
     public ModifierType type;
     public float value;
     public object source;
+    public StatModifier(float value, ModifierType type, object source = null)
+    {
+        this.value = value;
+        this.type = type;
+        this.source = source;
+    }
+
+    
 }
 [CreateAssetMenu(fileName = "BaseStats", menuName = "Stats/BaseStats")]
 public class BaseStatsSO : ScriptableObject
@@ -377,6 +427,8 @@ public class BaseStatsSO : ScriptableObject
     {
         public Stat.StatTypeGeneral type;
         public float value;
+
+        // public static 
     }
 
     public List<StatInit> defaultStats;

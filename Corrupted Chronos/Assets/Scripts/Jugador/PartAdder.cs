@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 
@@ -21,6 +22,7 @@ public class PartAdder : MonoBehaviour
 
     public GameObject adder{get; private set;}
 
+    private List<GameObject> AddedItems;
 
     private struct PartPosition
     {
@@ -42,6 +44,7 @@ public class PartAdder : MonoBehaviour
     {
         ToAddParts= new List<PartPosition>();
         AddedParts= new Dictionary<PartPosition, GameObject>();
+        AddedItems= new List<GameObject>();
     }
 
     void Start()
@@ -177,10 +180,12 @@ public class PartAdder : MonoBehaviour
 
     private void ActivateItems()
     {
-        foreach (var inventoryPart in AddedParts)
+        // foreach (var inventoryPart in AddedParts)
+        
+        foreach (Transform inventoryPart in adder.transform)
         {
-            int actIDP=inventoryPart.Value.GetComponent<EachPartScript>().ReturnIDP();
-            Debug.Log("itemm return idp:"+actIDP);
+            int actIDP=inventoryPart.GetComponent<EachPartScript>().ReturnIDP();
+            Debug.Log("itemm return idp1:"+actIDP);
             InventoryManager.Inventory? inventory = inventoryManager.ReturnInventory(actIDP);
 
             if(inventory==null) {
@@ -192,13 +197,31 @@ public class PartAdder : MonoBehaviour
             Debug.Log("itemm inventory not default");
             foreach (var slot in slots)
             {
+                // int inventoryIDP= inventoryPart.GetComponent<GunBase>().ReturnIDP();
+                Debug.Log("itemm return idp2:"+actIDP);
                 if(slot.thisItem!=null){
                     GameObject go= Instantiate(slot.thisItem.takableDataSO.toInstanciate, inventory?.ReturnVisualizer().transform);
+
+                    AddedItems.Add(go);
                     go.GetComponent<EachPartScript>().Activate();
-                    go.GetComponent<AllObjectMB>().ActivateSlotEffect();
-               
+
+
+                    ModifierItem modItem= go.GetComponent<AllObjectMB>().ReturnModifierItem();
+                    inventoryPart.GetComponent<GunBase>().AddEffectsBullets(modItem.ItemBulletEffects);
+                    modItem.modifyIdp=actIDP;
+                    foreach (var pair in modItem.ItemGeneralStats)// ?? new Dictionary<Stat.StatTypeGeneral, StatModifier>())
+                    {
+                        statsManager.instance.AddModifier(pair.Key, pair.Value );
+                    }
+                    foreach (var pair in modItem.ItemGunStats)// ?? new Dictionary<Stat.StatTypeGun, StatModifier>())
+                    {
+                        statsManager.instance.AddModifier(actIDP, pair.Key, pair.Value );
+                    }
+
                 }
+
             }
+            // AddedParts[actIDP].
             //accedir inventari
             //accedir cada item de inventari
             //cridar mètode activar dels items
@@ -209,6 +232,68 @@ public class PartAdder : MonoBehaviour
     
     private void DesactivateItems()
     {
+        /* foreach (var item in AddedItems)
+        {
+            ModifierItem modItem= item.GetComponent<AllObjectMB>().ReturnModifierItem();
+
+            inventoryPart.GetComponent<GunBase>().RemoveEffectsBullets(modItem.ItemBulletEffects);
+            // modItem.modifyIdp=inventoryIDP;
+            foreach (var pair in modItem.ItemGeneralStats)// ?? new Dictionary<Stat.StatTypeGeneral, StatModifier>())
+            {
+                statsManager.instance.RemoveModifier(pair.Key, pair.Value );
+            }
+            foreach (var pair in modItem.ItemGunStats)// ?? new Dictionary<Stat.StatTypeGun, StatModifier>())
+            {
+                statsManager.instance.RemoveModifier(inventoryIDP, pair.Key, pair.Value );
+            }
+        } */
+
+        /* foreach (Transform inventoryPart in adder.transform)
+        {
+            int actIDP=inventoryPart.GetComponent<EachPartScript>().ReturnIDP();
+            Debug.Log("itemm return idp1:"+actIDP);
+            InventoryManager.Inventory? inventory = inventoryManager.ReturnInventory(actIDP);
+
+            if(inventory==null) {
+                Debug.LogError("how thedefuc are you don't giving an inventory");
+                continue;
+            }
+            SlotInventory[] slots=inventory?.ReturnListSlots();
+            //  item.Key
+            Debug.Log("itemm inventory not default");
+            foreach (var slot in slots)
+            {
+                int inventoryIDP= inventoryPart.GetComponent<GunBase>().ReturnIDP();
+                Debug.Log("itemm return idp2:"+actIDP);
+                if(slot.thisItem!=null){
+                    // GameObject go= Instantiate(slot.thisItem.takableDataSO.toInstanciate, inventory?.ReturnVisualizer().transform);
+
+                    AddedItems.Add(go);
+                    go.GetComponent<EachPartScript>().Activate();
+
+
+                    ModifierItem modItem= go.GetComponent<AllObjectMB>().ReturnModifierItem();
+                    inventoryPart.GetComponent<GunBase>().AddEffectsBullets(modItem.ItemBulletEffects);
+                    modItem.modifyIdp=inventoryIDP;
+                    foreach (var pair in modItem.ItemGeneralStats)// ?? new Dictionary<Stat.StatTypeGeneral, StatModifier>())
+                    {
+                        statsManager.instance.AddModifier(pair.Key, pair.Value );
+                    }
+                    foreach (var pair in modItem.ItemGunStats)// ?? new Dictionary<Stat.StatTypeGun, StatModifier>())
+                    {
+                        statsManager.instance.AddModifier(inventoryIDP, pair.Key, pair.Value );
+                    }
+
+                }
+
+            }
+            // AddedParts[actIDP].
+            //accedir inventari
+            //accedir cada item de inventari
+            //cridar mètode activar dels items
+            //i afegir a l'arma
+        } */
+
         //reverse activateItems
         
         //accedir inventari
@@ -232,6 +317,7 @@ public class PartAdder : MonoBehaviour
     {
         if (ToAddParts.Count <= 0 && AddedParts==null) return;
 
+        // AddedItems
         Vector3 origin= GameManager.Instance.playerInstance.transform.position;
         for(int i = 1; i < ToAddParts.Count; i++)
         {

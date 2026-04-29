@@ -31,7 +31,9 @@ public class AddHitboxEB: EffectsBullets
         if (name==NameHitboxInBullet.Detectors)
         {
             hitboxUsed.GetComponent<HitboxBullet>().DeactivateCollider();
+            hitboxUsed.GetComponent<HitboxBullet>().DefineTriggerSize(new Vector3(2,2,2));
         }
+
        /*  baseBullets.dicCollisionEnter[hitboxBulletInst]+=HitboxCollisionEnter;
         baseBullets.dicTriggerEnter[hitboxBulletInst]+=HitboxTriggerEnter;  */ 
     }

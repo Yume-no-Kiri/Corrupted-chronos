@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -20,6 +21,8 @@ public class EachPartScript : MonoBehaviour
 
     private int IDPtoGive=-1;
     private bool componentAdded=false;
+
+
     void Start()
     {
         Activate();
@@ -68,22 +71,36 @@ public class EachPartScript : MonoBehaviour
 
     public GunBase ActivateGun() 
     {
-        GunBase ScriptPart=null;
+        //maybe this could be separeted
+        GunBase GunScriptPart=null;
 
         if(!componentAdded) Activate();
         if (componentType.IsSubclassOf(Type.GetType("GunBase")))
         {
-            ScriptPart= gameObject.GetComponent<GunBase>();
+            GunScriptPart= gameObject.GetComponent<GunBase>();
             
-            if(ScriptPart) { 
-                ScriptPart.PassVariables(firepoint, bulletPrefab);
+            if(GunScriptPart) { 
+                GunScriptPart.PassVariables(firepoint, bulletPrefab);
             }// else Debug.LogError("es fill de GunBase pero no es GunBase (wtf)");
         }/* else{
             
             Debug.LogWarning("possible ereror");
         } */
-        return ScriptPart;
+        return GunScriptPart;
     }
+
+
+    /* public void AddEffectsBullets(List<EffectsAdd> effectsAdds)
+    {
+        if (GunScriptPart != null)
+        {
+            
+        }
+    }
+    public void RemoveEffectsBullets(List<EffectsAdd> effectsAdds)
+    {
+        
+    } */
 
     public void AssignIDP(int newIDP)
     {

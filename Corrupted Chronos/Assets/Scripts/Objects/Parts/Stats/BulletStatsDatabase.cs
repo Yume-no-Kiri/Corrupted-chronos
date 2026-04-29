@@ -2,6 +2,24 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/* struct SetUpHitbox
+{
+    public NameHitboxInBullet Type;
+    
+    Vector3 size;
+    public bool IsTrigger;
+    public bool IsCollider;
+
+
+} */
+
+// Ara mateix la relació de colliders i effectes es: molts efectes a 1 collider
+// Es bastant estricte i s'hauria de revisar en un futur, efectes amb un collider especific,
+//2 effectes seguits augmenten els collider i stats d'aquell efecte i tal
+
+//probablement separar effectsAdd, en: EffectsHitboxAdd i EffectsBulletAdd;
+
 [Serializable]
 public struct EffectsAdd
 {

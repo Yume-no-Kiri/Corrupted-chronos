@@ -84,12 +84,38 @@ public class GunBase : AllObjectMB
 
     //to do damage tag
 
-
+    #region call from other scripts
     public TypePart GetTypePart()
     {
         return typePart;
     }
+    public void PassVariables(Transform firepoint,GameObject bulletPrefab)
+    {
+        this.firepoint.Add(firepoint);
+        this.bulletPrefab = bulletPrefab;
+    }
+    #endregion
     
+    #region items addefects
+    public void AddEffectsBullets(List<EffectsAdd> effectsAdds)
+    {
+        if(effectsAdds!=null){
+        addedEffects.Concat(effectsAdds);
+        }
+        /* else
+        {
+            Debug.LogError
+        } */
+    }
+    public void RemoveEffectsBullets(List<EffectsAdd> effectsAdds)
+    {
+        if(effectsAdds!=null){
+        addedEffects.Concat(effectsAdds);
+        }
+    }
+
+    #endregion
+
     protected override void OnEnable()
     {
         ObjectNameID="";
@@ -111,11 +137,7 @@ public class GunBase : AllObjectMB
             BaseStatsBullet= allInformationBullet.Value;  
         }else Debug.LogError("bullet not found");
     }
-    public void PassVariables(Transform firepoint,GameObject bulletPrefab)
-    {
-        this.firepoint.Add(firepoint);
-        this.bulletPrefab = bulletPrefab;
-    }
+    
 
     //quan una arma crea una bala només crida aquest mètode 
     public void CreateBullet(Vector3 spawnPoint, quaternion rotation)
@@ -150,7 +172,12 @@ public class GunBase : AllObjectMB
     {
         return IDP;
     }
-    
+
+    protected override void DefineModifierItem()
+    {
+        return;
+        // throw new NotImplementedException();
+    }
 }
 
 public class Metralleta : GunBase
@@ -162,7 +189,7 @@ public class Metralleta : GunBase
         DefineBulletStats();
     }
 
-    void Awake()
+    private void Awake()
     {
         /* StatsGun.timeBetweenShots = 0.25f;
         StatsGun.t2s2=0;

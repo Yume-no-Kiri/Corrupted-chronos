@@ -157,9 +157,14 @@ public class KnockbackEB: EffectsBullets
 public class FollowOpposedEB: EffectsBullets
 {
     
+    private Quaternion initialRotation;
+    public float maxTiltAngle = 30f;
+    public float rotationSpeed = 5f;
+    
     protected override void Awake()
     {
         base.Awake();
+        initialRotation = transform.rotation;
     }
 
     protected override void HitboxTriggerEnter(Collider trigger)
@@ -167,7 +172,16 @@ public class FollowOpposedEB: EffectsBullets
 
         if (trigger.CompareTag(OpposedTag))
         {
-            
+            Vector3 directionToTarget = (trigger.transform.position - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(directionToTarget);
+            float angle = Quaternion.Angle(initialRotation, lookRotation);
+            if (angle > maxTiltAngle)
+            {
+                lookRotation = Quaternion.RotateTowards(initialRotation, lookRotation, maxTiltAngle);
+            }
+
+                // 5. Aplicar la rotació gradualment
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
         }
     }
 
