@@ -14,6 +14,18 @@ using UnityEngine;
 
 } */
 
+public enum NameBulletPreset
+{
+    Null=0,
+    Basic=1,
+    Wave=2, 
+    RedWave=3,
+    FollowMissile=4
+    
+
+
+}
+
 // Ara mateix la relació de colliders i effectes es: molts efectes a 1 collider
 // Es bastant estricte i s'hauria de revisar en un futur, efectes amb un collider especific,
 //2 effectes seguits augmenten els collider i stats d'aquell efecte i tal
@@ -23,15 +35,15 @@ using UnityEngine;
 [Serializable]
 public struct EffectsAdd
 {
-    public string nameEffect;
+    public NameEffectBullets nameEffect;
     public NameHitboxInBullet setup;
 
-    public EffectsAdd(string v, NameHitboxInBullet body) : this()
+    public EffectsAdd(NameEffectBullets v, NameHitboxInBullet body) : this()
     {
         this.nameEffect = v;
         this.setup = body;
     }
-    public EffectsAdd(string v) : this()
+    public EffectsAdd(NameEffectBullets v) : this()
     {
         this.nameEffect = v;
         this.setup = NameHitboxInBullet.Null;
@@ -147,3 +159,11 @@ public class BasicStatsSO: BulletStatsSO
     } */
 
 }
+
+[CreateAssetMenu(fileName="FollowinMissile", menuName = "Bullet/FollowinMissile")]
+public class FollowinMissileSO: BulletStatsSO
+{
+    
+}
+
+

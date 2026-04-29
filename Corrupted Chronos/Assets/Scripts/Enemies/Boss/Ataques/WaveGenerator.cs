@@ -35,7 +35,7 @@ public class WaveGenerator : MonoBehaviour
     {
         yield return new WaitForSeconds(TimeBetweenShots);
         bulletInst=Instantiate(GeneralBullet,transform.position, quaternion.identity, null);
-        bulletInst.GetComponent<CreateBullet>().Setup(false,"WaveBullet");
+        bulletInst.GetComponent<CreateBullet>().Setup(false,NameBulletPreset.Wave);
         coroutine=null;
     }
 

@@ -17,6 +17,14 @@ public enum TypePart
     Moveable
     
 }
+public enum NameGunPreset
+{
+    Null=0,
+    Metralleta=1,
+    Escopeta=2
+
+}
+
 [Serializable]
 /* public struct InformationPart
 {
@@ -66,7 +74,7 @@ public class GunBase : AllObjectMB
 
     protected List<Transform> firepoint= new List<Transform>();
     protected GameObject bulletPrefab;
-    public string NameStatsBullet;
+    public NameBulletPreset NameStatsBullet;
 
     // protected VisualEffect shoot_vfx;
     // protected List<AllEffectsBullets> addedEffects= new List<AllEffectsBullets>();
@@ -151,7 +159,7 @@ public class GunBase : AllObjectMB
         //afegir effectes de items
         foreach (var item in addedEffects)
         {
-            Type type=Type.GetType(item.nameEffect);
+            Type type=Type.GetType(item.nameEffect.ToString());
             Component script=bulletInstance.Last().AddComponent(type);
             EffectsBullets effectsBullets=script as EffectsBullets;
             if (effectsBullets!=null)
@@ -185,7 +193,7 @@ public class Metralleta : GunBase
     protected override void OnEnable()
     {
         ObjectNameID="MetralletaObject";
-        NameStatsBullet="BasicBullet";
+        NameStatsBullet=NameBulletPreset.Basic;
         DefineBulletStats();
     }
 
@@ -255,7 +263,7 @@ public class Escopeta : GunBase
     protected override void OnEnable()
     {
         ObjectNameID="EscopetaObject";
-        NameStatsBullet="BasicBullet";
+        NameStatsBullet=NameBulletPreset.Basic;
         DefineBulletStats();
 
     }

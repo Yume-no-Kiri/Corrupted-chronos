@@ -62,9 +62,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PartsStatsSO
   listStatsGuns:
-  - NameGun: Escopeta
+  - NameGun: 2
     gunStatsSO: {fileID: 11400000, guid: 940007e2617f3df408d5914568b422e3, type: 2}
-  - NameGun: Metralleta
+  - NameGun: 1
     gunStatsSO: {fileID: 11400000, guid: 9952c088c6070fd48acde196bdf300da, type: 2}
 --- !u!114 &3241525284459898178
 MonoBehaviour:
@@ -80,10 +80,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ListBulletStats
   GeneralBullet: {fileID: 8735485520253785074, guid: dd9dd7e0bda9d634dab941c77780f51e, type: 3}
   hitboxBullet: {fileID: 3453512002583704404, guid: 97140fe1604de0643a4d101182c4d60d, type: 3}
+  hitsphereBullet: {fileID: 3453512002583704404, guid: 0ff50f256f598154fb4f9b61c28705ea, type: 3}
   auxListStatsBullets:
-  - NameBullet: BasicBullet
+  - NameBullet: 1
     bulletStatsSO: {fileID: 11400000, guid: d8fc3bd9b01731a4ba2cb484327156db, type: 2}
-  - NameBullet: WaveBullet
+  - NameBullet: 2
     bulletStatsSO: {fileID: 11400000, guid: c43793c5b6f233847bbc0d64c0473fa3, type: 2}
-  - NameBullet: RedWaveBullet
+  - NameBullet: 3
     bulletStatsSO: {fileID: 11400000, guid: fbb44f64c573d2446b14da83101cedff, type: 2}
+  - NameBullet: 4
+    bulletStatsSO: {fileID: 11400000, guid: 6042647a543854f46aa4775471ab001a, type: 2}

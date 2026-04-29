@@ -4,10 +4,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 //when a new effect is addded has to be integrated here
-public enum AllEffectsBullets
+public enum NameEffectBullets
 {
-    KnockbackEB,
-    DamageEB
+    AddHitboxEB=0,
+    AddHitsphereEB=1,
+
+    KnockbackEB=30,
+    DamageEB=31,
+    FollowOpposedEB=32
 }
 
 
@@ -36,7 +40,7 @@ public class EffectsBullets : MonoBehaviour
         baseBullets.ReturnTags(out OpposedTag,out CreatedTag, out IsFromPlayer);
         prefabHitboxBox= statsManager.instance.listBulletStats.hitboxBullet;// Resources.Load<GameObject>("HitboxBullet");
         AllInfoBullet= baseBullets.ReturnFinalStats();
-        // hitboxBulletGOSphere= GameManager.Instance.bulletDatabase.hitboxBullet; //no implementat
+        prefabHitboxSphere= statsManager.instance.listBulletStats.hitsphereBullet; //no implementat
     }
     public virtual void Setup(NameHitboxInBullet name=NameHitboxInBullet.Null)
     {
@@ -49,6 +53,8 @@ public class EffectsBullets : MonoBehaviour
             baseBullets.dicCollisionEnter[go]+=HitboxCollisionEnter;
             baseBullets.dicTriggerEnter[go]+=HitboxTriggerEnter;  
            
+            baseBullets.dicCollisionExit[go]+=HitboxCollisionExit;
+            baseBullets.dicTriggerExit[go]+=HitboxTriggerExit;  
         }
         else
         {
@@ -57,24 +63,36 @@ public class EffectsBullets : MonoBehaviour
 
             baseBullets.dicCollisionEnter[go]+=HitboxCollisionEnter;
             baseBullets.dicTriggerEnter[go]+=HitboxTriggerEnter;  
+
+            baseBullets.dicCollisionExit[go]+=HitboxCollisionExit;
+            baseBullets.dicTriggerExit[go]+=HitboxTriggerExit;  
             
         }
         hitboxUsed=go;
+        
     }
+    
     protected virtual void OnDestroy()
     {
         baseBullets.dicCollisionEnter[hitboxUsed]-=HitboxCollisionEnter;
         baseBullets.dicTriggerEnter[hitboxUsed]-=HitboxTriggerEnter;  
-    }
-    protected virtual void HitboxCollisionEnter(Collision collision)
-    {
-        
-    }
-    protected virtual void HitboxTriggerEnter(Collider trigger)
-    {
-        
+
+        baseBullets.dicCollisionExit[hitboxUsed]-=HitboxCollisionExit;
+        baseBullets.dicTriggerExit[hitboxUsed]-=HitboxTriggerExit;  
+
     }
 
+    /* protected abstract void NecessaryToWork(){
+        //aquest null
+    } */
+    protected virtual void FixedUpdate() {}
+
+    protected virtual void HitboxCollisionEnter(Collision collision){}
+    protected virtual void HitboxTriggerEnter(Collider trigger){}
+
+    //if exit methods are hard, could be changed to timers I guess
+    protected virtual void HitboxCollisionExit(Collision collision){}
+    protected virtual void HitboxTriggerExit(Collider trigger){}
 }
 
 
@@ -158,9 +176,10 @@ public class FollowOpposedEB: EffectsBullets
 {
     
     private Quaternion initialRotation;
-    public float maxTiltAngle = 30f;
-    public float rotationSpeed = 5f;
+    public float maxTiltAngle = 50f;
+    public float rotationSpeed = 30f;
     
+    private Collider target=null;
     protected override void Awake()
     {
         base.Awake();
@@ -169,22 +188,51 @@ public class FollowOpposedEB: EffectsBullets
 
     protected override void HitboxTriggerEnter(Collider trigger)
     {
-
+        Debug.Log("follow trigger enter");
+        
         if (trigger.CompareTag(OpposedTag))
         {
-            Vector3 directionToTarget = (trigger.transform.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(directionToTarget);
-            float angle = Quaternion.Angle(initialRotation, lookRotation);
-            if (angle > maxTiltAngle)
-            {
-                lookRotation = Quaternion.RotateTowards(initialRotation, lookRotation, maxTiltAngle);
-            }
-
-                // 5. Aplicar la rotació gradualment
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationSpeed * Time.deltaTime);
+            Debug.Log("follow BINGO");
+            target=trigger;
+        }
+        else
+        {
+            Debug.Log("follow merda"+ trigger.tag );
+            
+        }
+    }
+    protected override void HitboxTriggerExit(Collider trigger)
+    {
+        if (trigger.CompareTag(OpposedTag))
+        {
+            Debug.Log("follow BINGO");
+            target=null;
+            transform.rotation = Quaternion.Slerp(transform.rotation, initialRotation, rotationSpeed * Time.deltaTime);
         }
     }
 
+    private void RotateBullet()
+    {
+        Vector3 directionToTarget = (target.transform.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(directionToTarget);
+        Vector3 targetEuler = lookRotation.eulerAngles;
+
+        Quaternion filteredRotation = Quaternion.Euler(targetEuler.x, targetEuler.y, initialRotation.eulerAngles.z);
+        float angle = Quaternion.Angle(initialRotation, filteredRotation);
+        if (angle > maxTiltAngle)
+        {
+            filteredRotation = Quaternion.RotateTowards(initialRotation, filteredRotation, maxTiltAngle);
+        }
+
+        // 5. Aplicar la rotació gradualment
+        transform.rotation = Quaternion.Slerp(transform.rotation, filteredRotation, rotationSpeed * Time.deltaTime);
+    }
+
+    protected override void FixedUpdate() {
+        if(target!=null){
+            RotateBullet();
+        }
+    }
 
 }
 /* 

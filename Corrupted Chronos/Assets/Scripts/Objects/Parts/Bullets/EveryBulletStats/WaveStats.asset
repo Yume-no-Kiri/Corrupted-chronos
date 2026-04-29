@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WaveStatsSO
   sprite: {fileID: 21300000, guid: bcd6712cc471c4f41a569b6fca19db0e, type: 3}
   Effects:
-  - nameEffect: AddHitboxEB
+  - nameEffect: 0
     setup: 2
-  - nameEffect: KnockbackEB
+  - nameEffect: 30
     setup: 2
   BulletStats:
   - type: 0

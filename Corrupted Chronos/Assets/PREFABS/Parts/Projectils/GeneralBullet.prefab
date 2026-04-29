@@ -140,7 +140,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iniPos: {x: 0, y: 0, z: 0}
   myCreator: {fileID: 0}
-  statsSO: {fileID: 0}
+  OpposedTag: 
+  CreatedTag: 
   hitboxBullets: []
 --- !u!54 &1090603374625368225
 Rigidbody:
@@ -181,5 +182,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ace98b2255f7afb48ad2ed148acc977c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreateBullet
-  allPresetBullets: 0
   CreateMySelf: 1
+  CreatedByPlayer: 0

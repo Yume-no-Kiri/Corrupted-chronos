@@ -91,7 +91,11 @@ public class BaseBullets : MonoBehaviour
     public event Action OnMaxRange;
 
     public Dictionary<GameObject,Action<Collision>> dicCollisionEnter = new Dictionary<GameObject,Action<Collision>>();
+    public Dictionary<GameObject,Action<Collision>> dicCollisionExit = new Dictionary<GameObject,Action<Collision>>();
+
     public Dictionary<GameObject,Action<Collider>> dicTriggerEnter = new Dictionary<GameObject,Action<Collider>>();
+    public Dictionary<GameObject,Action<Collider>> dicTriggerExit = new Dictionary<GameObject,Action<Collider>>();
+
 
 
 
@@ -221,6 +225,19 @@ public class BaseBullets : MonoBehaviour
             dicTriggerEnter[hb]?.Invoke(col);
         };
         
+        dicCollisionExit[Hitbox] = delegate { };
+        dicTriggerExit[Hitbox] = delegate { };
+       
+        newScript.OnCollisionExitHitbox+= (col,hb) =>{
+        if (dicCollisionExit.ContainsKey(hb)) 
+            dicCollisionExit[hb]?.Invoke(col);
+        };
+
+        newScript.OnTriggerExitHitbox+= (col,hb)=>{
+        if (dicTriggerExit.ContainsKey(hb)) 
+            dicTriggerExit[hb]?.Invoke(col);
+        };
+
         // return index;
     }
 

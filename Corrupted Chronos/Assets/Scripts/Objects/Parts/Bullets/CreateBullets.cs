@@ -1,14 +1,6 @@
 using System;
 using UnityEngine;
 
-public enum AllPresetBullets
-{
-    Basic,
-    Wave, 
-    Null
-
-
-}
 
 //waveGenerator has this and it works
 
@@ -39,7 +31,7 @@ public class CreateBullet: MonoBehaviour
     }
 
     //called by wave generator AND ENEMIES 
-    public void Setup(bool createdByPlayer, string nameBullet)
+    public void Setup(bool createdByPlayer, NameBulletPreset nameBullet)
     {
         CreatedByPlayer=createdByPlayer;
         // NameBulletPreset=nameBullet;
@@ -65,7 +57,7 @@ public class CreateBullet: MonoBehaviour
         else{ this.gameObject.GetComponent<BaseBullets>().AssignTarget("Enemy");}
         foreach (var item in finalStats.Effects)
         {
-            Type type=Type.GetType(item.nameEffect);
+            Type type=Type.GetType(item.nameEffect.ToString());
             Component script=this.gameObject.AddComponent(type);
             EffectsBullets effectsBullets=script as EffectsBullets;
             if (effectsBullets!=null)

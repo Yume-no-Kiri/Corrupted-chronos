@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BasicStatsSO
   sprite: {fileID: 21300000, guid: 64f2e000382566d44b5fdc32a28c2d3c, type: 3}
   Effects:
-  - nameEffect: AddHitboxEB
+  - nameEffect: 0
     setup: 2
-  - nameEffect: DamageEB
+  - nameEffect: 31
     setup: 2
   BulletStats:
   - type: 0

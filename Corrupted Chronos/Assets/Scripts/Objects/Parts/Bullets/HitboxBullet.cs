@@ -13,6 +13,10 @@ public class HitboxBullet : MonoBehaviour
     public event Action<Collision,GameObject> OnCollisionEnterHitbox;
     public event Action<Collider,GameObject> OnTriggerEnterHitbox;
 
+    
+    public event Action<Collision,GameObject> OnCollisionExitHitbox;
+    public event Action<Collider,GameObject> OnTriggerExitHitbox;
+
     void Awake()
     {
         // Physics.IgnoreCollision(GetComponent<Collider>(), GetComponent<Collider>(), true);
@@ -25,6 +29,16 @@ public class HitboxBullet : MonoBehaviour
     void OnTriggerEnter(Collider trigger)
     {
         OnTriggerEnterHitbox?.Invoke(trigger,this.gameObject);
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        OnCollisionExitHitbox?.Invoke(collision,this.gameObject);
+    }
+
+    void OnTriggerExit(Collider trigger) {
+        OnTriggerExitHitbox?.Invoke(trigger,this.gameObject);
+        
     }
 
     public void DefineTriggerSize(Vector3 size)

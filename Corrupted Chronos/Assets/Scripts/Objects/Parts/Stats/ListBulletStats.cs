@@ -5,17 +5,19 @@ using Ink.Parsed;
 using UnityEngine;
 
 
+
 //Make this better in the future
 // [CreateAssetMenu(menuName = "Bullet/BulletDatabase")]
 public class ListBulletStats : MonoBehaviour {
 
     public GameObject GeneralBullet;
     public GameObject hitboxBullet;
+    public GameObject hitsphereBullet;
 
     // public Dictionary<string, Dictionary<Stat.StatTypeBullet, Stat>> statEachBullet= new Dictionary<string, Dictionary<Stat.StatTypeBullet, Stat>>();
     // public Dictionary<string, AllInformationBullet> effectsEachBullet= new Dictionary<string, AllInformationBullet>();
 
-    public Dictionary<string, AllInformationBullet> statEachBullet= new Dictionary<string, AllInformationBullet>();
+    public Dictionary<NameBulletPreset, AllInformationBullet> statEachBullet= new Dictionary<NameBulletPreset, AllInformationBullet>();
 
     [SerializeField]
     private List<AuxStatsBullets> auxListStatsBullets= new List<AuxStatsBullets>();
@@ -55,7 +57,7 @@ public class ListBulletStats : MonoBehaviour {
 
     }
 
-    public AllInformationBullet? ReturnBulletStatsSO(string name)
+    public AllInformationBullet? ReturnBulletStatsSO(NameBulletPreset name)
     {
         AllInformationBullet? returnStats=null;
         if (statEachBullet.ContainsKey(name))
@@ -84,7 +86,7 @@ public class ListBulletStats : MonoBehaviour {
 //només té les dades base de la bullet, aquí no es sumarà mai res
 public struct AllInformationBullet
 {
-    public string NameBullet;
+    public NameBulletPreset NameBullet;
 
     public Dictionary<Stat.StatTypeBullet, float> StatsBullet;
     public Sprite sprite;
@@ -92,7 +94,7 @@ public struct AllInformationBullet
 
     internal bool IsEmpty()
     {
-        return NameBullet==null;
+        return NameBullet==NameBulletPreset.Null;
     }
 
     public void Debuger()
@@ -148,7 +150,7 @@ public struct AllInformationBullet
 [Serializable]
 public struct AuxStatsBullets
 {
-    public string NameBullet;
+    public NameBulletPreset NameBullet;
     public BulletStatsSO bulletStatsSO;
 
    /*  public StatsBullets(string name, BulletStatsSO stats)

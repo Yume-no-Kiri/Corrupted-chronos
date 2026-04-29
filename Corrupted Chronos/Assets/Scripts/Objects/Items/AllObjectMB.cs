@@ -183,7 +183,7 @@ public class RadarItem: AllObjectMB
     }
     protected override void DefineModifierItem()
     {
-        modifierItem.ItemBulletEffects.Add(new EffectsAdd("FollowOpposedEB", NameHitboxInBullet.Detectors));
+        modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.FollowOpposedEB, NameHitboxInBullet.Detectors));
 
     }
     public override void ActivateSlotEffect()
