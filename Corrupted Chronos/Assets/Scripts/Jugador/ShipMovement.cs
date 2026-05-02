@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
-public class ShipMovement : MonoBehaviour
+public class ShipMovement : MonoBehaviour,IDamageable 
 {
     [Header("Parameters")]
     public bool canMove=true;
@@ -157,13 +157,25 @@ public class ShipMovement : MonoBehaviour
         // controller.Move(new Vector3(5, 0, 0) * Time.deltaTime);
         // Debug.Log("ss final velocity:"+ finalVelocity.ToString());
     }
+    #region interface
+    public void TakeDamage(float damageAmount)
+    {
+        statsManager.instance.AddModifier(Stat.StatTypeGeneral.Health, new StatModifier(damageAmount, StatModifier.ModifierType.Add));
+        // currentHealth-=damageAmount;
+        if(statsManager.instance.GetShipStat(Stat.StatTypeGeneral.Health)<=0) Die();
+    }
+
+    public void Die()
+    {
+        throw new System.NotImplementedException();
+    }
 
     public void AddKnockback(Vector3 dir, float force) {
         externalForce += dir.normalized * force*1.3f;
         Debug.LogWarning("enter do knockback dir:"+dir.ToString()+" force:"+force);
         Debug.LogWarning("externalForce:"+ externalForce.ToString());
     }
-
+    #endregion
     void toFly()
     {
         /* if (!lockDown)

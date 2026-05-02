@@ -13,21 +13,21 @@ MonoBehaviour:
   m_Name: MetralletaStats
   m_EditorClassIdentifier: Assembly-CSharp::MetralletaStatsSO
   GunStats:
-  - type: 0
+  - type: 50
     value: 0.7
-  - type: 1
+  - type: 51
     value: -1
-  - type: 2
+  - type: 52
     value: 10
-  - type: 3
+  - type: 100
     value: 5
-  - type: 4
+  - type: 101
     value: 0
-  - type: 5
+  - type: 102
     value: -1
-  - type: 6
+  - type: 103
     value: 0
-  - type: 7
+  - type: 104
     value: 0
-  - type: 8
+  - type: 105
     value: 0

@@ -131,6 +131,12 @@ public class DamageEB: EffectsBullets
         Debug.Log("DO DAMAGE ENEMY");
         //get component enemy or player
         //call method lossHealth
+        if (trigger.gameObject.TryGetComponent<IDamageable>(out IDamageable victim))
+        {
+            victim.TakeDamage(AllInfoBullet.StatsBullet[Stat.StatTypeBullet.Damage]);
+        }
+
+
         OnImpact?.Invoke();
 
     }
@@ -150,11 +156,17 @@ public class KnockbackEB: EffectsBullets
     }
     public virtual void DoKnockback(Collider trigger)
     {
-        
+        Vector3 direccio = trigger.transform.position - transform.position;
+
+        if (trigger.gameObject.TryGetComponent<IDamageable>(out IDamageable victim))
+        {
+            // Si el troba, cridem el mètode directament
+            victim.AddKnockback(direccio, AllInfoBullet.StatsBullet[Stat.StatTypeBullet.Knockback]);
+        }
 
         //Modifify this, a script with a knockback, recieve damage, and other methods similars, and enemy and player have it,
         //this gets the script and do the stuff
-        CharacterController controller = trigger.GetComponent<CharacterController>();
+       /*  CharacterController controller = trigger.GetComponent<CharacterController>();
         if(controller==null) {
             Debug.LogError("controller not found");
             return;
@@ -164,8 +176,7 @@ public class KnockbackEB: EffectsBullets
             Debug.LogError("pilot movement not found");
             return;
         }
-        Vector3 direccio = trigger.transform.position - transform.position;
-        shipMovement.AddKnockback(direccio,AllInfoBullet.StatsBullet[Stat.StatTypeBullet.Knockback]);
+        shipMovement.AddKnockback(direccio,AllInfoBullet.StatsBullet[Stat.StatTypeBullet.Knockback]); */
 
     }
 }
@@ -235,6 +246,29 @@ public class FollowOpposedEB: EffectsBullets
     }
 
 }
+
+
+
+// Fire bullets
+public class FireEB: EffectsBullets
+{
+    protected override void Awake()
+    {   base.Awake();    
+        // definir ALGO AMB ELS REQUISITS
+    }
+    protected override void HitboxTriggerEnter(Collider trigger)
+    {
+        if (trigger.gameObject.TryGetComponent(out IDamageable victim))
+        {
+            // Afegim el component de Foc DINÀMICAMENT al GameObject de la víctima
+            FireEffect foc = trigger.gameObject.AddComponent<FireEffect>();
+            
+            // Li passem la víctima (que sabem que compleix el contracte IDamageable)
+            foc.Setup(victim, 5f, 3f); 
+        }
+    }
+}
+
 /* 
 //explosion when impacted with enemy
 public class ExplosionEB: EffectsBullets

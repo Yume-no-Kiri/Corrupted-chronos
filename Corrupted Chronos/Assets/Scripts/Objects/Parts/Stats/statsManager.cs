@@ -279,56 +279,67 @@ public class statsManager : MonoBehaviour
 [Serializable]
 public class Stat
 {
+
+    public enum StatsEnemy
+    {
+        Health=0,
+        Stamina=1,
+        Shields=2,
+        ShieldRegen=3,
+        Speed=4,
+        Agility=5,
+    }
+
     public enum StatTypeGeneral
     {
         //ship:
-        Health,
-        Stamina,
-        Shields,
-        ShieldRegen,
-        Speed,
-        Agility,
+        Health=0,
+        Stamina=1,
+        Shields=2,
+        ShieldRegen=3,
+        Speed=4,
+        Agility=5,
 
         // guns
-        TimeBetweenShots,
-        Magazine,
-        Accuraccy,
+        TimeBetweenShots=50,
+        Magazine=51,
+        Accuraccy=52,
 
         // bullet
-        Damage,
-        BulletSpeed,
-        Penetration,
-        DistEffec,
-        DistMax,
-        Knockback,
+        Damage=100,
+        BulletSpeed=101,
+        Penetration=102,
+        DistEffec=103,
+        DistMax=104,
+        Knockback=105,
 
     }
     public enum StatTypeGun
     {
          // guns
-        TimeBetweenShots,
-        Magazine,
-        Accuraccy,
+        TimeBetweenShots=50,
+        Magazine=51,
+        Accuraccy=52,
 
         // bullet
-        Damage,
-        BulletSpeed,
-        Penetration,
-        DistEffec,
-        DistMax,
-        Knockback,
+        Damage=100,
+        BulletSpeed=101,
+        Penetration=102,
+        DistEffec=103,
+        DistMax=104,
+        Knockback=105,
     }
 
     public enum StatTypeBullet
     {
 
         // bullet
-        Damage,
-        BulletSpeed,
-        Penetration,
-        DistEffec,
-        DistMax,
-        Knockback,
+        Damage=100,
+        BulletSpeed=101,
+        Penetration=102,
+        DistEffec=103,
+        DistMax=104,
+        Knockback=105,
     }
 
 

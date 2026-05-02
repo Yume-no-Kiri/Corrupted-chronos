@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public abstract class EnemyUnit : MonoBehaviour
+public abstract class EnemyUnit : MonoBehaviour, IDamageable
 {
     #region variables
     [Header("Health")]
@@ -71,14 +71,19 @@ public abstract class EnemyUnit : MonoBehaviour
     }
 
     #region Enemy Logic
-    public void Damage(float damageAmount)
+    public void TakeDamage(float damageAmount)
     {
-        throw new System.NotImplementedException();
+        currentHealth-=damageAmount;
+        if(currentHealth<=0) Die();
     }
 
     public void Die()
     {
         throw new System.NotImplementedException();
+    }
+    public void AddKnockback(Vector3 dir, float force)
+    {
+        
     }
 
     public abstract void primaryAttack();
