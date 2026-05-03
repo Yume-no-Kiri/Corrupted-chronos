@@ -280,7 +280,7 @@ public class statsManager : MonoBehaviour
 public class Stat
 {
 
-    public enum StatsEnemy
+   /*  public enum StatsEnemy
     {
         Health=0,
         Stamina=1,
@@ -288,22 +288,22 @@ public class Stat
         ShieldRegen=3,
         Speed=4,
         Agility=5,
-    }
+    } */
 
     public enum StatTypeGeneral
     {
         //ship:
-        Health=0,
-        Stamina=1,
-        Shields=2,
-        ShieldRegen=3,
-        Speed=4,
-        Agility=5,
+        Health=0, //rang (0, inf)
+        Stamina=1, //rang (0, inf)
+        Shields=2, //rang (0, inf)
+        ShieldRegen=3, //rang (0, inf)
+        Speed=4, //rang (0, inf)
+        Agility=5, //rang (0, inf)
 
         // guns
-        TimeBetweenShots=50,
-        Magazine=51,
-        Accuraccy=52,
+        TimeBetweenShots=50, //rang (0, inf)
+        Magazine=51, //rang (0, inf)
+        Accuraccy=52, //rang (0, inf)
 
         // bullet
         Damage=100,

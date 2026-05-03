@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     public InputManager inputManager;
 
     public GameObject playerInstance;
+    // public ShipMovement shipInstance;
+
 
     [Header("Variables that should be in statsManager")]
 
@@ -100,6 +102,7 @@ public class GameManager : MonoBehaviour
 
         staminaAct=staminaMax;
         
+        // shipInstance= playerInstance.GetComponent<ShipMovement>();
     }
 
 

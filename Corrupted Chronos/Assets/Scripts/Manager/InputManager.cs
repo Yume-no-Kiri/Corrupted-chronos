@@ -44,7 +44,9 @@ public class InputManager : MonoBehaviour
         playerInputActions.Garage.OnExit.performed += CallOnExit;
         playerInputActions.Nau.OnShotLeft.performed +=ctx=> OnShotLeft?.Invoke(ctx);
         playerInputActions.Nau.OnShotRight.performed += ctx=> OnShotRight?.Invoke(ctx);
-        
+        playerInputActions.Nau.OnShotLeft.canceled +=ctx=> OnShotLeft?.Invoke(ctx);
+        playerInputActions.Nau.OnShotRight.canceled += ctx=> OnShotRight?.Invoke(ctx);
+
         playerInputActions.AccesInventory.OpenInventory.performed += ctx=>OpenInventory?.Invoke();
 
         playerInputActions.Garage.RotateLeft.performed +=ctx=> RotateLeft?.Invoke(ctx);

@@ -252,6 +252,10 @@ public class FollowOpposedEB: EffectsBullets
 // Fire bullets
 public class FireEB: EffectsBullets
 {
+
+    private float dmg=5f;
+    private float durationFire=3f;
+
     protected override void Awake()
     {   base.Awake();    
         // definir ALGO AMB ELS REQUISITS
@@ -260,11 +264,14 @@ public class FireEB: EffectsBullets
     {
         if (trigger.gameObject.TryGetComponent(out IDamageable victim))
         {
-            // Afegim el component de Foc DINÀMICAMENT al GameObject de la víctima
-            FireEffect foc = trigger.gameObject.AddComponent<FireEffect>();
+            if(trigger.gameObject.TryGetComponent(out FireEffect fireEffect))
+            {
+                fireEffect.BurnMore(dmg, durationFire);
+            }else{
+                FireEffect foc = trigger.gameObject.AddComponent<FireEffect>();
+                foc.Setup(victim, dmg, durationFire); 
+            }
             
-            // Li passem la víctima (que sabem que compleix el contracte IDamageable)
-            foc.Setup(victim, 5f, 3f); 
         }
     }
 }

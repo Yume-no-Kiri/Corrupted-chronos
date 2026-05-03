@@ -81,60 +81,41 @@ public class GunBase : AllObjectMB
     protected List<EffectsAdd> addedEffects= new List<EffectsAdd>();
 
     protected bool canShot = true;
+    protected bool isPressed=false;
 
     protected AllInformationBullet BaseStatsBullet;
      
-    // public InformationPart StatsGun;
 
-    // Dictionary<Stat.StatTypeGun, Stat> NewStatsGun;
 
-    // hauriem de tenir algo per l'inventari
 
-    //to do damage tag
-
-    #region call from other scripts
-    public TypePart GetTypePart()
+    protected override void OnEnable()
     {
-        return typePart;
+        // ObjectNameID="";
+        // = 1f;
+        DefineBulletStats();
+        
     }
-    public void PassVariables(Transform firepoint,GameObject bulletPrefab)
-    {
-        this.firepoint.Add(firepoint);
-        this.bulletPrefab = bulletPrefab;
-    }
-    #endregion
+    void Update() { }
     
     #region items addefects
     public void AddEffectsBullets(List<EffectsAdd> effectsAdds)
     {
         if(effectsAdds!=null){
-        addedEffects.Concat(effectsAdds);
+            addedEffects.Concat(effectsAdds);   
         }
-        /* else
-        {
-            Debug.LogError
-        } */
     }
     public void RemoveEffectsBullets(List<EffectsAdd> effectsAdds)
     {
         if(effectsAdds!=null){
-        addedEffects.Concat(effectsAdds);
+            addedEffects.Concat(effectsAdds);
         }
     }
-
     #endregion
 
-    protected override void OnEnable()
-    {
-        ObjectNameID="";
-        // = 1f;
-        
-    }
-    void Update() { }
 
+    #region bullet and shot
     public virtual void DoShot( InputAction.CallbackContext ctx)
     {
-        
         throw new System.NotImplementedException();
     }
     protected void DefineBulletStats(){
@@ -168,9 +149,19 @@ public class GunBase : AllObjectMB
             }
             // bulletInstance.Last().AddComponent(Type.GetType(item.ToString()));
         }
+   
+    }
+    #endregion
 
-    
-        
+    #region call from other scripts
+    public TypePart GetTypePart()
+    {
+        return typePart;
+    }
+    public void PassVariables(Transform firepoint,GameObject bulletPrefab)
+    {
+        this.firepoint.Add(firepoint);
+        this.bulletPrefab = bulletPrefab;
     }
     public void AssignIDP(int newIDP)
     {
@@ -180,51 +171,57 @@ public class GunBase : AllObjectMB
     {
         return IDP;
     }
+    #endregion
 
     protected override void DefineModifierItem()
     {
         return;
         // throw new NotImplementedException();
     }
+
+
+    protected float GetTotalStat(Stat.StatTypeGeneral statType)
+    {
+        return statsManager.instance.GetShipGunBulletStat(statType, IDP, BaseStatsBullet);
+    }
 }
 
+//disparar continuadament empitjora la precisió
 public class Metralleta : GunBase
 {
+    Coroutine coroutine=null;
+    // float timeBetweenShots=0.3f;
+    // bool cnShot=true;
+
+    float timeShooting=0;
     protected override void OnEnable()
     {
         ObjectNameID="MetralletaObject";
         NameStatsBullet=NameBulletPreset.Basic;
-        DefineBulletStats();
+        base.OnEnable();
     }
 
     private void Awake()
     {
-        /* StatsGun.timeBetweenShots = 0.25f;
-        StatsGun.t2s2=0;
-        StatsGun.cargador = -1;
-        StatsGun.contCargador=-1;
-        StatsGun.informationBullet=InformationBullet.Default(null); */
-        
-        // public int contCargador = 5;
-        
         typePart= TypePart.ShootableLeft;
     }
+   
 
-    /*protected override void saveVariablesShot()
-    {
-        
-    }*/
-    
-    
     public override void DoShot(InputAction.CallbackContext ctx)
     {
-        if (canShot && ctx.performed)
+        if ( ctx.performed)
         {
-            Debug.Log("Transfrom.position: " + transform.position);
+            Debug.Log("left performed");
             Shot();
-            StartCoroutine(ShotIE());
+            if(coroutine!=null) StopCoroutine(coroutine);
+            coroutine=StartCoroutine(ShotIE());
+
+        }else if (ctx.canceled)
+        {   
+            Debug.Log("left cancelled");
+            if(coroutine!=null) StopCoroutine(coroutine);
+
         }
-        
         
         Debug.Log("AQUÍ INSTANCIES BALA");
     }
@@ -233,7 +230,38 @@ public class Metralleta : GunBase
     {
         foreach (var item in firepoint)
         {
-            Quaternion rotationWithOffset = item.GetComponentInParent<Transform>().rotation * Quaternion.Euler(0, 90, 90);
+            float accu= GetTotalStat(Stat.StatTypeGeneral.Accuraccy);
+            float side=UnityEngine.Random.Range(-1,2);
+            float maxDisp= timeShooting*side;
+
+            float t = UnityEngine.Random.value; 
+            t = Mathf.Pow(t, accu/2); //com més gran sigui l'exponent, més "biaix" cap al mínim
+            if(maxDisp>80) maxDisp=80; 
+            float finalDisp= Mathf.Lerp(timeShooting/10*side, maxDisp, t);
+            Debug.Log("left disp: "+ maxDisp);
+
+            /* if(disp>0 && disp < accu)
+            {
+                float howLittle=accu/disp +2;
+                float correction= accu/howLittle;
+                disp-=correction;
+                Debug.Log("left first if disp:"+ disp);
+            }
+            else if(disp!=0 && disp>accu && disp<(accu*2))
+            {
+                float correction= accu/2;
+                disp-=correction;
+                Debug.Log("left second if disp:"+ disp);
+
+            }
+            else if(disp!=0 &&disp>accu && disp>(accu*2))
+            {
+                disp-=accu;
+                Debug.Log("left third if disp:"+ disp);
+            
+            } */
+
+            Quaternion rotationWithOffset = item.GetComponentInParent<Transform>().rotation * Quaternion.Euler(0, finalDisp, 0);
 
             CreateBullet(item.position,rotationWithOffset);
 
@@ -248,16 +276,27 @@ public class Metralleta : GunBase
 
     private IEnumerator ShotIE()
     {
-        
-        canShot = false;
+        /* canShot = false;
         //Debug.Log($"t2s: {t2s-t2s %PlayerStats.CooldownBalaJugador}");
         yield return new WaitForSeconds(statsManager.instance.GetShipGunBulletStat(Stat.StatTypeGeneral.TimeBetweenShots, IDP, BaseStatsBullet));// StatsGun.timeBetweenShots);
-        canShot = true;
+        canShot = true; */
+        timeShooting=0;
+        Shot();
+        yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots));//statsManager.instance.GetShipGunBulletStat(Stat.StatTypeGeneral.TimeBetweenShots, IDP, BaseStatsBullet));
+        while (true)
+        {
+            timeShooting+= Mathf.Pow(10,Time.deltaTime);
+            Shot();
+            yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots));
+        }
+
+
     }
     
     
 }
 
+//si al aire, fa knockback, dispara moltes bales, munició 2 carges
 public class Escopeta : GunBase
 {
     protected override void OnEnable()
@@ -265,17 +304,10 @@ public class Escopeta : GunBase
         ObjectNameID="EscopetaObject";
         NameStatsBullet=NameBulletPreset.Basic;
         DefineBulletStats();
-
     }
 
     void Awake()
     {
-        /* StatsGun.timeBetweenShots = 1f;
-        StatsGun.t2s2=0;
-        StatsGun.cargador = -1;
-        StatsGun.contCargador=-1;
-        StatsGun.informationBullet=InformationBullet.Default(null);
- */
         typePart= TypePart.ShootableRight;
     }
 
@@ -287,48 +319,44 @@ public class Escopeta : GunBase
             Shot();
             StartCoroutine(ShotIE());
         }
-        
-        
-        Debug.Log("AQUÍ INSTANCIES BALA");
     }
 
     private void Shot()
     {
-        int valor = 10;
+        float accu=GetTotalStat(Stat.StatTypeGeneral.Accuraccy);
+        float valor= 10-Mathf.Sqrt(accu);
+        if(valor <3) valor= 3;
+        // int valor = 10;
         int nbullets = 5;
+        float maxDisp= (nbullets-1)/2*valor;
          foreach (var item in firepoint)
         {
             for (int i = 0; i < nbullets; i++)
             {
                 valor *= i;
-                Quaternion rotationWithOffset = item.GetComponentInParent<Transform>().rotation * Quaternion.Euler((-20+valor), 90, 90);
+                Quaternion rotationWithOffset = item.GetComponentInParent<Transform>().rotation * Quaternion.Euler(0,(-maxDisp+valor),0 );//(-20+valor) ,0);
 
                 CreateBullet(item.position,rotationWithOffset);
-                /* bulletInstance = Instantiate(bulletPrefab, firepoint.position, rotationWithOffset);
-                BaseBullets bulletInfo = bulletInstance.GetComponent<BaseBullets>(); */
-
-                // bulletInstance.GetComponent<CreateBullet>()
-                
-                // .allPresetBullets= Activate();
-
-                // bulletInfo.DefinirBala(1, -8 );
-                // bulletInstance.Last().gameObject.SetActive(false);
-                valor =10;
+                // valor =10;
+                valor= 10-Mathf.Sqrt(accu);
 
             }
         }
         bulletInstance= new List<GameObject>();
+        if (GameManager.Instance.playerInstance.TryGetComponent<IDamageable>(out IDamageable player))
+        {
+            foreach(var fp in firepoint)
+            {
+                Vector3 direccio =GameManager.Instance.playerInstance.transform.position-  fp.transform.position ;
+
+                player.AddKnockback(direccio, GetTotalStat(Stat.StatTypeGeneral.Knockback)/1.4f);
+            }
+        }
 
     }
 
     private IEnumerator ShotIE()
     {
-        
-       /*  for (int i = 0; i < nbullets; i++)
-        {
-            bulletInstance[i].gameObject.SetActive(true);
-        } */
-        
         canShot = false;
         yield return new WaitForSeconds(statsManager.instance.GetShipGunBulletStat(Stat.StatTypeGeneral.TimeBetweenShots, IDP, BaseStatsBullet));
         canShot = true;

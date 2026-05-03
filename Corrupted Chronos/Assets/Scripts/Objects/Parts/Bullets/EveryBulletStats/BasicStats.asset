@@ -22,7 +22,7 @@ MonoBehaviour:
   - type: 100
     value: 10
   - type: 101
-    value: 10
+    value: 15
   - type: 102
     value: 0
   - type: 103

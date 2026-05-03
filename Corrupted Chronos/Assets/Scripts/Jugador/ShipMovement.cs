@@ -160,7 +160,7 @@ public class ShipMovement : MonoBehaviour,IDamageable
     #region interface
     public void TakeDamage(float damageAmount)
     {
-        statsManager.instance.AddModifier(Stat.StatTypeGeneral.Health, new StatModifier(damageAmount, StatModifier.ModifierType.Add));
+        statsManager.instance.AddModifier(Stat.StatTypeGeneral.Health, new StatModifier(-damageAmount, StatModifier.ModifierType.Add));
         // currentHealth-=damageAmount;
         if(statsManager.instance.GetShipStat(Stat.StatTypeGeneral.Health)<=0) Die();
     }
@@ -172,8 +172,8 @@ public class ShipMovement : MonoBehaviour,IDamageable
 
     public void AddKnockback(Vector3 dir, float force) {
         externalForce += dir.normalized * force*1.3f;
-        Debug.LogWarning("enter do knockback dir:"+dir.ToString()+" force:"+force);
-        Debug.LogWarning("externalForce:"+ externalForce.ToString());
+        // Debug.LogWarning("enter do knockback dir:"+dir.ToString()+" force:"+force);
+        // Debug.LogWarning("externalForce:"+ externalForce.ToString());
     }
     #endregion
     void toFly()

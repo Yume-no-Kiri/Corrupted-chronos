@@ -33,28 +33,37 @@ public abstract class ElementalEffect<T>: MonoBehaviour, IElemental <T>
 public class FireEffect : MonoBehaviour
 {
     private IDamageable target;
-    private float damagePerSecond;
-    private float duration;
+    private float damageForWave;
+    private float durationEffect;
+    private float durationWave=0.4f;
+    private float charges=0;
 
     // Aquest mètode configura l'efecte
     public void Setup(IDamageable targetToBurn, float dmg, float time)
     {
         target = targetToBurn;
-        damagePerSecond = dmg;
-        duration = time;
+        damageForWave = dmg;
+        durationEffect = time;
+        charges=1;
         StartCoroutine(BurnRoutine());
     }
 
+    public void BurnMore(float dmg, float time){
+        durationEffect+=time/2;
+        damageForWave+=dmg/2;
+        charges++;
+        durationWave-=0.01f* Random.Range( 0, 20);
+    }
     private IEnumerator BurnRoutine()
     {
         float elapsed = 0;
         float elapsed2=0;
 
-        while (elapsed < duration && target!=null)
+        while (elapsed < durationEffect && target!=null)
         {
-            if (elapsed2 >= 0.4)
+            if (elapsed2 >= durationWave)
             {
-                target.TakeDamage(damagePerSecond * Time.deltaTime);
+                target.TakeDamage(damageForWave * Time.deltaTime);
                 elapsed2=0;
             }
             elapsed2 += Time.deltaTime;
