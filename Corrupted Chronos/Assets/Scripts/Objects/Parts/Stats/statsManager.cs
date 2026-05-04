@@ -21,9 +21,9 @@ public class statsManager : MonoBehaviour
     // [SerializeField] List<Stat> stats = new();
     [SerializeField] private BaseStatsSO dadesBase;
 
-    [Header ("Stats")]
-    [field: SerializeField] public ListPartStats listPartStats{get; private set;}
-    [field: SerializeField] public ListBulletStats listBulletStats{get; private set;}
+    [Header("Stats")]
+    [field: SerializeField] public ListPartStats listPartStats { get; private set; }
+    [field: SerializeField] public ListBulletStats listBulletStats { get; private set; }
 
     void Awake()
     {
@@ -37,13 +37,14 @@ public class statsManager : MonoBehaviour
         }
 
         statLookup = new Dictionary<Stat.StatTypeGeneral, Stat>();
-        statEachGun= new Dictionary<int, Dictionary<Stat.StatTypeGun, Stat>>();
+        statEachGun = new Dictionary<int, Dictionary<Stat.StatTypeGun, Stat>>();
 
-        if(dadesBase != null)
+        if (dadesBase != null)
         {
             foreach (var item in dadesBase.defaultStats)
             {
-                Stat novaStat = new Stat {
+                Stat novaStat = new Stat
+                {
                     name = item.type,
                     baseValue = item.value,
                     currentValue = item.value
@@ -52,8 +53,8 @@ public class statsManager : MonoBehaviour
 
             }
         }
-   
-    
+
+
     }
 
     /* private void Start() {
@@ -63,7 +64,7 @@ public class statsManager : MonoBehaviour
 
     public void CreateStatsGun(string name, int idp)
     {
-        Dictionary<Stat.StatTypeGun, Stat> baseStats= listPartStats.ReturnStatsByName(name);
+        Dictionary<Stat.StatTypeGun, Stat> baseStats = listPartStats.ReturnStatsByName(name);
         if (baseStats != null && baseStats.Count > 0)
         {
             Dictionary<Stat.StatTypeGun, Stat> independentStats = new Dictionary<Stat.StatTypeGun, Stat>();
@@ -71,7 +72,8 @@ public class statsManager : MonoBehaviour
             foreach (var kvp in baseStats)
             {
                 //creem una copia de les stats base, si no, modiifcariem les stats/*  */
-                independentStats[kvp.Key] = new Stat {
+                independentStats[kvp.Key] = new Stat
+                {
                     name = kvp.Value.name,
                     baseValue = kvp.Value.baseValue,
                     currentValue = kvp.Value.baseValue
@@ -79,7 +81,7 @@ public class statsManager : MonoBehaviour
             }
             statEachGun[idp] = independentStats;
         }
-        else {Debug.LogError("don't found gun stats");}
+        else { Debug.LogError("don't found gun stats"); }
     }
 
     public float AddModifier(Stat.StatTypeGeneral type, StatModifier mod)
@@ -103,7 +105,8 @@ public class statsManager : MonoBehaviour
 
     public float AddModifier(int modifyIDP, Stat.StatTypeGun type, StatModifier mod)
     {
-        if(statEachGun.TryGetValue(modifyIDP, out var gun )){
+        if (statEachGun.TryGetValue(modifyIDP, out var gun))
+        {
             if (gun.TryGetValue(type, out var stat))
             {
                 return stat.AddModifier(mod);
@@ -148,7 +151,7 @@ public class statsManager : MonoBehaviour
       */
     public AllInformationBullet ReturnFinalStatsBullet(int idp, AllInformationBullet bulletPreset)
     {
-        AllInformationBullet finalBullet= new AllInformationBullet();
+        AllInformationBullet finalBullet = new AllInformationBullet();
 
         finalBullet.NameBullet = bulletPreset.NameBullet;
         finalBullet.sprite = bulletPreset.sprite;
@@ -172,8 +175,6 @@ public class statsManager : MonoBehaviour
 
         return finalBullet;
     }
-
-
     public bool StatExistsGun(Stat.StatTypeGeneral GeneralStat)
     {
         string nom = GeneralStat.ToString();
@@ -205,14 +206,15 @@ public class statsManager : MonoBehaviour
     }
     public float GetGunStat(Stat.StatTypeGeneral type, int idp)
     {
-        if(statEachGun.ContainsKey(idp)){
+        if (statEachGun.ContainsKey(idp))
+        {
             if (statEachGun[idp].TryGetValue((Stat.StatTypeGun)type, out var stat3))
-                {
-                    Debug.Log("stats Gun:"+stat3.currentValue);
-                    return stat3.currentValue;
-                }
+            {
+                Debug.Log("stats Gun:" + stat3.currentValue);
+                return stat3.currentValue;
+            }
         }
-      
+
 
         Debug.LogWarning($"Stat {type} not found");
         return 0f;
@@ -220,56 +222,60 @@ public class statsManager : MonoBehaviour
 
     public float GetShipGunStat(Stat.StatTypeGeneral type, int idp)
     {
-        float finalValue=0;
+        float finalValue = 0;
 
         if (statLookup.TryGetValue(type, out var stat1))
-            {finalValue+= stat1.currentValue;}
-        if(statEachGun.ContainsKey(idp)){
+        { finalValue += stat1.currentValue; }
+        if (statEachGun.ContainsKey(idp))
+        {
             if (statEachGun[idp].TryGetValue((Stat.StatTypeGun)type, out var stat3))
-                {
-                    Debug.Log("stats ShipGun:"+stat3.currentValue);
-                    finalValue+= stat3.currentValue;
-                }
+            {
+                Debug.Log("stats ShipGun:" + stat3.currentValue);
+                finalValue += stat3.currentValue;
+            }
         }
         // Debug.LogWarning($"Stat {type} not found");
         return finalValue;
     }
     public float GetShipGunBulletStat(Stat.StatTypeGeneral type, int idp, AllInformationBullet bulletPreset)
     {
-        float finalValue=0;
+        float finalValue = 0;
         if (statLookup.TryGetValue(type, out var stat1))
         {
-            finalValue+= stat1.currentValue;
+            finalValue += stat1.currentValue;
         }
-        Debug.Log("stats ShipGunBullet "+ type+" idp:"+idp+ " base:"+stat1.currentValue+" finalValue:"+finalValue);
+        Debug.Log("stats ShipGunBullet " + type + " idp:" + idp + " base:" + stat1.currentValue + " finalValue:" + finalValue);
 
-        if(statEachGun.ContainsKey(idp)){
+        if (statEachGun.ContainsKey(idp))
+        {
             // if(StatExistsGun(type)) {
-            if(Enum.TryParse(type.ToString(), out Stat.StatTypeGun guntype)){
+            if (Enum.TryParse(type.ToString(), out Stat.StatTypeGun guntype))
+            {
 
                 if (statEachGun[idp].TryGetValue(guntype, out var stat2))
                 {
 
-                    finalValue+= stat2.currentValue;
-                    Debug.Log("stats ShipGunBullet "+ type+" idp:"+idp+" gun:"+stat2.currentValue+ " finalValue:"+finalValue);
+                    finalValue += stat2.currentValue;
+                    Debug.Log("stats ShipGunBullet " + type + " idp:" + idp + " gun:" + stat2.currentValue + " finalValue:" + finalValue);
 
                 }
             }
 
         }
-        if(Enum.TryParse(type.ToString(), out Stat.StatTypeBullet bullettype)){
+        if (Enum.TryParse(type.ToString(), out Stat.StatTypeBullet bullettype))
+        {
 
-        // if(StatExistsBulLet(type)) {
-            if(bulletPreset.StatsBullet != null && bulletPreset.StatsBullet.TryGetValue(bullettype,out var stat3))
+            // if(StatExistsBulLet(type)) {
+            if (bulletPreset.StatsBullet != null && bulletPreset.StatsBullet.TryGetValue(bullettype, out var stat3))
             {
 
-                finalValue+=stat3; //no se modifica les dades de les bullets
-                Debug.Log("stats ShipGunBullet "+ type+" idp:"+idp+" bullet:"+stat3+ " finalValue:"+finalValue);
+                finalValue += stat3; //no se modifica les dades de les bullets
+                Debug.Log("stats ShipGunBullet " + type + " idp:" + idp + " bullet:" + stat3 + " finalValue:" + finalValue);
 
             }
         }
         // Debug.LogWarning($"Stat {type} not found");
-        Debug.Log("stats ShipGunBullet "+ type+" idp:"+idp+" final:"+finalValue);
+        Debug.Log("stats ShipGunBullet " + type + " idp:" + idp + " final:" + finalValue);
 
         return finalValue;
     }
@@ -280,66 +286,66 @@ public class statsManager : MonoBehaviour
 public class Stat
 {
 
-   /*  public enum StatsEnemy
-    {
-        Health=0,
-        Stamina=1,
-        Shields=2,
-        ShieldRegen=3,
-        Speed=4,
-        Agility=5,
-    } */
+    /*  public enum StatsEnemy
+     {
+         Health=0,
+         Stamina=1,
+         Shields=2,
+         ShieldRegen=3,
+         Speed=4,
+         Agility=5,
+     } */
 
     public enum StatTypeGeneral
     {
         //ship:
-        Health=0, //rang (0, inf)
-        Stamina=1, //rang (0, inf)
-        Shields=2, //rang (0, inf)
-        ShieldRegen=3, //rang (0, inf)
-        Speed=4, //rang (0, inf)
-        Agility=5, //rang (0, inf)
+        Health = 0, //rang (0, inf)
+        Stamina = 1, //rang (0, inf)
+        Shields = 2, //rang (0, inf)
+        ShieldRegen = 3, //rang (0, inf)
+        Speed = 4, //rang (0, inf)
+        Agility = 5, //rang (0, inf)
 
         // guns
-        TimeBetweenShots=50, //rang (0, inf)
-        Magazine=51, //rang (0, inf)
-        Accuraccy=52, //rang (0, inf)
+        TimeBetweenShots = 50, //rang (0, inf)
+        Magazine = 51, //rang (0, inf)
+        Accuraccy = 52, //rang (0, inf)
 
         // bullet
-        Damage=100,
-        BulletSpeed=101,
-        Penetration=102,
-        DistEffec=103,
-        DistMax=104,
-        Knockback=105,
+        Damage = 100,
+        BulletSpeed = 101,
+        Penetration = 102,
+        DistEffec = 103,
+        DistMax = 104,
+        Knockback = 105,
 
     }
     public enum StatTypeGun
     {
-         // guns
-        TimeBetweenShots=50,
-        Magazine=51,
-        Accuraccy=52,
+        // guns
+        TimeBetweenShots = 50,
+        Magazine = 51,
+        Accuraccy = 52,
 
         // bullet
-        Damage=100,
-        BulletSpeed=101,
-        Penetration=102,
-        DistEffec=103,
-        DistMax=104,
-        Knockback=105,
+        Damage = 100,
+        BulletSpeed = 101,
+        Penetration = 102,
+        DistEffec = 103,
+        DistMax = 104,
+        Knockback = 105,
     }
 
     public enum StatTypeBullet
     {
 
         // bullet
-        Damage=100,
-        BulletSpeed=101,
-        Penetration=102,
-        DistEffec=103,
-        DistMax=104,
-        Knockback=105,
+        Damage = 100,
+        BulletSpeed = 101,
+        Penetration = 102,
+        DistEffec = 103,
+        DistMax = 104,
+        Knockback = 105,
     }
 
 
@@ -428,7 +434,7 @@ public class StatModifier
         this.source = source;
     }
 
-    
+
 }
 [CreateAssetMenu(fileName = "BaseStats", menuName = "Stats/BaseStats")]
 public class BaseStatsSO : ScriptableObject
