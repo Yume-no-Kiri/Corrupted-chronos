@@ -94,11 +94,11 @@ public class ShipMovement : MonoBehaviour,IDamageable
     {
         // moveSpeed=GameManager.Instance.moveSpeedNau;
         Vector2 inputMove=Vector2.zero;
-        Debug.Log("ss Do you enter");
+        //Debug.Log("ss Do you enter");
         if (moveAction != null)
         {
             inputMove = moveAction.ReadValue<Vector2>();
-            Debug.Log("ss move it move it"+inputMove.ToString());
+            //Debug.Log("ss move it move it"+inputMove.ToString());
 
         }
         
@@ -110,15 +110,9 @@ public class ShipMovement : MonoBehaviour,IDamageable
 
                 GameManager.Instance.MoveUpStamina();
             }
-            Debug.Log("ss move down UP"+inputDownUp.ToString());
+            //Debug.Log("ss move down UP"+inputDownUp.ToString());
 
         }
-        // Vector2 inputUp=Vector2.zero;
-       /*  else if (
-        {
-            Debug.Log("move up");
-            
-        } */
 
 
         targetMoveVector = new Vector3(inputMove.x, inputDownUp, inputMove.y);
@@ -167,7 +161,7 @@ public class ShipMovement : MonoBehaviour,IDamageable
 
     public void Die()
     {
-        throw new System.NotImplementedException();
+        Destroy(this.gameObject);
     }
 
     public void AddKnockback(Vector3 dir, float force) {

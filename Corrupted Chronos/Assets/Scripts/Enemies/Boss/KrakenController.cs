@@ -9,10 +9,15 @@ public class KrakenController : MonoBehaviour
     public BossAttacks head;
     public List<GameObject> spawnedTentacles;
 
+    public float BossHealth;
+
 
     [Header("Tentacle Options")]
+    public float tentacleSpawnRadius;
+    public float tentaclePlayerSpawnRadius;
     public int maxTentacles;
     public GameObject[] tentacles;
+    
 
     public krakenStateMachine sm;
 

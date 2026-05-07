@@ -63,7 +63,7 @@ public class attackingState : baseState
 
     Vector3 GenerateAttackPosition()
     {
-        Debug.Log("aaaa");
+        //Debug.Log("aaaa");
         Vector3 playerPos = data.player.position;
         Vector3 leaderPos = data.leader.transform.position;
 

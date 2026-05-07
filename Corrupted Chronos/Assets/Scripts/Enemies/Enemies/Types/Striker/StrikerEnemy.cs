@@ -7,7 +7,9 @@ public class StrikerEnemy : EnemyUnit
         if (!CanFire())
             return;
 
-        Instantiate(projectile, transform.position, transform.rotation);
+        GameObject bulletInst = Instantiate(statsManager.instance.listBulletStats.GeneralBullet, transform.position, transform.rotation);
+
+        bulletInst.GetComponent<CreateBullet>().Setup(false, projectile);
 
         RegisterFire();
     }

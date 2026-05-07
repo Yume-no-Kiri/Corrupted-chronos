@@ -11,6 +11,6 @@ public class DebugScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Debug.Log("position will i am:"+transform.position);
+        //Debug.Log("position will i am:"+transform.position);
     }
 }

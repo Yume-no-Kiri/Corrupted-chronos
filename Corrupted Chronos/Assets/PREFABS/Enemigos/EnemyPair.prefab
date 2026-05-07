@@ -100,11 +100,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 186790347198727349}
-  - component: {fileID: 5681225881607066044}
+  - component: {fileID: 7331021355105918686}
   - component: {fileID: 9204940280252060164}
+  - component: {fileID: 5030217701520647172}
   m_Layer: 0
   m_Name: Enemy2
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,7 +126,7 @@ Transform:
   - {fileID: 846498129817974033}
   m_Father: {fileID: 7998632249251347122}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: -3.63}
---- !u!114 &5681225881607066044
+--- !u!114 &7331021355105918686
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -134,19 +135,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 842232153960979717}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6708853505e539e4a81a70b992c99477, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b94bb570339e8c4d98e079ece735daa, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyUnit
+  m_EditorClassIdentifier: Assembly-CSharp::StrikerEnemy
   <maxhealth>k__BackingField: 0
   <currentHealth>k__BackingField: 0
-  moveSpeed: 8
+  moveSpeed: 6
   acceleration: 20
   stoppingDistance: 0.15
-  movementSmoothing: 5
+  movementSmoothing: 0
   rotationSmoothing: 0
   rotationSpeed: 720
-  moveTarget: {x: 516.13, y: 2.16, z: 354.49}
+  moveTarget: {x: 0, y: 0, z: 0}
   _lookTarget: {fileID: 0}
+  projectile: 0
+  fireRate: 1
   hasMoveTarget: 0
 --- !u!54 &9204940280252060164
 Rigidbody:
@@ -175,6 +178,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &5030217701520647172
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842232153960979717}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.56207097
+  m_Height: 3.3349
+  m_Direction: 2
+  m_Center: {x: -0.000035047477, y: 0.15665817, z: 0.0046691895}
 --- !u!1 &3854820168874236224
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,12 +248,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPair
   player: {fileID: 0}
-  leader: {fileID: 7225448434988932027}
+  leader: {fileID: 0}
   leaderHasTarget: 0
   shouldLeaderMove: 1
   leaderNextPos: {x: 469.70905, y: 2.16, z: 269.35687}
   leaderTarget: {fileID: 0}
-  wingman: {fileID: 5681225881607066044}
+  wingman: {fileID: 0}
   wingmanHasTarget: 0
   shouldWingmanMove: 1
   wingmanNextPos: {x: 473.58536, y: 2.16, z: 262.18036}
@@ -344,11 +370,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3221683148305984196}
-  - component: {fileID: 7225448434988932027}
+  - component: {fileID: 4927250484368709318}
   - component: {fileID: 5719701306740527338}
+  - component: {fileID: 5304547266140836931}
   m_Layer: 0
   m_Name: Enemy1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -369,7 +396,7 @@ Transform:
   - {fileID: 6827086707003340813}
   m_Father: {fileID: 7998632249251347122}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -3.63}
---- !u!114 &7225448434988932027
+--- !u!114 &4927250484368709318
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -378,19 +405,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 6274711551501773075}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6708853505e539e4a81a70b992c99477, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b94bb570339e8c4d98e079ece735daa, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyUnit
+  m_EditorClassIdentifier: Assembly-CSharp::StrikerEnemy
   <maxhealth>k__BackingField: 0
   <currentHealth>k__BackingField: 0
-  moveSpeed: 8
+  moveSpeed: 6
   acceleration: 20
   stoppingDistance: 0.15
-  movementSmoothing: 5
+  movementSmoothing: 0
   rotationSmoothing: 0
   rotationSpeed: 720
-  moveTarget: {x: 516.13, y: 2.16, z: 354.49}
+  moveTarget: {x: 0, y: 0, z: 0}
   _lookTarget: {fileID: 0}
+  projectile: 0
+  fireRate: 1
   hasMoveTarget: 0
 --- !u!54 &5719701306740527338
 Rigidbody:
@@ -419,3 +448,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &5304547266140836931
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6274711551501773075}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.56207097
+  m_Height: 3.3349
+  m_Direction: 2
+  m_Center: {x: -0.000035047477, y: 0.15665817, z: 0.0046691895}

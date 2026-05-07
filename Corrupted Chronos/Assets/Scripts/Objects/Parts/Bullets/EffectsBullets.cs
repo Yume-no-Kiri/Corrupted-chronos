@@ -138,6 +138,7 @@ public class DamageEB: EffectsBullets
 
 
         OnImpact?.Invoke();
+        Destroy(this.gameObject);
 
     }
 }

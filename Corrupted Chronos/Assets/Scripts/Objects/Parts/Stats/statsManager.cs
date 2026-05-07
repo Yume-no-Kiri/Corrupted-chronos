@@ -18,7 +18,7 @@ public class statsManager : MonoBehaviour
 
     //Esto SE MANTIENE privado
     //Es una lista para poder editar los stats desde el inspector, pero no se expone a otras clases
-    // [SerializeField] List<Stat> stats = new();
+    //[SerializeField] List<Stat> stats = new();
     [SerializeField] private BaseStatsSO dadesBase;
 
     [Header("Stats")]
@@ -230,7 +230,7 @@ public class statsManager : MonoBehaviour
         {
             if (statEachGun[idp].TryGetValue((Stat.StatTypeGun)type, out var stat3))
             {
-                Debug.Log("stats ShipGun:" + stat3.currentValue);
+                //Debug.Log("stats ShipGun:" + stat3.currentValue);
                 finalValue += stat3.currentValue;
             }
         }
@@ -244,7 +244,7 @@ public class statsManager : MonoBehaviour
         {
             finalValue += stat1.currentValue;
         }
-        Debug.Log("stats ShipGunBullet " + type + " idp:" + idp + " base:" + stat1.currentValue + " finalValue:" + finalValue);
+        //Debug.Log("stats ShipGunBullet " + type + " idp:" + idp + " base:" + stat1.currentValue + " finalValue:" + finalValue);
 
         if (statEachGun.ContainsKey(idp))
         {
@@ -256,7 +256,7 @@ public class statsManager : MonoBehaviour
                 {
 
                     finalValue += stat2.currentValue;
-                    Debug.Log("stats ShipGunBullet " + type + " idp:" + idp + " gun:" + stat2.currentValue + " finalValue:" + finalValue);
+                    //Debug.Log("stats ShipGunBullet " + type + " idp:" + idp + " gun:" + stat2.currentValue + " finalValue:" + finalValue);
 
                 }
             }
@@ -270,12 +270,12 @@ public class statsManager : MonoBehaviour
             {
 
                 finalValue += stat3; //no se modifica les dades de les bullets
-                Debug.Log("stats ShipGunBullet " + type + " idp:" + idp + " bullet:" + stat3 + " finalValue:" + finalValue);
+                //Debug.Log("stats ShipGunBullet " + type + " idp:" + idp + " bullet:" + stat3 + " finalValue:" + finalValue);
 
             }
         }
         // Debug.LogWarning($"Stat {type} not found");
-        Debug.Log("stats ShipGunBullet " + type + " idp:" + idp + " final:" + finalValue);
+        //Debug.Log("stats ShipGunBullet " + type + " idp:" + idp + " final:" + finalValue);
 
         return finalValue;
     }
