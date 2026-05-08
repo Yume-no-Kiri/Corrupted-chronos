@@ -32,6 +32,6 @@ MonoBehaviour:
   - type: 104
     value: 0
   - type: 105
-    value: 10
+    value: 15
   - type: 106
     value: -0.25

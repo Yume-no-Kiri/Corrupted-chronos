@@ -19,8 +19,8 @@ MonoBehaviour:
     value: -1
   - type: 52
     value: 10
-  - type: 105
-    value: 0
+  - type: 53
+    value: 1
   - type: 100
     value: 5
   - type: 101

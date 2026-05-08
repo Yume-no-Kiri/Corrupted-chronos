@@ -33,13 +33,10 @@ MonoBehaviour:
     value: 0
   - type: 53
     value: 0
-
   - type: 100
-    value: 0
-  - type: 105
-    value: 0
+    value: 2
   - type: 101
-    value: 0
+    value: 1
   - type: 102
     value: 0
   - type: 103
