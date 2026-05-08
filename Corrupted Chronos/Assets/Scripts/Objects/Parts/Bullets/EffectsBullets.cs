@@ -11,7 +11,8 @@ public enum NameEffectBullets
 
     KnockbackEB=30,
     DamageEB=31,
-    FollowOpposedEB=32
+    FollowOpposedEB=32,
+    FireEB=33
 }
 
 
@@ -50,10 +51,10 @@ public class EffectsBullets : MonoBehaviour
             //baseBullets.getlasthitbox donarà un collider i amb collider ho faig
             go= baseBullets.GetLastHitbox();
             //with this
-            baseBullets.dicCollisionEnter[go]+=HitboxCollisionEnter;
+            // baseBullets.dicCollisionEnter[go]+=HitboxCollisionEnter;
             baseBullets.dicTriggerEnter[go]+=HitboxTriggerEnter;  
            
-            baseBullets.dicCollisionExit[go]+=HitboxCollisionExit;
+            // baseBullets.dicCollisionExit[go]+=HitboxCollisionExit;
             baseBullets.dicTriggerExit[go]+=HitboxTriggerExit;  
         }
         else
@@ -61,10 +62,10 @@ public class EffectsBullets : MonoBehaviour
             
             go=baseBullets.GetNametHitbox(name);
 
-            baseBullets.dicCollisionEnter[go]+=HitboxCollisionEnter;
+            // baseBullets.dicCollisionEnter[go]+=HitboxCollisionEnter;
             baseBullets.dicTriggerEnter[go]+=HitboxTriggerEnter;  
 
-            baseBullets.dicCollisionExit[go]+=HitboxCollisionExit;
+            // baseBullets.dicCollisionExit[go]+=HitboxCollisionExit;
             baseBullets.dicTriggerExit[go]+=HitboxTriggerExit;  
             
         }
@@ -74,10 +75,10 @@ public class EffectsBullets : MonoBehaviour
     
     protected virtual void OnDestroy()
     {
-        baseBullets.dicCollisionEnter[hitboxUsed]-=HitboxCollisionEnter;
+        // baseBullets.dicCollisionEnter[hitboxUsed]-=HitboxCollisionEnter;
         baseBullets.dicTriggerEnter[hitboxUsed]-=HitboxTriggerEnter;  
 
-        baseBullets.dicCollisionExit[hitboxUsed]-=HitboxCollisionExit;
+        // baseBullets.dicCollisionExit[hitboxUsed]-=HitboxCollisionExit;
         baseBullets.dicTriggerExit[hitboxUsed]-=HitboxTriggerExit;  
 
     }
@@ -87,11 +88,11 @@ public class EffectsBullets : MonoBehaviour
     } */
     protected virtual void FixedUpdate() {}
 
-    protected virtual void HitboxCollisionEnter(Collision collision){}
+    // protected virtual void HitboxCollisionEnter(Collision collision){}
     protected virtual void HitboxTriggerEnter(Collider trigger){}
 
     //if exit methods are hard, could be changed to timers I guess
-    protected virtual void HitboxCollisionExit(Collision collision){}
+    // protected virtual void HitboxCollisionExit(Collision collision){}
     protected virtual void HitboxTriggerExit(Collider trigger){}
 }
 
@@ -256,25 +257,42 @@ public class FireEB: EffectsBullets
     private float dmg=5f;
     private float durationFire=3f;
 
+    private bool onDeclive=false;
     protected override void Awake()
     {   base.Awake();    
+        baseBullets.OnDecliveRange+= ()=>onDeclive=true;
         // definir ALGO AMB ELS REQUISITS
     }
     protected override void HitboxTriggerEnter(Collider trigger)
     {
         if (trigger.gameObject.TryGetComponent(out IDamageable victim))
         {
-            if(trigger.gameObject.TryGetComponent(out FireEffect fireEffect))
-            {
-                fireEffect.BurnMore(dmg, durationFire);
-            }else{
-                FireEffect foc = trigger.gameObject.AddComponent<FireEffect>();
-                foc.Setup(victim, dmg, durationFire); 
-            }
+            if(!onDeclive){
             
+                    if(trigger.gameObject.TryGetComponent(out FireEffect fireEffect))
+                    {
+                        fireEffect.BurnMore(dmg, durationFire);
+                    }else{
+                        FireEffect foc = trigger.gameObject.AddComponent<FireEffect>();
+                        foc.Setup(victim, dmg, durationFire); 
+                    }
+            }else
+            {
+                //add efect of ashes
+            }
         }
     }
 }
+
+public class OverTheLimitEB : EffectsBullets
+{
+    /* 
+    should reach the basegun script and modifify the method of the maxlimit, it shouldn't delte it, 
+    it should extend the life of the bullet, some more time
+     */
+
+}
+
 
 /* 
 //explosion when impacted with enemy

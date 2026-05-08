@@ -241,7 +241,10 @@ public class statsManager : MonoBehaviour
         {
             finalValue+= stat1.currentValue;
         }
-        Debug.Log("stats ShipGunBullet "+ type+" idp:"+idp+ " base:"+stat1.currentValue+" finalValue:"+finalValue);
+        Debug.Log("stats ShipGunBullet "+ type);
+        Debug.Log("stats idp:"+idp);
+        Debug.Log("stats base:"+stat1.currentValue);
+        Debug.Log("stats finalValue:"+finalValue);
 
         if(statEachGun.ContainsKey(idp)){
             // if(StatExistsGun(type)) {
@@ -292,7 +295,7 @@ public class Stat
 
     public enum StatTypeGeneral
     {
-        //ship:
+        //ship: 6
         Health=0, //rang (0, inf)
         Stamina=1, //rang (0, inf)
         Shields=2, //rang (0, inf)
@@ -300,18 +303,22 @@ public class Stat
         Speed=4, //rang (0, inf)
         Agility=5, //rang (0, inf)
 
-        // guns
+        // guns: 4
         TimeBetweenShots=50, //rang (0, inf)
         Magazine=51, //rang (0, inf)
         Accuraccy=52, //rang (0, inf)
+        NumberBullets=53,
 
-        // bullet
+
+        // bullet: 7
         Damage=100,
         BulletSpeed=101,
         Penetration=102,
         DistEffec=103,
         DistMax=104,
         Knockback=105,
+        BulletSize=106
+
 
     }
     public enum StatTypeGun
@@ -320,6 +327,7 @@ public class Stat
         TimeBetweenShots=50,
         Magazine=51,
         Accuraccy=52,
+        NumberBullets=53,
 
         // bullet
         Damage=100,
@@ -328,6 +336,8 @@ public class Stat
         DistEffec=103,
         DistMax=104,
         Knockback=105,
+        BulletSize=106
+
     }
 
     public enum StatTypeBullet
@@ -340,6 +350,7 @@ public class Stat
         DistEffec=103,
         DistMax=104,
         Knockback=105,
+        BulletSize=106
     }
 
 

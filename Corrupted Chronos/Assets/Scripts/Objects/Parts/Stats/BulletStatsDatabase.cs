@@ -20,10 +20,8 @@ public enum NameBulletPreset
     Basic=1,
     Wave=2, 
     RedWave=3,
-    FollowMissile=4
-    
-
-
+    FollowMissile=4,
+    Flame=5
 }
 
 // Ara mateix la relació de colliders i effectes es: molts efectes a 1 collider
@@ -166,4 +164,9 @@ public class FollowinMissileSO: BulletStatsSO
     
 }
 
+[CreateAssetMenu(fileName="FlameStats", menuName = "Bullet/FlameStats")]
+public class FlameStatsSO: BulletStatsSO
+{
+    
+}
 

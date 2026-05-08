@@ -19,6 +19,8 @@ MonoBehaviour:
     value: -1
   - type: 52
     value: 3
+  - type: 53
+    value: 5
   - type: 100
     value: 5
   - type: 101
@@ -31,3 +33,5 @@ MonoBehaviour:
     value: 0
   - type: 105
     value: 10
+  - type: 106
+    value: -0.25

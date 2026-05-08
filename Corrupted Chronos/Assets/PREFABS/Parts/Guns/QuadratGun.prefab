@@ -194,7 +194,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1e5b3ad05c89214e9be48b42f1896bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeName: Metralleta
+  listParts: 0
+  listObjects: 100
   ActivateOnStart: 0
   firepoint: {fileID: 698397631943366705}
   bulletPrefab: {fileID: 8735485520253785074, guid: 8284973a34c69d346b031d28dea8d7a6, type: 3}

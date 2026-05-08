@@ -60,3 +60,6 @@ public class EscopetaStatsSO: PartBaseStatsSO
 [CreateAssetMenu(fileName="MetralletaStats",menuName = "Stats/MetralletaPartStats")]
 public class MetralletaStatsSO: PartBaseStatsSO
 {}
+[CreateAssetMenu(fileName="FlamethrowerStats",menuName = "Stats/FlamethrowerPartStats")]
+public class FlamethrowerStatsSO: PartBaseStatsSO
+{}
