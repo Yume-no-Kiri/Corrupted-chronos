@@ -32,7 +32,7 @@ public class AddHitboxEB: EffectsBullets
         {
             case NameHitboxInBullet.Detectors:
 
-                hitboxUsed.GetComponent<HitboxBullet>().DeactivateCollider();
+                // hitboxUsed.GetComponent<HitboxBullet>().DeactivateCollider();
                 hitboxUsed.GetComponent<HitboxBullet>().DefineTriggerSize(new Vector3(5, 5, 5));
                 break;
             case NameHitboxInBullet.AfterImpact:

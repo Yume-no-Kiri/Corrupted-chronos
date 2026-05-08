@@ -129,6 +129,7 @@ public class BaseBullets : MonoBehaviour
         newBulletSO.Debuger();
 
     }
+    
 
     public void AssignTarget(string Owner)
     {
@@ -215,10 +216,10 @@ public class BaseBullets : MonoBehaviour
         dicCollisionEnter[Hitbox] = delegate { };
         dicTriggerEnter[Hitbox] = delegate { };
        
-        newScript.OnCollisionEnterHitbox+= (col,hb) =>{
+        /* newScript.OnCollisionEnterHitbox+= (col,hb) =>{
         if (dicCollisionEnter.ContainsKey(hb)) 
             dicCollisionEnter[hb]?.Invoke(col);
-        };
+        }; */
 
         newScript.OnTriggerEnterHitbox+= (col,hb)=>{
         if (dicTriggerEnter.ContainsKey(hb)) 
@@ -228,10 +229,10 @@ public class BaseBullets : MonoBehaviour
         dicCollisionExit[Hitbox] = delegate { };
         dicTriggerExit[Hitbox] = delegate { };
        
-        newScript.OnCollisionExitHitbox+= (col,hb) =>{
+       /*  newScript.OnCollisionExitHitbox+= (col,hb) =>{
         if (dicCollisionExit.ContainsKey(hb)) 
             dicCollisionExit[hb]?.Invoke(col);
-        };
+        }; */
 
         newScript.OnTriggerExitHitbox+= (col,hb)=>{
         if (dicTriggerExit.ContainsKey(hb)) 
@@ -250,8 +251,10 @@ public class BaseBullets : MonoBehaviour
 
         if (dicCollisionEnter.ContainsKey(Hitbox))
         {
-            oldScript.OnCollisionEnterHitbox-= (col,hb) =>dicCollisionEnter[hb]?.Invoke(col);
+            // oldScript.OnCollisionEnterHitbox-= (col,hb) =>dicCollisionEnter[hb]?.Invoke(col);
             oldScript.OnTriggerEnterHitbox-= (col,hb)=> dicTriggerEnter[hb]?.Invoke(col);
+            oldScript.OnTriggerExitHitbox-= (col,hb)=> dicTriggerExit[hb]?.Invoke(col);
+
         }
         
         hitboxBullets.Remove(Hitbox);

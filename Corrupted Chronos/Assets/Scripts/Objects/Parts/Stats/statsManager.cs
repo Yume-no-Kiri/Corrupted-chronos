@@ -244,7 +244,13 @@ public class statsManager : MonoBehaviour
         {
             finalValue += stat1.currentValue;
         }
-        Debug.Log("stats ShipGunBullet " + type + " idp:" + idp + " base:" + stat1.currentValue + " finalValue:" + finalValue);
+// <<<<<<< HEAD
+
+        Debug.Log("stats ShipGunBullet "+ type);
+        Debug.Log("stats idp:"+idp);
+        Debug.Log("stats base:"+stat1.currentValue);
+        Debug.Log("stats finalValue:"+finalValue);
+// >>>>>>> Arnau3
 
         if (statEachGun.ContainsKey(idp))
         {
@@ -298,54 +304,65 @@ public class Stat
 
     public enum StatTypeGeneral
     {
-        //ship:
-        Health = 0, //rang (0, inf)
-        Stamina = 1, //rang (0, inf)
-        Shields = 2, //rang (0, inf)
-        ShieldRegen = 3, //rang (0, inf)
-        Speed = 4, //rang (0, inf)
-        Agility = 5, //rang (0, inf)
 
-        // guns
-        TimeBetweenShots = 50, //rang (0, inf)
-        Magazine = 51, //rang (0, inf)
-        Accuraccy = 52, //rang (0, inf)
+        //ship: 6
+        Health=0, //rang (0, inf)
+        Stamina=1, //rang (0, inf)
+        Shields=2, //rang (0, inf)
+        ShieldRegen=3, //rang (0, inf)
+        Speed=4, //rang (0, inf)
+        Agility=5, //rang (0, inf)
 
-        // bullet
-        Damage = 100,
-        BulletSpeed = 101,
-        Penetration = 102,
-        DistEffec = 103,
-        DistMax = 104,
-        Knockback = 105,
+        // guns: 4
+        TimeBetweenShots=50, //rang (0, inf)
+        Magazine=51, //rang (0, inf)
+        Accuraccy=52, //rang (0, inf)
+        NumberBullets=53,
+
+
+        // bullet: 7
+        Damage=100,
+        BulletSpeed=101,
+        Penetration=102,
+        DistEffec=103,
+        DistMax=104,
+        Knockback=105,
+        BulletSize=106
+
 
     }
     public enum StatTypeGun
     {
-        // guns
-        TimeBetweenShots = 50,
-        Magazine = 51,
-        Accuraccy = 52,
+
+         // guns
+        TimeBetweenShots=50,
+        Magazine=51,
+        Accuraccy=52,
+        NumberBullets=53,
 
         // bullet
-        Damage = 100,
-        BulletSpeed = 101,
-        Penetration = 102,
-        DistEffec = 103,
-        DistMax = 104,
-        Knockback = 105,
+        Damage=100,
+        BulletSpeed=101,
+        Penetration=102,
+        DistEffec=103,
+        DistMax=104,
+        Knockback=105,
+        BulletSize=106
+
     }
 
     public enum StatTypeBullet
     {
 
         // bullet
-        Damage = 100,
-        BulletSpeed = 101,
-        Penetration = 102,
-        DistEffec = 103,
-        DistMax = 104,
-        Knockback = 105,
+
+        Damage=100,
+        BulletSpeed=101,
+        Penetration=102,
+        DistEffec=103,
+        DistMax=104,
+        Knockback=105,
+        BulletSize=106
     }
 
 

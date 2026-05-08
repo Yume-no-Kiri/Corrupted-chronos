@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
+using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,11 +19,12 @@ public enum TypePart
     Moveable
     
 }
-public enum NameGunPreset
+public enum ListNameParts
 {
     Null=0,
     Metralleta=1,
-    Escopeta=2
+    Escopeta=2,
+    Flamethrower=3
 
 }
 
@@ -74,6 +77,7 @@ public class GunBase : AllObjectMB
 
     protected List<Transform> firepoint= new List<Transform>();
     protected GameObject bulletPrefab;
+    protected SpriteRenderer sprite;
     public NameBulletPreset NameStatsBullet;
 
     // protected VisualEffect shoot_vfx;
@@ -116,6 +120,7 @@ public class GunBase : AllObjectMB
     #region bullet and shot
     public virtual void DoShot( InputAction.CallbackContext ctx)
     {
+
         throw new System.NotImplementedException();
     }
     protected void DefineBulletStats(){
@@ -136,7 +141,9 @@ public class GunBase : AllObjectMB
         
 
         bulletInstance.Add(Instantiate(bulletPrefab, spawnPoint, rotation));
+        finalStats = ModifingFinalStats( finalStats);
         bulletInstance.Last().GetComponent<CreateBullet>().Setup(true,finalStats);
+        bulletInstance.Last().transform.localScale*=finalStats.StatsBullet[Stat.StatTypeBullet.BulletSize];
         //afegir effectes de items
         foreach (var item in addedEffects)
         {
@@ -151,6 +158,10 @@ public class GunBase : AllObjectMB
         }
    
     }
+    protected virtual AllInformationBullet ModifingFinalStats( AllInformationBullet finalBullet)
+    {
+        return finalBullet;
+    }
     #endregion
 
     #region call from other scripts
@@ -158,10 +169,11 @@ public class GunBase : AllObjectMB
     {
         return typePart;
     }
-    public void PassVariables(Transform firepoint,GameObject bulletPrefab)
+    public void PassVariables(Transform firepoint,GameObject bulletPrefab, SpriteRenderer spriteRenderer)
     {
         this.firepoint.Add(firepoint);
         this.bulletPrefab = bulletPrefab;
+        this.sprite= spriteRenderer;
     }
     public void AssignIDP(int newIDP)
     {
@@ -190,6 +202,8 @@ public class GunBase : AllObjectMB
 public class Metralleta : GunBase
 {
     Coroutine coroutine=null;
+    // Coroutine coroutineCanShot=null;
+
     // float timeBetweenShots=0.3f;
     // bool cnShot=true;
 
@@ -212,9 +226,10 @@ public class Metralleta : GunBase
         if ( ctx.performed)
         {
             Debug.Log("left performed");
-            Shot();
+            // Shot();
             if(coroutine!=null) StopCoroutine(coroutine);
             coroutine=StartCoroutine(ShotIE());
+            // if(coroutineCanShot==null)  coroutineCanShot=StartCoroutine(CanShotIE());
 
         }else if (ctx.canceled)
         {   
@@ -226,6 +241,29 @@ public class Metralleta : GunBase
         Debug.Log("AQUÍ INSTANCIES BALA");
     }
 
+    private IEnumerator ShotIE()
+    {
+        timeShooting=0;
+        while (true)
+        {
+            timeShooting+= Mathf.Pow(10,Time.deltaTime);
+            if(canShot) { 
+                Shot();
+               
+                StartCoroutine(CanShotIE());
+            }
+            yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots));
+        }
+
+
+    }
+
+    private IEnumerator CanShotIE()
+    {
+        canShot=false;
+        yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots));
+        canShot=true;
+    }
     public void Shot()
     {
         foreach (var item in firepoint)
@@ -264,34 +302,14 @@ public class Metralleta : GunBase
             Quaternion rotationWithOffset = item.GetComponentInParent<Transform>().rotation * Quaternion.Euler(0, finalDisp, 0);
 
             CreateBullet(item.position,rotationWithOffset);
-
-            // bulletInstanceInstantiate(bulletPrefab, firepoint.position, rotationWithOffset);
-            // BaseBullets bulletInfo = bulletInstance.Last().GetComponent<BaseBullets>();
-            // bulletInfo.DefinirBala(1, +3);
             
             bulletInstance= new List<GameObject>();
+
+            
         }
        
     }
 
-    private IEnumerator ShotIE()
-    {
-        /* canShot = false;
-        //Debug.Log($"t2s: {t2s-t2s %PlayerStats.CooldownBalaJugador}");
-        yield return new WaitForSeconds(statsManager.instance.GetShipGunBulletStat(Stat.StatTypeGeneral.TimeBetweenShots, IDP, BaseStatsBullet));// StatsGun.timeBetweenShots);
-        canShot = true; */
-        timeShooting=0;
-        Shot();
-        yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots));//statsManager.instance.GetShipGunBulletStat(Stat.StatTypeGeneral.TimeBetweenShots, IDP, BaseStatsBullet));
-        while (true)
-        {
-            timeShooting+= Mathf.Pow(10,Time.deltaTime);
-            Shot();
-            yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots));
-        }
-
-
-    }
     
     
 }
@@ -313,9 +331,10 @@ public class Escopeta : GunBase
 
     public override void DoShot(InputAction.CallbackContext ctx)
     {
+        Debug.Log("SHOUld shot "+ ctx);
         if (canShot && ctx.performed)
         {
-            Debug.Log("Transfrom.position: " + transform.position);
+            Debug.Log("SHOUld .position: " + transform.position);
             Shot();
             StartCoroutine(ShotIE());
         }
@@ -361,4 +380,172 @@ public class Escopeta : GunBase
         yield return new WaitForSeconds(statsManager.instance.GetShipGunBulletStat(Stat.StatTypeGeneral.TimeBetweenShots, IDP, BaseStatsBullet));
         canShot = true;
     }   
+}
+
+public class Flamethrower :GunBase
+{
+    Coroutine coroutineConstShot=null;
+    // Coroutine coroutineCanShot=null;
+
+    Coroutine coroutineHeat=null;
+    bool OverHeat=false;
+
+
+    float MaxHeat=100;
+    float CurrentHeat=0;
+    float regen;
+    float HeatXShot=8f;
+    protected override void OnEnable()
+    {
+        ObjectNameID="FlamethrowerObject";
+        NameStatsBullet=NameBulletPreset.Flame;
+        base.OnEnable();//== DefineBulletStats();
+        
+
+        // HeatCurrent= statsManager.instance.GetShipGunBulletStat(Stat.StatTypeGeneral.Magazine, IDP);
+
+    }
+    void Awake(){    
+        typePart= TypePart.ShootableLeft;
+
+        MaxHeat=GetTotalStat(Stat.StatTypeGeneral.Magazine);
+        // CurrentHeat=MaxHeat;
+        Debug.Log("color maxHeat:"+MaxHeat+" currentHeat:"+CurrentHeat);
+        regen= GetTotalStat(Stat.StatTypeGeneral.ShieldRegen);
+    }
+    protected override AllInformationBullet ModifingFinalStats( AllInformationBullet finalStats)
+    {
+        finalStats.StatsBullet[Stat.StatTypeBullet.DistMax]+= UnityEngine.Random.Range(-1, 3);
+        finalStats.StatsBullet[Stat.StatTypeBullet.BulletSpeed]+= UnityEngine.Random.Range(-2, 3);
+        // finalStats.StatsBullet[Stat.StatTypeBullet.DistEffec]-= UnityEngine.Random.Range(0, 10);
+
+        return finalStats;
+        // finalStats = default;
+        // return finalStats;
+    }
+    public override void DoShot(InputAction.CallbackContext ctx)
+    {
+        //IDK if maxHeat would change as it should, so here is a savecheck
+        MaxHeat=GetTotalStat(Stat.StatTypeGeneral.Magazine);
+        regen= GetTotalStat(Stat.StatTypeGeneral.ShieldRegen);
+
+        if ( ctx.performed)
+        {
+            Debug.Log("left performed");
+            if(coroutineConstShot!=null) StopCoroutine(coroutineConstShot);
+            if (!OverHeat)
+            {
+                if (coroutineConstShot != null) StopCoroutine(coroutineConstShot);
+                coroutineConstShot = StartCoroutine(ShotIE());
+            }
+
+            /* if(!OverHeat){ 
+
+                if(coroutineHeat!=null) StopCoroutine(coroutineHeat);
+            } */
+
+        }else if (ctx.canceled)
+        {   
+            Debug.Log("left cancelled");
+            if(coroutineConstShot!=null) StopCoroutine(coroutineConstShot);
+
+            if(coroutineHeat!=null) StopCoroutine(coroutineHeat);
+            coroutineHeat= StartCoroutine( RechargeHeat());
+
+        }
+        
+        Debug.Log("AQUÍ INSTANCIES BALA");
+    }
+
+      private IEnumerator ShotIE()
+    {
+        // if(canShot){ 
+           /*  Shot();
+            // coroutineCanShot=StartCoroutine(CanShotIE());    
+            // canShot=false;
+            yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots)); */
+            // canShot=true;
+        // }
+        // yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots));//statsManager.instance.GetShipGunBulletStat(Stat.StatTypeGeneral.TimeBetweenShots, IDP, BaseStatsBullet));
+        while (!OverHeat)
+        {
+            // timeShooting+= Mathf.Pow(10,Time.deltaTime);
+            // if(canShot) {
+                Shot();
+                // coroutineCanShot=StartCoroutine(CanShotIE());     
+                // canShot=false;
+                yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots));
+                // canShot=true;
+            // }
+            // yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots));
+        }
+    }
+    /* private IEnumerator CanShotIE()
+    {
+        canShot=false;
+        yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots));
+        canShot=true;
+    } */
+     public void Shot()
+    {
+        foreach (var item in firepoint)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+
+                float accur=GetTotalStat(Stat.StatTypeGeneral.Accuraccy)/5;
+                float distorsion= UnityEngine.Random.Range(accur-30 ,31-accur);
+                Quaternion rotationWithOffset = item.GetComponentInParent<Transform>().rotation * Quaternion.Euler(0, distorsion, 0);
+                CreateBullet(item.position,rotationWithOffset);
+                CurrentHeat+=HeatXShot;
+              
+            }
+        }
+        CalculOverHeat();
+        UpdateColor();
+    }
+
+    void UpdateColor()
+    {
+
+        Color colorBase = Color.red;
+        float h, s, v;
+        Color.RGBToHSV(colorBase, out h, out s, out v);
+        float novaSaturacio = CurrentHeat / MaxHeat;
+        float saturacioSegura = Mathf.Clamp01(novaSaturacio);
+        Debug.Log("color h:"+h +" s:"+s +" v:"+v+" newSat:"+novaSaturacio+ " saveSat:"+saturacioSegura);
+
+
+        Color finalColor=Color.HSVToRGB(h, saturacioSegura, v);
+        finalColor.a=1f;
+        sprite.color = finalColor;
+
+    }
+    void CalculOverHeat()
+    {
+        if (CurrentHeat >= MaxHeat)
+        {
+            CurrentHeat=MaxHeat;
+            OverHeat=true;
+            if(coroutineConstShot!=null) StopCoroutine(coroutineConstShot);
+            if (coroutineHeat != null) StopCoroutine(coroutineHeat);
+            coroutineHeat = StartCoroutine(RechargeHeat());
+        }
+        // if(OverHeat) 
+    }
+    private IEnumerator RechargeHeat()
+    {
+        yield return new WaitForSeconds(1f);
+        //should change this to a reload bullets 
+        while(CurrentHeat>0){
+            CurrentHeat-= regen;
+            if(CurrentHeat<0) CurrentHeat=0;
+            UpdateColor();
+
+            // sprite.color = Color.Lerp(Color.red, Color.white, CurrentHeat / MaxHeat);
+            yield return new WaitForSeconds(0.1f);
+        }
+        OverHeat=false;
+    }
+
 }

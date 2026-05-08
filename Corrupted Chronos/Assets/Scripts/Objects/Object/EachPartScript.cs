@@ -9,8 +9,12 @@ using UnityEngine;
 public class EachPartScript : MonoBehaviour
 {
     [Tooltip("Acaba'l amb .cs")]
-    [SerializeField] private string typeName;
-    [SerializeField] private bool ActivateOnStart=false;
+    [SerializeField] ListNameParts listParts;
+    [SerializeField] ListNameObjects listObjects;
+    
+    
+    private string typeName;
+    // [SerializeField] private bool ActivateOnStart=false;
 
     private Type componentType;
     
@@ -18,13 +22,27 @@ public class EachPartScript : MonoBehaviour
     [SerializeField] private Transform firepoint;
     [SerializeField] private GameObject bulletPrefab;
 
-
+    [SerializeField] private SpriteRenderer sprite;
     private int IDPtoGive=-1;
     private bool componentAdded=false;
-
+    void Awake()
+    {
+        if(listParts==ListNameParts.Null && listObjects == ListNameObjects.Null)
+        {
+            Debug.LogError(" eachPartSscript don't know what to create");
+        }else if (listParts==ListNameParts.Null && listObjects != ListNameObjects.Null)
+        {
+            typeName= listObjects.ToString();
+        }else if (listParts!=ListNameParts.Null && listObjects == ListNameObjects.Null)
+        {
+            typeName= listParts.ToString();
+        }
+    }
 
     void Start()
     {
+        
+
         Activate();
         // if(ActivateOnStart) Activate();
     }
@@ -80,7 +98,7 @@ public class EachPartScript : MonoBehaviour
             GunScriptPart= gameObject.GetComponent<GunBase>();
             
             if(GunScriptPart) { 
-                GunScriptPart.PassVariables(firepoint, bulletPrefab);
+                GunScriptPart.PassVariables(firepoint, bulletPrefab,sprite);
             }// else Debug.LogError("es fill de GunBase pero no es GunBase (wtf)");
         }/* else{
             

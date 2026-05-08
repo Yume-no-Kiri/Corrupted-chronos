@@ -1,6 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ListNameObjects
+{
+    Null=100,
+    LifeItem=101,
+    EnergyItem=102,
+    RadarItem=103
+}
 
 public struct ModifierItem
 {
@@ -50,7 +57,7 @@ public abstract class AllObjectMB : MonoBehaviour
     #region definers
     public void DefineObject(AllObjectSO allObjectSO)
     {
-        if(allObjectSO==null) Debug.LogError("allobjectSO is null, didn't found object in listObjects");
+        if(allObjectSO==null) Debug.LogError("allobjectSO is null, didn't found object in allObjectsSO");
         this.allObjectSO= allObjectSO;
 
         nameShow=allObjectSO.nameShow;
@@ -109,12 +116,25 @@ public abstract class AllObjectMB : MonoBehaviour
     public virtual void ActivateSlotEffect()
     {
         //afegeix totes les bonificacions
-    }
+    }  
 
     public virtual void DeactivateSlotEffect()
     {
         //treu totes les bonificacions        
     }    
+
+
+    //no necesito remove aquí, perquè es a partAdder on les estats modificades s'assigna i s'eliminen
+    protected void StatGeneralTypeAdd(Stat.StatTypeGeneral statTypeGeneral, float number)
+    {
+        modifierItem.ItemGeneralStats.Add(statTypeGeneral, new StatModifier(number, StatModifier.ModifierType.Add));
+        // modifierItem.ItemGeneralStats
+    }
+    
+    /* protected void StatGeneralTypeRemove(Stat.StatTypeGeneral statTypeGeneral, float number)
+    {
+        modifierItem.ItemGeneralStats.Remove(statTypeGeneral, new StatModifier(number, StatModifier.ModifierType.Add));
+    } */
 }
 
 
@@ -132,6 +152,7 @@ public class LifeItem: AllObjectMB
     protected override void DefineModifierItem()
     {
         
+
         modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.Health, new StatModifier(PlusHealth, StatModifier.ModifierType.Add));
         modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.Shields, new StatModifier(PlusShield, StatModifier.ModifierType.Add));
         modifierItem.ItemGunStats.Add(Stat.StatTypeGun.BulletSpeed, new StatModifier(PlusSpeedBullet,StatModifier.ModifierType.Add));

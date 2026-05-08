@@ -28,17 +28,18 @@ public class CollectItems : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("objecte enter"+other.gameObject.tag);
         if (other.gameObject.CompareTag("Collectable"))
         {
-            AllObjectMB itemBase=other.gameObject.GetComponent<AllObjectMB>();
+            Debug.Log("objecte enter "+other.gameObject.name);    
+
+            AllObjectMB itemBase=other.gameObject.GetComponentInParent<AllObjectMB>();
             //guardar scripteable object a una llista de player, en inventoryPlayer probablement
             //eliminar objecte real
             Debug.Log("objecte detectat");
             if (inventoryManager.AddItemSpaceShip(itemBase.ReturnAllObjectSO()))
             {
-                Debug.Log("itemBase.GetScipteableObject() sprite"+itemBase.ReturnTakableDataSO().sprite.name);
-                Destroy(other.gameObject);            
+                Debug.Log("objecte itemBase.GetScipteableObject() sprite"+itemBase.ReturnTakableDataSO().sprite.name);
+                Destroy(other.transform.parent.gameObject);            
             }
         }
     }

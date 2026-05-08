@@ -105,7 +105,7 @@ public class PartAdder : MonoBehaviour
             //revisar explicació escrita en EachPartScript per futur REFACTORITZACIÓ
            
 
-
+            // Debug.Log("partchild: "+ part.name);
 
             pa= part.GetComponent<EachPartScript>().ActivateGun();
             switch (pa.GetTypePart())
