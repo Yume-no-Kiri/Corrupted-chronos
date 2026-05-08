@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MetralletaStatsSO
   GunStats:
   - type: 50
-    value: 0.4
+    value: 0.2
   - type: 51
     value: -1
   - type: 52

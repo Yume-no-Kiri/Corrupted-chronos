@@ -148,7 +148,7 @@ MonoBehaviour:
   rotationSpeed: 720
   moveTarget: {x: 0, y: 0, z: 0}
   _lookTarget: {fileID: 0}
-  projectile: 0
+  projectile: 1
   fireRate: 1
   hasMoveTarget: 0
 --- !u!54 &9204940280252060164
@@ -261,12 +261,12 @@ MonoBehaviour:
   wingmanOffset: {x: 4, y: 2}
   patrolRadius: 30
   arriveThreshold: 0.2
-  detectionRadius: 12
-  detectionAngle: 60
-  detectionTime: 1
+  detectionRadius: 30
+  detectionAngle: 80
+  detectionTime: 0.5
   playerDetected: 0
-  attackDistance: 8
-  attackDistanceTolerance: 3
+  attackDistance: 20
+  attackDistanceTolerance: 10
   pressureDistance: 10
   pressureDistanceTolerance: 3
   minWingmanAngle: 30
@@ -418,7 +418,7 @@ MonoBehaviour:
   rotationSpeed: 720
   moveTarget: {x: 0, y: 0, z: 0}
   _lookTarget: {fileID: 0}
-  projectile: 0
+  projectile: 1
   fireRate: 1
   hasMoveTarget: 0
 --- !u!54 &5719701306740527338
