@@ -6,7 +6,9 @@ public enum ListNameObjects
     Null=100,
     LifeItem=101,
     EnergyItem=102,
-    RadarItem=103
+    RadarItem=103,
+    HeavyBulletsItem=104,
+    LighterBulletsItem=105
 }
 
 public struct ModifierItem
@@ -14,7 +16,7 @@ public struct ModifierItem
     public Dictionary<Stat.StatTypeGeneral, StatModifier> ItemGeneralStats;
     public Dictionary<Stat.StatTypeGun, StatModifier> ItemGunStats;
 
-    public List<EffectsAdd> ItemBulletEffects;
+    public HashSet<EffectsAdd> ItemBulletEffects;
     public int modifyIdp;
 
     public static ModifierItem Create()
@@ -23,7 +25,7 @@ public struct ModifierItem
         {
             ItemGeneralStats = new Dictionary<Stat.StatTypeGeneral, StatModifier>(),
             ItemGunStats = new Dictionary<Stat.StatTypeGun, StatModifier>(),
-            ItemBulletEffects = new List<EffectsAdd>(),
+            ItemBulletEffects = new HashSet<EffectsAdd>(),
             modifyIdp=-1
 
         };
@@ -113,7 +115,7 @@ public abstract class AllObjectMB : MonoBehaviour
     }
     #endregion
 
-    public virtual void ActivateSlotEffect()
+    /* public virtual void ActivateSlotEffect()
     {
         //afegeix totes les bonificacions
     }  
@@ -121,7 +123,7 @@ public abstract class AllObjectMB : MonoBehaviour
     public virtual void DeactivateSlotEffect()
     {
         //treu totes les bonificacions        
-    }    
+    }   */  
 
 
     //no necesito remove aquí, perquè es a partAdder on les estats modificades s'assigna i s'eliminen
@@ -160,7 +162,7 @@ public class LifeItem: AllObjectMB
 
     
     //return List<EffectsAdd>
-    public override void ActivateSlotEffect()//int idpGun)
+    /* public override void ActivateSlotEffect()//int idpGun)
     {
         //amb el idpGun podriem afegir els buffos a l'arma 
         Debug.Log("health item activate");
@@ -169,7 +171,7 @@ public class LifeItem: AllObjectMB
     {
         Debug.Log("health item deactivate");
     }
-
+ */
    
 }
 
@@ -184,7 +186,7 @@ public class EnergyItem: AllObjectMB
         
     }
 
-    public override void ActivateSlotEffect()
+   /*  public override void ActivateSlotEffect()
     {
         Debug.LogError("energy item activate");
         
@@ -192,7 +194,7 @@ public class EnergyItem: AllObjectMB
     public override void DeactivateSlotEffect()
     {
         Debug.Log("energy item deactivate");
-    }
+    } */
 
 }
 
@@ -204,10 +206,11 @@ public class RadarItem: AllObjectMB
     }
     protected override void DefineModifierItem()
     {
+        modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.AddHitsphereEB, NameHitboxInBullet.Detectors));
         modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.FollowOpposedEB, NameHitboxInBullet.Detectors));
 
     }
-    public override void ActivateSlotEffect()
+   /*  public override void ActivateSlotEffect()
     {
         Debug.LogError("energy item activate");
         
@@ -215,14 +218,43 @@ public class RadarItem: AllObjectMB
     public override void DeactivateSlotEffect()
     {
         Debug.Log("energy item deactivate");
-    }
+    } */
 
 }
-
-
-
-/* public struct SingleStatModifierItem
+public class HeavyBulletsItem: AllObjectMB
 {
-    StatModifier statModifier;
-    float value;
-} */
+    float extraSize=1;
+    float slowness=-5;
+
+
+    protected override void OnEnable()
+    {
+        ObjectNameID="RadarObject";
+    }
+    protected override void DefineModifierItem()
+    {
+        // modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.AddHitsphereEB, NameHitboxInBullet.Detectors));
+        // modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.FollowOpposedEB, NameHitboxInBullet.Detectors));
+        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.BulletSize, new StatModifier(extraSize, StatModifier.ModifierType.Add));
+        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.BulletSpeed, new StatModifier(slowness, StatModifier.ModifierType.Add));
+    }
+}
+
+public class LighterBulletsItem: AllObjectMB
+{
+    float extraSize=-0.5f;
+    float velo=3;
+
+
+    protected override void OnEnable()
+    {
+        ObjectNameID="RadarObject";
+    }
+    protected override void DefineModifierItem()
+    {
+        // modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.AddHitsphereEB, NameHitboxInBullet.Detectors));
+        // modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.FollowOpposedEB, NameHitboxInBullet.Detectors));
+        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.BulletSize, new StatModifier(extraSize, StatModifier.ModifierType.Add));
+        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.BulletSpeed, new StatModifier(velo, StatModifier.ModifierType.Add));
+    }
+}

@@ -82,7 +82,7 @@ public class GunBase : AllObjectMB
 
     // protected VisualEffect shoot_vfx;
     // protected List<AllEffectsBullets> addedEffects= new List<AllEffectsBullets>();
-    protected List<EffectsAdd> addedEffects= new List<EffectsAdd>();
+    protected HashSet<EffectsAdd> addedEffects= new HashSet<EffectsAdd>();
 
     protected bool canShot = true;
     protected bool isPressed=false;
@@ -102,16 +102,17 @@ public class GunBase : AllObjectMB
     void Update() { }
     
     #region items addefects
-    public void AddEffectsBullets(List<EffectsAdd> effectsAdds)
+    public void AddEffectsBullets(HashSet<EffectsAdd> effectsAdds)
     {
         if(effectsAdds!=null){
-            addedEffects.Concat(effectsAdds);   
+            addedEffects.UnionWith(effectsAdds);   
+
         }
     }
-    public void RemoveEffectsBullets(List<EffectsAdd> effectsAdds)
+    public void RemoveEffectsBullets(HashSet<EffectsAdd> effectsAdds)
     {
         if(effectsAdds!=null){
-            addedEffects.Concat(effectsAdds);
+            addedEffects.UnionWith(effectsAdds);
         }
     }
     #endregion
@@ -145,14 +146,14 @@ public class GunBase : AllObjectMB
         bulletInstance.Last().GetComponent<CreateBullet>().Setup(true,finalStats);
         bulletInstance.Last().transform.localScale*=finalStats.StatsBullet[Stat.StatTypeBullet.BulletSize];
         //afegir effectes de items
-        foreach (var item in addedEffects)
+        foreach (var singleEffect in addedEffects)
         {
-            Type type=Type.GetType(item.nameEffect.ToString());
+            Type type=Type.GetType(singleEffect.nameEffect.ToString());
             Component script=bulletInstance.Last().AddComponent(type);
             EffectsBullets effectsBullets=script as EffectsBullets;
             if (effectsBullets!=null)
             {
-                effectsBullets.Setup(item.setup);
+                effectsBullets.Setup(singleEffect.setup);
             }
             // bulletInstance.Last().AddComponent(Type.GetType(item.ToString()));
         }

@@ -45,22 +45,29 @@ public class EffectsBullets : MonoBehaviour
     }
     public virtual void Setup(NameHitboxInBullet name=NameHitboxInBullet.Null)
     {
-        GameObject go;
+        GameObject go=null;
         if (name == NameHitboxInBullet.Null)
         {
+            Debug.LogError("NameHitboxInBullet null when it shouldn't ");
             //baseBullets.getlasthitbox donarà un collider i amb collider ho faig
-            go= baseBullets.GetLastHitbox();
+      /*       go= baseBullets.GetLastHitbox();
             //with this
             // baseBullets.dicCollisionEnter[go]+=HitboxCollisionEnter;
             baseBullets.dicTriggerEnter[go]+=HitboxTriggerEnter;  
            
             // baseBullets.dicCollisionExit[go]+=HitboxCollisionExit;
-            baseBullets.dicTriggerExit[go]+=HitboxTriggerExit;  
+            baseBullets.dicTriggerExit[go]+=HitboxTriggerExit;   */
         }
         else
         {
             
             go=baseBullets.GetNametHitbox(name);
+
+            /* if (go == null)
+            {
+                Debug.LogError("no hitbox added with name");
+            } */
+
 
             // baseBullets.dicCollisionEnter[go]+=HitboxCollisionEnter;
             baseBullets.dicTriggerEnter[go]+=HitboxTriggerEnter;  

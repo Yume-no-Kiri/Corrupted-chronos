@@ -13,14 +13,6 @@ MonoBehaviour:
   m_Name: TakableDataBase
   m_EditorClassIdentifier: Assembly-CSharp::ItemDataBase
   listItemsAux:
-  - nameShow: life item
-    nameID: LifeItem
-    sprite: {fileID: 21300000, guid: 343693fb7abe6ee4098fa62514b9a458, type: 3}
-    toInstanciate: {fileID: 770118656710209681, guid: 988633b9bd2b3b34f8e9b9648aea9bb7, type: 3}
-  - nameShow: energy item
-    nameID: EnergyItem
-    sprite: {fileID: 21300000, guid: 34ea344e4bf86c049a8a434b62a3c480, type: 3}
-    toInstanciate: {fileID: 4565051072455466545, guid: 7f7bdfa6d601d72429b5320cae061f78, type: 3}
   - nameShow: escopeta item
     nameID: EscopetaItem
     sprite: {fileID: 21300000, guid: 02ba87a75cac2a74ab8e5abc0f6eaae8, type: 3}
@@ -33,3 +25,27 @@ MonoBehaviour:
     nameID: FlamethrowerItem
     sprite: {fileID: 21300000, guid: 91d46a0a03f25714991410a60c58b8d6, type: 3}
     toInstanciate: {fileID: 5216852073179350294, guid: c00ba8212c8d59744aa53ce93b4d4a1b, type: 3}
+  - nameShow: EnergyGun item
+    nameID: EnergyGunItem
+    sprite: {fileID: 21300000, guid: 34ea344e4bf86c049a8a434b62a3c480, type: 3}
+    toInstanciate: {fileID: 0}
+  - nameShow: life item
+    nameID: LifeItem
+    sprite: {fileID: 21300000, guid: 343693fb7abe6ee4098fa62514b9a458, type: 3}
+    toInstanciate: {fileID: 770118656710209681, guid: 988633b9bd2b3b34f8e9b9648aea9bb7, type: 3}
+  - nameShow: energy item
+    nameID: EnergyItem
+    sprite: {fileID: 21300000, guid: 34ea344e4bf86c049a8a434b62a3c480, type: 3}
+    toInstanciate: {fileID: 4565051072455466545, guid: 7f7bdfa6d601d72429b5320cae061f78, type: 3}
+  - nameShow: radar item
+    nameID: RadarItem
+    sprite: {fileID: 21300000, guid: 34ea344e4bf86c049a8a434b62a3c480, type: 3}
+    toInstanciate: {fileID: 4565051072455466545, guid: ae463f379ca3ffa4b859bd2aef025dc4, type: 3}
+  - nameShow: Heavy Bullets item
+    nameID: HeavyBulletsItem
+    sprite: {fileID: 21300000, guid: 34ea344e4bf86c049a8a434b62a3c480, type: 3}
+    toInstanciate: {fileID: 4565051072455466545, guid: 3977aa0be20b4224898fe144e5f9ec1d, type: 3}
+  - nameShow: Lighter Bullets item
+    nameID: LighterBulletsItem
+    sprite: {fileID: 21300000, guid: 34ea344e4bf86c049a8a434b62a3c480, type: 3}
+    toInstanciate: {fileID: 4565051072455466545, guid: 0204d6cac04465c42870ddc60a5f90e0, type: 3}

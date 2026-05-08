@@ -160,6 +160,7 @@ public class BaseBullets : MonoBehaviour
         }
         else
         {
+            // return null;
             throw new Exception("no existe {name.ToString} hitbox");
         }
     }

@@ -13,38 +13,6 @@ MonoBehaviour:
   m_Name: AllObjectsDataBase
   m_EditorClassIdentifier: Assembly-CSharp::AllObjectsDataBase
   AllObjects:
-  - nameShow: Life Object
-    NameID: LifeObject
-    IDItemName: LifeItem
-    takableDataSO:
-      nameShow: life item
-      nameID: LifeItem
-      sprite: {fileID: 21300000, guid: 343693fb7abe6ee4098fa62514b9a458, type: 3}
-      toInstanciate: {fileID: 770118656710209681, guid: 988633b9bd2b3b34f8e9b9648aea9bb7, type: 3}
-    canBePlaced: 0
-    IDPlacementData: -1
-    placementDataItemSO:
-      <Name>k__BackingField: 
-      <ID>k__BackingField: 0
-      <dictionaryAuxSize>k__BackingField: []
-      <dictionaryAuxRequires>k__BackingField: []
-      <PrefabGaratge>k__BackingField: {fileID: 0}
-  - nameShow: Energy Object
-    NameID: EnergyObject
-    IDItemName: EnergyItem
-    takableDataSO:
-      nameShow: energy item
-      nameID: EnergyItem
-      sprite: {fileID: 21300000, guid: 34ea344e4bf86c049a8a434b62a3c480, type: 3}
-      toInstanciate: {fileID: 4565051072455466545, guid: 7f7bdfa6d601d72429b5320cae061f78, type: 3}
-    canBePlaced: 0
-    IDPlacementData: -1
-    placementDataItemSO:
-      <Name>k__BackingField: 
-      <ID>k__BackingField: 0
-      <dictionaryAuxSize>k__BackingField: []
-      <dictionaryAuxRequires>k__BackingField: []
-      <PrefabGaratge>k__BackingField: {fileID: 0}
   - nameShow: Escopeta Object
     NameID: EscopetaObject
     IDItemName: EscopetaItem
@@ -81,15 +49,15 @@ MonoBehaviour:
     NameID: MetralletaObject
     IDItemName: MetralletaItem
     takableDataSO:
-      nameShow: escopeta item
-      nameID: EscopetaItem
-      sprite: {fileID: 21300000, guid: 02ba87a75cac2a74ab8e5abc0f6eaae8, type: 3}
+      nameShow: metralleta item
+      nameID: MetralletaItem
+      sprite: {fileID: 21300000, guid: be53604266cff7a4289669b53f010798, type: 3}
       toInstanciate: {fileID: 770118656710209681, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
     canBePlaced: 1
     IDPlacementData: 1
     placementDataItemSO:
-      <Name>k__BackingField: Escopeta
-      <ID>k__BackingField: 0
+      <Name>k__BackingField: Metralleta
+      <ID>k__BackingField: 1
       <dictionaryAuxSize>k__BackingField:
       - typeGround: 1
         sizeGround:
@@ -100,7 +68,8 @@ MonoBehaviour:
         sizeGround:
           Origen: {x: 0, y: 0}
           Size: {x: 3, y: 4}
-          ExtraSize: []
+          ExtraSize:
+          - {x: 5, y: 0}
       <dictionaryAuxRequires>k__BackingField:
       - typeGround: 2
         sizeGround:
@@ -108,36 +77,155 @@ MonoBehaviour:
           Size: {x: 1, y: 2}
           ExtraSize: []
         nRequires: 1
-      <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: 5c27cb9d07c56a444a054e4a978c1ef8, type: 3}
+      <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: 12447b49dcaf12544860785f83fc9963, type: 3}
   - nameShow: Flamethrower Object
     NameID: FlamethrowerObject
     IDItemName: FlamethrowerItem
     takableDataSO:
-      nameShow: escopeta item
-      nameID: EscopetaItem
-      sprite: {fileID: 21300000, guid: 02ba87a75cac2a74ab8e5abc0f6eaae8, type: 3}
-      toInstanciate: {fileID: 770118656710209681, guid: d9fccc7ee1688ec4b9be943213e0be86, type: 3}
+      nameShow: Flamethrower item
+      nameID: FlamethrowerItem
+      sprite: {fileID: 21300000, guid: 91d46a0a03f25714991410a60c58b8d6, type: 3}
+      toInstanciate: {fileID: 5216852073179350294, guid: c00ba8212c8d59744aa53ce93b4d4a1b, type: 3}
     canBePlaced: 1
     IDPlacementData: 2
     placementDataItemSO:
-      <Name>k__BackingField: Escopeta
-      <ID>k__BackingField: 0
+      <Name>k__BackingField: Flamethrower
+      <ID>k__BackingField: 2
       <dictionaryAuxSize>k__BackingField:
       - typeGround: 1
         sizeGround:
           Origen: {x: 0, y: 0}
-          Size: {x: 1, y: 2}
+          Size: {x: 2, y: 2}
+          ExtraSize:
+          - {x: 0, y: 1}
+          - {x: 0, y: 2}
+      - typeGround: 2
+        sizeGround:
+          Origen: {x: 0, y: 0}
+          Size: {x: 4, y: 4}
+          ExtraSize:
+          - {x: -1, y: 2}
+          - {x: 1, y: 2}
+          - {x: 0, y: 3}
+      <dictionaryAuxRequires>k__BackingField:
+      - typeGround: 2
+        sizeGround:
+          Origen: {x: 0, y: 0}
+          Size: {x: 2, y: 2}
+          ExtraSize:
+          - {x: 0, y: 1}
+          - {x: 0, y: 2}
+        nRequires: 1
+      <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: 8f642f0ea9e451a4bb682d871b5ec92a, type: 3}
+  - nameShow: EnergyGun Object
+    NameID: EnergyGunObject
+    IDItemName: EnergyGunItem
+    takableDataSO:
+      nameShow: EnergyGun item
+      nameID: EnergyGunItem
+      sprite: {fileID: 21300000, guid: 34ea344e4bf86c049a8a434b62a3c480, type: 3}
+      toInstanciate: {fileID: 0}
+    canBePlaced: 1
+    IDPlacementData: 3
+    placementDataItemSO:
+      <Name>k__BackingField: Quadrat
+      <ID>k__BackingField: 10
+      <dictionaryAuxSize>k__BackingField:
+      - typeGround: 1
+        sizeGround:
+          Origen: {x: 0, y: 0}
+          Size: {x: 1, y: 1}
           ExtraSize: []
       - typeGround: 2
         sizeGround:
           Origen: {x: 0, y: 0}
-          Size: {x: 3, y: 4}
+          Size: {x: 3, y: 3}
           ExtraSize: []
       <dictionaryAuxRequires>k__BackingField:
       - typeGround: 2
         sizeGround:
           Origen: {x: 0, y: 0}
-          Size: {x: 1, y: 2}
+          Size: {x: 1, y: 1}
           ExtraSize: []
         nRequires: 1
-      <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: 5c27cb9d07c56a444a054e4a978c1ef8, type: 3}
+      <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: 0ffb80559a501984687082b46b09c375, type: 3}
+  - nameShow: Energy Object
+    NameID: EnergyObject
+    IDItemName: EnergyItem
+    takableDataSO:
+      nameShow: energy item
+      nameID: EnergyItem
+      sprite: {fileID: 21300000, guid: 34ea344e4bf86c049a8a434b62a3c480, type: 3}
+      toInstanciate: {fileID: 4565051072455466545, guid: 7f7bdfa6d601d72429b5320cae061f78, type: 3}
+    canBePlaced: 0
+    IDPlacementData: -1
+    placementDataItemSO:
+      <Name>k__BackingField: 
+      <ID>k__BackingField: 0
+      <dictionaryAuxSize>k__BackingField: []
+      <dictionaryAuxRequires>k__BackingField: []
+      <PrefabGaratge>k__BackingField: {fileID: 0}
+  - nameShow: Life Object
+    NameID: LifeObject
+    IDItemName: LifeItem
+    takableDataSO:
+      nameShow: life item
+      nameID: LifeItem
+      sprite: {fileID: 21300000, guid: 343693fb7abe6ee4098fa62514b9a458, type: 3}
+      toInstanciate: {fileID: 770118656710209681, guid: 988633b9bd2b3b34f8e9b9648aea9bb7, type: 3}
+    canBePlaced: 0
+    IDPlacementData: -1
+    placementDataItemSO:
+      <Name>k__BackingField: 
+      <ID>k__BackingField: 0
+      <dictionaryAuxSize>k__BackingField: []
+      <dictionaryAuxRequires>k__BackingField: []
+      <PrefabGaratge>k__BackingField: {fileID: 0}
+  - nameShow: Radar Object
+    NameID: RadarObject
+    IDItemName: RadarItem
+    takableDataSO:
+      nameShow: radar item
+      nameID: RadarItem
+      sprite: {fileID: 21300000, guid: 34ea344e4bf86c049a8a434b62a3c480, type: 3}
+      toInstanciate: {fileID: 4565051072455466545, guid: ae463f379ca3ffa4b859bd2aef025dc4, type: 3}
+    canBePlaced: 0
+    IDPlacementData: -1
+    placementDataItemSO:
+      <Name>k__BackingField: 
+      <ID>k__BackingField: 0
+      <dictionaryAuxSize>k__BackingField: []
+      <dictionaryAuxRequires>k__BackingField: []
+      <PrefabGaratge>k__BackingField: {fileID: 0}
+  - nameShow: 'Heavy Bullets Object '
+    NameID: HeavyBulletsObject
+    IDItemName: HeavyBulletsItem
+    takableDataSO:
+      nameShow: radar item
+      nameID: RadarItem
+      sprite: {fileID: 21300000, guid: 34ea344e4bf86c049a8a434b62a3c480, type: 3}
+      toInstanciate: {fileID: 4565051072455466545, guid: ae463f379ca3ffa4b859bd2aef025dc4, type: 3}
+    canBePlaced: 0
+    IDPlacementData: -1
+    placementDataItemSO:
+      <Name>k__BackingField: 
+      <ID>k__BackingField: 0
+      <dictionaryAuxSize>k__BackingField: []
+      <dictionaryAuxRequires>k__BackingField: []
+      <PrefabGaratge>k__BackingField: {fileID: 0}
+  - nameShow: Lighter BulletsObject
+    NameID: LighterBulletsObject
+    IDItemName: LighterBulletsItem
+    takableDataSO:
+      nameShow: radar item
+      nameID: RadarItem
+      sprite: {fileID: 21300000, guid: 34ea344e4bf86c049a8a434b62a3c480, type: 3}
+      toInstanciate: {fileID: 4565051072455466545, guid: ae463f379ca3ffa4b859bd2aef025dc4, type: 3}
+    canBePlaced: 0
+    IDPlacementData: -1
+    placementDataItemSO:
+      <Name>k__BackingField: 
+      <ID>k__BackingField: 0
+      <dictionaryAuxSize>k__BackingField: []
+      <dictionaryAuxRequires>k__BackingField: []
+      <PrefabGaratge>k__BackingField: {fileID: 0}
