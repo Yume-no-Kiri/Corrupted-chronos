@@ -3,20 +3,29 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
-public class BossAttacks : MonoBehaviour
+public class BossAttacks : MonoBehaviour, IDamageable
 {
+    public float maxHealth;
+    public float health;
     public GameObject headGO;
     Animator anim;
+    public Transform bulletSpawnPoint;
 
     [Header("Move kraken")]
     public Vector3 newPos;
 
+    [Header("Laser Attack")]
+    public NameBulletPreset laserBulletPreset;
+    public int laserBulletAmount;
+
+    public KrakenController krakenController;
 
     // private Vector3 PosStart;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         anim = GetComponentInChildren<Animator>();
+        health = maxHealth;
     }
 
     // Update is called once per frame
@@ -58,32 +67,42 @@ public class BossAttacks : MonoBehaviour
     {
         anim.SetTrigger("SpinAttack");
     }
-     
 
-    /* call in start:
-        StartCoroutine(WaterLazer(transform.rotation.eulerAngles));
-     
-    public IEnumerator WaterLazer(Vector3 rotOri)
+    public void ShootLaser()
     {
-        Lazer.SetActive(true);
-        yield return StartCoroutine(TurnLazer(rotOri));
-        Lazer.SetActive(false);
+        StartCoroutine(ShootLaserRoutine());
     }
-    
-    IEnumerator TurnLazer(Vector3 rotOri){
-        Vector3 rotFinal=rotOri+new Vector3(0,360,0);
 
-        // Vector3 escalaInicial = IndicatorToRise.transform.localScale;
-        float timePassed = 0f;
+    private IEnumerator ShootLaserRoutine()
+    {
+        float duration = 0.4f;
 
-        while (timePassed < TimeTurn)
+        float delayBetweenShots =
+            duration / laserBulletAmount;
+
+        float angleStep =
+            360f / laserBulletAmount;
+
+        for (int i = 0; i < laserBulletAmount; i++)
         {
-            float progressio = timePassed / TimeTurn;
-            headGO.transform.eulerAngles = Vector3.Lerp(rotOri, rotFinal, progressio);
-            timePassed += Time.deltaTime;
-            yield return null;
+            float angle = angleStep * i;
+
+            Quaternion rotation =
+                Quaternion.Euler(0f, angle, 0f);
+
+            GameObject bulletInst = Instantiate(
+                statsManager.instance.listBulletStats.GeneralBullet,
+                bulletSpawnPoint.position,
+                rotation
+            );
+
+            bulletInst
+                .GetComponent<CreateBullet>()
+                .Setup(false, laserBulletPreset);
+
+            yield return new WaitForSeconds(delayBetweenShots);
         }
-    }*/
+    }
 
     #endregion 
 
@@ -99,47 +118,29 @@ public class BossAttacks : MonoBehaviour
 
     }
 
-    /*
-        to call it in start only one:
-        StartCoroutine(HeadUpAndDown());
-    
-      To call it in update consecutivamente:
-        if (coroutine == null)
-        {
-            coroutine= StartCoroutine(HeadUpAndDown());
 
-        } 
-    public IEnumerator HeadUpAndDown()
+    #endregion
+
+    #region interface
+    public void TakeDamage(float amount)
     {
-        yield return StartCoroutine(HeadUp());
-        yield return StartCoroutine(HeadDown());
-        coroutine=null;
-    }
-    IEnumerator HeadUp(){
-        // Vector3 escalaInicial = IndicatorToRise.transform.localScale;
-        float timePassed = 0f;
-
-        while (timePassed < Time2Up)
+        health -= amount;
+        if (health <= 0)
         {
-            float progressio = timePassed / Time2Up;
-            headGO.transform.position = Vector3.Lerp(PosDown, PosUp, progressio);
-            timePassed += Time.deltaTime;
-            yield return null;
+            Die();
         }
     }
-    IEnumerator HeadDown(){
-        // Vector3 escalaInicial = IndicatorToRise.transform.localScale;
-        float timePassed = 0f;
 
-        while (timePassed < Time2Down)
-        {
-            float progressio = timePassed / Time2Down;
-            headGO.transform.position = Vector3.Lerp(PosUp,PosDown, progressio);
-            timePassed += Time.deltaTime;
-            yield return null;
-        }
-        //HERE GENERATE WAVES
-    }*/
+    public void Die()
+    {
+        krakenController.BossHealth -= maxHealth;
+    }
+
+    public void AddKnockback(Vector3 dir, float force)
+    {
+        throw new System.NotImplementedException();
+    }
+
     #endregion
 }
 

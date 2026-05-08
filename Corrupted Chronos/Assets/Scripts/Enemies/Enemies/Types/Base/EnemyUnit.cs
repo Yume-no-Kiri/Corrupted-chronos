@@ -24,7 +24,7 @@ public abstract class EnemyUnit : MonoBehaviour, IDamageable
     private Rigidbody rb;
 
     [Header("Enemy Properties")]
-    public GameObject projectile;
+    public NameBulletPreset projectile;
     public float fireRate = 1f;
 
     [Header("Control")]
@@ -73,13 +73,14 @@ public abstract class EnemyUnit : MonoBehaviour, IDamageable
     #region Enemy Logic
     public void TakeDamage(float damageAmount)
     {
+        print("aaaaaaaaaaaaaaaaaaaaa");
         currentHealth-=damageAmount;
         if(currentHealth<=0) Die();
     }
 
     public void Die()
     {
-        throw new System.NotImplementedException();
+        Destroy(this.gameObject);
     }
     public void AddKnockback(Vector3 dir, float force)
     {

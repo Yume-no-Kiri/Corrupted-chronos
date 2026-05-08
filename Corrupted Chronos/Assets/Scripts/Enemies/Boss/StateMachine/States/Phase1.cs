@@ -56,8 +56,7 @@ public class Phase1 : baseKrakenState
 
                 SpawnTentacle();
             }
-        }
-        
+        } 
     }
 
     private void SpawnTentacle()
@@ -77,22 +76,42 @@ public class Phase1 : baseKrakenState
 
         var tentacle = tentacleObj.GetComponent<TentacleAttack>();
 
+
         //if (tentacle != null)
             //tentacle.Init(controller.player);
     }
 
     private Vector3 GetSpawnPosition()
     {
-        // Ejemplo simple: alrededor del jugador
-        var playerPos = sm.data.player.transform.position;
+        Vector3 centerPos = sm.data.transform.position;
+        Vector3 playerPos = sm.data.player.transform.position;
 
-        float radius = 10f;
-        Vector2 randomCircle = Random.insideUnitCircle * radius;
+        float maxSpawnRadius = sm.data.tentacleSpawnRadius;
+        float aroundPlayerRadius = sm.data.tentaclePlayerSpawnRadius;
 
-        return new Vector3(
-            playerPos.x + randomCircle.x,
-            sm.data.gameObject.transform.position.y,
-            playerPos.z + randomCircle.y
-        );
+        for (int i = 0; i < 20; i++)
+        {
+            // Posición aleatoria alrededor del jugador
+            Vector2 randomCircle =
+                Random.insideUnitCircle * aroundPlayerRadius;
+
+            Vector3 candidatePos = new Vector3(
+                playerPos.x + randomCircle.x,
+                centerPos.y,
+                playerPos.z + randomCircle.y
+            );
+
+            // Verifica que esté dentro del área permitida
+            float distanceToCenter =
+                Vector3.Distance(centerPos, candidatePos);
+
+            if (distanceToCenter <= maxSpawnRadius)
+            {
+                return candidatePos;
+            }
+        }
+
+        // Fallback si no encuentra posición válida
+        return centerPos;
     }
 }

@@ -140,7 +140,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -154,9 +154,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7518689780372093110}
   - component: {fileID: 5319463051261107915}
+  - component: {fileID: -8034681967624303854}
+  - component: {fileID: 952634892558986268}
   m_Layer: 0
   m_Name: Tentacle New
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -189,6 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc4cd53de1783e468f870e8d9106adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
+  health: 200
   Tentacle: {fileID: 3832673896462394985}
   DamageRise: 4
   Time2Rise: 2
@@ -196,6 +199,7 @@ MonoBehaviour:
   finalRiseRange: {x: 3, y: 3, z: 3}
   IndicatorToRise: {fileID: 7760108894157212525}
   independent: 1
+  controller: {fileID: 0}
   TimeBetweenAttacks: 3
   TimePrepSA: 2
   RotPrepSA: {x: -45, y: 0, z: 0}
@@ -205,6 +209,56 @@ MonoBehaviour:
   RotRecoverSA: {x: 0, y: 0, z: 0}
   Direction: {x: 0, y: 0, z: 0}
   attackCooldown: 5
+--- !u!54 &-8034681967624303854
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3832673896462394985}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &952634892558986268
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3832673896462394985}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.6872692
+  m_Height: 5.3088865
+  m_Direction: 1
+  m_Center: {x: 0, y: 2.4682279, z: 0}
 --- !u!1 &5205719613164575313
 GameObject:
   m_ObjectHideFlags: 0

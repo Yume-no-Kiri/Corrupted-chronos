@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class KrakenActions : MonoBehaviour
 {
-
     BossAttacks attacks;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     void Awake()
     {
         attacks = GetComponentInParent<BossAttacks>();
@@ -18,5 +17,10 @@ public class KrakenActions : MonoBehaviour
     public void generateWaves()
     {
         attacks.generateWaves();
+    }
+
+    public void shootLaser()
+    {
+        attacks.ShootLaser();
     }
 }

@@ -33,6 +33,37 @@ Transform:
   - {fileID: 3816494843766506555}
   m_Father: {fileID: 3307190976663535466}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &424493952013246337
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1842863248912592440}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1842863248912592440
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424493952013246337}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: 0.4535087, w: 0.8912518}
+  m_LocalPosition: {x: -0.07, y: 2, z: -0.01}
+  m_LocalScale: {x: 1.3609747, y: 1.3090852, z: 1.2508658}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 464290439748108476}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1635961482576807488
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,22 +109,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc4cd53de1783e468f870e8d9106adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
+  health: 0
   Tentacle: {fileID: 1635961482576807488}
-  DamageRise: 4
-  Time2Rise: 2
-  initialRiseRange: {x: 1, y: 1, z: 1}
-  finalRiseRange: {x: 3, y: 3, z: 3}
-  IndicatorToRise: {fileID: 3384382754734823412}
   independent: 1
-  TimeBetweenAttacks: 3
-  TimePrepSA: 2
-  RotPrepSA: {x: -45, y: 0, z: 0}
-  TimeDoingSA: 2
-  RotDoingSA: {x: 90, y: 0, z: 0}
-  TimeRecoverSA: 3
-  RotRecoverSA: {x: 0, y: 0, z: 0}
+  controller: {fileID: 0}
   Direction: {x: 0, y: 0, z: 0}
   attackCooldown: 5
+  spawnPoint: {fileID: 1842863248912592440}
+  slamBulletPreset: 2
+  slamBulletAmount: 12
+  splashBulletPreset: 2
+  splashBulletAmount: 12
 --- !u!1 &1639293213235842207
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,6 +242,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3307190976663535466}
   - component: {fileID: 8690454445480641454}
+  - component: {fileID: 7879292876064239056}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -262,6 +289,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7879292876064239056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1960595223884567966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8053f4b1ac7563449834360b87998c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &3384382754734823412
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,7 +459,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 8821623529969584324, guid: f3c3cda84938171419eebb8c849a75de, type: 3}
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f3c3cda84938171419eebb8c849a75de, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 1842863248912592440}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3c3cda84938171419eebb8c849a75de, type: 3}
 --- !u!4 &464290439748108476 stripped

@@ -2,44 +2,34 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
-public class TentacleAttack : MonoBehaviour
+public class TentacleAttack : MonoBehaviour, IDamageable
 {
+    public float health;
     Animator anim;
     public GameObject Tentacle;
 
     private Vector3 rotationToAdd= Vector3.zero;
 
-    [Header ("Rise Attack")]
-    public float DamageRise=4;
-    public float Time2Rise=2;
-
-    public Vector3 initialRiseRange=new Vector3(1,1,1), finalRiseRange=new Vector3(3,3,3);
-
-    public GameObject IndicatorToRise;
-    //should add damage
-
-    public bool independent;
+    
     
 
-    [Header ("General Attack")]
-    public float TimeBetweenAttacks=3;
-
-    [Header ("Splash Attack")]
-    public float TimePrepSA=2;
-    public Vector3 RotPrepSA= new Vector3(-45,0,0);
-
-    public float TimeDoingSA=3;
-    public Vector3 RotDoingSA= new Vector3(90,0,0);
-
-
-    public float TimeRecoverSA=1.5f;
-    public Vector3 RotRecoverSA= new Vector3(0,0,0);
-
+    public bool independent;
+    public KrakenController controller;
 
     public Vector3 Direction;
 
     private float attackTimer;
     public float attackCooldown=5f;
+    public Transform spawnPoint;
+
+    [Header("Slam Attack")]
+    public NameBulletPreset slamBulletPreset;
+    public float slamBulletAmount;
+
+    [Header("Splash Attack")]
+    public NameBulletPreset splashBulletPreset;
+    public float splashBulletAmount;
+
 
     private void Awake()
     {
@@ -106,6 +96,62 @@ public class TentacleAttack : MonoBehaviour
     {
         anim.SetTrigger("Attack4");
     }
+
+
+
+    public void SpawnSlamBullets()
+    {
+        float angleStep = 360f / slamBulletAmount;
+
+        for (int i = 0; i < slamBulletAmount; i++)
+        {
+            float angle = angleStep * i;
+
+            Quaternion rotation =
+                Quaternion.Euler(
+                    0f,
+                    angle,
+                    0f
+                );
+
+            GameObject bulletInst = Instantiate(
+                statsManager.instance.listBulletStats.GeneralBullet,
+                spawnPoint.position,
+                rotation
+            );
+
+            bulletInst
+                .GetComponent<CreateBullet>()
+                .Setup(false, slamBulletPreset);
+        }
+    }
+
+    public void SpawnSplashBullets()
+    {
+        float angleStep = 180f / (splashBulletAmount - 1);
+
+        float startAngle = 0f;
+
+        for (int i = 0; i < splashBulletAmount; i++)
+        {
+            float angle = startAngle + (angleStep * i);
+
+            Quaternion rotation =
+                transform.rotation *
+                Quaternion.Euler(0f, angle, 0f);
+
+            GameObject bulletInst = Instantiate(
+                statsManager.instance.listBulletStats.GeneralBullet,
+                transform.position,
+                rotation
+            );
+
+            bulletInst
+                .GetComponent<CreateBullet>()
+                .Setup(false, splashBulletPreset);
+        }
+    }
+
 
 
     /* 
@@ -175,9 +221,23 @@ public class TentacleAttack : MonoBehaviour
     }
     */
 
-    void OnCollisionEnter(Collision collision)
+    public void TakeDamage(float amount)
     {
-        //Detect player and do damage
+        health -= amount;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        Destroy(this.gameObject);
+    }
+
+    public void AddKnockback(Vector3 dir, float force)
+    {
+        throw new System.NotImplementedException();
     }
 }
 

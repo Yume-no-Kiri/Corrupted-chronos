@@ -276,7 +276,7 @@ public class Metralleta : GunBase
             t = Mathf.Pow(t, accu/2); //com més gran sigui l'exponent, més "biaix" cap al mínim
             if(maxDisp>80) maxDisp=80; 
             float finalDisp= Mathf.Lerp(timeShooting/10*side, maxDisp, t);
-            Debug.Log("left disp: "+ maxDisp);
+            //Debug.Log("left disp: "+ maxDisp);
 
             /* if(disp>0 && disp < accu)
             {
