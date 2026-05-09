@@ -9,13 +9,15 @@ public class DialogueInvoker : MonoBehaviour
 
     [Header("Mode:")]
     [SerializeField] private int mode;
-
     [SerializeField]
     public InteractionType ThisInteraction;
 
+    private bool able_talk=false;
+ 
+
     private void Awake()
     {
-        if (branca == "cinem1" || branca=="cinemF"|| branca== "fisherman")
+        if (branca == "cinem1" || branca=="cinemF")
         {
 
             GameEventsManager.instance.dialogue_events.EnterDialogue(branca, 0);
@@ -26,6 +28,7 @@ public class DialogueInvoker : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            able_talk = true;
             Player i = other.GetComponentInParent<Player>();
             Debug.Log("this is your Jugador" + i.gameObject.name);
             if (i != null)
@@ -50,6 +53,8 @@ public class DialogueInvoker : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            able_talk = false;
+
             Player i = other.GetComponentInParent<Player>();
 
             if (i != null)
@@ -68,5 +73,12 @@ public class DialogueInvoker : MonoBehaviour
         }
     }
 
-
+    private void Update()
+    {
+        if (!able_talk) return;
+        if (Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            GameEventsManager.instance.dialogue_events.EnterDialogue(branca, 0);
+        }
+    }
 }
