@@ -146,8 +146,10 @@ public class ShipMovement : MonoBehaviour,IDamageable
     {
         Vector3 finalVelocity = currentMoveVector * statsManager.instance.GetShipStat(Stat.StatTypeGeneral.Speed) * currentSpeedMultiplier+externalForce;
 
+        GameManager.Instance.WaterMaterial.SetVector("_PositionMouse",finalVelocity.normalized );
 
         controller.Move(finalVelocity * Time.deltaTime);
+
         // controller.Move(new Vector3(5, 0, 0) * Time.deltaTime);
         // Debug.Log("ss final velocity:"+ finalVelocity.ToString());
     }

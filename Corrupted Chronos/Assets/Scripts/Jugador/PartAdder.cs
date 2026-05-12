@@ -12,13 +12,14 @@ public class PartAdder : MonoBehaviour
     InventoryManager inventoryManager;
 
     //to activate, enable parts with the movement, shoting, will have things for the inventary too
-    #region called from placement system
     private List<PartPosition> ToAddParts ;
+    private List<PartPosition> NewerParts;
+
 
     //this structure es kinda shitty
     private Dictionary<PartPosition, GameObject> AddedParts;
 
-    private GameObject _nauGO;
+    private GameObject _nauGO; 
 
     public GameObject adder{get; private set;}
 
@@ -42,9 +43,15 @@ public class PartAdder : MonoBehaviour
     }
     public void Awake()
     {
-        ToAddParts= new List<PartPosition>();
-        AddedParts= new Dictionary<PartPosition, GameObject>();
-        AddedItems= new List<GameObject>();
+        DefaultValues();
+    }
+
+    private void DefaultValues()
+    {
+        ToAddParts = new List<PartPosition>();
+        AddedParts = new Dictionary<PartPosition, GameObject>();
+        AddedItems = new List<GameObject>();
+        NewerParts = new List<PartPosition>();
     }
 
     void Start()
@@ -71,6 +78,7 @@ public class PartAdder : MonoBehaviour
         ToAddParts.Add(new PartPosition(gb,pos,rot, thisIdp));
     }
 
+    #region SavePlacement
     private GameObject CreatePart(PartPosition cpart , Vector3 originNau)
     {
         Vector3 offset= new Vector3(0.25f,0,0.25f);
@@ -93,13 +101,23 @@ public class PartAdder : MonoBehaviour
         
     }
     
-  
+    //aquí està el problema
     public void ActivateParts()
     {
         //acabar
         GunBase pa;
+
+        foreach (var item in NewerParts)
+        {
+            pa= AddedParts[item].GetComponent<EachPartScript>().ActivateGun();
+            pa.SubscribeEvent();
+
+        }
+
+
+
         // foreach (Transform inventoryPart in AddedParts.Values.Tra)
-        foreach (Transform part in adder.transform)
+        /* foreach (Transform part in adder.transform)
         {
             //no estic segur de que part actions segui lo millor per invocar aquests mètodes,
             //revisar explicació escrita en EachPartScript per futur REFACTORITZACIÓ
@@ -108,77 +126,12 @@ public class PartAdder : MonoBehaviour
             // Debug.Log("partchild: "+ part.name);
 
             pa= part.GetComponent<EachPartScript>().ActivateGun();
-            switch (pa.GetTypePart())
-            {
-                case TypePart.Mele:
-                    Debug.LogWarning("part mele no acabat");
-                    break;
-                case TypePart.Moveable:
-                    Debug.LogWarning("part movable no acabat");
-                    break;
-                case TypePart.ShootableLeft:
-                    GameManager.Instance.inputManager.OnShotLeft += pa.DoShot;
-                    break;
-                case TypePart.ShootableRight: 
-                    GameManager.Instance.inputManager.OnShotRight += pa.DoShot;
-                    break;
-            }
-        }
+            pa.SubscribeEvent();
+            
+        } */
     }
 
-
-    public void DeactivatePart()
-    {
-        //reworkejar això amb addedParts
-        GunBase pa;
-
-        foreach (Transform child in adder.transform)
-        {
-            
-            pa = child.gameObject.GetComponent<GunBase>();
-            switch (pa.GetTypePart())
-            {
-                case TypePart.Mele:
-                    Debug.LogError("part mele no acabat");
-                    break;
-                case TypePart.Moveable:
-                    Debug.LogError("part movable no acabat");
-                    break;
-                case TypePart.ShootableLeft:
-                    GameManager.Instance.inputManager.OnShotLeft -= pa.DoShot;
-                    break;
-                case TypePart.ShootableRight:
-                    GameManager.Instance.inputManager.OnShotRight -= pa.DoShot;
-                    break;
-            }
-            
-            GameObject col=  child.transform.Find("Collisions").gameObject;
-
-            //revsiar detector de capa
-            /* if (col != null)
-            {
-                //List<GameObject> dettors = new List<GameObject>();
-                DetectorCapa[] script= col.transform.GetComponentsInChildren<DetectorCapa>();
-                foreach (var s in script)
-                {
-                    if (DetectorsCapa.Contains(s.gameObject))
-                    {
-                        DetectorsCapa.Remove(s.gameObject);
-                    }
-                }
-                
-            } */
-            
-            
-            Destroy(child.gameObject);
-        }
-        // ToAddParts.Clear();
-        // AddedParts=new List<GameObject>();
-
-
-    }
-
-    private void ActivateItems()
+        private void ActivateItems()
     {
         // foreach (var inventoryPart in AddedParts)
         
@@ -229,7 +182,40 @@ public class PartAdder : MonoBehaviour
         }
     }
 
-    
+    #endregion
+
+    #region reset placement
+    public void DeactivatePart()
+    {
+        //reworkejar això amb addedParts
+        GunBase pa;
+
+        foreach (Transform child in adder.transform)
+        {
+            
+            pa = child.gameObject.GetComponent<GunBase>();
+            pa.DesubcribeEvent();
+            // Destroy(child.gameObject);
+            
+        }
+    }
+
+     public void DeleteParts()
+    {
+        //reworkejar això amb addedParts
+        GunBase pa;
+
+        foreach (Transform child in adder.transform)
+        {
+            pa = child.gameObject.GetComponent<GunBase>();
+            pa.ReturnTakableDataSO();            
+            
+            inventoryManager.AddItemSpaceShip(pa.ReturnAllObjectSO());
+            Destroy(child.gameObject);
+        }
+
+        DefaultValues();
+    }    
     private void DesactivateItems()
     {
         /* foreach (var item in AddedItems)
@@ -305,28 +291,39 @@ public class PartAdder : MonoBehaviour
         // delete the items we created and spawn the news and fuck off
     
     }
+    
+    #endregion
+
+    #region buttons
     public void ResetPlacement()
     {
-        ToAddParts.Clear();
 
-   
+
+        // ToAddParts.Clear();
         DeactivatePart();
+
+
+        DeleteParts(); //should change to get the item and save it in inventory
     }
 
     public void SavePlacement()
     {
         if (ToAddParts.Count <= 0 && AddedParts==null) return;
+        NewerParts= new List<PartPosition>();
 
-        // AddedItems
         Vector3 origin= GameManager.Instance.playerInstance.transform.position;
         for(int i = 1; i < ToAddParts.Count; i++)
         {
             if (!AddedParts.ContainsKey(ToAddParts[i]))
             {
                 AddedParts.Add(ToAddParts[i], CreatePart(ToAddParts[i],  origin));
+                NewerParts.Add(ToAddParts[i]);
+                // Debug.Log("creating part");
             }
         }
         ActivateParts();
+
+
         //should do something to add the items and other habilities
         ActivateItems();
 
@@ -334,6 +331,5 @@ public class PartAdder : MonoBehaviour
 
 
     #endregion
-
 
 }

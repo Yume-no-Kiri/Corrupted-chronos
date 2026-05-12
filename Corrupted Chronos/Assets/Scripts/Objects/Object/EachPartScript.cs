@@ -98,6 +98,9 @@ public class EachPartScript : MonoBehaviour
             GunScriptPart= gameObject.GetComponent<GunBase>();
             
             if(GunScriptPart) { 
+                GameManager.Instance.inputManager.OnShotLeft -= GunScriptPart.DoShot;
+                GameManager.Instance.inputManager.OnShotRight -= GunScriptPart.DoShot;
+
                 GunScriptPart.PassVariables(firepoint, bulletPrefab,sprite);
             }// else Debug.LogError("es fill de GunBase pero no es GunBase (wtf)");
         }/* else{

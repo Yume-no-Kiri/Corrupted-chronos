@@ -184,6 +184,48 @@ public class GunBase : AllObjectMB
     {
         return IDP;
     }
+
+    public void SubscribeEvent()
+    {
+        switch (GetTypePart())
+        {
+            case TypePart.Mele:
+                Debug.LogWarning("part mele no acabat");
+                break;
+            case TypePart.Moveable:
+                Debug.LogWarning("part movable no acabat");
+                break;
+            case TypePart.ShootableLeft:
+                // GameManager.Instance.inputManager.OnShotLeft
+                // GameManager.Instance.inputManager.OnShotLeft -= pa.DoShot;
+                GameManager.Instance.inputManager.OnShotLeft += DoShot;
+                Debug.Log("creating OnShotLeft");
+                break;
+            case TypePart.ShootableRight: 
+                // GameManager.Instance.inputManager.OnShotRight -= pa.DoShot;s
+                GameManager.Instance.inputManager.OnShotRight += DoShot;
+                break;
+        }
+    }
+    public void DesubcribeEvent()
+    {
+        switch (GetTypePart())
+        {
+            case TypePart.Mele:
+                Debug.LogError("part mele no acabat");
+                break;
+            case TypePart.Moveable:
+                Debug.LogError("part movable no acabat");
+                break;
+            case TypePart.ShootableLeft:
+                GameManager.Instance.inputManager.OnShotLeft -= DoShot;
+                break;
+            case TypePart.ShootableRight:
+                GameManager.Instance.inputManager.OnShotRight -= DoShot;
+                break;
+        }
+    }
+
     #endregion
 
     protected override void DefineModifierItem()

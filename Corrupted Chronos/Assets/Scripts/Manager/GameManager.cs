@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
     public GameObject playerInstance;
     // public ShipMovement shipInstance;
 
+    [Header("Materials")]
+    public Material WaterMaterial;
 
     [Header("Variables that should be in statsManager")]
 
@@ -124,6 +126,9 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        WaterMaterial.SetVector("_PositionPlayer", playerInstance.transform.position);
+        
+
         //if ens falta stamina, iniciem coroutine per si podem regenerar
         if(staminaAct<=100) CoroutineStamina=StartCoroutine(TimerRegenStamina());
         if (StaminaRegen)
