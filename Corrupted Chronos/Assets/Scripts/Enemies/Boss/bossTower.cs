@@ -4,6 +4,7 @@ public class bossTower : MonoBehaviour, IDamageable
 {
     public float maxHealth;
     public float health;
+    public DialogueManager dialogue_manager;
     
     void Start()
     {
@@ -19,6 +20,7 @@ public class bossTower : MonoBehaviour, IDamageable
     public void Die()
     {
         Destroy(this.gameObject);
+        dialogue_manager.UpdatePillars();
         BossSpawner.instance.towerDestroyed(this.gameObject);
     }
 

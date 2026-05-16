@@ -516,7 +516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cecfab08bc2e25249b05639938977b5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInvoker
-  branca: fisherman
+  branca: cinem1
   mode: 0
   ThisInteraction: 5
 --- !u!4 &1527962985 stripped

@@ -7,6 +7,7 @@ public class DialogueManager : MonoBehaviour
     [Header("Ink file")]
     [SerializeField] private TextAsset inkJson;
 
+    public BossSpawner boss_spawner;
     private Ink.Runtime.Story story;
     private int current_choice = -1;
 
@@ -48,13 +49,13 @@ public class DialogueManager : MonoBehaviour
 
     private void EnterDialogue(string branca, int mode)
     {
+        
         if (dialogue_playing)
         {
             return;
         }
 
         dialogue_playing=true;
-
 
         GameEventsManager.instance.dialogue_events.DialogueStarted();
 
@@ -129,6 +130,10 @@ public class DialogueManager : MonoBehaviour
             {
                 image = trimmedTag.Split(':')[1];
             }
+            if (trimmedTag.StartsWith("BOSS"))
+            {
+                boss_spawner.spawnBoss();
+            }
             // Pel futur: # npc:Fisherman, # emotion:Angry
         }
     }
@@ -142,10 +147,10 @@ public class DialogueManager : MonoBehaviour
 
 
     //Funcions per actualitzar variables de INK
-    public void UpdatePillars(int count)
+    public void UpdatePillars()
     {
-        // "pillars_broken" must match the name in your .ink file exactly
-        story.variablesState["pillars_broken"] = count;
+        pillars = pillars+1;
+        story.variablesState["pillars_broken"] = pillars;
     }
 
 }

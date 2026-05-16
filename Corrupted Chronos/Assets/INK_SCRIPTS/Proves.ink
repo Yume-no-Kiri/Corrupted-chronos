@@ -8,7 +8,7 @@
    No mortal commanded the tides as she did… But the monster was stronger. #scene:7
    With her final breath, she bound the beast to her own soul. She saved us all, but at a terrible cost: she is doomed to guard the monster in the abyss for eternity.#scene:8
    When that happened, those pillars appeared; if they fall, the seal breaks, and the Kraken returns.#scene:9
-   Destroy them and talk to the fisherman on the port; he will help you. Save Umiko, save us all… kill that monster.#scene:10 #changeScene:FINAL
+   Destroy them and talk to the fisherman on the port; he will help you. Save Umiko, save us all… kill that monster.#scene:10 #changeScene:SampleScene
 - ->END
 
 ==cinemF==
@@ -56,7 +56,7 @@ HAHAHA.
 
 // --- PILLAR 1 ---
 === one_pillar ===
-{ met_fisherman:
+{ not met_fisherman:
     You made it?
     I destroyed the biggest pillar in history!
     Haha, I’m sorry to tell you this, but all have the same size?
@@ -78,7 +78,7 @@ HAHAHA.
 
 // --- PILLAR 2 ---
 === two_pillars ===
-{ met_fisherman:
+{ not met_fisherman:
     You are here again; you made it?
     There is one that escapes my sight. I think that one is playing hide and seek.
     You know… Rocks can’t move?
@@ -101,7 +101,7 @@ HAHAHA.
 === three_pillars ===
 { not met_fisherman:
     The keeper talked to me about your plan… You are brave if you think you can defeat that guy.
-    - else:
+- else:
     You are here again. Have you destroyed all three pillars?
 }
 ~ met_fisherman = true
@@ -125,6 +125,6 @@ Thank you. You are such a hero, aren't you?
 HAHAHA, I just try to get the morale up. We have a tough fight to do.
 HYes, here we go. Are you ready?
 Ready!
-"Great lord of the ocean, hear our chants falling for the star upon us, the ones that will set this corruption away are imploring you, OPEN YOUR DOORS!”
+"Great lord of the ocean, hear our chants falling for the star upon us, the ones that will set this corruption away are imploring you, OPEN YOUR DOORS!” #BOSS
 
 -> END

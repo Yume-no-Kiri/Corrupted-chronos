@@ -10,7 +10,7 @@ public class BossSpawner : MonoBehaviour
     [Header("Kraken Parameters")]
     public GameObject bossPrefab;
     public Transform spawnPoint;
-
+    public bool dialogue_done = false;
     private void Awake()
     {
         if (instance == null)
@@ -29,11 +29,6 @@ public class BossSpawner : MonoBehaviour
             return;
 
         bossTowers.Remove(obj);
-
-        if (bossTowers.Count <= 0)
-        {
-            spawnBoss();
-        }
     }
 
     public void spawnBoss()

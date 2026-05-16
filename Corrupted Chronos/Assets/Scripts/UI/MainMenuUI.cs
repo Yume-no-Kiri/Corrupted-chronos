@@ -13,7 +13,7 @@ public class MainMenuCS : MonoBehaviour
     public void PlayGame()
     {
         Debug.Log("Play pressed");
-        SceneManager.LoadScene("Base"); 
+        SceneManager.LoadScene("Inici"); 
     }
 
     public void EnterConfig()
