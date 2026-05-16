@@ -50,8 +50,10 @@ public class GameManager : MonoBehaviour
     public float staminaUseQuantity=10f;
     public float staminaTime2Regen=4f;
     public bool StaminaRegen=false;
-    public Coroutine CoroutineStamina;
+    public Coroutine CoroutineRegenStamina=null;
+    public Coroutine CoroutineConsumeStamina=null;
 
+    public bool IsStaminaEmpty {get; private set;}
     public float staminaMoveUPUseQuantity=5f;
 
     public float knockbackResistance=2f;
@@ -87,7 +89,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        
+
+
         if(Instance == null)
         {
             Instance=this;
@@ -103,6 +106,8 @@ public class GameManager : MonoBehaviour
         allObjectsDataBase.StartConfigObject();
 
         staminaAct=staminaMax;
+        IsStaminaEmpty=false;
+
         
         // shipInstance= playerInstance.GetComponent<ShipMovement>();
     }
@@ -127,27 +132,29 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         WaterMaterial.SetVector("_PositionPlayer", playerInstance.transform.position);
-        
+        Debug.Log("stamina:"+staminaAct);
 
         //if ens falta stamina, iniciem coroutine per si podem regenerar
-        if(staminaAct<=100) CoroutineStamina=StartCoroutine(TimerRegenStamina());
-        if (StaminaRegen)
+        if(staminaAct<100 && CoroutineRegenStamina==null &&CoroutineConsumeStamina==null){
+             CoroutineRegenStamina=StartCoroutine(TimerRegenStamina());
+        }
+        /* if (StaminaRegen)
         {
             //regenerem
-            staminaAct += staminaRegenQuantity*Time.deltaTime;
+            // staminaAct += staminaRegenQuantity*Time.deltaTime;
 
             //si màxim apaguem
             if (staminaAct>= staminaMax)
             {
                 StaminaRegen=false;
             }
-        }
+        } */
 
         //si ens ha dit que vol utiltizar stamina
-        if (want2Fly)
+        /* if (want2Fly)
         {
             //parem regeneració
-            StopCoroutine(CoroutineStamina);
+            StopCoroutine(CoroutineRegenStamina);
             StaminaRegen=false;
 
             //podem usar stamina o no
@@ -166,8 +173,44 @@ public class GameManager : MonoBehaviour
                 staminaInUse=false;
                 want2Fly=false;
             }
-        }
+        } */
         //print("staminaAct: "+staminaAct);
+    }
+    
+    public void InformIfGround(bool IsGround)
+    {
+        if (IsGround)
+        {
+            if(CoroutineConsumeStamina!=null){ 
+                StopCoroutine(CoroutineConsumeStamina);
+                CoroutineConsumeStamina=null;
+            }
+        }
+    }
+    public bool CanFly()
+    {
+        return IsStaminaEmpty? false:true;
+        /* if (!IsStaminaEmpty)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        } */
+    }
+
+    public void MoveUpStamina(bool ground)
+    {
+        if(!ground){
+            if (CoroutineRegenStamina != null)
+            {
+                StopCoroutine(CoroutineRegenStamina);
+                CoroutineRegenStamina=null;
+            }
+            if(CoroutineConsumeStamina!=null) StopCoroutine(CoroutineConsumeStamina);
+            CoroutineConsumeStamina= StartCoroutine(UseStamina());
+        }// staminaAct-=staminaMoveUPUseQuantity; 
     }
 
 
@@ -176,11 +219,27 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(staminaTime2Regen);
         StaminaRegen=true;
+        while(staminaAct<staminaMax){
+            yield return new WaitForSeconds(0.1f);
+            staminaAct+=staminaRegenQuantity;    
+            IsStaminaEmpty=false;
+        }
+        CoroutineRegenStamina=null;
     }
-
-    public void MoveUpStamina()
+    
+    IEnumerator UseStamina()
     {
-        staminaAct-=staminaMoveUPUseQuantity; 
+        if(CoroutineRegenStamina!=null){ 
+            StopCoroutine(CoroutineRegenStamina);
+            CoroutineRegenStamina=null;    
+        }
+        while(staminaAct>0){
+            yield return new WaitForSeconds(0.1f);
+            staminaAct-=staminaMoveUPUseQuantity;    
+        }
+        staminaAct=0;
+        IsStaminaEmpty=true;
+        CoroutineConsumeStamina=null;
     }
 
 

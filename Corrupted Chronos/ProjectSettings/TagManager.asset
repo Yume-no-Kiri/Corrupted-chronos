@@ -10,6 +10,7 @@ TagManager:
   - Jugador
   - Slot
   - Enemy
+  - Ground
   layers:
   - Default
   - TransparentFX

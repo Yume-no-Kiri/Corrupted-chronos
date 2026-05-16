@@ -19,8 +19,9 @@ public class InventoryManager : MonoBehaviour
     //to save a part into the inventari de idp gets deleted because it turns into scripteable object, so an inventaary has to be empty to quit a part
     Inventory inventorySpaceship=new Inventory();
     
-    Dictionary<int, Inventory> MapInventory= new Dictionary<int, Inventory>(); //idp, inventory
-     public struct Inventory{
+    Dictionary<int, Inventory> IDPInventory= new Dictionary<int, Inventory>(); //idp, inventory
+    
+    public struct Inventory{
         // gameobject qui és owner
         int maxSlots;
         GameObject visualizer;
@@ -55,6 +56,10 @@ public class InventoryManager : MonoBehaviour
             return false; 
         }
         
+        public void Delete()
+        {
+            Destroy(visualizer);
+        }
 
         public void ShowOff()
         {
@@ -134,17 +139,17 @@ public class InventoryManager : MonoBehaviour
     {
         // print(IsPointerOverUIElement() ? "Over UI" : "Not over UI");
         
-        if (inputManager.playerInputActions.Inventory.enabled)
+        /* if (inputManager.playerInputActions.Inventory.enabled)
         {
-            
+            */ 
             // Ray ray = cameraGarage.ScreenPointToRay(mousePos);
             // RaycastHit hit;
             
                 
             
             // Vector3Int gridPosition = inputManager.MousePositionGarage;
-        }
-
+/*         }
+ */
     }
 
   /*   void addNewItemToInventory(ItemData item)
@@ -157,18 +162,18 @@ public class InventoryManager : MonoBehaviour
 
     public void OpenInventory(int actIDP)
     {
-        if(actIDP==0 ||!MapInventory.ContainsKey(actIDP) ) {
+        if(actIDP==0 ||!IDPInventory.ContainsKey(actIDP) ) {
             // Debug.LogError("idp of ship");
             return;
         }
         if (InventoryOpened != -1)
         {
-            MapInventory[actIDP].ShowOff();
+            IDPInventory[actIDP].ShowOff();
             InventoryOpened=-1;
         }
-        if (MapInventory.ContainsKey(actIDP))
+        if (IDPInventory.ContainsKey(actIDP))
         {
-            MapInventory[actIDP].ShowOn();
+            IDPInventory[actIDP].ShowOn();
             InventoryOpened=actIDP;
         }
     }
@@ -177,8 +182,8 @@ public class InventoryManager : MonoBehaviour
     {
         Debug.Log("inventory create for itemm:"+newIDP);
         GameObject canvas= Instantiate(inventoryPart,inventoryCanvas.transform);
-        MapInventory.Add(newIDP, Inventory.CreateInventory(canvas, 3, CreateSlotsInventory(canvas, 3)));
-        MapInventory[newIDP].ShowOff();
+        IDPInventory.Add(newIDP, Inventory.CreateInventory(canvas, 3, CreateSlotsInventory(canvas, 3)));
+        IDPInventory[newIDP].ShowOff();
     }
 
     private void CreateSpaceShipInventory()
@@ -239,9 +244,9 @@ public class InventoryManager : MonoBehaviour
 
     public Inventory? ReturnInventory(int actIDP)
     {
-        if(MapInventory.ContainsKey(actIDP))
+        if(IDPInventory.ContainsKey(actIDP))
         {
-            return MapInventory[actIDP];
+            return IDPInventory[actIDP];
         }
         return null;
     }
@@ -356,6 +361,32 @@ public class InventoryManager : MonoBehaviour
         selectedSlot.DeactivateSelectedEffect();
         selectedSlot.DeleteItem();
         selectedSlot = null;
+    }
+
+    public List<int> ReturnListIDPwithInventory()
+    {
+        List<int> listIDP= new List<int>();
+        foreach (var item in IDPInventory)
+        {
+            listIDP.Add(item.Key);
+        }
+        return listIDP;
+
+    }
+
+    public void DeleteIventory(int idp)
+    {
+        IDPInventory[idp].Delete();
+
+    }
+
+    internal void DeleteAllInventories()
+    {
+        foreach (var idp in IDPInventory)
+        {
+            DeleteIventory(idp.Key);
+        }
+
     }
 
     #endregion

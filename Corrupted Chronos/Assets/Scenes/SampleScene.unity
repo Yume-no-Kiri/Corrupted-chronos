@@ -4518,7 +4518,7 @@ GameObject:
   - component: {fileID: 812061788}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8387,7 +8387,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7998632249251347122, guid: 82ed4fd0ef8e01c41a1731099ca80540, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.0500002
+      value: -14.9
       objectReference: {fileID: 0}
     - target: {fileID: 7998632249251347122, guid: 82ed4fd0ef8e01c41a1731099ca80540, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10755,7 +10755,7 @@ GameObject:
   - component: {fileID: 1804875332}
   m_Layer: 0
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647

@@ -105,11 +105,13 @@ Material:
     - _GlossyReflections: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
+    - _OvalDist: 0.7
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RadiusPlayer: 2
     - _ReceiveShadows: 1
+    - _RefractionScale: 0.7
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -126,10 +128,11 @@ Material:
     - _DephestColor: {r: 0.07463076, g: 0.06396921, b: 0.23099995, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 0.99433964, b: 0.99433964, a: 1}
-    - _PositionMouse: {r: 0.70705837, g: -6.6842027e-12, b: 0.70715517, a: 0}
-    - _PositionPlayer: {r: 206.97426, g: 4.975, b: 141.05115, a: 0}
+    - _PositionMouse: {r: 0.0042648404, g: -0.9999909, b: 4.991058e-18, a: 0}
+    - _PositionPlayer: {r: 101.86667, g: 7.6049995, b: 118.36593, a: 0}
     - _ShallowColor: {r: 0.29900318, g: 0.47763968, b: 0.6981132, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _VectorDiferencia: {r: 0, g: 0, b: 0.7, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &3724281881318067525

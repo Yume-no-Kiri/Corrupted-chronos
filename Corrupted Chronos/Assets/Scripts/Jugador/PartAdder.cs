@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -23,7 +24,13 @@ public class PartAdder : MonoBehaviour
 
     public GameObject adder{get; private set;}
 
-    private List<GameObject> AddedItems;
+    // private List<GameObject> AddedItems;
+    private Dictionary<int, List<GameObject>> AddedItemsByGun;
+
+    //feels like this should be in other part of the project but I don't found it, so I will create it here, I need it to remove items of guns, I will rework this in the future
+    // private Dictionary<int, GameObject> itemIDP;
+
+
 
     private struct PartPosition
     {
@@ -40,6 +47,8 @@ public class PartAdder : MonoBehaviour
             this.rotation= rot;
             this.IDP=idp;
         }
+        
+
     }
     public void Awake()
     {
@@ -50,8 +59,10 @@ public class PartAdder : MonoBehaviour
     {
         ToAddParts = new List<PartPosition>();
         AddedParts = new Dictionary<PartPosition, GameObject>();
-        AddedItems = new List<GameObject>();
         NewerParts = new List<PartPosition>();
+
+        AddedItemsByGun = new Dictionary<int, List<GameObject>>();
+        // GameObjectIDP= new Dictionary<int, GameObject>();
     }
 
     void Start()
@@ -77,6 +88,44 @@ public class PartAdder : MonoBehaviour
     {
         ToAddParts.Add(new PartPosition(gb,pos,rot, thisIdp));
     }
+
+
+    #region buttons
+    public void ResetPlacement()
+    {
+        SavePlacement();
+
+     
+        StartCoroutine(DeleteInventories());
+    }
+
+   
+
+    public void SavePlacement()
+    {
+        if (ToAddParts.Count <= 0 && AddedParts==null) return;
+        NewerParts= new List<PartPosition>();
+
+        Vector3 origin= GameManager.Instance.playerInstance.transform.position;
+        for(int i = 1; i < ToAddParts.Count; i++)
+        {
+            if (!AddedParts.ContainsKey(ToAddParts[i]))
+            {
+                AddedParts.Add(ToAddParts[i], CreatePart(ToAddParts[i],  origin));
+                NewerParts.Add(ToAddParts[i]);
+                // Debug.Log("creating part");
+            }
+        }
+        ActivateParts();
+
+
+        ActivateItems();
+
+    }
+
+
+    #endregion
+
 
     #region SavePlacement
     private GameObject CreatePart(PartPosition cpart , Vector3 originNau)
@@ -131,7 +180,63 @@ public class PartAdder : MonoBehaviour
         } */
     }
 
-        private void ActivateItems()
+    private void DeactivateItems()
+    {
+        foreach (var gun in AddedItemsByGun)
+        {
+            // item.GetComponent<EachPartScript>().Activate();
+            int actIDP=gun.Key;
+
+            foreach (var item in gun.Value)
+            {
+
+             /*    AllObjectMB itemMB = item.GetComponent<AllObjectMB>();
+                ModifierItem modItem = itemMB.ReturnModifierItem(); */
+
+                // InventoryManager.Inventory? inventory = inventoryManager.ReturnInventory(actIDP);
+
+                RemoveItemModifier(item, actIDP,true);
+
+                // pa = child.gameObject.GetComponent<GunBase>();
+                // TakableDataSO takableDataSO= itemMB.ReturnTakableDataSO();            
+
+
+            }
+            gun.Value.Clear();
+            // AddedItemsByGun.Remove(actIDP);
+        }
+        AddedItemsByGun.Clear();
+
+    }
+
+    private void RemoveItemModifier(GameObject item, int actIDP, bool ReturnItem)
+    {
+
+        AllObjectMB itemMB = item.GetComponent<AllObjectMB>();
+        ModifierItem modItem = itemMB.ReturnModifierItem();
+
+        GameObject gunGO = returnGameObjectForIDP(actIDP);
+        if (gunGO == null) Debug.LogError("gameobject item didn't found");
+
+        //falta això
+        gunGO.GetComponent<GunBase>().RemoveEffectsBullets(modItem.ItemBulletEffects);
+        modItem.modifyIdp = actIDP;
+        foreach (var pair in modItem.ItemGeneralStats)// ?? new Dictionary<Stat.StatTypeGeneral, StatModifier>())
+        {
+            statsManager.instance.RemoveModifier(pair.Key, pair.Value);
+        }
+        foreach (var pair in modItem.ItemGunStats)// ?? new Dictionary<Stat.StatTypeGun, StatModifier>())
+        {
+            statsManager.instance.RemoveModifier(actIDP, pair.Key, pair.Value);
+        }
+
+        if(ReturnItem) inventoryManager.AddItemSpaceShip(itemMB.ReturnAllObjectSO());
+        Destroy(item);
+
+    }
+
+
+    private void ActivateItems()
     {
         // foreach (var inventoryPart in AddedParts)
         
@@ -147,33 +252,28 @@ public class PartAdder : MonoBehaviour
             }
             SlotInventory[] slots=inventory?.ReturnListSlots();
             //  item.Key
-            Debug.Log("itemm inventory not default");
+            // Debug.Log("itemm inventory not default");
+
+            if(AddedItemsByGun.ContainsKey(actIDP)){
+                foreach (var item in AddedItemsByGun[actIDP])
+                {
+                    RemoveItemModifier(item,actIDP,false);
+                }
+                AddedItemsByGun[actIDP].Clear();
+            }
+
+
+            List<GameObject> addedItems= new List<GameObject>();
             foreach (var slot in slots)
             {
-                // int inventoryIDP= inventoryPart.GetComponent<GunBase>().ReturnIDP();
-                Debug.Log("itemm return idp2:"+actIDP);
-                if(slot.thisItem!=null){
-                    GameObject go= Instantiate(slot.thisItem.takableDataSO.toInstanciate, inventory?.ReturnVisualizer().transform);
-
-                    AddedItems.Add(go);
-                    go.GetComponent<EachPartScript>().Activate();
-
-
-                    ModifierItem modItem= go.GetComponent<AllObjectMB>().ReturnModifierItem();
-                    inventoryPart.GetComponent<GunBase>().AddEffectsBullets(modItem.ItemBulletEffects);
-                    modItem.modifyIdp=actIDP;
-                    foreach (var pair in modItem.ItemGeneralStats)// ?? new Dictionary<Stat.StatTypeGeneral, StatModifier>())
-                    {
-                        statsManager.instance.AddModifier(pair.Key, pair.Value );
-                    }
-                    foreach (var pair in modItem.ItemGunStats)// ?? new Dictionary<Stat.StatTypeGun, StatModifier>())
-                    {
-                        statsManager.instance.AddModifier(actIDP, pair.Key, pair.Value );
-                    }
-
+                //eliminar el que hi havia abans 
+                if (slot.thisItem != null)
+                {
+                    AddItemFromSlotModifier(inventoryPart, actIDP, inventory, slot, ref addedItems);
                 }
-
             }
+            if(!AddedItemsByGun.ContainsKey(actIDP)){ AddedItemsByGun.Add(actIDP,addedItems);}
+            else { AddedItemsByGun[actIDP]=addedItems; }
             // AddedParts[actIDP].
             //accedir inventari
             //accedir cada item de inventari
@@ -181,6 +281,57 @@ public class PartAdder : MonoBehaviour
             //i afegir a l'arma
         }
     }
+
+    private void AddItemFromSlotModifier(Transform inventoryPart, int actIDP, InventoryManager.Inventory? inventory, SlotInventory slot, ref List<GameObject> addedItems)
+    {
+       
+        GameObject go = Instantiate(slot.thisItem.takableDataSO.toInstanciate, inventory?.ReturnVisualizer().transform);
+
+        addedItems.Add(go);
+        go.GetComponent<EachPartScript>().Activate();
+
+
+        ModifierItem modItem = go.GetComponent<AllObjectMB>().ReturnModifierItem();
+        inventoryPart.GetComponent<GunBase>().AddEffectsBullets(modItem.ItemBulletEffects);
+        modItem.modifyIdp = actIDP;
+        foreach (var pair in modItem.ItemGeneralStats)// ?? new Dictionary<Stat.StatTypeGeneral, StatModifier>())
+        {
+            statsManager.instance.AddModifier(pair.Key, pair.Value);
+        }
+        foreach (var pair in modItem.ItemGunStats)// ?? new Dictionary<Stat.StatTypeGun, StatModifier>())
+        {
+            statsManager.instance.AddModifier(actIDP, pair.Key, pair.Value);
+        }
+
+        
+    }
+
+
+
+    /* private void RemoveItemFromSlotModifier(Transform inventoryPart, int actIDP, InventoryManager.Inventory? inventory, SlotInventory slot)
+    {
+        if (slot.thisItem != null)
+        {
+            GameObject go = Instantiate(slot.thisItem.takableDataSO.toInstanciate, inventory?.ReturnVisualizer().transform);
+
+            AddedItemsByGun.Add(go);
+            go.GetComponent<EachPartScript>().Activate();
+
+
+            ModifierItem modItem = go.GetComponent<AllObjectMB>().ReturnModifierItem();
+            inventoryPart.GetComponent<GunBase>().AddEffectsBullets(modItem.ItemBulletEffects);
+            modItem.modifyIdp = actIDP;
+            foreach (var pair in modItem.ItemGeneralStats)// ?? new Dictionary<Stat.StatTypeGeneral, StatModifier>())
+            {
+                statsManager.instance.AddModifier(pair.Key, pair.Value);
+            }
+            foreach (var pair in modItem.ItemGunStats)// ?? new Dictionary<Stat.StatTypeGun, StatModifier>())
+            {
+                statsManager.instance.AddModifier(actIDP, pair.Key, pair.Value);
+            }
+
+        }
+    } */
 
     #endregion
 
@@ -208,14 +359,53 @@ public class PartAdder : MonoBehaviour
         foreach (Transform child in adder.transform)
         {
             pa = child.gameObject.GetComponent<GunBase>();
-            pa.ReturnTakableDataSO();            
-            
+            // pa.ReturnTakableDataSO();            
+            // Destroy(AddedItemsByGun[]);
+
             inventoryManager.AddItemSpaceShip(pa.ReturnAllObjectSO());
             Destroy(child.gameObject);
         }
 
         DefaultValues();
     }    
+
+    private IEnumerator DeleteInventories()
+    {
+        
+        /* List<int> invetaris= inventoryManager.ReturnListIDPwithInventory();
+
+        foreach (var idp in invetaris)
+        {
+            if (!AddedItemsByGun.ContainsKey(idp))
+            {
+                inventoryManager.DeleteIventory(idp);
+            }
+        } */
+        yield return null;
+        DeactivateItems();
+        yield return null;
+
+        DeactivatePart();
+        yield return null;
+
+        DeleteParts();
+        yield return null;
+
+        inventoryManager.DeleteAllInventories();
+    }
+
+     private GameObject returnGameObjectForIDP(int actIDP)
+    {
+        foreach (var item in AddedParts)
+        {
+            if(item.Key.IDP==actIDP)
+            {
+                return item.Value;
+            }
+        }
+        return null;
+    }
+
     private void DesactivateItems()
     {
         /* foreach (var item in AddedItems)
@@ -292,44 +482,6 @@ public class PartAdder : MonoBehaviour
     
     }
     
-    #endregion
-
-    #region buttons
-    public void ResetPlacement()
-    {
-
-
-        // ToAddParts.Clear();
-        DeactivatePart();
-
-
-        DeleteParts(); //should change to get the item and save it in inventory
-    }
-
-    public void SavePlacement()
-    {
-        if (ToAddParts.Count <= 0 && AddedParts==null) return;
-        NewerParts= new List<PartPosition>();
-
-        Vector3 origin= GameManager.Instance.playerInstance.transform.position;
-        for(int i = 1; i < ToAddParts.Count; i++)
-        {
-            if (!AddedParts.ContainsKey(ToAddParts[i]))
-            {
-                AddedParts.Add(ToAddParts[i], CreatePart(ToAddParts[i],  origin));
-                NewerParts.Add(ToAddParts[i]);
-                // Debug.Log("creating part");
-            }
-        }
-        ActivateParts();
-
-
-        //should do something to add the items and other habilities
-        ActivateItems();
-
-    }
-
-
     #endregion
 
 }

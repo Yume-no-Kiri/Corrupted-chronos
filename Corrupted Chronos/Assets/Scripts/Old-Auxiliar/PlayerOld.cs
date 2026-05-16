@@ -573,7 +573,7 @@ public class PlayerOld : MonoBehaviour
         _gravity=false;
         _newMovePosition+= new Vector3(0, 1, 0);
 
-        GameManager.Instance.MoveUpStamina();
+        // GameManager.Instance.MoveUpStamina();
     }
 
   

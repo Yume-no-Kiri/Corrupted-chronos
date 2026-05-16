@@ -9,6 +9,11 @@ public class ShipMovement : MonoBehaviour,IDamageable
     public bool canMove=true;
     public bool canBoost;
 
+    private bool IsGround=false;
+
+    private Vector3 PositionGround;
+    private Vector3 LimitHigh;
+
     /* [Header("Input")]
     [SerializeField] private InputActionReference moveAction;
     [SerializeField] private InputActionReference boostAction; */
@@ -86,6 +91,26 @@ public class ShipMovement : MonoBehaviour,IDamageable
         }
 
         ApplyMovement();
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 3))
+        {
+            Debug.DrawRay(transform.position, Vector3.down * hit.distance, Color.red);
+            if(hit.transform.CompareTag("Ground")){ 
+                IsGround=true;
+                PositionGround= transform.position;
+                LimitHigh= PositionGround+new Vector3(0,2,0);
+            }
+            // GameManager.Instance.want2Fly=false;
+        }else
+        {
+            IsGround=false;
+            // GameManager.Instance.want2Fly=true;
+        }
+        // Ray ray = GameManager.Instance.inputManager.cameraGameplay.ScreenPointToRay
+
+
+
         // Debug.Log("ss does update work? 2");
 
     }
@@ -106,12 +131,25 @@ public class ShipMovement : MonoBehaviour,IDamageable
         if(moveDown!=null || moveUp != null){        
             inputDownUp =- moveDown.ReadValue<float>();
             inputDownUp += moveUp.ReadValue<float>();
+            if(!GameManager.Instance.CanFly()){
+               inputDownUp=-1;
+            }
+            
             if (inputDownUp > 0){
 
-                GameManager.Instance.MoveUpStamina();
+                GameManager.Instance.MoveUpStamina(IsGround);
+
+            }
+            else
+            {
+                GameManager.Instance.InformIfGround(IsGround);
             }
             //Debug.Log("ss move down UP"+inputDownUp.ToString());
 
+            if (transform.position.y > LimitHigh.y && inputDownUp>0 )
+            {
+                inputDownUp=0;
+            }
         }
 
 
@@ -146,7 +184,7 @@ public class ShipMovement : MonoBehaviour,IDamageable
     {
         Vector3 finalVelocity = currentMoveVector * statsManager.instance.GetShipStat(Stat.StatTypeGeneral.Speed) * currentSpeedMultiplier+externalForce;
 
-        GameManager.Instance.WaterMaterial.SetVector("_PositionMouse",finalVelocity.normalized );
+        if(finalVelocity!=Vector3.zero){  GameManager.Instance.WaterMaterial.SetVector("_PositionMouse",finalVelocity.normalized );}
 
         controller.Move(finalVelocity * Time.deltaTime);
 
