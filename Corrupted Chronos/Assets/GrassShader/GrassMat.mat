@@ -24,8 +24,7 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: 7d256df319a264145b30dbaddcc1e2b3, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _USETERRAINCOLOR
+  m_ValidKeywords: []
   m_InvalidKeywords:
   - _BLENDWITHTERRAIN
   m_LightmapFlags: 2
@@ -67,25 +66,25 @@ Material:
     m_Floats:
     - _AlphaThreshold: 0.5
     - _BLENDWITHTERRAIN: 1
-    - _HeightBlend: 2
+    - _HeightBlend: 1.2
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness: 0.42
     - _TerrainOffset: 0
     - _TerrainSize: 50
-    - _USETERRAINCOLOR: 1
-    - _WindHeight: 0.5
-    - _WindIntensity: 0.3
-    - _WindSpeed: 0.05
-    - _Wind_Noise_Speed: 0.5
+    - _USETERRAINCOLOR: 0
+    - _WindHeight: 0.7
+    - _WindIntensity: 0.5
+    - _WindSpeed: 0.1
+    - _Wind_Noise_Speed: 0.7
     m_Colors:
-    - _BottomColor: {r: 0.2918918, g: 1, b: 0, a: 1}
+    - _BottomColor: {r: 0.21148899, g: 0.4811321, b: 0.056737266, a: 1}
     - _Color: {r: 0.2561175, g: 0.5754717, b: 0.111294046, a: 1}
-    - _FarColor: {r: 0.4464631, g: 1, b: 0, a: 1}
-    - _NearColor: {r: 0, g: 0.9716981, b: 0.06337172, a: 1}
-    - _NearFarRange: {r: 10, g: 50, b: 0, a: 0}
-    - _ShadowColor: {r: 0.21693662, g: 0.23060936, b: 0.3679245, a: 1}
-    - _Wind_Noise_Contrast: {r: 0, g: 1, b: 0, a: 0}
+    - _FarColor: {r: 0.7010776, g: 0.9622642, b: 0.52198297, a: 1}
+    - _NearColor: {r: 0.5103312, g: 0.9056604, b: 0.10679956, a: 1}
+    - _NearFarRange: {r: 0, g: 50, b: 0, a: 0}
+    - _ShadowColor: {r: 0.08677466, g: 0.10690223, b: 0.2830189, a: 1}
+    - _Wind_Noise_Contrast: {r: 0.2, g: 1.11, b: 0, a: 0}
     - _Wind_Noise_Scale: {r: 50, g: 100, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
