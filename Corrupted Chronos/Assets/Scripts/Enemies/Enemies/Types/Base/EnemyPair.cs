@@ -4,6 +4,8 @@ public class EnemyPair : MonoBehaviour
 {
     #region Variables
     public Transform player;
+    bool bothUnitsAlive = true;
+    bool unitsAliveFlag = false;
 
     [Header("Leader Params")]
     public EnemyUnit leader; //Leader
@@ -43,8 +45,9 @@ public class EnemyPair : MonoBehaviour
     public baseState patrolling;
     public baseState attack1;
     public baseState pressure;
+    public baseState singleState;
 
-    
+
 
     #endregion
 
@@ -54,6 +57,7 @@ public class EnemyPair : MonoBehaviour
         patrolling = new patrollingState(stateMachine);
         attack1 = new attackingState(stateMachine);
         pressure = new pressureState(stateMachine);
+        
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -69,6 +73,20 @@ public class EnemyPair : MonoBehaviour
         handleWingman();
 
         stateMachine.currentState.FrameUpdate();
+        if ((leader == null || wingman == null) && !unitsAliveFlag)
+        {
+            bothUnitsAlive = false;
+            unitsAliveFlag = true;
+            if(stateMachine.currentState == pressure)
+            {
+                stateMachine.changeState(attack1);
+            }
+        }
+
+        if (leader == null && wingman == null)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private void FixedUpdate()
@@ -78,33 +96,48 @@ public class EnemyPair : MonoBehaviour
 
     void handleLeader()
     {
-        leader._lookTarget = leaderTarget;
-        leader.hasMoveTarget = shouldLeaderMove;
-        leader.moveTarget = leaderNextPos;
+        if (leader != null)
+        {
+            leader._lookTarget = leaderTarget;
+            leader.hasMoveTarget = shouldLeaderMove;
+            leader.moveTarget = leaderNextPos;
+        }       
     }
 
     void handleWingman()
     {
-        wingman._lookTarget = wingmanTarget;
-        wingman.hasMoveTarget = shouldWingmanMove;
-        wingman.moveTarget = wingmanNextPos;
+        if (wingman != null)
+        {
+            wingman._lookTarget = wingmanTarget;
+            wingman.hasMoveTarget = shouldWingmanMove;
+            wingman.moveTarget = wingmanNextPos;
+        }      
+    }
+
+    public void onPairBroken(EnemyUnit unit)
+    {
+        singleState = new singleState(stateMachine, unit);
     }
 
     public void targetDetected()
     {
         //TODO: hacer que se elija un random attack pattern
-
-        switch (Random.Range(0,3))
+        if (bothUnitsAlive)
         {
-            case 0:
-                stateMachine.changeState(attack1);
-                break;
-            case 1:
-                stateMachine.changeState(pressure);
-                break;
+            switch (Random.Range(0, 3))
+            {
+                case 0:
+                    stateMachine.changeState(attack1);
+                    break;
+                case 1:
+                    stateMachine.changeState(pressure);
+                    break;
+            }
         }
-
-
-        //stateMachine.changeState(pressure);
+        else
+        {
+            stateMachine.changeState(attack1);
+            //Pasar a un attacking state individual por defecto
+        }
     }
 }

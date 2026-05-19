@@ -18,26 +18,44 @@ public class attackingState : baseState
     {
         base.EnterState();
 
+        HandleUnitDeaths();
+
+        if (data.leader == null)
+            return;
+
         currentAttackPosition = GenerateAttackPosition();
         data.leaderNextPos = currentAttackPosition;
     }
 
     public override void FrameUpdate()
     {
-        float distToPlayer = Vector3.Distance(data.leader.transform.position, data.player.position);
+        HandleUnitDeaths();
 
-        // --- CONTROL DE DISTANCIA DEL LIDER ---
-        if (Mathf.Abs(distToPlayer - data.attackDistance) > data.attackDistanceTolerance)
+        // Si ambos murieron
+        if (data.leader == null)
+            return;
+
+        EnemyUnit activeLeader = data.leader;
+
+        float distToPlayer =
+            Vector3.Distance(activeLeader.transform.position, data.player.position);
+
+        // --- CONTROL DE DISTANCIA ---
+        if (Mathf.Abs(distToPlayer - data.attackDistance)
+            > data.attackDistanceTolerance)
         {
             data.leaderNextPos = GenerateAttackPosition();
         }
 
-        // --- WINGMAN SIGUE AL LIDER ---
-        Vector3 offset =
-            (-data.leader.transform.forward * data.wingmanOffset.x) +
-            (data.leader.transform.right * data.wingmanOffset.y);
+        // --- WINGMAN FOLLOW ---
+        if (data.wingman != null)
+        {
+            Vector3 offset =
+                (-activeLeader.transform.forward * data.wingmanOffset.x) +
+                (activeLeader.transform.right * data.wingmanOffset.y);
 
-        data.wingmanNextPos = data.leader.transform.position + offset;
+            data.wingmanNextPos = activeLeader.transform.position + offset;
+        }
 
         // --- ATAQUE DEL LIDER ---
         bool leaderInRange =
@@ -46,31 +64,52 @@ public class attackingState : baseState
 
         if (leaderInRange)
         {
-            data.leader.primaryAttack();
+            activeLeader.primaryAttack();
 
             data.leaderTarget = data.player.transform;
-            data.wingmanTarget = data.player.transform;
+
+            if (data.wingman != null)
+            {
+                data.wingmanTarget = data.player.transform;
+            }
         }
 
-        // --- ATAQUE DEL WINGMAN (SI EL JUGADOR SE ACERCA DEMASIADO) ---
-        float wingmanDist = Vector3.Distance(data.wingman.transform.position, data.player.position);
-
-        if (wingmanDist < data.attackDistance * 0.6f) // puedes ajustar este factor
+        // --- ATAQUE DEL WINGMAN ---
+        if (data.wingman != null)
         {
-            data.wingman.primaryAttack();
+            float wingmanDist =
+                Vector3.Distance(
+                    data.wingman.transform.position,
+                    data.player.position
+                );
+
+            if (wingmanDist < data.attackDistance * 0.6f)
+            {
+                data.wingman.primaryAttack();
+            }
+        }
+    }
+
+    void HandleUnitDeaths()
+    {
+        // Si murió el líder pero sigue vivo el wingman
+        if (data.leader == null && data.wingman != null)
+        {
+            data.leader = data.wingman;
+            data.wingman = null;
+
+            Debug.Log("Wingman promoted to Leader");
         }
     }
 
     Vector3 GenerateAttackPosition()
     {
-        //Debug.Log("aaaa");
         Vector3 playerPos = data.player.position;
         Vector3 leaderPos = data.leader.transform.position;
 
         Vector3 dir = leaderPos - playerPos;
         dir.y = 0f;
 
-        // Si por alguna razón está exactamente encima del jugador
         if (dir.sqrMagnitude < 0.001f)
             dir = data.leader.transform.forward;
 
