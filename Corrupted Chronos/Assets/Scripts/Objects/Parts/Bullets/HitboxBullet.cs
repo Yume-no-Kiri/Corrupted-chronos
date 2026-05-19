@@ -21,21 +21,16 @@ public class HitboxBullet : MonoBehaviour
     {
         // Physics.IgnoreCollision(GetComponent<Collider>(), GetComponent<Collider>(), true);
     }
-    /* void OnCollisionEnter(Collision collision)
-    {
-        OnCollisionEnterHitbox?.Invoke(collision,this.gameObject);
-    } */
 
+    //maybe in some special case (afterImpact hitbox) we need to call it manually
+    public void selfTrigger()
+    {
+        OnTriggerEnterHitbox?.Invoke(null,this.gameObject);  
+    }
     void OnTriggerEnter(Collider trigger)
     {
         OnTriggerEnterHitbox?.Invoke(trigger,this.gameObject);
     }
-
-    /* void OnCollisionExit(Collision collision)
-    {
-        OnCollisionExitHitbox?.Invoke(collision,this.gameObject);
-    } */
-
     void OnTriggerExit(Collider trigger) {
         OnTriggerExitHitbox?.Invoke(trigger,this.gameObject);
         

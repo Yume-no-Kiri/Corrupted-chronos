@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public enum NameHitboxInBullet
@@ -20,7 +21,7 @@ public class AddHitboxEB: EffectsBullets
 {
 
     // protected GameObject hitboxBulletInst;
-    public NameHitboxInBullet name;
+    [HideInInspector] public NameHitboxInBullet name;
     public override void Setup(NameHitboxInBullet name=NameHitboxInBullet.Null)
     {
         // base.Awake();
@@ -37,7 +38,9 @@ public class AddHitboxEB: EffectsBullets
                 break;
             case NameHitboxInBullet.AfterImpact:
 
-                baseBullets.GetComponent<DamageEB>().OnImpact += () => hitboxUsed.SetActive(true);
+                //proabably on hit, separete from parent and left in position and delete after x seconds
+                hitboxUsed.GetComponent<HitboxBullet>().DefineTriggerSize(new Vector3(5, 5, 5));
+                baseBullets.GetComponent<DamageEB>().OnImpact += HitboxAfterImpact;
                 hitboxUsed.SetActive(false);
                 break;
             case NameHitboxInBullet.AfterDeath:
@@ -63,7 +66,16 @@ public class AddHitboxEB: EffectsBullets
     protected override void OnDestroy() {
         
         baseBullets.DeletesThisID(hitboxUsed);
+
         //probably deletes the bullet to
+    }
+
+    private void HitboxAfterImpact()
+    {
+        hitboxUsed.SetActive(true);
+        hitboxUsed.GetComponent<HitboxBullet>().selfTrigger();
+        hitboxUsed.SetActive(false);
+      
     }
 }
 
@@ -77,6 +89,8 @@ public class AddHitsphereEB: AddHitboxEB
 
     }
 }
+
+
 
 //add hitbox that will be activated after impact
 /* public class AddHitboxAfterImpactEB: AddHitboxEB

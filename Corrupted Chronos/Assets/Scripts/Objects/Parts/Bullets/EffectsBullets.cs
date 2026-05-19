@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,7 +13,9 @@ public enum NameEffectBullets
     KnockbackEB=30,
     DamageEB=31,
     FollowOpposedEB=32,
-    FireEB=33
+    FireEB=33,
+    CreateExplosionEB=34,
+    ChangeDistanceToTimerEB=35
 }
 
 
@@ -35,6 +38,8 @@ public class EffectsBullets : MonoBehaviour
 
     public AllInformationBullet AllInfoBullet{get; private set;}
     
+
+
     protected virtual void Awake()
     {
         baseBullets= this.gameObject.GetComponent<BaseBullets>();
@@ -112,7 +117,9 @@ public class DamageEB: EffectsBullets
 {
     public event Action OnImpact;
 
-
+    private Collider lastTrigger=null;
+    private Coroutine TriggerCleaner=null;
+    // private float penetration
 
     protected override void Awake()
     {
@@ -143,12 +150,44 @@ public class DamageEB: EffectsBullets
         {
             victim.TakeDamage(AllInfoBullet.StatsBullet[Stat.StatTypeBullet.Damage]);
         }
+        if(trigger.CompareTag(OpposedTag)){
+            if (lastTrigger != trigger)
+            {
+                AllInfoBullet.StatsBullet[Stat.StatTypeBullet.Piercing]-=1;
+            }
+            if(TriggerCleaner==null)TriggerCleaner= StartCoroutine(ClearTrigger());
+            lastTrigger=trigger;
 
+        }
+        
 
         OnImpact?.Invoke();
+
+        if (AllInfoBullet.StatsBullet[Stat.StatTypeBullet.Piercing] < 0)
+        {
+            //maybe dejar 4 frames de tiempo apra eliminar la bala
+            Debug.Log("piercing equals:"+ AllInfoBullet.StatsBullet[Stat.StatTypeBullet.Piercing]);
+            Destroy(this.gameObject);
+
+            // this.gameObject.active(false);
+        }
+    }
+
+    public IEnumerator Time2Die()
+    {
+        yield return new WaitForSecondsRealtime(1f);
         Destroy(this.gameObject);
 
     }
+    public IEnumerator ClearTrigger()
+    {
+        yield return new WaitForSecondsRealtime(2f);
+        lastTrigger=null;
+        TriggerCleaner=null;
+
+    }
+
+
 }
 
 //knockback when impacted with player //easy to make a new one for the enemys
@@ -292,14 +331,46 @@ public class FireEB: EffectsBullets
     }
 }
 
-public class OverTheLimitEB : EffectsBullets
+public class CreateExplosionEB: EffectsBullets
 {
-    /* 
-    should reach the basegun script and modifify the method of the maxlimit, it shouldn't delte it, 
-    it should extend the life of the bullet, some more time
-     */
+     protected override void Awake()
+    {   base.Awake(); }
+
+    protected override void HitboxTriggerEnter(Collider trigger)
+    {
+        if (trigger == null)
+        {
+            // AllInformationBullet? newBulletInfo= statsManager.instance.listBulletStats.ReturnBulletStatsSO(NameBulletPreset.Explosion);
+            GameObject newBullet= Instantiate(statsManager.instance.listBulletStats.GeneralBullet, gameObject.transform.position, quaternion.identity);
+            newBullet.GetComponent<CreateBullet>().Setup(true, NameBulletPreset.Explosion);
+        }
+    }
+}
+
+public class ChangeDistanceToTimerEB : EffectsBullets
+{
+    protected override void Awake()
+    {   base.Awake();
+
+        baseBullets.ChangeDistanceToTimer();
+    }
+
+
+
+    // this should get baseBullet and "discard" the way it uses distance to a timer
+    //probably can life the two without problem
+
 
 }
+
+/* public class OverTheLimitEB : EffectsBullets
+{
+    
+    should reach the basegun script and modifify the method of the maxlimit, it shouldn't delte it, 
+    it should extend the life of the bullet, some more time
+    
+
+} */
 
 
 /* 

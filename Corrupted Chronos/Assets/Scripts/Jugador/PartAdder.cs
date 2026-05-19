@@ -250,18 +250,21 @@ public class PartAdder : MonoBehaviour
                 Debug.LogError("how thedefuc are you don't giving an inventory");
                 continue;
             }
-            SlotInventory[] slots=inventory?.ReturnListSlots();
             //  item.Key
             // Debug.Log("itemm inventory not default");
 
-            if(AddedItemsByGun.ContainsKey(actIDP)){
-                foreach (var item in AddedItemsByGun[actIDP])
+            // if(AddedItemsByGun.ContainsKey(actIDP)){
+            if(AddedItemsByGun.TryGetValue(actIDP, out List<GameObject> oldItems))
+            {
+                foreach (var item in oldItems)//AddedItemsByGun[actIDP])
                 {
                     RemoveItemModifier(item,actIDP,false);
                 }
-                AddedItemsByGun[actIDP].Clear();
+                // AddedItemsByGun[actIDP].Clear();
+                oldItems.Clear();
             }
 
+            SlotInventory[] slots=inventory?.ReturnListSlots();
 
             List<GameObject> addedItems= new List<GameObject>();
             foreach (var slot in slots)

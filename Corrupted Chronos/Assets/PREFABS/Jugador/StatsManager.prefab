@@ -94,3 +94,5 @@ MonoBehaviour:
     bulletStatsSO: {fileID: 11400000, guid: 6042647a543854f46aa4775471ab001a, type: 2}
   - NameBullet: 5
     bulletStatsSO: {fileID: 11400000, guid: 9b6437b5996795042afcd71a7aaaea02, type: 2}
+  - NameBullet: 6
+    bulletStatsSO: {fileID: 11400000, guid: a5ca8debaf367f14dbe43376e6d8fca3, type: 2}

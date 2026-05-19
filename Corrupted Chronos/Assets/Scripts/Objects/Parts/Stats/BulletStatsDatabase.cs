@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -21,7 +22,8 @@ public enum NameBulletPreset
     Wave=2, 
     RedWave=3,
     FollowMissile=4,
-    Flame=5
+    Flame=5,
+    Explosion=6
 }
 
 // Ara mateix la relació de colliders i effectes es: molts efectes a 1 collider
@@ -166,6 +168,12 @@ public class FollowinMissileSO: BulletStatsSO
 
 [CreateAssetMenu(fileName="FlameStats", menuName = "Bullet/FlameStats")]
 public class FlameStatsSO: BulletStatsSO
+{
+    
+}
+
+[CreateAssetMenu(fileName="ExplosionStats", menuName = "Bullet/ExplosionStats")]
+public class ExplosionStatsSO: BulletStatsSO
 {
     
 }

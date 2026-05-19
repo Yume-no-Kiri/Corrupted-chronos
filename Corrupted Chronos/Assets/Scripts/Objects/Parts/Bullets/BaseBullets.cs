@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
 
 //probablement implementar un enum per diferents tipus de Bales (No creo que sea necesario)
 //potser canviar-li el nom
@@ -43,33 +44,37 @@ using System.Linq;
         }
     } */
 
-   /*  public static InformationBullet empty()
-    {
-        return new InformationBullet
-        {
-            damage=0,
-            penetration=0,
-            distEffec=0,
-            distMax = so.distMax,
-            speed = so.speed,
-            knockback= so.knockback
-        }
-    } */
+/*  public static InformationBullet empty()
+ {
+     return new InformationBullet
+     {
+         damage=0,
+         penetration=0,
+         distEffec=0,
+         distMax = so.distMax,
+         speed = so.speed,
+         knockback= so.knockback
+     }
+ } */
 
-   /*  public void PlusDamage(int nouMal)
-    {
-        damage+=nouMal;
-    }
-    public void PlusDistMaz(float dist)
-    {
-        distMax+=dist;
-    }
+/*  public void PlusDamage(int nouMal)
+ {
+     damage+=nouMal;
+ }
+ public void PlusDistMaz(float dist)
+ {
+     distMax+=dist;
+ }
 } */
 
 
 public class BaseBullets : MonoBehaviour
 {
     [HideInInspector] public Vector3 iniPos;
+    private Vector3 LastPos;
+    private float DistanceTravelled=0f;
+    private bool UseTimerToDie=false;
+    private Coroutine CoroutineTimerToDie=null;
 
     public GameObject myCreator;
     private Rigidbody rb;
@@ -110,10 +115,12 @@ public class BaseBullets : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         spr = GetComponentInChildren<SpriteRenderer>();
 
+
     }
     protected virtual void Start()
     {
         iniPos = this.transform.position;
+        LastPos=iniPos;
     }
 
     #region assigners
@@ -127,7 +134,7 @@ public class BaseBullets : MonoBehaviour
             spr.sprite = AllInfoBullet.sprite;
         }
         newBulletSO.Debuger();
-
+        this.transform.localScale*=AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSize];
     }
     
 
@@ -142,6 +149,11 @@ public class BaseBullets : MonoBehaviour
             OpposedTag=EnemyTag;
             fromPlayer=true;
         }
+    }
+
+    public void ChangeDistanceToTimer()
+    {
+        UseTimerToDie=true;
     }
 
     #endregion
@@ -268,7 +280,7 @@ public class BaseBullets : MonoBehaviour
     #endregion 
 
 
-    #region invokers
+    #region life and invokers
     protected void FixedUpdate()
     {
         if(!AllInfoBullet.IsEmpty())
@@ -276,26 +288,48 @@ public class BaseBullets : MonoBehaviour
             // if(StatsBullet==null) return;
             Debug.LogWarning("statsbullet speed:"+AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSpeed]);
             rb.linearVelocity = transform.forward * AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSpeed];
-            float distance = Vector3.Distance(iniPos, this.transform.position);
+            // float distance = Vector3.Distance(iniPos, this.transform.position);
+            float distance = Vector3.Distance(this.transform.position, LastPos);
+
+            DistanceTravelled+=distance;
+            LastPos=transform.position;
             //Debug.Log("Distance: " + distance +"__iniPos: "+iniPos+ "__transform.position: " + this.transform.position);
-            if(distance< AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistEffec])
+            if(DistanceTravelled< AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistEffec])
             {
                 OnEffectiveRange?.Invoke();
 
-            }else if(distance> AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistEffec]&& distance < AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistMax])
+            }else if(DistanceTravelled> AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistEffec]&& distance < AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistMax])
             {
                 //should pass how far are we from distEffect?
                 OnDecliveRange?.Invoke();
-            } else if(distance > AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistMax])
+            } else if(DistanceTravelled >= AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistMax])
             {
                 OnMaxRange?.Invoke();
                 //should pass how far are we from distMax?
-                AwayDistMax(distance);
+                AwayDistMax(DistanceTravelled);
                 // Debug.LogWarning("SHOULD DELETE BULLET");
+            }
+
+            if (UseTimerToDie)
+            {
+                if (CoroutineTimerToDie == null)
+                {
+                    CoroutineTimerToDie=StartCoroutine(TimerToDie());
+                }
+
+
             }
         }
      
     }
+
+    private IEnumerator TimerToDie()
+    {
+        yield return new WaitForSecondsRealtime( AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistMax]/2);
+        AwayDistMax(DistanceTravelled);
+        CoroutineTimerToDie=null;
+    }
+
     protected virtual void AwayDistMax(float distance)
     {
         Destroy(this.gameObject);

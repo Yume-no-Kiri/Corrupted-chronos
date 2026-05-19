@@ -112,7 +112,7 @@ public class GunBase : AllObjectMB
     public void RemoveEffectsBullets(HashSet<EffectsAdd> effectsAdds)
     {
         if(effectsAdds!=null){
-            addedEffects.UnionWith(effectsAdds);
+            addedEffects.ExceptWith(effectsAdds);
         }
     }
     #endregion
@@ -144,7 +144,7 @@ public class GunBase : AllObjectMB
         bulletInstance.Add(Instantiate(bulletPrefab, spawnPoint, rotation));
         finalStats = ModifingFinalStats( finalStats);
         bulletInstance.Last().GetComponent<CreateBullet>().Setup(true,finalStats);
-        bulletInstance.Last().transform.localScale*=finalStats.StatsBullet[Stat.StatTypeBullet.BulletSize];
+        // bulletInstance.Last().transform.localScale*=finalStats.StatsBullet[Stat.StatTypeBullet.BulletSize];
         //afegir effectes de items
         foreach (var singleEffect in addedEffects)
         {

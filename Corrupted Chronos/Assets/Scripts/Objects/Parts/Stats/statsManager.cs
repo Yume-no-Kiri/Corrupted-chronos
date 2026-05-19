@@ -323,7 +323,7 @@ public class Stat
         // bullet: 7
         Damage=100,
         BulletSpeed=101,
-        Penetration=102,
+        Piercing=102,
         DistEffec=103,
         DistMax=104,
         Knockback=105,
@@ -343,7 +343,7 @@ public class Stat
         // bullet
         Damage=100,
         BulletSpeed=101,
-        Penetration=102,
+        Piercing=102,
         DistEffec=103,
         DistMax=104,
         Knockback=105,
@@ -358,7 +358,7 @@ public class Stat
 
         Damage=100,
         BulletSpeed=101,
-        Penetration=102,
+        Piercing=102,
         DistEffec=103,
         DistMax=104,
         Knockback=105,

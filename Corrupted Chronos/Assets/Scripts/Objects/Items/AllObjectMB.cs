@@ -8,7 +8,10 @@ public enum ListNameObjects
     EnergyItem=102,
     RadarItem=103,
     HeavyBulletsItem=104,
-    LighterBulletsItem=105
+    LighterBulletsItem=105,
+
+    KaboomBulletsItem=106,
+    PiercingBulletsItem=107
 }
 
 public struct ModifierItem
@@ -223,18 +226,17 @@ public class RadarItem: AllObjectMB
 }
 public class HeavyBulletsItem: AllObjectMB
 {
-    float extraSize=1;
+    float extraSize=0.5f;
     float slowness=-5;
 
 
     protected override void OnEnable()
     {
-        ObjectNameID="RadarObject";
+        ObjectNameID="HeavyBulletsObject";
     }
     protected override void DefineModifierItem()
     {
-        // modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.AddHitsphereEB, NameHitboxInBullet.Detectors));
-        // modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.FollowOpposedEB, NameHitboxInBullet.Detectors));
+
         modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.BulletSize, new StatModifier(extraSize, StatModifier.ModifierType.Add));
         modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.BulletSpeed, new StatModifier(slowness, StatModifier.ModifierType.Add));
     }
@@ -243,18 +245,56 @@ public class HeavyBulletsItem: AllObjectMB
 public class LighterBulletsItem: AllObjectMB
 {
     float extraSize=-0.5f;
+    float velo=2;
+
+
+    protected override void OnEnable()
+    {
+        ObjectNameID="LighterBulletsObject";
+    }
+    protected override void DefineModifierItem()
+    {
+
+        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.BulletSize, new StatModifier(extraSize, StatModifier.ModifierType.Add));
+        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.BulletSpeed, new StatModifier(velo, StatModifier.ModifierType.Add));
+    }
+}
+
+public class KaboomBulletsItem: AllObjectMB
+{
+    float extraSize=-0.5f;
     float velo=3;
 
 
     protected override void OnEnable()
     {
-        ObjectNameID="RadarObject";
+        ObjectNameID="KaboomBulletsObject";
     }
     protected override void DefineModifierItem()
     {
-        // modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.AddHitsphereEB, NameHitboxInBullet.Detectors));
-        // modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.FollowOpposedEB, NameHitboxInBullet.Detectors));
-        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.BulletSize, new StatModifier(extraSize, StatModifier.ModifierType.Add));
-        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.BulletSpeed, new StatModifier(velo, StatModifier.ModifierType.Add));
+        modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.AddHitsphereEB, NameHitboxInBullet.AfterImpact));
+        modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.CreateExplosionEB, NameHitboxInBullet.AfterImpact));
+
+        modifierItem.ItemGunStats.Add(Stat.StatTypeGun.TimeBetweenShots, new StatModifier(0.7f, StatModifier.ModifierType.Add));
+        modifierItem.ItemGunStats.Add(Stat.StatTypeGun.BulletSpeed, new StatModifier(-2f, StatModifier.ModifierType.Add));
+
+
+    }
+}
+
+
+public class PiercingBulletsItem: AllObjectMB
+{
+    float extraPiercing=2f;
+    float velo=3;
+
+    protected override void OnEnable()
+    {
+        ObjectNameID="PiercingBulletsObject";
+    }
+    protected override void DefineModifierItem()
+    {
+        modifierItem.ItemGunStats.Add(Stat.StatTypeGun.Piercing, new StatModifier(extraPiercing, StatModifier.ModifierType.Add));
+        
     }
 }
