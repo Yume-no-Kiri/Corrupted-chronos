@@ -33,7 +33,16 @@ public class patrollingState : baseState
 
     public override void FrameUpdate()
     {
-        Transform leader = data.leader.transform;
+        HandleUnitDeaths();
+
+        if (data.leader == null && data.wingman == null)
+            return;
+
+        EnemyUnit activeUnit = data.leader != null
+            ? data.leader
+            : data.wingman;
+
+        Transform leader = activeUnit.transform;
 
         // --- CHECK SI LLEGO AL TARGET ---
         float sqrDistance = (leader.position - data.leaderNextPos).sqrMagnitude;
@@ -44,13 +53,24 @@ public class patrollingState : baseState
         }
 
         // --- WINGMAN OFFSET ---
-        Vector3 offset = (-leader.forward * data.wingmanOffset.x) + (leader.right * data.wingmanOffset.y);
-        data.wingmanNextPos = leader.position + offset;
-        //data.Unit2.transform.forward = leader.forward;
+        if (data.wingman != null)
+        {
+            Vector3 offset =
+                (-leader.forward * data.wingmanOffset.x) +
+                (leader.right * data.wingmanOffset.y);
+
+            data.wingmanNextPos = leader.position + offset;
+        }
 
         // --- CHECK SI WINGMAN LLEGO AL TARGET ---
-        bool leaderSees = IsTargetInFOV(data.leader.transform, data.player);
-        bool wingmanSees = IsTargetInFOV(data.wingman.transform, data.player);
+        bool leaderSees = false;
+        bool wingmanSees = false;
+
+        if (data.leader != null)
+            leaderSees = IsTargetInFOV(data.leader.transform, data.player);
+
+        if (data.wingman != null)
+            wingmanSees = IsTargetInFOV(data.wingman.transform, data.player);
 
         bool seesTarget = leaderSees || wingmanSees;
 
@@ -71,6 +91,26 @@ public class patrollingState : baseState
 
             //Aqui puedo hacer que le envie al state machine
             data.targetDetected();
+        }
+    }
+
+    void HandleUnitDeaths()
+    {
+        // Si el líder murió pero el wingman sigue vivo
+        if (data.leader == null && data.wingman != null)
+        {
+            data.leader = data.wingman;
+            data.wingman = null;
+
+            data.shouldWingmanMove = false;
+
+            Debug.Log("Wingman promoted to Leader");
+        }
+
+        // Si el wingman murió
+        if (data.wingman == null)
+        {
+            data.shouldWingmanMove = false;
         }
     }
 
