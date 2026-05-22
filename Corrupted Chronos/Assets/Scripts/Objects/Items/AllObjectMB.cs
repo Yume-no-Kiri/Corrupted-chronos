@@ -156,10 +156,10 @@ public class LifeItem: AllObjectMB
     }
     protected override void DefineModifierItem()
     {
-        
+        //statsManager.instance.decreaseStatValue(Stat.StatTypeGeneral.MaxHealth, PlusHealth);
 
-        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.Health, new StatModifier(PlusHealth, StatModifier.ModifierType.Add));
-        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.Shields, new StatModifier(PlusShield, StatModifier.ModifierType.Add));
+        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.MaxHealth, new StatModifier(PlusHealth, StatModifier.ModifierType.Add));
+        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.MaxShields, new StatModifier(PlusShield, StatModifier.ModifierType.Add));
         modifierItem.ItemGunStats.Add(Stat.StatTypeGun.BulletSpeed, new StatModifier(PlusSpeedBullet,StatModifier.ModifierType.Add));
     }
 

@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class ShipMovement : MonoBehaviour,IDamageable 
 {
+    public float health;
+    public float shields;
+
     [Header("Parameters")]
     public bool canMove=true;
     public bool canBoost;
@@ -49,6 +52,9 @@ public class ShipMovement : MonoBehaviour,IDamageable
         controller = GetComponentInParent<CharacterController>();
         if(controller) Debug.Log("ss controller assigned");
         else Debug.Log("ss controller not assigned");
+
+        health = statsManager.instance.GetShipStat(Stat.StatTypeGeneral.MaxHealth);
+        shields = statsManager.instance.GetShipStat(Stat.StatTypeGeneral.MaxShields);
     }
 
     public void SetUpShipMovement(PlayerInputActions.NauActions nau)
@@ -194,9 +200,23 @@ public class ShipMovement : MonoBehaviour,IDamageable
     #region interface
     public void TakeDamage(float damageAmount)
     {
-        statsManager.instance.AddModifier(Stat.StatTypeGeneral.Health, new StatModifier(-damageAmount, StatModifier.ModifierType.Add));
-        // currentHealth-=damageAmount;
-        if(statsManager.instance.GetShipStat(Stat.StatTypeGeneral.Health)<=0) Die();
+        if (statsManager.instance.GetShipStat(Stat.StatTypeGeneral.CurrentShields) > 0f)
+        {
+            float absorbed = Mathf.Min(statsManager.instance.GetShipStat(Stat.StatTypeGeneral.CurrentShields), damageAmount);
+
+            statsManager.instance.decreaseStatValue(Stat.StatTypeGeneral.CurrentShields, absorbed);
+            damageAmount -= absorbed;
+        }
+
+        if (damageAmount > 0f)
+        {
+            statsManager.instance.decreaseStatValue(Stat.StatTypeGeneral.CurrentHealth, damageAmount);
+        }
+
+        if (statsManager.instance.GetShipStat(Stat.StatTypeGeneral.CurrentHealth) <= 0f)
+        {
+            Die();
+        }
     }
 
     public void Die()

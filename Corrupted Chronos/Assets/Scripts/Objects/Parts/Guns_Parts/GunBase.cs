@@ -454,7 +454,7 @@ public class Flamethrower :GunBase
         MaxHeat=GetTotalStat(Stat.StatTypeGeneral.Magazine);
         // CurrentHeat=MaxHeat;
         Debug.Log("color maxHeat:"+MaxHeat+" currentHeat:"+CurrentHeat);
-        regen= GetTotalStat(Stat.StatTypeGeneral.ShieldRegen);
+        regen= GetTotalStat(Stat.StatTypeGeneral.ShieldRegenRate);
     }
     protected override AllInformationBullet ModifingFinalStats( AllInformationBullet finalStats)
     {
@@ -470,7 +470,7 @@ public class Flamethrower :GunBase
     {
         //IDK if maxHeat would change as it should, so here is a savecheck
         MaxHeat=GetTotalStat(Stat.StatTypeGeneral.Magazine);
-        regen= GetTotalStat(Stat.StatTypeGeneral.ShieldRegen);
+        regen= GetTotalStat(Stat.StatTypeGeneral.ShieldRegenRate);
 
         if ( ctx.performed)
         {

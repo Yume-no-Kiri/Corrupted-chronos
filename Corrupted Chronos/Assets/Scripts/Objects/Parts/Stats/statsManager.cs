@@ -52,14 +52,47 @@ public class statsManager : MonoBehaviour
                 statLookup[item.type] = novaStat;
 
             }
+
+            Stat healthstat = new Stat
+            {
+                name = Stat.StatTypeGeneral.CurrentHealth,
+                baseValue = statLookup[Stat.StatTypeGeneral.MaxHealth].baseValue,
+                currentValue = statLookup[Stat.StatTypeGeneral.MaxHealth].baseValue
+            };
+
+            statLookup[Stat.StatTypeGeneral.CurrentHealth] = healthstat;
+
+            Stat staminastat = new Stat
+            {
+                name = Stat.StatTypeGeneral.CurrentStamina,
+                baseValue = statLookup[Stat.StatTypeGeneral.MaxStamina].baseValue,
+                currentValue = statLookup[Stat.StatTypeGeneral.MaxStamina].baseValue
+            };
+            statLookup[Stat.StatTypeGeneral.CurrentStamina] = staminastat;
+
+            Stat shieldstat = new Stat
+            {
+                name = Stat.StatTypeGeneral.CurrentShields,
+                baseValue = statLookup[Stat.StatTypeGeneral.MaxShields].baseValue,
+                currentValue = statLookup[Stat.StatTypeGeneral.MaxShields].baseValue
+            };
+            statLookup[Stat.StatTypeGeneral.CurrentShields] = shieldstat;
+
         }
 
 
     }
 
-    /* private void Start() {
-        statEachGun= gunStats.ReturnStatsEachGun();
-    } */
+    private void Update()
+    {
+        if (GetShipStat(Stat.StatTypeGeneral.MaxShields) > GetShipStat(Stat.StatTypeGeneral.CurrentShields))
+        {
+            increaseStatValue(Stat.StatTypeGeneral.CurrentShields, GetShipStat(Stat.StatTypeGeneral.ShieldRegenRate) * Time.deltaTime);
+        }
+    }
+
+    #region Methods
+
 
 
     public void CreateStatsGun(string name, int idp)
@@ -88,6 +121,18 @@ public class statsManager : MonoBehaviour
     {
         if (statLookup.TryGetValue(type, out var stat))
         {
+            switch (stat.name)
+            {
+                case Stat.StatTypeGeneral.MaxHealth:
+                    //Se recalcula el currentHealth para que no sigui superior al maxHealth
+                    break;
+                case Stat.StatTypeGeneral.MaxStamina:
+                    //Se recalcula el currentStamina para que no sigui superior al maxStamina
+                    break;
+                case Stat.StatTypeGeneral.MaxShields:
+                    //Se recalcula el currentStamina para que no sigui superior al maxStamina
+                    break;
+            }
             return stat.AddModifier(mod);
         }
 
@@ -102,6 +147,23 @@ public class statsManager : MonoBehaviour
             stat.removeModifier(mod);
         }
     }
+
+    public void increaseStatValue(Stat.StatTypeGeneral type, float amount)
+    {
+        if (statLookup.TryGetValue(type, out var stat))
+        {
+            stat.currentValue += amount;
+        }
+    }
+
+    public void decreaseStatValue(Stat.StatTypeGeneral type, float amount)
+    {
+        if (statLookup.TryGetValue(type, out var stat))
+        {
+            stat.currentValue -= amount;
+        }
+    }
+
 
     public float AddModifier(int modifyIDP, Stat.StatTypeGun type, StatModifier mod)
     {
@@ -129,6 +191,7 @@ public class statsManager : MonoBehaviour
             Debug.LogWarning($"No es pot treure el modificador: ID d'arma {modifyIDP} no trobada.");
         }
     }
+
     /* ia diu:
     Si aquest mètode es crida moltes vegades (per exemple, cada cop que dispares), fer ToString() i TryParse és una mica costós.
      Una solució més professional seria crear un Diccionari de traducció estàtic un sol cop:
@@ -187,6 +250,7 @@ public class statsManager : MonoBehaviour
         // Comprova si el string "Damage" existeix dins de StatTypeGeneral
         return Enum.IsDefined(typeof(Stat.StatTypeBullet), nom);
     }
+
     /* public bool StatExistsBulet(Stat.StatTypeBullet bulletStat)
     {
         string nom = bulletStat.ToString();
@@ -286,35 +350,30 @@ public class statsManager : MonoBehaviour
         return finalValue;
     }
     #endregion
+
+    #endregion
 }
 
 [Serializable]
 public class Stat
 {
-
-    /*  public enum StatsEnemy
-     {
-         Health=0,
-         Stamina=1,
-         Shields=2,
-         ShieldRegen=3,
-         Speed=4,
-         Agility=5,
-     } */
-
     public enum StatTypeGeneral
     {
-
         //ship: 6
-        Health=0, //rang (0, inf)
-        Stamina=1, //rang (0, inf)
-        Shields=2, //rang (0, inf)
-        ShieldRegen=3, //rang (0, inf)
-        Speed=4, //rang (0, inf)
+        MaxHealth=0, //rang (0, inf)
+        MaxStamina=1, //rang (0, inf)
+        MaxShields=2, //rang (0, inf)
+        ShieldRegenRate =3, //rang (0, inf)
+        ShieldRegenDelay=4, //rang (0, inf)
+        Speed =4, //rang (0, inf)
         Agility=5, //rang (0, inf)
 
+        CurrentHealth,
+        CurrentStamina,
+        CurrentShields,
+
         // guns: 4
-        TimeBetweenShots=50, //rang (0, inf)
+        TimeBetweenShots =50, //rang (0, inf)
         Magazine=51, //rang (0, inf)
         Accuraccy=52, //rang (0, inf)
         NumberBullets=53,
@@ -350,7 +409,6 @@ public class Stat
         BulletSize=106
 
     }
-
     public enum StatTypeBullet
     {
 
@@ -430,6 +488,7 @@ public class Stat
         return value;
     }
 }
+
 
 [Serializable]
 public class StatModifier

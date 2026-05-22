@@ -2272,7 +2272,7 @@
     "m_Title": "Shadow or Bottom Color",
     "m_Position": {
         "x": -1897.0,
-        "y": 510.0
+        "y": 510.0001220703125
     }
 }
 
@@ -4129,7 +4129,7 @@
     "m_PerRendererData": false,
     "m_customAttributes": [],
     "m_Value": {
-        "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"a73c218e0d8156240a793d22710686d1\",\"type\":3}}",
+        "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "isMainTexture": false,
@@ -5725,7 +5725,7 @@
     "m_FloatType": 1,
     "m_LiteralFloatMode": false,
     "m_RangeValues": {
-        "x": -10.0,
+        "x": 0.0,
         "y": 10.0
     },
     "m_SliderType": 0,
@@ -7101,7 +7101,7 @@
     "m_Title": "Grass Sway",
     "m_Position": {
         "x": -2268.0,
-        "y": -2028.0
+        "y": -2027.9998779296875
     }
 }
 
@@ -7367,7 +7367,7 @@
     "m_ObjectId": "ab3deb6c61d448e0ab2ec97f1ab1bd64",
     "m_Title": "Height Blending",
     "m_Position": {
-        "x": -1548.0,
+        "x": -1547.9998779296875,
         "y": 828.0
     }
 }
@@ -9254,7 +9254,7 @@
     "m_Title": "Depth",
     "m_Position": {
         "x": -2247.0,
-        "y": -540.0
+        "y": -539.9999389648438
     }
 }
 

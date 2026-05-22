@@ -5,6 +5,8 @@ public class deleteme : MonoBehaviour
 {
     TMP_Text text;
 
+    public Stat.StatTypeGeneral statType = Stat.StatTypeGeneral.MaxHealth;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -14,6 +16,6 @@ public class deleteme : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        text.text = statsManager.instance.GetShipStat(Stat.StatTypeGeneral.Health).ToString();
+        text.text = statsManager.instance.GetShipStat(statType).ToString();
     }
 }
