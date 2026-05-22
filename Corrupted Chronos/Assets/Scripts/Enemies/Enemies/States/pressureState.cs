@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 public class pressureState : baseState
@@ -31,6 +32,12 @@ public class pressureState : baseState
 
     public override void FrameUpdate()
     {
+        if(!data.leader && !data.wingman)
+        {
+            GameObject.Destroy(data.gameObject);
+        }
+
+
         float leaderDist = Vector3.Distance(data.leader.transform.position, data.player.position);
         float wingmanDist = Vector3.Distance(data.wingman.transform.position, data.player.position);
 

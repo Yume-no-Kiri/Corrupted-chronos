@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
 public abstract class EnemyUnit : MonoBehaviour, IDamageable
@@ -30,12 +31,22 @@ public abstract class EnemyUnit : MonoBehaviour, IDamageable
     [Header("Control")]
     public bool hasMoveTarget;
 
+    [Header("Particles")]
+    public ParticleSystem hitParticles;
+    [SerializeField] private float fadeInTime = 0.05f;
+    [SerializeField] private float fadeOutTime = 0.15f;
+
+    private Color originalColor;
+    private Coroutine flashRoutine;
+
     //Private Variables
     private Vector3 currentVelocity;
     private GameObject obj;
     private float fixedX;
     private float fixedZ;
     private float lastFireTime;
+    private SpriteRenderer spr;
+    private Vector3 externalForce = Vector3.zero;
 
     protected bool CanFire()
     {
@@ -57,11 +68,31 @@ public abstract class EnemyUnit : MonoBehaviour, IDamageable
         fixedX = initialEuler.x;
         fixedZ = initialEuler.z;
         obj = this.gameObject;
+
+        currentHealth = maxhealth;
+        if (!spr)
+            spr = GetComponentInChildren<SpriteRenderer>();
+
+        originalColor = spr.color;
+
+        hitParticles = this.GetComponentInChildren<ParticleSystem>();
     }
     
     private void Start()
     {
         currentHealth = maxhealth;
+    }
+
+    private void Update()
+    {
+        if (externalForce.magnitude > 0.01f)
+        {
+            externalForce = Vector3.Lerp(externalForce, Vector3.zero, GameManager.Instance.knockbackResistance * Time.deltaTime);
+        }
+        else
+        {
+            externalForce = Vector3.zero; // Forcem el zero per estalviar càlculs quan és molt petita
+        }
     }
 
     private void FixedUpdate()
@@ -73,9 +104,13 @@ public abstract class EnemyUnit : MonoBehaviour, IDamageable
     #region Enemy Logic
     public void TakeDamage(float damageAmount)
     {
-        print("aaaaaaaaaaaaaaaaaaaaa");
-        currentHealth-=damageAmount;
-        if(currentHealth<=0) Die();
+        if (currentHealth <= 0) Die();
+        AddKnockback(-transform.forward, statsManager.instance.GetShipStat(Stat.StatTypeGeneral.Knockback)); // Ejemplo de knockback, ajusta la dirección y fuerza según tus necesidades
+        hitParticles.Stop();
+        hitParticles.Play();
+        spriteFlash();
+        currentHealth -=damageAmount;
+        
     }
 
     public void Die()
@@ -84,7 +119,41 @@ public abstract class EnemyUnit : MonoBehaviour, IDamageable
     }
     public void AddKnockback(Vector3 dir, float force)
     {
-        
+        externalForce += dir.normalized * force * 1.3f;
+    }
+
+    public void spriteFlash()
+    {
+        if (flashRoutine != null)
+            StopCoroutine(flashRoutine);
+
+        flashRoutine = StartCoroutine(FlashRoutine());
+    }
+
+    private IEnumerator FlashRoutine()
+    {
+        // fade to white (fast)
+        float t = 0f;
+        while (t < fadeInTime)
+        {
+            t += Time.deltaTime;
+            spr.color = Color.Lerp(originalColor, Color.white, t / fadeInTime);
+            yield return null;
+        }
+
+        spr.color = Color.white;
+
+        // fade back to original (slower)
+        t = 0f;
+        while (t < fadeOutTime)
+        {
+            t += Time.deltaTime;
+            spr.color = Color.Lerp(Color.white, originalColor, t / fadeOutTime);
+            yield return null;
+        }
+
+        spr.color = originalColor;
+        flashRoutine = null;
     }
 
     public abstract void primaryAttack();
