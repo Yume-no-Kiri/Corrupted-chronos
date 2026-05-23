@@ -57,3 +57,7 @@ MonoBehaviour:
     nameID: PiercingBulletsItem
     sprite: {fileID: 21300000, guid: d6cdbd7c80de01044aca1ab1b0cba181, type: 3}
     toInstanciate: {fileID: 4565051072455466545, guid: a237590b53dba7a4b8955c6b0ff139be, type: 3}
+  - nameShow: Bouncing Bullets item
+    nameID: BouncingBulletsItem
+    sprite: {fileID: 21300000, guid: 29982d678ed4ca145b38018c47115eae, type: 3}
+    toInstanciate: {fileID: 4565051072455466545, guid: 635a7be7f5175a246bbab5fafbe83ac0, type: 3}

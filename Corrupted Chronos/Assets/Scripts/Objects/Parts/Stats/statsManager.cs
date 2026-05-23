@@ -13,7 +13,7 @@ public class statsManager : MonoBehaviour
 
 
     //El diccionario existe para tener acceso O(1) a cualquier stat
-    Dictionary<Stat.StatTypeGeneral, Stat> statLookup;
+    Dictionary<Stat.StatTypeGeneral, Stat> statPlayer;
     Dictionary<int, Dictionary<Stat.StatTypeGun, Stat>> statEachGun;
 
     //Esto SE MANTIENE privado
@@ -36,7 +36,7 @@ public class statsManager : MonoBehaviour
             instance = this;
         }
 
-        statLookup = new Dictionary<Stat.StatTypeGeneral, Stat>();
+        statPlayer = new Dictionary<Stat.StatTypeGeneral, Stat>();
         statEachGun = new Dictionary<int, Dictionary<Stat.StatTypeGun, Stat>>();
 
         if (dadesBase != null)
@@ -49,7 +49,7 @@ public class statsManager : MonoBehaviour
                     baseValue = item.value,
                     currentValue = item.value
                 };
-                statLookup[item.type] = novaStat;
+                statPlayer[item.type] = novaStat;
 
             }
         }
@@ -86,7 +86,7 @@ public class statsManager : MonoBehaviour
 
     public float AddModifier(Stat.StatTypeGeneral type, StatModifier mod)
     {
-        if (statLookup.TryGetValue(type, out var stat))
+        if (statPlayer.TryGetValue(type, out var stat))
         {
             return stat.AddModifier(mod);
         }
@@ -97,7 +97,7 @@ public class statsManager : MonoBehaviour
 
     public void RemoveModifier(Stat.StatTypeGeneral type, StatModifier mod)
     {
-        if (statLookup.TryGetValue(type, out var stat))
+        if (statPlayer.TryGetValue(type, out var stat))
         {
             stat.removeModifier(mod);
         }
@@ -156,6 +156,7 @@ public class statsManager : MonoBehaviour
         finalBullet.NameBullet = bulletPreset.NameBullet;
         finalBullet.sprite = bulletPreset.sprite;
         finalBullet.Effects = bulletPreset.Effects;
+        finalBullet.classBullet= bulletPreset.classBullet;
 
         finalBullet.StatsBullet = new Dictionary<Stat.StatTypeBullet, float>();
         foreach (Stat.StatTypeBullet tipus in Enum.GetValues(typeof(Stat.StatTypeBullet)))
@@ -197,7 +198,7 @@ public class statsManager : MonoBehaviour
     #region get single stat
     public float GetShipStat(Stat.StatTypeGeneral type)
     {
-        if (statLookup.TryGetValue(type, out var stat))
+        if (statPlayer.TryGetValue(type, out var stat))
             // Debug.Log("stats Ship:"+stat.currentValue);
             return stat.currentValue;
 
@@ -224,7 +225,7 @@ public class statsManager : MonoBehaviour
     {
         float finalValue = 0;
 
-        if (statLookup.TryGetValue(type, out var stat1))
+        if (statPlayer.TryGetValue(type, out var stat1))
         { finalValue += stat1.currentValue; }
         if (statEachGun.ContainsKey(idp))
         {
@@ -240,7 +241,7 @@ public class statsManager : MonoBehaviour
     public float GetShipGunBulletStat(Stat.StatTypeGeneral type, int idp, AllInformationBullet bulletPreset)
     {
         float finalValue = 0;
-        if (statLookup.TryGetValue(type, out var stat1))
+        if (statPlayer.TryGetValue(type, out var stat1))
         {
             finalValue += stat1.currentValue;
         }
@@ -327,8 +328,8 @@ public class Stat
         DistEffec=103,
         DistMax=104,
         Knockback=105,
-        BulletSize=106
-
+        BulletSize=106,
+        ElementalDamage=107
 
     }
     public enum StatTypeGun
@@ -347,7 +348,9 @@ public class Stat
         DistEffec=103,
         DistMax=104,
         Knockback=105,
-        BulletSize=106
+        BulletSize=106,
+        ElementalDamage=107
+
 
     }
 
@@ -362,7 +365,9 @@ public class Stat
         DistEffec=103,
         DistMax=104,
         Knockback=105,
-        BulletSize=106
+        BulletSize=106,
+        ElementalDamage=107
+
     }
 
 

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: FollowinMissile
   m_EditorClassIdentifier: Assembly-CSharp::FollowinMissileSO
   sprite: {fileID: 474877159, guid: cbbab0a773a4dc448b4e556700062a71, type: 3}
+  classBullet: 1
   Effects:
   - nameEffect: 1
     setup: 6
@@ -37,3 +38,5 @@ MonoBehaviour:
     value: 0
   - type: 106
     value: 1
+  - type: 107
+    value: 0

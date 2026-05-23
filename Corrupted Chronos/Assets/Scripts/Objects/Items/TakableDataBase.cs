@@ -57,6 +57,18 @@ public class TakableDataBase : ScriptableObject
         }else{ return null;}
     }
 
+    public GameObject GetInstantiateFromNumber(int index)
+    {
+        if (listItemsAux[index] != null)
+        {
+            return listItemsAux[index].toInstanciate;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     //MOLT TEMPORAL, revisar i fusionar amb EachPartScript(potser)
    
 }

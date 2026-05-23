@@ -231,7 +231,7 @@ public class PlacementSystem : MonoBehaviour
 
 
         _selectedObject = _selectedListConfig[selectedObjectIndex];
-        StartPlacementGeneral2();
+        StartPlacementGeneralStep2();
 
     }
     public void StartPlacementGeneral(PlacementDataSO specificPart)
@@ -240,7 +240,7 @@ public class PlacementSystem : MonoBehaviour
         selectedObjectIndex = _selectedListConfig.FindIndex(data => data.ID == specificPart.ID);
  */     
         _selectedObject=specificPart;
-        StartPlacementGeneral2();
+        StartPlacementGeneralStep2();
        /*  if(_previewObject !=null)          Destroy(_previewObject);
         _previewObject= Instantiate(specificPart.PrefabGaratge);
 
@@ -254,7 +254,7 @@ public class PlacementSystem : MonoBehaviour
         inputManager.OnClick += ButtonPlaceStructure;
         inputManager.OnExit += ButtonStopStructure; */
     }
-    private void StartPlacementGeneral2()
+    private void StartPlacementGeneralStep2()
     {
         if (_previewObject != null) Destroy(_previewObject);
         _previewObject = Instantiate(_selectedObject.PrefabGaratge);

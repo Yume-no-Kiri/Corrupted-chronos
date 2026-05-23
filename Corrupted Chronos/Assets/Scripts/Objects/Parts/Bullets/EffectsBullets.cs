@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Ink;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -15,7 +16,8 @@ public enum NameEffectBullets
     FollowOpposedEB=32,
     FireEB=33,
     CreateExplosionEB=34,
-    ChangeDistanceToTimerEB=35
+    ChangeDistanceToTimerEB=35,
+    BounceOnHitEB=36
 }
 
 
@@ -173,12 +175,12 @@ public class DamageEB: EffectsBullets
         }
     }
 
-    public IEnumerator Time2Die()
+    /* public IEnumerator Time2Die()
     {
         yield return new WaitForSecondsRealtime(1f);
         Destroy(this.gameObject);
 
-    }
+    } */
     public IEnumerator ClearTrigger()
     {
         yield return new WaitForSecondsRealtime(2f);
@@ -301,17 +303,20 @@ public class FollowOpposedEB: EffectsBullets
 public class FireEB: EffectsBullets
 {
 
-    private float dmg=5f;
+    private float dmg;
     private float durationFire=3f;
+    // public event Action OnImpact;
 
     private bool onDeclive=false;
     protected override void Awake()
     {   base.Awake();    
         baseBullets.OnDecliveRange+= ()=>onDeclive=true;
+        dmg= AllInfoBullet.StatsBullet[Stat.StatTypeBullet.ElementalDamage];
         // definir ALGO AMB ELS REQUISITS
     }
     protected override void HitboxTriggerEnter(Collider trigger)
     {
+        
         if (trigger.gameObject.TryGetComponent(out IDamageable victim))
         {
             if(!onDeclive){
@@ -325,10 +330,14 @@ public class FireEB: EffectsBullets
                     }
             }else
             {
-                //add efect of ashes
+                //add efect of ashes probably
             }
         }
+
     }
+
+    
+
 }
 
 public class CreateExplosionEB: EffectsBullets
@@ -361,6 +370,24 @@ public class ChangeDistanceToTimerEB : EffectsBullets
     //probably can life the two without problem
 
 
+}
+
+public class BounceOnHitEB : EffectsBullets
+{
+    protected override void Awake()
+    {   base.Awake();
+
+        baseBullets.ChangeDistanceToTimer();
+    }
+
+    protected override void HitboxTriggerEnter(Collider trigger)
+    {
+        if (trigger == null)
+        {
+            float nRotation= UnityEngine.Random.Range(100f,230f); 
+            transform.Rotate(0,nRotation,0); 
+        }
+    }
 }
 
 /* public class OverTheLimitEB : EffectsBullets

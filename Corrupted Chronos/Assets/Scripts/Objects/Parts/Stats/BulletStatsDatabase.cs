@@ -54,7 +54,10 @@ public class BulletStatsSO : ScriptableObject
 {
     //maybe keep the sprite? idk
     public Sprite sprite;
-     public List<EffectsAdd> Effects;
+    public ClassBullet classBullet;
+
+    public List<EffectsAdd> Effects;
+
 
     [Serializable]
     public struct StatInit
@@ -62,6 +65,7 @@ public class BulletStatsSO : ScriptableObject
         public Stat.StatTypeBullet type;
         public float value;
     }
+
     public List<StatInit> BulletStats;//= new List<StatInit>(Enum.GetNames(typeof(Stat.StatTypeBullet)).Length);
 
     private void Reset()

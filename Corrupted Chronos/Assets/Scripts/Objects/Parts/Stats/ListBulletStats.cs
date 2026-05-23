@@ -21,9 +21,7 @@ public class ListBulletStats : MonoBehaviour {
 
     [SerializeField]
     private List<AuxStatsBullets> auxListStatsBullets= new List<AuxStatsBullets>();
-    /* public bulletStatsSO basicBullet;
-    public bulletStatsSO waveBullet;
-    public bulletStatsSO fireBullet; */
+
 
 
     void Awake()
@@ -51,6 +49,8 @@ public class ListBulletStats : MonoBehaviour {
             allInformation.sprite=auxStat.bulletStatsSO.sprite;
             allInformation.Effects=auxStat.bulletStatsSO.Effects;
             allInformation.NameBullet=auxStat.NameBullet;
+            allInformation.classBullet=auxStat.bulletStatsSO.classBullet;
+            
             //  effectsEachBullet[stat.NameBullet]= allInformation;
             statEachBullet[auxStat.NameBullet]=allInformation;
         }
@@ -87,6 +87,8 @@ public class ListBulletStats : MonoBehaviour {
 public struct AllInformationBullet
 {
     public NameBulletPreset NameBullet;
+    public ClassBullet classBullet;
+
 
     public Dictionary<Stat.StatTypeBullet, float> StatsBullet;
     public Sprite sprite;
