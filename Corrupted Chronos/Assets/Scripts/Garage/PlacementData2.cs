@@ -76,7 +76,7 @@ public class PlacementData2
 
     //I should make something to relate parts with parts, nodes with nodes, so deleting a node should only be on the extremes, and it could also be used to detect influence, probably a struct
     // ?? PositionInfluence/ NodeTreeParts
-    Dictionary<int, Node> TreeParts= new();
+    // Dictionary<int, Node> TreeParts= new();
 
     private Dictionary<Vector2Int, List<TypeGround>> AllPositionsTGround = new();
 

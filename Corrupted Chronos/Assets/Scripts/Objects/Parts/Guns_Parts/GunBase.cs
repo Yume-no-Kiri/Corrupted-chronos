@@ -289,22 +289,26 @@ public class Metralleta : GunBase
         timeShooting=0;
         while (true)
         {
-            timeShooting+= Mathf.Pow(10,Time.deltaTime);
+            timeShooting+= Time.deltaTime;
             if(canShot) { 
                 Shot();
                
                 StartCoroutine(CanShotIE());
             }
-            yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots));
+            // yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots));
+            yield return null;
         }
-
-
     }
 
     private IEnumerator CanShotIE()
     {
         canShot=false;
-        yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots));
+        float time2shot=GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots)-timeShooting/4;
+        if (time2shot < 0.2)
+        {
+            time2shot=0.2f;
+        }
+        yield return new WaitForSeconds(time2shot);
         canShot=true;
     }
     public void Shot()
@@ -312,35 +316,50 @@ public class Metralleta : GunBase
         foreach (var item in firepoint)
         {
             float accu= GetTotalStat(Stat.StatTypeGeneral.Accuraccy);
-            float side=UnityEngine.Random.Range(-1,2);
-            float maxDisp= timeShooting*side;
+            // float side=UnityEngine.Random.Range(-1,2);
+            float side = (UnityEngine.Random.value > 0.5f) ? 1f : -1f;
+            // float maxDisp= timeShooting*side;
 
-            float t = UnityEngine.Random.value; 
+            /* float t = UnityEngine.Random.value; 
             t = Mathf.Pow(t, accu/2); //com més gran sigui l'exponent, més "biaix" cap al mínim
             if(maxDisp>80) maxDisp=80; 
-            float finalDisp= Mathf.Lerp(timeShooting/10*side, maxDisp, t);
+            float finalDisp= Mathf.Lerp(timeShooting/6*side, maxDisp, t); */
             //Debug.Log("left disp: "+ maxDisp);
+            float TimeLlindar1=0.5f, TimeLlindar2=1.6f;
+            float Dispersio1=20f, Dispersio2=50f, Dispersio3=90f;
+            float t= accu/20;
+            if(t>=0.75) t=0.75f;
+            // float t = UnityEngine.Random.value; 
+            // t = Mathf.Pow(t, accu/2);
 
-            /* if(disp>0 && disp < accu)
+            float finalDisp=0;
+            if(timeShooting<=TimeLlindar1)
             {
-                float howLittle=accu/disp +2;
-                float correction= accu/howLittle;
-                disp-=correction;
-                Debug.Log("left first if disp:"+ disp);
+                // float howLittle=accu/disp +2;
+                // float correction= accu/howLittle;
+                // disp-=correction;
+                finalDisp= Mathf.Lerp(0, Dispersio1*side, timeShooting/TimeLlindar1)* (1 - t);
+
+                // Debug.Log("left first if disp:"+ disp);
             }
-            else if(disp!=0 && disp>accu && disp<(accu*2))
+            else if(timeShooting>TimeLlindar1 && timeShooting<=TimeLlindar2)
             {
-                float correction= accu/2;
-                disp-=correction;
-                Debug.Log("left second if disp:"+ disp);
+                // float correction= accu/2;
+                // disp-=correction;
+                // Debug.Log("left second if disp:"+ disp);
+                finalDisp= Mathf.Lerp(0, Dispersio2*side, (timeShooting-TimeLlindar1)/(TimeLlindar2-TimeLlindar1))* (1 - t);
+
 
             }
-            else if(disp!=0 &&disp>accu && disp>(accu*2))
+            else if(timeShooting>TimeLlindar2)
             {
-                disp-=accu;
-                Debug.Log("left third if disp:"+ disp);
-            
-            } */
+                // disp-=accu;
+                // Debug.Log("left third if disp:"+ disp);
+                float DispersioMin= (timeShooting/TimeLlindar2) *3;
+                if(DispersioMin>30) DispersioMin=30;
+                float minMaxDisp= UnityEngine.Random.Range(0, DispersioMin*side);
+                finalDisp= UnityEngine.Random.Range(minMaxDisp,Dispersio3*side)* (1 - t);
+            }
 
             Quaternion rotationWithOffset = item.GetComponentInParent<Transform>().rotation * Quaternion.Euler(0, finalDisp, 0);
 
@@ -352,9 +371,65 @@ public class Metralleta : GunBase
         }
        
     }
+}
+public class Blast: GunBase
+{
+    Coroutine coroutine=null;
 
-    
-    
+    protected override void OnEnable()
+    {
+        ObjectNameID="BlastObject";
+        NameStatsBullet=NameBulletPreset.Basic;
+        base.OnEnable();
+    }
+
+    private void Awake()
+    {
+        typePart= TypePart.ShootableLeft;
+    }
+    public override void DoShot(InputAction.CallbackContext ctx)
+    {
+        if ( ctx.performed)
+        {
+            Debug.Log("left performed");
+            // Shot();
+            if(coroutine!=null) StopCoroutine(coroutine);
+            coroutine=StartCoroutine(ShotIE());
+            // if(coroutineCanShot==null)  coroutineCanShot=StartCoroutine(CanShotIE());
+
+        }else if (ctx.canceled)
+        {   
+            Debug.Log("left cancelled");
+            if(coroutine!=null) StopCoroutine(coroutine);
+
+        }
+        
+        Debug.Log("AQUÍ INSTANCIES BALA");
+    }
+    private IEnumerator ShotIE()
+    {
+        // timeShooting=0;
+        while (true)
+        {
+            // timeShooting+= Mathf.Pow(10,Time.deltaTime);
+            if(canShot) { 
+                Shot();
+               
+                StartCoroutine(CanShotIE());
+            }
+            // yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots));
+        }
+    }
+     private IEnumerator CanShotIE()
+    {
+        canShot=false;
+        yield return new WaitForSeconds(GetTotalStat(Stat.StatTypeGeneral.TimeBetweenShots));
+        canShot=true;
+    }
+    public void Shot()
+    {
+        
+    }
 }
 
 //si al aire, fa knockback, dispara moltes bales, munició 2 carges
@@ -364,7 +439,8 @@ public class Escopeta : GunBase
     {
         ObjectNameID="EscopetaObject";
         NameStatsBullet=NameBulletPreset.Basic;
-        DefineBulletStats();
+        // DefineBulletStats();
+        base.OnEnable();
     }
 
     void Awake()
@@ -389,7 +465,7 @@ public class Escopeta : GunBase
         float valor= 10-Mathf.Sqrt(accu);
         if(valor <3) valor= 3;
         // int valor = 10;
-        int nbullets = 5;
+        float nbullets = GetTotalStat(Stat.StatTypeGeneral.NumberBullets);
         float maxDisp= (nbullets-1)/2*valor;
          foreach (var item in firepoint)
         {
@@ -449,7 +525,7 @@ public class Flamethrower :GunBase
 
     }
     void Awake(){    
-        typePart= TypePart.ShootableLeft;
+        typePart= TypePart.ShootableRight;
 
         MaxHeat=GetTotalStat(Stat.StatTypeGeneral.Magazine);
         // CurrentHeat=MaxHeat;

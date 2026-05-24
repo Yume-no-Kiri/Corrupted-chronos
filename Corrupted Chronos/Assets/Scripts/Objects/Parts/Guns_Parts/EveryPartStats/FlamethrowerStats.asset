@@ -22,16 +22,18 @@ MonoBehaviour:
   - type: 53
     value: 2
   - type: 100
-    value: 2
+    value: 0
   - type: 101
     value: 0
   - type: 102
     value: 0
   - type: 103
-    value: -2
+    value: -0.6
   - type: 104
-    value: 0
+    value: -1.2
   - type: 105
     value: 0
   - type: 106
     value: 0
+  - type: 107
+    value: 5

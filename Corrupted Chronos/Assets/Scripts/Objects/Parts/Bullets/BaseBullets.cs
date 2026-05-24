@@ -66,7 +66,13 @@ using System.Collections;
      distMax+=dist;
  }
 } */
-
+[Serializable]
+public enum ClassBullet
+{
+    Null=0, 
+    Projectil=1,
+    Raygun=2
+}
 
 public class BaseBullets : MonoBehaviour
 {
@@ -76,6 +82,8 @@ public class BaseBullets : MonoBehaviour
     private bool UseTimerToDie=false;
     private Coroutine CoroutineTimerToDie=null;
 
+
+    private ClassBullet myClassBullet=ClassBullet.Null;
     public GameObject myCreator;
     private Rigidbody rb;
     private SpriteRenderer spr;
@@ -133,6 +141,7 @@ public class BaseBullets : MonoBehaviour
         {
             spr.sprite = AllInfoBullet.sprite;
         }
+        myClassBullet=newBulletSO.classBullet;
         newBulletSO.Debuger();
         this.transform.localScale*=AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSize];
     }
@@ -283,44 +292,58 @@ public class BaseBullets : MonoBehaviour
     #region life and invokers
     protected void FixedUpdate()
     {
-        if(!AllInfoBullet.IsEmpty())
-        {
-            // if(StatsBullet==null) return;
-            Debug.LogWarning("statsbullet speed:"+AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSpeed]);
-            rb.linearVelocity = transform.forward * AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSpeed];
-            // float distance = Vector3.Distance(iniPos, this.transform.position);
-            float distance = Vector3.Distance(this.transform.position, LastPos);
-
-            DistanceTravelled+=distance;
-            LastPos=transform.position;
-            //Debug.Log("Distance: " + distance +"__iniPos: "+iniPos+ "__transform.position: " + this.transform.position);
-            if(DistanceTravelled< AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistEffec])
-            {
-                OnEffectiveRange?.Invoke();
-
-            }else if(DistanceTravelled> AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistEffec]&& distance < AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistMax])
-            {
-                //should pass how far are we from distEffect?
-                OnDecliveRange?.Invoke();
-            } else if(DistanceTravelled >= AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistMax])
-            {
-                OnMaxRange?.Invoke();
-                //should pass how far are we from distMax?
-                AwayDistMax(DistanceTravelled);
-                // Debug.LogWarning("SHOULD DELETE BULLET");
-            }
-
-            if (UseTimerToDie)
-            {
-                if (CoroutineTimerToDie == null)
-                {
-                    CoroutineTimerToDie=StartCoroutine(TimerToDie());
-                }
-
-
-            }
+        if(myClassBullet==ClassBullet.Null) return;
+        if(AllInfoBullet.IsEmpty()) return;
+        switch (myClassBullet){
+            case ClassBullet.Projectil:
+                LogicProjectile();  
+            break;
+            
         }
-     
+
+        
+            // if(StatsBullet==null) return;
+        
+
+    }
+
+    private void LogicProjectile()
+    {
+        Debug.LogWarning("statsbullet speed:" + AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSpeed]);
+        rb.linearVelocity = transform.forward * AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSpeed];
+        // float distance = Vector3.Distance(iniPos, this.transform.position);
+        float distance = Vector3.Distance(this.transform.position, LastPos);
+
+        DistanceTravelled += distance;
+        LastPos = transform.position;
+        //Debug.Log("Distance: " + distance +"__iniPos: "+iniPos+ "__transform.position: " + this.transform.position);
+        if (DistanceTravelled < AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistEffec])
+        {
+            OnEffectiveRange?.Invoke();
+
+        }
+        else if (DistanceTravelled > AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistEffec] && DistanceTravelled < AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistMax])
+        {
+            //should pass how far are we from distEffect?
+            OnDecliveRange?.Invoke();
+        }
+        else if ( DistanceTravelled >= AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistMax])
+        {
+            OnMaxRange?.Invoke();
+            //should pass how far are we from distMax?
+            AwayDistMax(DistanceTravelled);
+            // Debug.LogWarning("SHOULD DELETE BULLET");
+        }
+
+        if (UseTimerToDie)
+        {
+            if (CoroutineTimerToDie == null)
+            {
+                CoroutineTimerToDie = StartCoroutine(TimerToDie());
+            }
+
+
+        }
     }
 
     private IEnumerator TimerToDie()

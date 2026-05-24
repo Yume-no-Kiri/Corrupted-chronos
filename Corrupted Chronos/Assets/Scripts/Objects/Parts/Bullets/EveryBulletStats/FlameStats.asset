@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: FlameStats
   m_EditorClassIdentifier: Assembly-CSharp::FlameStatsSO
-  sprite: {fileID: 271440059, guid: cbbab0a773a4dc448b4e556700062a71, type: 3}
+  sprite: {fileID: 1130891425, guid: cbe9aa4ee9bb09d42ac7d63d4b697da8, type: 3}
+  classBullet: 1
   Effects:
   - nameEffect: 0
+    setup: 2
+  - nameEffect: 31
     setup: 2
   - nameEffect: 33
     setup: 2
@@ -26,12 +29,14 @@ MonoBehaviour:
   - type: 101
     value: 10
   - type: 102
-    value: 4
+    value: 0
   - type: 103
-    value: 2
+    value: 3
   - type: 104
     value: 3
   - type: 105
     value: 1
   - type: 106
     value: 1
+  - type: 107
+    value: 0

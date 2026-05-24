@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: ExplosionStats
   m_EditorClassIdentifier: Assembly-CSharp::ExplosionStatsSO
-  sprite: {fileID: 271440059, guid: cbbab0a773a4dc448b4e556700062a71, type: 3}
+  sprite: {fileID: 1130891425, guid: cbe9aa4ee9bb09d42ac7d63d4b697da8, type: 3}
+  classBullet: 1
   Effects:
   - nameEffect: 1
     setup: 2
@@ -37,3 +38,5 @@ MonoBehaviour:
     value: 5
   - type: 106
     value: 10
+  - type: 107
+    value: 0

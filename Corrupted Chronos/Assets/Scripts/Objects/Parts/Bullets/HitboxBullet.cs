@@ -31,6 +31,8 @@ public class HitboxBullet : MonoBehaviour
     {
         OnTriggerEnterHitbox?.Invoke(trigger,this.gameObject);
     }
+   
+
     void OnTriggerExit(Collider trigger) {
         OnTriggerExitHitbox?.Invoke(trigger,this.gameObject);
         
