@@ -15,7 +15,7 @@ public enum NameEffectBullets
     DamageEB=31,
     FollowOpposedEB=32,
     FireEB=33,
-    CreateExplosionEB=34,
+    CreateExplosionOnHitEB=34,
     ChangeDistanceToTimerEB=35,
     BounceOnHitEB=36
 }
@@ -36,10 +36,11 @@ public class EffectsBullets : MonoBehaviour
     public string CreatedTag;
     public bool IsFromPlayer;
 
+    protected bool UsesHitbox=true;
     protected GameObject hitboxUsed;
 
     public AllInformationBullet AllInfoBullet{get; private set;}
-    
+    protected NameHitboxInBullet MyNameHitbox;
 
 
     protected virtual void Awake()
@@ -53,6 +54,7 @@ public class EffectsBullets : MonoBehaviour
     public virtual void Setup(NameHitboxInBullet name=NameHitboxInBullet.Null)
     {
         GameObject go=null;
+        MyNameHitbox=name;
         if (name == NameHitboxInBullet.Null)
         {
             Debug.LogError("NameHitboxInBullet null when it shouldn't ");
@@ -77,15 +79,17 @@ public class EffectsBullets : MonoBehaviour
 
 
             // baseBullets.dicCollisionEnter[go]+=HitboxCollisionEnter;
-            baseBullets.dicTriggerEnter[go]+=HitboxTriggerEnter;  
+            if(UsesHitbox){
+                baseBullets.dicTriggerEnter[go]+=HitboxTriggerEnter;  
 
             // baseBullets.dicCollisionExit[go]+=HitboxCollisionExit;
-            baseBullets.dicTriggerExit[go]+=HitboxTriggerExit;  
-            
+                baseBullets.dicTriggerExit[go]+=HitboxTriggerExit;  
+            }
         }
         hitboxUsed=go;
-        
+        AfterSetup();
     }
+    protected virtual void AfterSetup(){}
     
     protected virtual void OnDestroy()
     {
@@ -117,7 +121,7 @@ public class EffectsBullets : MonoBehaviour
 //makes the hitbox eable to do damage
 public class DamageEB: EffectsBullets
 {
-    public event Action OnImpact;
+    public event Action<Collider> OnHit;
 
     private Collider lastTrigger=null;
     private Coroutine TriggerCleaner=null;
@@ -129,10 +133,21 @@ public class DamageEB: EffectsBullets
         //gets last hitbox added, 
 
     }
-   /*  public override void Setup(NameHitboxInBullet name = NameHitboxInBullet.Null)
+    protected override void AfterSetup()
     {
-       
-    } */
+        if (MyNameHitbox == NameHitboxInBullet.Null)
+        {
+            Debug.LogError("name hitbox is null");
+        }
+        if (baseBullets.DamageHitbox.ContainsKey(MyNameHitbox))
+        {
+            Debug.LogError("this damage htibox is already applied");
+            return;
+        }
+
+        baseBullets.DamageHitbox.Add(MyNameHitbox, this);
+    }
+
     //or maybe in collision and not on trigger
     protected override void HitboxTriggerEnter(Collider trigger)
     {
@@ -163,12 +178,13 @@ public class DamageEB: EffectsBullets
         }
         
 
-        OnImpact?.Invoke();
+        OnHit?.Invoke(trigger);
 
         if (AllInfoBullet.StatsBullet[Stat.StatTypeBullet.Piercing] < 0)
         {
             //maybe dejar 4 frames de tiempo apra eliminar la bala
             Debug.Log("piercing equals:"+ AllInfoBullet.StatsBullet[Stat.StatTypeBullet.Piercing]);
+            // baseBullets.DieWithTimer();
             Destroy(this.gameObject);
 
             // this.gameObject.active(false);
@@ -308,11 +324,16 @@ public class FireEB: EffectsBullets
     // public event Action OnImpact;
 
     private bool onDeclive=false;
-    protected override void Awake()
+    protected override void AfterSetup()
     {   base.Awake();    
         baseBullets.OnDecliveRange+= ()=>onDeclive=true;
         dmg= AllInfoBullet.StatsBullet[Stat.StatTypeBullet.ElementalDamage];
         // definir ALGO AMB ELS REQUISITS
+    }
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        baseBullets.OnDecliveRange-= ()=>onDeclive=true;
     }
     protected override void HitboxTriggerEnter(Collider trigger)
     {
@@ -340,19 +361,30 @@ public class FireEB: EffectsBullets
 
 }
 
-public class CreateExplosionEB: EffectsBullets
+public class CreateExplosionOnHitEB: EffectsBullets
 {
      protected override void Awake()
-    {   base.Awake(); }
-
-    protected override void HitboxTriggerEnter(Collider trigger)
-    {
-        if (trigger == null)
-        {
-            // AllInformationBullet? newBulletInfo= statsManager.instance.listBulletStats.ReturnBulletStatsSO(NameBulletPreset.Explosion);
-            GameObject newBullet= Instantiate(statsManager.instance.listBulletStats.GeneralBullet, gameObject.transform.position, quaternion.identity);
-            newBullet.GetComponent<CreateBullet>().Setup(true, NameBulletPreset.Explosion);
+    {   
+        base.Awake();
+        UsesHitbox=false;
         }
+
+    protected override void AfterSetup()
+    {
+        baseBullets.DamageHitbox[MyNameHitbox].OnHit += CreateExplosion;
+    }
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        baseBullets.DamageHitbox[MyNameHitbox].OnHit -= CreateExplosion; 
+    }
+    protected void CreateExplosion(Collider trigger)
+    {
+        
+        // AllInformationBullet? newBulletInfo= statsManager.instance.listBulletStats.ReturnBulletStatsSO(NameBulletPreset.Explosion);
+        GameObject newBullet= Instantiate(statsManager.instance.listBulletStats.GeneralBullet, gameObject.transform.position, quaternion.identity);
+        newBullet.GetComponent<CreateBullet>().Setup(true, NameBulletPreset.Explosion);
+        
     }
 }
 
@@ -360,15 +392,9 @@ public class ChangeDistanceToTimerEB : EffectsBullets
 {
     protected override void Awake()
     {   base.Awake();
-
+        UsesHitbox=false;
         baseBullets.ChangeDistanceToTimer();
     }
-
-
-
-    // this should get baseBullet and "discard" the way it uses distance to a timer
-    //probably can life the two without problem
-
 
 }
 
@@ -376,18 +402,41 @@ public class BounceOnHitEB : EffectsBullets
 {
     protected override void Awake()
     {   base.Awake();
-
+        UsesHitbox=false;
         baseBullets.ChangeDistanceToTimer();
-    }
 
-    protected override void HitboxTriggerEnter(Collider trigger)
+    }
+    protected override void AfterSetup()
     {
-        if (trigger == null)
+        baseBullets.DamageHitbox[MyNameHitbox].OnHit += BounceBullet;
+    }
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        baseBullets.DamageHitbox[MyNameHitbox].OnHit -= BounceBullet; 
+    }
+    protected void BounceBullet(Collider trigger)
+    {   
+        /* float nRotation= UnityEngine.Random.Range(100f,230f); 
+        transform.Rotate(0,nRotation,0);  */
+        Vector3 direccioActual = transform.forward;
+        Ray ray = new Ray(transform.position - direccioActual * 0.5f, direccioActual);
+        RaycastHit hit;
+        if (trigger.Raycast(ray, out hit, 1.5f))
         {
-            float nRotation= UnityEngine.Random.Range(100f,230f); 
-            transform.Rotate(0,nRotation,0); 
+            Vector3 normalWall = hit.normal;
+
+            Vector3 dirBounce = Vector3.Reflect(direccioActual, normalWall);
+
+            float nRotation = UnityEngine.Random.Range(-35f, 35f);
+            
+            dirBounce = Quaternion.Euler(0, nRotation, 0) * dirBounce;
+            transform.rotation = Quaternion.LookRotation(dirBounce);
+   
+            transform.position = hit.point + normalWall * 0.05f;
         }
     }
+    
 }
 
 /* public class OverTheLimitEB : EffectsBullets

@@ -28,39 +28,7 @@ public enum ListNameParts
 
 }
 
-[Serializable]
-/* public struct InformationPart
-{
-    //start capa1
-    public InformationBullet informationBullet; */
-    /* public float timeBetweenShots;// = 1f;
-    public float magazine;
-    public float accuraccy;
-    
-    public float t2s2;// = 1f;
-    public int cargador;// = 5;
-    public int contCargador;// = 5; */
-
-    // public float timeBetweenShots;
-
-
-    //fin capa1 
-
-    /* public static InformationBullet Default(BulletStatsSO so)
-    {
-        return new InformationBullet
-        {
-            damage = so.damage,
-            penetration = so.penetration,
-            distEffec = so.distEffective,
-            distMax = so.distMax,
-            speed = so.speed,
-            knockback= so.knockback
-        };
-    } */
-
-    //més variables de part
-// }
+/*  */
 
 
 //classe general, del que venen les diferents parts, revisar en un futur
@@ -151,6 +119,9 @@ public class GunBase : AllObjectMB
             Type type=Type.GetType(singleEffect.nameEffect.ToString());
             Component script=bulletInstance.Last().AddComponent(type);
             EffectsBullets effectsBullets=script as EffectsBullets;
+
+            // if(script==add)
+
             if (effectsBullets!=null)
             {
                 effectsBullets.Setup(singleEffect.setup);

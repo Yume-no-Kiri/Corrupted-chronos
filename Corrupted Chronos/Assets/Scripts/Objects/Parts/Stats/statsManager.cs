@@ -13,7 +13,7 @@ public class statsManager : MonoBehaviour
 
 
     //El diccionario existe para tener acceso O(1) a cualquier stat
-    Dictionary<Stat.StatTypeGeneral, Stat> statPlayer;
+    Dictionary<Stat.StatTypeGeneral, Stat> statLookup;
     Dictionary<int, Dictionary<Stat.StatTypeGun, Stat>> statEachGun;
 
     //Esto SE MANTIENE privado
@@ -36,7 +36,7 @@ public class statsManager : MonoBehaviour
             instance = this;
         }
 
-        statPlayer = new Dictionary<Stat.StatTypeGeneral, Stat>();
+        statLookup = new Dictionary<Stat.StatTypeGeneral, Stat>();
         statEachGun = new Dictionary<int, Dictionary<Stat.StatTypeGun, Stat>>();
 
         if (dadesBase != null)
@@ -49,7 +49,7 @@ public class statsManager : MonoBehaviour
                     baseValue = item.value,
                     currentValue = item.value
                 };
-                statPlayer[item.type] = novaStat;
+                statLookup[item.type] = novaStat;
 
             }
 
@@ -119,7 +119,7 @@ public class statsManager : MonoBehaviour
 
     public float AddModifier(Stat.StatTypeGeneral type, StatModifier mod)
     {
-        if (statPlayer.TryGetValue(type, out var stat))
+        if (statLookup.TryGetValue(type, out var stat))
         {
             switch (stat.name)
             {
@@ -142,7 +142,7 @@ public class statsManager : MonoBehaviour
 
     public void RemoveModifier(Stat.StatTypeGeneral type, StatModifier mod)
     {
-        if (statPlayer.TryGetValue(type, out var stat))
+        if (statLookup.TryGetValue(type, out var stat))
         {
             stat.removeModifier(mod);
         }
@@ -262,7 +262,7 @@ public class statsManager : MonoBehaviour
     #region get single stat
     public float GetShipStat(Stat.StatTypeGeneral type)
     {
-        if (statPlayer.TryGetValue(type, out var stat))
+        if (statLookup.TryGetValue(type, out var stat))
             // Debug.Log("stats Ship:"+stat.currentValue);
             return stat.currentValue;
 
@@ -289,7 +289,7 @@ public class statsManager : MonoBehaviour
     {
         float finalValue = 0;
 
-        if (statPlayer.TryGetValue(type, out var stat1))
+        if (statLookup.TryGetValue(type, out var stat1))
         { finalValue += stat1.currentValue; }
         if (statEachGun.ContainsKey(idp))
         {
@@ -305,7 +305,7 @@ public class statsManager : MonoBehaviour
     public float GetShipGunBulletStat(Stat.StatTypeGeneral type, int idp, AllInformationBullet bulletPreset)
     {
         float finalValue = 0;
-        if (statPlayer.TryGetValue(type, out var stat1))
+        if (statLookup.TryGetValue(type, out var stat1))
         {
             finalValue += stat1.currentValue;
         }

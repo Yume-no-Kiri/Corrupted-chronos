@@ -14,9 +14,7 @@ public class ListBulletStats : MonoBehaviour {
     public GameObject hitboxBullet;
     public GameObject hitsphereBullet;
 
-    // public Dictionary<string, Dictionary<Stat.StatTypeBullet, Stat>> statEachBullet= new Dictionary<string, Dictionary<Stat.StatTypeBullet, Stat>>();
-    // public Dictionary<string, AllInformationBullet> effectsEachBullet= new Dictionary<string, AllInformationBullet>();
-
+ 
     public Dictionary<NameBulletPreset, AllInformationBullet> statEachBullet= new Dictionary<NameBulletPreset, AllInformationBullet>();
 
     [SerializeField]
@@ -61,16 +59,8 @@ public class ListBulletStats : MonoBehaviour {
     {
         AllInformationBullet? returnStats=null;
         if (statEachBullet.ContainsKey(name))
-        { returnStats=  statEachBullet[name]; }
+        { returnStats=  statEachBullet[name].Clone(); }
 
-        /* foreach (var item in listStatsPresetsBullets)
-        {
-            if (item.NameBullet == name)
-            {
-                bulletStatsSO= item.bulletStatsSO;
-                break;
-            }
-        } */
         return returnStats;
     }
 
@@ -145,7 +135,46 @@ public struct AllInformationBullet
         // Imprimim tot el bloc a la consola d'Unity
         Debug.Log("stat"+sb.ToString());
     }
-    
+    public AllInformationBullet Clone()
+    {
+        AllInformationBullet clone = new AllInformationBullet();
+        
+        clone.NameBullet = this.NameBullet;
+        clone.classBullet = this.classBullet;
+        clone.sprite = this.sprite;
+
+        if (this.StatsBullet != null)
+        {
+            clone.StatsBullet = new Dictionary<Stat.StatTypeBullet, float>(this.StatsBullet);
+        }
+        else
+        {
+            clone.StatsBullet = new Dictionary<Stat.StatTypeBullet, float>();
+        }
+
+        // 3. Dupliquem la Llista (si existeix)
+        if (this.Effects != null)
+        {
+            clone.Effects = new List<EffectsAdd>(this.Effects);
+            
+            // NOTA: Si 'EffectsAdd' és una CLASSE i vols modificar les seves variables internes 
+            // en la còpia sense canviar l'original, hauries de clonar cada efecte individualment:
+            
+            clone.Effects = new List<EffectsAdd>();
+            foreach (var effect in this.Effects)
+            {
+                clone.Effects.Add(effect.Clone());
+            }
+           
+        }
+        else
+        {
+            clone.Effects = new List<EffectsAdd>();
+        }
+
+        return clone;
+    }
+
 }
 
 
@@ -154,10 +183,4 @@ public struct AuxStatsBullets
 {
     public NameBulletPreset NameBullet;
     public BulletStatsSO bulletStatsSO;
-
-   /*  public StatsBullets(string name, BulletStatsSO stats)
-    {
-        this.NameBullet = name;
-        this.bulletStatsSO = stats;
-    } */
 }

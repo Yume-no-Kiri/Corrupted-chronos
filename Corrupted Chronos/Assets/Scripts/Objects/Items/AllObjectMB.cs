@@ -160,8 +160,8 @@ public class LifeItem: AllObjectMB
     {
         
 
-        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.Health, new StatModifier(PlusHealth, StatModifier.ModifierType.Add));
-        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.Shields, new StatModifier(PlusShield, StatModifier.ModifierType.Add));
+        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.MaxHealth, new StatModifier(PlusHealth, StatModifier.ModifierType.Add));
+        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.MaxShields, new StatModifier(PlusShield, StatModifier.ModifierType.Add));
         // modifierItem.ItemGunStats.Add(Stat.StatTypeGun.BulletSpeed, new StatModifier(PlusSpeedBullet,StatModifier.ModifierType.Add));
     }
 
@@ -191,7 +191,7 @@ public class EnergyItem: AllObjectMB
     protected override void DefineModifierItem()
     {
         //  modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.Health, new StatModifier(PlusHealth, StatModifier.ModifierType.Add));
-        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.Stamina, new StatModifier(PlusStamina, StatModifier.ModifierType.Add));
+        modifierItem.ItemGeneralStats.Add(Stat.StatTypeGeneral.MaxStamina, new StatModifier(PlusStamina, StatModifier.ModifierType.Add));
     
     }
 
@@ -282,8 +282,8 @@ public class KaboomBulletsItem: AllObjectMB
     }
     protected override void DefineModifierItem()
     {
-        modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.AddHitsphereEB, NameHitboxInBullet.AfterImpact));
-        modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.CreateExplosionEB, NameHitboxInBullet.AfterImpact));
+        // modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.AddHitsphereEB, NameHitboxInBullet.AfterImpact));
+        modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.CreateExplosionOnHitEB, NameHitboxInBullet.Body));
 
         // modifierItem.ItemGunStats.Add(Stat.StatTypeGun.TimeBetweenShots, new StatModifier(extraSize, StatModifier.ModifierType.Add));
         // modifierItem.ItemGunStats.Add(Stat.StatTypeGun.BulletSpeed, new StatModifier(velo, StatModifier.ModifierType.Add));
@@ -325,8 +325,8 @@ public class BouncingBulletsItem: AllObjectMB
 
     protected override void DefineModifierItem()
     {
-        modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.AddHitsphereEB, NameHitboxInBullet.AfterImpact));
-        modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.BounceOnHitEB, NameHitboxInBullet.AfterImpact));
+        // modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.AddHitsphereEB, NameHitboxInBullet.AfterImpact));
+        modifierItem.ItemBulletEffects.Add(new EffectsAdd(NameEffectBullets.BounceOnHitEB, NameHitboxInBullet.Body));
 
 
         modifierItem.ItemGunStats.Add(Stat.StatTypeGun.Piercing, new StatModifier(extraPiercing, StatModifier.ModifierType.Add));

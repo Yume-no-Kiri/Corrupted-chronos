@@ -8,7 +8,7 @@ public class CreateBullet: MonoBehaviour
 {
 
     // public AllPresetBullets allPresetBullets=AllPresetBullets.Null;
-    public bool CreateMySelf=false;
+    // public bool CreateMySelf=false;
     public bool CreatedByPlayer;
 
     // public string NameBulletPreset;
@@ -25,21 +25,20 @@ public class CreateBullet: MonoBehaviour
         
     }
 
-    public void Activate()
+    /* public void Activate()
     {
         SelectPreset();
-    }
+    } */
 
     //called by wave generator AND ENEMIES 
     public void Setup(bool createdByPlayer, NameBulletPreset nameBullet)
     {
         CreatedByPlayer=createdByPlayer;
-        // NameBulletPreset=nameBullet;
         
         AllInformationBullet? bulletStats= statsManager.instance.listBulletStats.ReturnBulletStatsSO(nameBullet);
         if(bulletStats==null) Debug.LogError("don't find name, revise Bullet Data Base");
         finalStats= bulletStats.Value;
-        SelectPreset();//bulletStats.Value);
+        SelectPreset();
     }
 
     //calles ONLY by the guns of the player
@@ -65,15 +64,6 @@ public class CreateBullet: MonoBehaviour
                 effectsBullets.Setup(item.setup);
             }
         }
-        // this.gameObject.GetComponent<BaseBullets>().AssignSO(GameManager.Instance.bulletDatabase.ReturnBulletStatsSO("BasicBullet"));
-
-
-        // return newBullet;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

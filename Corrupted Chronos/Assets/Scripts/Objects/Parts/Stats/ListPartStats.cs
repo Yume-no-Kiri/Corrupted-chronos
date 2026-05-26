@@ -11,7 +11,7 @@ public class ListPartStats:MonoBehaviour
     private Dictionary<string, Dictionary<Stat.StatTypeGun, Stat>> statEachGun= new Dictionary<string, Dictionary<Stat.StatTypeGun, Stat>>();
 
     [SerializeField]
-    private List<StatsGun> listStatsGuns;
+    private List<AuxStatsGun> auxListStatsGuns;
 
     // public string NamePart;
     // public PartsStatsSO bulletStatsSO;
@@ -22,7 +22,7 @@ public class ListPartStats:MonoBehaviour
     void Awake()
     {
 
-        foreach (var stat in listStatsGuns)
+        foreach (var stat in auxListStatsGuns)
         {
 
             Dictionary<Stat.StatTypeGun, Stat> newStat= new Dictionary<Stat.StatTypeGun, Stat>();
@@ -59,7 +59,7 @@ public class ListPartStats:MonoBehaviour
 
 
 [Serializable]
-public struct StatsGun
+public struct AuxStatsGun
 {
     public string NameGun;
     public PartBaseStatsSO gunStatsSO;

@@ -53,6 +53,10 @@ public class ShipMovement : MonoBehaviour,IDamageable
         if(controller) Debug.Log("ss controller assigned");
         else Debug.Log("ss controller not assigned");
 
+    
+    }
+    private void Start()
+    {
         health = statsManager.instance.GetShipStat(Stat.StatTypeGeneral.MaxHealth);
         shields = statsManager.instance.GetShipStat(Stat.StatTypeGeneral.MaxShields);
     }

@@ -3,13 +3,13 @@ using UnityEngine;
 
 public enum NameHitboxInBullet
 {
-    Null,
-    Front,
-    Body,
-    Tail, 
-    AfterDeath, //have travelled and don't impacted
-    AfterImpact, //have travelled and impacted
-    Detectors
+    Null=0,
+    Front=1,
+    Body=2,
+    Tail=3, 
+    AfterDeath=4, //have travelled and don't impacted
+    // AfterImpact=5, //have travelled and impacted
+    Detectors=6
 }
 
 /* public class AddHitboxList : MonoBehaviour
@@ -36,13 +36,7 @@ public class AddHitboxEB: EffectsBullets
                 // hitboxUsed.GetComponent<HitboxBullet>().DeactivateCollider();
                 hitboxUsed.GetComponent<HitboxBullet>().DefineTriggerSize(new Vector3(5, 5, 5));
                 break;
-            case NameHitboxInBullet.AfterImpact:
-
-                //proabably on hit, separete from parent and left in position and delete after x seconds
-                hitboxUsed.GetComponent<HitboxBullet>().DefineTriggerSize(new Vector3(5, 5, 5));
-                baseBullets.GetComponent<DamageEB>().OnImpact += HitboxAfterImpact;
-                hitboxUsed.SetActive(false);
-                break;
+   
             case NameHitboxInBullet.AfterDeath:
                 /* baseBullets.GetComponent<DamageEB>().Onde+=()=> hitboxUsed.SetActive(true);
                 hitboxUsed.SetActive(false); */
@@ -70,13 +64,6 @@ public class AddHitboxEB: EffectsBullets
         //probably deletes the bullet to
     }
 
-    private void HitboxAfterImpact()
-    {
-        hitboxUsed.SetActive(true);
-        hitboxUsed.GetComponent<HitboxBullet>().selfTrigger();
-        hitboxUsed.SetActive(false);
-      
-    }
 }
 
 
@@ -89,36 +76,3 @@ public class AddHitsphereEB: AddHitboxEB
 
     }
 }
-
-
-
-//add hitbox that will be activated after impact
-/* public class AddHitboxAfterImpactEB: AddHitboxEB
-{
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-    public override void Setup(NameHitboxInBullet name = NameHitboxInBullet.Null)
-    {
-        base.Setup(name);
-
-    }
-} */
-
-/* public class AddHitboxAfterDeathEB: AddHitboxEB
-{
-    protected override void Awake()
-    {
-        base.Awake();
-        baseBullets.GetComponent<DamageEB>().OnImpact+=()=> hitboxUsed.SetActive(true);
-    }
-    public override void Setup(NameHitboxInBullet name = NameHitboxInBullet.Null)
-    {
-        base.Setup(name);
-        hitboxUsed.SetActive(false);
-
-    }
-}
-
- */

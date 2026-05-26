@@ -5,67 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
 
-//probablement implementar un enum per diferents tipus de Bales (No creo que sea necesario)
-//potser canviar-li el nom
 
-//classe general, del que venen els diferents projectils, revisar en un futur
-/* public struct InformationBullet
-{
-    public int damage;
-    public float speed;
-    public float penetration;
-    public float distEffec;
-    public float distMax;
-    public float knockback;
-
-    public static InformationBullet Default(BulletStatsSO so)
-    {
-        if (so == null)
-        {
-             return new InformationBullet
-            {
-                damage = 0,
-                penetration = 0,
-                distEffec = 0,
-                distMax = 0,
-                speed = 0,
-                knockback= 0
-            };
-        }else{
-            return new InformationBullet
-            {
-                damage = so.Damage,
-                penetration = so.Penetration,
-                distEffec = so.DistEffec,
-                distMax = so.DistMax,
-                speed = so.AttackSpeed,
-                knockback= so.Knockback
-            };
-        }
-    } */
-
-/*  public static InformationBullet empty()
- {
-     return new InformationBullet
-     {
-         damage=0,
-         penetration=0,
-         distEffec=0,
-         distMax = so.distMax,
-         speed = so.speed,
-         knockback= so.knockback
-     }
- } */
-
-/*  public void PlusDamage(int nouMal)
- {
-     damage+=nouMal;
- }
- public void PlusDistMaz(float dist)
- {
-     distMax+=dist;
- }
-} */
 [Serializable]
 public enum ClassBullet
 {
@@ -89,6 +29,8 @@ public class BaseBullets : MonoBehaviour
     private SpriteRenderer spr;
 
     public AllInformationBullet AllInfoBullet{get; private set;}
+
+    private float distBeforeEffect=1;
     // [HideInInspector] public Dictionary<Stat.StatTypeBullet, Stat> statsSO;
 
     // public GameObject FirstHitboxBullet;
@@ -103,8 +45,8 @@ public class BaseBullets : MonoBehaviour
     public event Action OnDecliveRange;
     public event Action OnMaxRange;
 
-    public Dictionary<GameObject,Action<Collision>> dicCollisionEnter = new Dictionary<GameObject,Action<Collision>>();
-    public Dictionary<GameObject,Action<Collision>> dicCollisionExit = new Dictionary<GameObject,Action<Collision>>();
+    // public Dictionary<GameObject,Action<Collision>> dicCollisionEnter = new Dictionary<GameObject,Action<Collision>>();
+    // public Dictionary<GameObject,Action<Collision>> dicCollisionExit = new Dictionary<GameObject,Action<Collision>>();
 
     public Dictionary<GameObject,Action<Collider>> dicTriggerEnter = new Dictionary<GameObject,Action<Collider>>();
     public Dictionary<GameObject,Action<Collider>> dicTriggerExit = new Dictionary<GameObject,Action<Collider>>();
@@ -115,6 +57,7 @@ public class BaseBullets : MonoBehaviour
     public List<GameObject> hitboxBullets= new List<GameObject>();
     public Dictionary<NameHitboxInBullet, GameObject> NameHitboxBullets= new Dictionary<NameHitboxInBullet, GameObject>();
 
+    public Dictionary<NameHitboxInBullet, DamageEB> DamageHitbox= new Dictionary<NameHitboxInBullet, DamageEB>();
     // public InformationBullet StatsBullet { get => statsBullet; set => statsBullet = value; }
 
     private void Awake()
@@ -142,8 +85,9 @@ public class BaseBullets : MonoBehaviour
             spr.sprite = AllInfoBullet.sprite;
         }
         myClassBullet=newBulletSO.classBullet;
-        newBulletSO.Debuger();
+        // newBulletSO.Debuger();
         this.transform.localScale*=AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSize];
+        newBulletSO.Debuger();
     }
     
 
@@ -235,7 +179,7 @@ public class BaseBullets : MonoBehaviour
         }
 
         //revisar això
-        dicCollisionEnter[Hitbox] = delegate { };
+        // dicCollisionEnter[Hitbox] = delegate { };
         dicTriggerEnter[Hitbox] = delegate { };
        
         /* newScript.OnCollisionEnterHitbox+= (col,hb) =>{
@@ -248,7 +192,7 @@ public class BaseBullets : MonoBehaviour
             dicTriggerEnter[hb]?.Invoke(col);
         };
         
-        dicCollisionExit[Hitbox] = delegate { };
+        // dicCollisionExit[Hitbox] = delegate { };
         dicTriggerExit[Hitbox] = delegate { };
        
        /*  newScript.OnCollisionExitHitbox+= (col,hb) =>{
@@ -271,7 +215,7 @@ public class BaseBullets : MonoBehaviour
          */
         HitboxBullet oldScript= Hitbox.GetComponent<HitboxBullet>();
 
-        if (dicCollisionEnter.ContainsKey(Hitbox))
+        if (dicTriggerEnter.ContainsKey(Hitbox) && dicTriggerExit.ContainsKey(Hitbox))
         {
             // oldScript.OnCollisionEnterHitbox-= (col,hb) =>dicCollisionEnter[hb]?.Invoke(col);
             oldScript.OnTriggerEnterHitbox-= (col,hb)=> dicTriggerEnter[hb]?.Invoke(col);
@@ -313,11 +257,13 @@ public class BaseBullets : MonoBehaviour
         rb.linearVelocity = transform.forward * AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSpeed];
         // float distance = Vector3.Distance(iniPos, this.transform.position);
         float distance = Vector3.Distance(this.transform.position, LastPos);
+        
+
 
         DistanceTravelled += distance;
         LastPos = transform.position;
         //Debug.Log("Distance: " + distance +"__iniPos: "+iniPos+ "__transform.position: " + this.transform.position);
-        if (DistanceTravelled < AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistEffec])
+        if (DistanceTravelled> distBeforeEffect && DistanceTravelled < AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistEffec])
         {
             OnEffectiveRange?.Invoke();
 
@@ -337,18 +283,24 @@ public class BaseBullets : MonoBehaviour
 
         if (UseTimerToDie)
         {
-            if (CoroutineTimerToDie == null)
-            {
-                CoroutineTimerToDie = StartCoroutine(TimerToDie());
-            }
+            DieWithTimer();
 
+        }
+    }
 
+    public void DieWithTimer()
+    {
+        if (CoroutineTimerToDie == null)
+        {
+            CoroutineTimerToDie = StartCoroutine(TimerToDie());
         }
     }
 
     private IEnumerator TimerToDie()
     {
-        yield return new WaitForSecondsRealtime( AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistMax]/2);
+        float timer= AllInfoBullet.StatsBullet[Stat.StatTypeBullet.DistMax]/2;
+        yield return new WaitForSecondsRealtime( timer);
+        Debug.Log("projecitle die to time, timer  equals: "+ timer);
         AwayDistMax(DistanceTravelled);
         CoroutineTimerToDie=null;
     }

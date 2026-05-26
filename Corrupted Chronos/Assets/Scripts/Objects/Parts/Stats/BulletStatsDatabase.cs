@@ -4,17 +4,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
-/* struct SetUpHitbox
-{
-    public NameHitboxInBullet Type;
-    
-    Vector3 size;
-    public bool IsTrigger;
-    public bool IsCollider;
-
-
-} */
-
 public enum NameBulletPreset
 {
     Null=0,
@@ -48,6 +37,13 @@ public struct EffectsAdd
         this.nameEffect = v;
         this.setup = NameHitboxInBullet.Null;
     }
+
+    public EffectsAdd Clone(){
+        EffectsAdd clone;
+        clone.nameEffect=nameEffect;
+        clone.setup=setup;
+        return clone;
+    }
 }
 // [CreateAssetMenu(menuName = "Bullet/BulletStats")]
 public class BulletStatsSO : ScriptableObject
@@ -79,18 +75,6 @@ public class BulletStatsSO : ScriptableObject
         }
     }
 
-   /*  [Header("Bullet Properties")]
-    [Tooltip("The name of the bullet")]
-    public Sprite sprite;
-    public int Damage;
-    public float AttackSpeed;
-    public float Penetration;
-    public float DistEffec;
-    public float DistMax;
-    public float Knockback; */
-
-    
-
     
 }
 
@@ -98,87 +82,25 @@ public class BulletStatsSO : ScriptableObject
 //Defined in the ScripteableObject in project
 [CreateAssetMenu(fileName="WaveStats", menuName = "Bullet/WaveBulletStats")]
 public class WaveStatsSO: BulletStatsSO
-{
-    // private WaveStatsSO()
-    /* private void Reset()
-    {
-        Effects=new List<EffectsAdd>();
-
-        Damage=0;
-        Penetration=5;//dudo de como usar-lo
-        DistEffec=10;
-        DistMax=15;
-        AttackSpeed=7;
-        Knockback=10;
-        // Effects= new System.Collections.Generic.List<string>();
-        // Effects.Add( new EffectsAdd("BaseBullets"));
-        Effects.Add(new EffectsAdd("AddHitboxEB", NameHitboxInBullet.Body));
-        Effects.Add(new EffectsAdd("KnockbackEB"));//will pick the last hitbox created, in this case body
-
-    } */
-
-}
+{}
 
 [CreateAssetMenu(fileName="RedWaveStats", menuName = "Bullet/RedWaveBulletStats")]
 public class RedWaveStatsSO: BulletStatsSO
-{
-    // private RedWaveStatsSO()
-    /* private void Reset()
-    {
-        Effects=new List<EffectsAdd>();
-
-        Damage=10;
-        Penetration=5;//dudo de como usar-lo
-        DistEffec=10;
-        DistMax=15;
-        AttackSpeed=7;
-        Knockback=10;
-        // Effects.Add( new EffectsAdd("BaseBullets"));
-        Effects.Add(new EffectsAdd("AddHitboxEB", NameHitboxInBullet.Body));
-        Effects.Add(new EffectsAdd("KnockbackEB"));
-        Effects.Add(new EffectsAdd("DamageEB"));
-
-    } */
-
-}
+{}
 
 [CreateAssetMenu(fileName="BasicStats", menuName = "Bullet/BasicBulletStats")]
 public class BasicStatsSO: BulletStatsSO
-{
-        // private BasicStatsSO(){
-
-   /*  private void Reset()
-    {
-        Effects=new List<EffectsAdd>();
-
-        Damage=10;
-        Penetration=5;//dudo de como usar-lo
-        DistEffec=10;
-        DistMax=15;
-        AttackSpeed=7;
-        Knockback=4;
-        // Effects.Add( new EffectsAdd("BaseBullets"));
-        Effects.Add(new EffectsAdd("AddHitboxEB", NameHitboxInBullet.Body));
-        Effects.Add(new EffectsAdd("DamageEB"));
-    } */
-
-}
+{}
 
 [CreateAssetMenu(fileName="FollowinMissile", menuName = "Bullet/FollowinMissile")]
 public class FollowinMissileSO: BulletStatsSO
-{
-    
-}
+{}
 
 [CreateAssetMenu(fileName="FlameStats", menuName = "Bullet/FlameStats")]
 public class FlameStatsSO: BulletStatsSO
-{
-    
-}
+{}
 
 [CreateAssetMenu(fileName="ExplosionStats", menuName = "Bullet/ExplosionStats")]
 public class ExplosionStatsSO: BulletStatsSO
-{
-    
-}
+{}
 
