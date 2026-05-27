@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class BossSpawner : MonoBehaviour
@@ -11,6 +13,8 @@ public class BossSpawner : MonoBehaviour
     public GameObject bossPrefab;
     public Transform spawnPoint;
     public bool dialogue_done = false;
+
+    public GameObject krakenCam;
     private void Awake()
     {
         if (instance == null)
@@ -33,8 +37,29 @@ public class BossSpawner : MonoBehaviour
 
     public void spawnBoss()
     {
-        Instantiate(bossPrefab, spawnPoint.position, spawnPoint.rotation);
+        StartCoroutine(spawnBossCinematic());
+        
     }
+
+    public IEnumerator spawnBossCinematic()
+    {
+        krakenCam.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+
+        bossSetup();
+
+        
+        yield return new WaitForSeconds(2f);
+        krakenCam.SetActive(false);
+    }
+
+    void bossSetup()
+    {
+        var obj = Instantiate(bossPrefab, spawnPoint.position, spawnPoint.rotation);
+        KrakenController control = obj.GetComponent<KrakenController>();
+        control.player = GameManager.Instance.playerInstance;
+    }
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -48,3 +73,24 @@ public class BossSpawner : MonoBehaviour
         
     }
 }
+
+#if UNITY_EDITOR
+
+[CustomEditor(typeof(BossSpawner))]
+public class BossSpawnerEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        BossSpawner spawner = (BossSpawner)target;
+
+        GUILayout.Space(10);
+
+        if (GUILayout.Button("Spawn Boss"))
+        {
+            spawner.spawnBoss();
+        }
+    }
+}
+#endif

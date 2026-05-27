@@ -32,47 +32,89 @@ public class pressureState : baseState
 
     public override void FrameUpdate()
     {
-        if(!data.leader && !data.wingman)
+        bool leaderAlive = data.leader != null;
+        bool wingmanAlive = data.wingman != null;
+
+        // Si ambos están muertos, destruye el pair completo y sal
+        if (!leaderAlive && !wingmanAlive)
         {
             GameObject.Destroy(data.gameObject);
+            return;
         }
 
+        Transform player = data.player;
 
-        float leaderDist = Vector3.Distance(data.leader.transform.position, data.player.position);
-        float wingmanDist = Vector3.Distance(data.wingman.transform.position, data.player.position);
-
-        // --- CONTROL DISTANCIA LIDER ---
-        if (Mathf.Abs(leaderDist - data.attackDistance) > data.pressureDistanceTolerance)
+        // --- CASO 1: ambos vivos (comportamiento original) ---
+        if (leaderAlive && wingmanAlive)
         {
-            leaderAttackPos = GenerateAttackPosition(data.leader.transform);
-            data.leaderNextPos = leaderAttackPos;
+            float leaderDist = Vector3.Distance(data.leader.transform.position, player.position);
+            float wingmanDist = Vector3.Distance(data.wingman.transform.position, player.position);
+
+            if (Mathf.Abs(leaderDist - data.attackDistance) > data.pressureDistanceTolerance)
+            {
+                leaderAttackPos = GenerateAttackPosition(data.leader.transform);
+                data.leaderNextPos = leaderAttackPos;
+            }
+
+            if (Mathf.Abs(wingmanDist - data.attackDistance) > data.pressureDistanceTolerance)
+            {
+                wingmanAttackPos = GenerateWingmanAttackPosition();
+                data.wingmanNextPos = wingmanAttackPos;
+            }
+
+            bool leaderInRange =
+                leaderDist <= data.attackDistance + data.pressureDistanceTolerance &&
+                leaderDist >= data.attackDistance - data.pressureDistanceTolerance;
+
+            if (leaderInRange)
+                data.leader.primaryAttack();
+
+            bool wingmanInRange =
+                wingmanDist <= data.attackDistance + data.pressureDistanceTolerance &&
+                wingmanDist >= data.attackDistance - data.pressureDistanceTolerance;
+
+            if (wingmanInRange)
+                data.wingman.primaryAttack();
+
+            return;
         }
 
-        // --- CONTROL DISTANCIA WINGMAN ---
-        if (Mathf.Abs(wingmanDist - data.attackDistance) > data.pressureDistanceTolerance)
+        // --- CASO 2: solo leader vivo ---
+        if (leaderAlive)
         {
-            wingmanAttackPos = GenerateWingmanAttackPosition();
-            data.wingmanNextPos = wingmanAttackPos;
+            float leaderDist = Vector3.Distance(data.leader.transform.position, player.position);
+
+            if (Mathf.Abs(leaderDist - data.attackDistance) > data.pressureDistanceTolerance)
+            {
+                data.leaderNextPos = GenerateAttackPosition(data.leader.transform);
+            }
+
+            bool inRange =
+                leaderDist <= data.attackDistance + data.pressureDistanceTolerance &&
+                leaderDist >= data.attackDistance - data.pressureDistanceTolerance;
+
+            if (inRange)
+                data.leader.primaryAttack();
+
+            return;
         }
 
-        // --- ATAQUE DEL LIDER ---
-        bool leaderInRange =
-            leaderDist <= data.attackDistance + data.pressureDistanceTolerance &&
-            leaderDist >= data.attackDistance - data.pressureDistanceTolerance;
-
-        if (leaderInRange)
+        // --- CASO 3: solo wingman vivo ---
+        if (wingmanAlive)
         {
-            data.leader.primaryAttack();
-        }
+            float wingmanDist = Vector3.Distance(data.wingman.transform.position, player.position);
 
-        // --- ATAQUE DEL WINGMAN ---
-        bool wingmanInRange =
-            wingmanDist <= data.attackDistance + data.pressureDistanceTolerance &&
-            wingmanDist >= data.attackDistance - data.pressureDistanceTolerance;
+            if (Mathf.Abs(wingmanDist - data.attackDistance) > data.pressureDistanceTolerance)
+            {
+                data.wingmanNextPos = GenerateAttackPosition(data.wingman.transform);
+            }
 
-        if (wingmanInRange)
-        {
-            data.wingman.primaryAttack();
+            bool inRange =
+                wingmanDist <= data.attackDistance + data.pressureDistanceTolerance &&
+                wingmanDist >= data.attackDistance - data.pressureDistanceTolerance;
+
+            if (inRange)
+                data.wingman.primaryAttack();
         }
     }
 

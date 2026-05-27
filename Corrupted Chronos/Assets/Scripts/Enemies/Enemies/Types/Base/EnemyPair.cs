@@ -22,6 +22,7 @@ public class EnemyPair : MonoBehaviour
     public Transform wingmanTarget;
 
     [Header("Patrol Params")] //Todas las variables son publicas por ahora, pero se pueden cambiar a un SO y darle una referencia al baseState
+    public float proximityAggroRadius = 5f;
     public Vector2 wingmanOffset = new Vector2(4f, 2f); // (x:Back, y:Side)
     public float patrolRadius = 5f;
     public float arriveThreshold = 0.1f;
@@ -112,11 +113,6 @@ public class EnemyPair : MonoBehaviour
             wingman.hasMoveTarget = shouldWingmanMove;
             wingman.moveTarget = wingmanNextPos;
         }      
-    }
-
-    public void onPairBroken(EnemyUnit unit)
-    {
-        singleState = new singleState(stateMachine, unit);
     }
 
     public void targetDetected()
