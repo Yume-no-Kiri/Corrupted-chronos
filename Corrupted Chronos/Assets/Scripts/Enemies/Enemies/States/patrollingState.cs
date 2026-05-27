@@ -38,6 +38,39 @@ public class patrollingState : baseState
         if (data.leader == null && data.wingman == null)
             return;
 
+        // --- AGGRO AUTOMÁTICO POR PROXIMIDAD ---
+        float sqrAggroRadius =
+            data.proximityAggroRadius * data.proximityAggroRadius;
+
+        bool playerTooClose = false;
+
+        if (data.leader != null)
+        {
+            Vector3 delta =
+                data.player.position -
+                data.leader.transform.position;
+
+            if (delta.sqrMagnitude <= sqrAggroRadius)
+                playerTooClose = true;
+        }
+
+        if (!playerTooClose && data.wingman != null)
+        {
+            Vector3 delta =
+                data.player.position -
+                data.wingman.transform.position;
+
+            if (delta.sqrMagnitude <= sqrAggroRadius)
+                playerTooClose = true;
+        }
+
+        if (playerTooClose)
+        {
+            data.targetDetected();
+            return;
+        }
+
+
         EnemyUnit activeUnit = data.leader != null
             ? data.leader
             : data.wingman;

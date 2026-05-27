@@ -263,12 +263,13 @@ MonoBehaviour:
   shouldWingmanMove: 1
   wingmanNextPos: {x: 473.58536, y: 2.16, z: 262.18036}
   wingmanTarget: {fileID: 0}
+  proximityAggroRadius: 3
   wingmanOffset: {x: 4, y: 2}
   patrolRadius: 30
   arriveThreshold: 0.2
   detectionRadius: 30
   detectionAngle: 80
-  detectionTime: 0.5
+  detectionTime: 2
   playerDetected: 0
   attackDistance: 20
   attackDistanceTolerance: 10
