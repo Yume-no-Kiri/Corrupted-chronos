@@ -8,6 +8,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance{get; private set;}
 
+
+    [field: SerializeField] public RewardSpawner rewardSpawner{get; private set;}
+
+
     [Header("DataBases")]
     public AllObjectsDataBase allObjectsDataBase;
     public TakableDataBase takableDataBase;
@@ -259,4 +263,11 @@ public class GameManager : MonoBehaviour
         _countIDP++;
         return _countIDP;
     }
+    #region rewards
+
+    public void EnemyKilled(Vector3 posReward)
+    {
+        rewardSpawner.ProbablySpawnReward(posReward);
+    }
+    #endregion
 }

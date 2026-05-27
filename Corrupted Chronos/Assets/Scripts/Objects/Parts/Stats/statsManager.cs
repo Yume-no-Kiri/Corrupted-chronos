@@ -7,9 +7,10 @@ public class statsManager : MonoBehaviour
 {
     public static statsManager instance;
 
-    //TODO: Recibir un SO con los stats base
-    //TODO: los modificadores deber�an tener source
-    //TODO: Stats que dependan de otras stats (ej: da�o que dependa de speed)
+
+
+
+
 
 
     //El diccionario existe para tener acceso O(1) a cualquier stat
@@ -22,6 +23,7 @@ public class statsManager : MonoBehaviour
     [SerializeField] private BaseStatsSO dadesBase;
 
     [Header("Stats")]
+
     [field: SerializeField] public ListPartStats listPartStats { get; private set; }
     [field: SerializeField] public ListBulletStats listBulletStats { get; private set; }
 
@@ -95,7 +97,7 @@ public class statsManager : MonoBehaviour
 
 
 
-    public void CreateStatsGun(string name, int idp)
+    public void CreateStatsGun(ListNameParts name, int idp)
     {
         Dictionary<Stat.StatTypeGun, Stat> baseStats = listPartStats.ReturnStatsByName(name);
         if (baseStats != null && baseStats.Count > 0)

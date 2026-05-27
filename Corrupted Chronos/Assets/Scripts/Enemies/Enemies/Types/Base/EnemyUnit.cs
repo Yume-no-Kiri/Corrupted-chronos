@@ -91,7 +91,7 @@ public abstract class EnemyUnit : MonoBehaviour, IDamageable
         }
         else
         {
-            externalForce = Vector3.zero; // Forcem el zero per estalviar càlculs quan és molt petita
+            externalForce = Vector3.zero; // Forcem el zero per estalviar cï¿½lculs quan ï¿½s molt petita
         }
     }
 
@@ -105,7 +105,7 @@ public abstract class EnemyUnit : MonoBehaviour, IDamageable
     public void TakeDamage(float damageAmount)
     {
         if (currentHealth <= 0) Die();
-        AddKnockback(-transform.forward, statsManager.instance.GetShipStat(Stat.StatTypeGeneral.Knockback)); // Ejemplo de knockback, ajusta la dirección y fuerza según tus necesidades
+        AddKnockback(-transform.forward, statsManager.instance.GetShipStat(Stat.StatTypeGeneral.Knockback)); // Ejemplo de knockback, ajusta la direcciï¿½n y fuerza segï¿½n tus necesidades
         hitParticles.Stop();
         hitParticles.Play();
         spriteFlash();
@@ -115,6 +115,7 @@ public abstract class EnemyUnit : MonoBehaviour, IDamageable
 
     public void Die()
     {
+        GameManager.Instance.EnemyKilled(transform.position);
         Destroy(this.gameObject);
     }
     public void AddKnockback(Vector3 dir, float force)

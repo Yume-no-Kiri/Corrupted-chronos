@@ -8,7 +8,7 @@ using UnityEngine;
 public class ListPartStats:MonoBehaviour
 {
 
-    private Dictionary<string, Dictionary<Stat.StatTypeGun, Stat>> statEachGun= new Dictionary<string, Dictionary<Stat.StatTypeGun, Stat>>();
+    private Dictionary<ListNameParts, Dictionary<Stat.StatTypeGun, Stat>> statEachGun= new Dictionary<ListNameParts, Dictionary<Stat.StatTypeGun, Stat>>();
 
     [SerializeField]
     private List<AuxStatsGun> auxListStatsGuns;
@@ -43,7 +43,7 @@ public class ListPartStats:MonoBehaviour
 
     }
 
-    public Dictionary<Stat.StatTypeGun, Stat> ReturnStatsByName(string name)
+    public Dictionary<Stat.StatTypeGun, Stat> ReturnStatsByName(ListNameParts name)
     {
         Dictionary<Stat.StatTypeGun, Stat> returnState= new Dictionary<Stat.StatTypeGun, Stat>();
         if (statEachGun.ContainsKey(name))
@@ -61,7 +61,7 @@ public class ListPartStats:MonoBehaviour
 [Serializable]
 public struct AuxStatsGun
 {
-    public string NameGun;
+    public ListNameParts NameGun;
     public PartBaseStatsSO gunStatsSO;
 }
 

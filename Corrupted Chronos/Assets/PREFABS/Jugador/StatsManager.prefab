@@ -61,13 +61,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b8d562ef042fb3489a7f350794db50d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PartsStatsSO
-  listStatsGuns:
-  - NameGun: Escopeta
+  auxListStatsGuns:
+  - NameGun: 2
     gunStatsSO: {fileID: 11400000, guid: 940007e2617f3df408d5914568b422e3, type: 2}
-  - NameGun: Metralleta
-    gunStatsSO: {fileID: 11400000, guid: 9952c088c6070fd48acde196bdf300da, type: 2}
-  - NameGun: Flamethrower
+  - NameGun: 3
     gunStatsSO: {fileID: 11400000, guid: 597cc2f497aa903498263c8383ad6cb3, type: 2}
+  - NameGun: 1
+    gunStatsSO: {fileID: 11400000, guid: 9952c088c6070fd48acde196bdf300da, type: 2}
 --- !u!114 &3241525284459898178
 MonoBehaviour:
   m_ObjectHideFlags: 0

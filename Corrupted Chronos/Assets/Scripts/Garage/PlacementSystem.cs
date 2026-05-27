@@ -373,7 +373,7 @@ public class PlacementSystem : MonoBehaviour
             partToAdd.GetComponent<EachPartScript>().AssignIDP(thisIdp);
             GameManager.Instance.playerInstance.GetComponent<InventoryManager>().CreateInventory(thisIdp);
             Debug.Log("what is partadded:"+partToAdd.name.ToString());
-            statsManager.instance.CreateStatsGun(partToAdd.GetComponent<EachPartScript>().returnName() ,thisIdp);
+            statsManager.instance.CreateStatsGun(partToAdd.GetComponent<EachPartScript>().returnPartName() ,thisIdp);
             //
             //also creates inventory
         }

@@ -1785,34 +1785,6 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
-    - target: {fileID: 3991987869386337423, guid: a8340979beba7db499340894a7cb2fdb, type: 3}
-      propertyPath: auxListStatsGuns.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3991987869386337423, guid: a8340979beba7db499340894a7cb2fdb, type: 3}
-      propertyPath: auxListStatsGuns.Array.data[0].NameGun
-      value: Escopeta
-      objectReference: {fileID: 0}
-    - target: {fileID: 3991987869386337423, guid: a8340979beba7db499340894a7cb2fdb, type: 3}
-      propertyPath: auxListStatsGuns.Array.data[1].NameGun
-      value: Flamethrower
-      objectReference: {fileID: 0}
-    - target: {fileID: 3991987869386337423, guid: a8340979beba7db499340894a7cb2fdb, type: 3}
-      propertyPath: auxListStatsGuns.Array.data[2].NameGun
-      value: Metralleta
-      objectReference: {fileID: 0}
-    - target: {fileID: 3991987869386337423, guid: a8340979beba7db499340894a7cb2fdb, type: 3}
-      propertyPath: auxListStatsGuns.Array.data[0].gunStatsSO
-      value: 
-      objectReference: {fileID: 11400000, guid: 940007e2617f3df408d5914568b422e3, type: 2}
-    - target: {fileID: 3991987869386337423, guid: a8340979beba7db499340894a7cb2fdb, type: 3}
-      propertyPath: auxListStatsGuns.Array.data[1].gunStatsSO
-      value: 
-      objectReference: {fileID: 11400000, guid: 597cc2f497aa903498263c8383ad6cb3, type: 2}
-    - target: {fileID: 3991987869386337423, guid: a8340979beba7db499340894a7cb2fdb, type: 3}
-      propertyPath: auxListStatsGuns.Array.data[2].gunStatsSO
-      value: 
-      objectReference: {fileID: 11400000, guid: 9952c088c6070fd48acde196bdf300da, type: 2}
     - target: {fileID: 4080332700811385721, guid: a8340979beba7db499340894a7cb2fdb, type: 3}
       propertyPath: stats.Array.size
       value: 17

@@ -139,6 +139,17 @@ public class EachPartScript : MonoBehaviour
     {
         return typeName;
     }
+    public ListNameParts returnPartName()
+    {
+        if(listParts!= ListNameParts.Null)
+        {
+            return listParts;
+        }
+        else
+        {
+            return ListNameParts.Null;
+        }
+    }
     public int ReturnIDP()
     {
         return IDPtoGive;
