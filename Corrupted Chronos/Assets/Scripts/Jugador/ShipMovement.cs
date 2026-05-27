@@ -15,7 +15,7 @@ public class ShipMovement : MonoBehaviour,IDamageable
     private bool IsGround=false;
 
     private Vector3 PositionGround;
-    private Vector3 LimitHigh;
+    private Vector3 LimitGound;
 
     /* [Header("Input")]
     [SerializeField] private InputActionReference moveAction;
@@ -57,6 +57,8 @@ public class ShipMovement : MonoBehaviour,IDamageable
     }
     private void Start()
     {
+        Vector3 iniPos=transform.position;
+        transform.position=new Vector3(iniPos.x, posLow.y,iniPos.z);
         health = statsManager.instance.GetShipStat(Stat.StatTypeGeneral.MaxHealth);
         shields = statsManager.instance.GetShipStat(Stat.StatTypeGeneral.MaxShields);
     }
@@ -97,19 +99,32 @@ public class ShipMovement : MonoBehaviour,IDamageable
         }
         else
         {
-            externalForce = Vector3.zero; // Forcem el zero per estalviar càlculs quan és molt petita
+            externalForce = Vector3.zero;
         }
 
         ApplyMovement();
 
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, 3))
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 4))
         {
             Debug.DrawRay(transform.position, Vector3.down * hit.distance, Color.red);
-            if(hit.transform.CompareTag("Ground")){ 
-                IsGround=true;
-                PositionGround= transform.position;
-                LimitHigh= PositionGround+new Vector3(0,2,0);
+            if(hit.transform.CompareTag("Ground")){
+                Debug.Log("distance ground"+Vector3.Distance(transform.position, hit.point));
+                if (Vector3.Distance(transform.position, hit.point)<=3f)
+                {
+                    IsGround=true;
+                    // PositionGround= hit.transform.position;
+                    posLow=hit.point+ new Vector3(0,1,0);
+                    posInY=posLow.y;
+                    /* if(posLow.y>= transform.position.y)
+                    {
+                        
+                    } */
+                    
+
+                }
+               
+                // LimitGound= PositionGround+new Vector3(0,2,0);
             }
             // GameManager.Instance.want2Fly=false;
         }else
@@ -124,6 +139,11 @@ public class ShipMovement : MonoBehaviour,IDamageable
         // Debug.Log("ss does update work? 2");
 
     }
+
+    Vector3 posLow= new Vector3(0,7,0);
+    Vector3 posHigh=new Vector3(0,11,0);
+    float posInY= 0;
+    // float timeBetweenHigh=1.2f;
 
     private void ReadInput()
     {
@@ -142,28 +162,38 @@ public class ShipMovement : MonoBehaviour,IDamageable
             inputDownUp =- moveDown.ReadValue<float>();
             inputDownUp += moveUp.ReadValue<float>();
             if(!GameManager.Instance.CanFly()){
-               inputDownUp=-1;
+                if (transform.position.y >= posLow.y)
+                {
+                    inputDownUp=-1;
+                }
+                
             }
-            
+            if (transform.position.y >= posHigh.y && inputDownUp==1)
+            {
+                inputDownUp=0;
+            }
             if (inputDownUp > 0){
-
                 GameManager.Instance.MoveUpStamina(IsGround);
-
             }
             else
             {
                 GameManager.Instance.InformIfGround(IsGround);
             }
-            //Debug.Log("ss move down UP"+inputDownUp.ToString());
 
-            if (transform.position.y > LimitHigh.y && inputDownUp>0 )
+            /* if (transform.position.y > LimitHigh.y && inputDownUp>0 )
             {
                 inputDownUp=0;
-            }
+            } */
         }
-
-
-        targetMoveVector = new Vector3(inputMove.x, inputDownUp, inputMove.y);
+        if (inputDownUp < 0)
+        {
+            posInY=posLow.y;
+        }else if (inputDownUp > 0)
+        {
+            posInY=posHigh.y;            
+        }
+        
+        targetMoveVector = new Vector3(inputMove.x, 0, inputMove.y);
 
         if (targetMoveVector.sqrMagnitude > 1f)
         { targetMoveVector.Normalize();}
@@ -172,14 +202,45 @@ public class ShipMovement : MonoBehaviour,IDamageable
 
         // targetSpeedMultiplier = isBoosting ? boostMultiplier : 1f;
     }
+    private void ApplyMovement()
+    {
+        Vector3 finalVelocity = currentMoveVector * statsManager.instance.GetShipStat(Stat.StatTypeGeneral.Speed) * currentSpeedMultiplier+externalForce;
 
+        if(finalVelocity!=Vector3.zero){  GameManager.Instance.WaterMaterial.SetVector("_DirectionPlayer",finalVelocity.normalized );}
+
+        controller.Move(finalVelocity * Time.deltaTime);
+
+        Vector3 currentPos = transform.position;
+        if(posInY!=0){
+            currentPos.y = Mathf.MoveTowards(currentPos.y, posInY, 20f * Time.deltaTime);
+
+        // Apliquem la posició vertical corregida directament al transform
+            transform.position = currentPos;
+        }
+        /* Vector3 posicioCorregida = transform.position;
+        posicioCorregida.y = Mathf.Clamp(posicioCorregida.y, alturaMinima, alturaMaxima);
+        if (transform.position.y != posicioCorregida.y)
+        {
+            // Detenim el moviment vertical residual per evitar tremolors
+            currentMoveVector.y = 0; 
+            transform.position = posicioCorregida;
+        } */
+
+        // controller.Move(new Vector3(5, 0, 0) * Time.deltaTime);
+        // Debug.Log("ss final velocity:"+ finalVelocity.ToString());
+    }
     private void SmoothDirection()
     {
+        // float finalPos=0;
+
+       
+
         currentMoveVector = Vector3.Lerp(
             currentMoveVector,
             targetMoveVector,
             directionSmoothing * Time.deltaTime
         );
+        
     }
     private void SmoothBoost()
     {
@@ -190,17 +251,7 @@ public class ShipMovement : MonoBehaviour,IDamageable
         );
     }
 
-    private void ApplyMovement()
-    {
-        Vector3 finalVelocity = currentMoveVector * statsManager.instance.GetShipStat(Stat.StatTypeGeneral.Speed) * currentSpeedMultiplier+externalForce;
-
-        if(finalVelocity!=Vector3.zero){  GameManager.Instance.WaterMaterial.SetVector("_DirectionPlayer",finalVelocity.normalized );}
-
-        controller.Move(finalVelocity * Time.deltaTime);
-
-        // controller.Move(new Vector3(5, 0, 0) * Time.deltaTime);
-        // Debug.Log("ss final velocity:"+ finalVelocity.ToString());
-    }
+   
     #region interface
     public void TakeDamage(float damageAmount)
     {
@@ -234,34 +285,5 @@ public class ShipMovement : MonoBehaviour,IDamageable
         // Debug.LogWarning("externalForce:"+ externalForce.ToString());
     }
     #endregion
-    void toFly()
-    {
-        /* if (!lockDown)
-        {
-            GameManager.Instance.want2Fly=true;
-        }
-        else
-        {
-            GameManager.Instance.want2Fly=false;
-        } */
-    }
-
-    //all method
-      private void GetInputNau()
-    {
-        /* si afegim speed d'alguna mena 
-        //is boosting movespeed=2, else movespeed=4
-        // float moveSpeed=isBoosting ? 10f: 4f;
-        */
-
-        //Debug.Log("estàs amb la nau");
-
-      /*   rb.linearVelocity = Vector3.zero;
-        
-        Vector2 movement =inputManager.playerInputActions.Nau.MoveNau.ReadValue<Vector2>().normalized;
-
-       
-        _newMovePosition+= new Vector3(movement.x, 0, movement.y) * moveSpeedNau *Time.deltaTime;
-         */
-    }
+   
 }

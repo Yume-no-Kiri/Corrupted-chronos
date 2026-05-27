@@ -47,6 +47,7 @@ public class InputManager : MonoBehaviour
         playerInputActions.Nau.OnShotLeft.canceled +=ctx=> OnShotLeft?.Invoke(ctx);
         playerInputActions.Nau.OnShotRight.canceled += ctx=> OnShotRight?.Invoke(ctx);
 
+        //desactivated for the final version
         playerInputActions.AccesInventory.OpenInventory.performed += ctx=>OpenInventory?.Invoke();
 
         playerInputActions.Garage.RotateLeft.performed +=ctx=> RotateLeft?.Invoke(ctx);
@@ -203,11 +204,5 @@ public class InputManager : MonoBehaviour
     }
     
     
-    /* public void CallAddNewItem(ItemData item)
-    {
-        AddNewItem?.Invoke(item);
-    } */
-
-
 
 }

@@ -102,24 +102,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""OpenInventory"",
-                    ""type"": ""Button"",
-                    ""id"": ""d227ee1e-7627-4d8e-838b-086fb2cd6455"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""CanviCapa"",
-                    ""type"": ""Value"",
-                    ""id"": ""9e4030f5-55f9-4981-a7fe-6b3f122d0b1d"",
-                    ""expectedControlType"": ""Axis"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
                     ""name"": ""OnShotLeft"",
                     ""type"": ""Button"",
                     ""id"": ""7a7f5f6d-9aef-4efe-8a0e-a574a0841a31"",
@@ -168,15 +150,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Boost"",
                     ""type"": ""Button"",
                     ""id"": ""a196be50-9f0b-4217-92c5-c55201ac93d1"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Interact"",
-                    ""type"": ""Button"",
-                    ""id"": ""6983b15f-4693-482f-ac8c-81926ae0f107"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -236,50 +209,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard"",
                     ""action"": ""MoveNau"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5d70d5c4-3085-490d-abda-92e606db2636"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""OpenInventory"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""df105a2a-589b-42b8-b65f-5e14852550a1"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""CanviCapa"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""1a642444-cdea-42f1-ba7a-7954a0e08ecf"",
-                    ""path"": ""<Mouse>/scroll/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard"",
-                    ""action"": ""CanviCapa"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""98e9d5cb-36f7-469b-abe6-5c04d32c11af"",
-                    ""path"": ""<Mouse>/scroll/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard"",
-                    ""action"": ""CanviCapa"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -346,17 +275,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Boost"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""25b37142-e707-444b-9b58-fde53f5e0815"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -654,15 +572,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""id"": ""731c4309-3a22-48ce-af6f-d13162715bbb"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
-                    ""id"": ""87c9c349-7571-4daf-94ff-7226a7af663e"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""OnExit"",
                     ""type"": ""Button"",
                     ""id"": ""d4cf4010-8baa-496d-955d-3714f5d097d6"",
@@ -691,17 +600,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""2c77df96-7ceb-4c0f-b9b0-8c9fafe2b2d6"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""612f86af-8af2-4678-b5e9-e2dc99787f75"",
@@ -783,15 +681,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         // Nau
         m_Nau = asset.FindActionMap("Nau", throwIfNotFound: true);
         m_Nau_MoveNau = m_Nau.FindAction("MoveNau", throwIfNotFound: true);
-        m_Nau_OpenInventory = m_Nau.FindAction("OpenInventory", throwIfNotFound: true);
-        m_Nau_CanviCapa = m_Nau.FindAction("CanviCapa", throwIfNotFound: true);
         m_Nau_OnShotLeft = m_Nau.FindAction("OnShotLeft", throwIfNotFound: true);
         m_Nau_OnShotRight = m_Nau.FindAction("OnShotRight", throwIfNotFound: true);
         m_Nau_Up = m_Nau.FindAction("Up", throwIfNotFound: true);
         m_Nau_Down = m_Nau.FindAction("Down", throwIfNotFound: true);
         m_Nau_Barrelroll = m_Nau.FindAction("Barrelroll", throwIfNotFound: true);
         m_Nau_Boost = m_Nau.FindAction("Boost", throwIfNotFound: true);
-        m_Nau_Interact = m_Nau.FindAction("Interact", throwIfNotFound: true);
         // Pilot
         m_Pilot = asset.FindActionMap("Pilot", throwIfNotFound: true);
         m_Pilot_MovePilot = m_Pilot.FindAction("MovePilot", throwIfNotFound: true);
@@ -812,7 +707,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Garage_RotateRight = m_Garage.FindAction("RotateRight", throwIfNotFound: true);
         // Inventory
         m_Inventory = asset.FindActionMap("Inventory", throwIfNotFound: true);
-        m_Inventory_Newaction = m_Inventory.FindAction("New action", throwIfNotFound: true);
         m_Inventory_OnExit = m_Inventory.FindAction("OnExit", throwIfNotFound: true);
         m_Inventory_PrimaryClick = m_Inventory.FindAction("PrimaryClick", throwIfNotFound: true);
         m_Inventory_SecondaryClick = m_Inventory.FindAction("SecondaryClick", throwIfNotFound: true);
@@ -906,15 +800,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Nau;
     private List<INauActions> m_NauActionsCallbackInterfaces = new List<INauActions>();
     private readonly InputAction m_Nau_MoveNau;
-    private readonly InputAction m_Nau_OpenInventory;
-    private readonly InputAction m_Nau_CanviCapa;
     private readonly InputAction m_Nau_OnShotLeft;
     private readonly InputAction m_Nau_OnShotRight;
     private readonly InputAction m_Nau_Up;
     private readonly InputAction m_Nau_Down;
     private readonly InputAction m_Nau_Barrelroll;
     private readonly InputAction m_Nau_Boost;
-    private readonly InputAction m_Nau_Interact;
     /// <summary>
     /// Provides access to input actions defined in input action map "Nau".
     /// </summary>
@@ -930,14 +821,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Nau/MoveNau".
         /// </summary>
         public InputAction @MoveNau => m_Wrapper.m_Nau_MoveNau;
-        /// <summary>
-        /// Provides access to the underlying input action "Nau/OpenInventory".
-        /// </summary>
-        public InputAction @OpenInventory => m_Wrapper.m_Nau_OpenInventory;
-        /// <summary>
-        /// Provides access to the underlying input action "Nau/CanviCapa".
-        /// </summary>
-        public InputAction @CanviCapa => m_Wrapper.m_Nau_CanviCapa;
         /// <summary>
         /// Provides access to the underlying input action "Nau/OnShotLeft".
         /// </summary>
@@ -962,10 +845,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Nau/Boost".
         /// </summary>
         public InputAction @Boost => m_Wrapper.m_Nau_Boost;
-        /// <summary>
-        /// Provides access to the underlying input action "Nau/Interact".
-        /// </summary>
-        public InputAction @Interact => m_Wrapper.m_Nau_Interact;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -995,12 +874,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MoveNau.started += instance.OnMoveNau;
             @MoveNau.performed += instance.OnMoveNau;
             @MoveNau.canceled += instance.OnMoveNau;
-            @OpenInventory.started += instance.OnOpenInventory;
-            @OpenInventory.performed += instance.OnOpenInventory;
-            @OpenInventory.canceled += instance.OnOpenInventory;
-            @CanviCapa.started += instance.OnCanviCapa;
-            @CanviCapa.performed += instance.OnCanviCapa;
-            @CanviCapa.canceled += instance.OnCanviCapa;
             @OnShotLeft.started += instance.OnOnShotLeft;
             @OnShotLeft.performed += instance.OnOnShotLeft;
             @OnShotLeft.canceled += instance.OnOnShotLeft;
@@ -1019,9 +892,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Boost.started += instance.OnBoost;
             @Boost.performed += instance.OnBoost;
             @Boost.canceled += instance.OnBoost;
-            @Interact.started += instance.OnInteract;
-            @Interact.performed += instance.OnInteract;
-            @Interact.canceled += instance.OnInteract;
         }
 
         /// <summary>
@@ -1036,12 +906,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MoveNau.started -= instance.OnMoveNau;
             @MoveNau.performed -= instance.OnMoveNau;
             @MoveNau.canceled -= instance.OnMoveNau;
-            @OpenInventory.started -= instance.OnOpenInventory;
-            @OpenInventory.performed -= instance.OnOpenInventory;
-            @OpenInventory.canceled -= instance.OnOpenInventory;
-            @CanviCapa.started -= instance.OnCanviCapa;
-            @CanviCapa.performed -= instance.OnCanviCapa;
-            @CanviCapa.canceled -= instance.OnCanviCapa;
             @OnShotLeft.started -= instance.OnOnShotLeft;
             @OnShotLeft.performed -= instance.OnOnShotLeft;
             @OnShotLeft.canceled -= instance.OnOnShotLeft;
@@ -1060,9 +924,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Boost.started -= instance.OnBoost;
             @Boost.performed -= instance.OnBoost;
             @Boost.canceled -= instance.OnBoost;
-            @Interact.started -= instance.OnInteract;
-            @Interact.performed -= instance.OnInteract;
-            @Interact.canceled -= instance.OnInteract;
         }
 
         /// <summary>
@@ -1550,7 +1411,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // Inventory
     private readonly InputActionMap m_Inventory;
     private List<IInventoryActions> m_InventoryActionsCallbackInterfaces = new List<IInventoryActions>();
-    private readonly InputAction m_Inventory_Newaction;
     private readonly InputAction m_Inventory_OnExit;
     private readonly InputAction m_Inventory_PrimaryClick;
     private readonly InputAction m_Inventory_SecondaryClick;
@@ -1565,10 +1425,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
         public InventoryActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        /// <summary>
-        /// Provides access to the underlying input action "Inventory/Newaction".
-        /// </summary>
-        public InputAction @Newaction => m_Wrapper.m_Inventory_Newaction;
         /// <summary>
         /// Provides access to the underlying input action "Inventory/OnExit".
         /// </summary>
@@ -1607,9 +1463,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_InventoryActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_InventoryActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
             @OnExit.started += instance.OnOnExit;
             @OnExit.performed += instance.OnOnExit;
             @OnExit.canceled += instance.OnOnExit;
@@ -1630,9 +1483,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="InventoryActions" />
         private void UnregisterCallbacks(IInventoryActions instance)
         {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
             @OnExit.started -= instance.OnOnExit;
             @OnExit.performed -= instance.OnOnExit;
             @OnExit.canceled -= instance.OnOnExit;
@@ -1799,20 +1649,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMoveNau(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "OpenInventory" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnOpenInventory(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "CanviCapa" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnCanviCapa(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "OnShotLeft" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
@@ -1854,13 +1690,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnBoost(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnInteract(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Pilot" which allows adding and removing callbacks.
@@ -1971,13 +1800,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     /// <seealso cref="InventoryActions.RemoveCallbacks(IInventoryActions)" />
     public interface IInventoryActions
     {
-        /// <summary>
-        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnNewaction(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "OnExit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

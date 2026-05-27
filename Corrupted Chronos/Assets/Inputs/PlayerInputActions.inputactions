@@ -16,24 +16,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "OpenInventory",
-                    "type": "Button",
-                    "id": "d227ee1e-7627-4d8e-838b-086fb2cd6455",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "CanviCapa",
-                    "type": "Value",
-                    "id": "9e4030f5-55f9-4981-a7fe-6b3f122d0b1d",
-                    "expectedControlType": "Axis",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "OnShotLeft",
                     "type": "Button",
                     "id": "7a7f5f6d-9aef-4efe-8a0e-a574a0841a31",
@@ -82,15 +64,6 @@
                     "name": "Boost",
                     "type": "Button",
                     "id": "a196be50-9f0b-4217-92c5-c55201ac93d1",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Interact",
-                    "type": "Button",
-                    "id": "6983b15f-4693-482f-ac8c-81926ae0f107",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -150,50 +123,6 @@
                     "processors": "",
                     "groups": ";Keyboard",
                     "action": "MoveNau",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "5d70d5c4-3085-490d-abda-92e606db2636",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "OpenInventory",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "1D Axis",
-                    "id": "df105a2a-589b-42b8-b65f-5e14852550a1",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "CanviCapa",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "1a642444-cdea-42f1-ba7a-7954a0e08ecf",
-                    "path": "<Mouse>/scroll/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard",
-                    "action": "CanviCapa",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "98e9d5cb-36f7-469b-abe6-5c04d32c11af",
-                    "path": "<Mouse>/scroll/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard",
-                    "action": "CanviCapa",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -260,17 +189,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Boost",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "25b37142-e707-444b-9b58-fde53f5e0815",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -568,15 +486,6 @@
             "id": "731c4309-3a22-48ce-af6f-d13162715bbb",
             "actions": [
                 {
-                    "name": "New action",
-                    "type": "Button",
-                    "id": "87c9c349-7571-4daf-94ff-7226a7af663e",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "OnExit",
                     "type": "Button",
                     "id": "d4cf4010-8baa-496d-955d-3714f5d097d6",
@@ -605,17 +514,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "2c77df96-7ceb-4c0f-b9b0-8c9fafe2b2d6",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "612f86af-8af2-4678-b5e9-e2dc99787f75",

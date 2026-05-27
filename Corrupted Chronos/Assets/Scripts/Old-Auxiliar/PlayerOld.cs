@@ -659,7 +659,7 @@ public class PlayerOld : MonoBehaviour
     {
        
         Debug.Log("rodeta ratolí detectat");
-        float movement = inputManager.playerInputActions.Nau.CanviCapa.ReadValue<float>();
+        /* float movement = inputManager.playerInputActions.Nau.CanviCapa.ReadValue<float>();
         
         //si ja estic fent el moviment cap a una nova capa, es podria guardar en una mena de coyote time
         if (isMoving)
@@ -684,14 +684,14 @@ public class PlayerOld : MonoBehaviour
                 return;
 
             }
-        }
+        } 
         
         Debug.Log("enter TO THE END");
         isMoving = true;
         elapsedTime = 0f;
         //targetPosition = rb.position + new Vector3(0, movement, 0);
         rb.MovePosition(rb.position + new Vector3(0, movement, 0));
-
+*/
     }
     /*void OnDrawGizmos() //els detectors de col·lisió basicament
     {
