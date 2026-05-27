@@ -105,16 +105,16 @@ public class ShipMovement : MonoBehaviour,IDamageable
         ApplyMovement();
 
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, 4))
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, 5))
         {
             Debug.DrawRay(transform.position, Vector3.down * hit.distance, Color.red);
             if(hit.transform.CompareTag("Ground")){
                 Debug.Log("distance ground"+Vector3.Distance(transform.position, hit.point));
-                if (Vector3.Distance(transform.position, hit.point)<=3f)
+                if (Vector3.Distance(transform.position, hit.point)<=4f)
                 {
                     IsGround=true;
                     // PositionGround= hit.transform.position;
-                    posLow=hit.point+ new Vector3(0,1,0);
+                    posLow=hit.point+ new Vector3(0,1.2f,0);
                     posInY=posLow.y;
                     /* if(posLow.y>= transform.position.y)
                     {

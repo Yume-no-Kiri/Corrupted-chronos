@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
     public float knockbackResistance=2f;
 
 
-    public float moveSpeedNau=100f;
+    // public float moveSpeedNau=100f;
     [NonSerialized]
 
     public float moveSpeedPilot=4f;
@@ -120,16 +120,7 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //Para crear un nuevo modificador
-        /* statsManager.instance.AddModifier(Stat.StatType.Stamina, new StatModifier()
-        {
-            type = StatModifier.ModifierType.Add,
-            value = 2.5f,
-            source = null
-        });
 
-        //Para obtener un stat
-        statsManager.instance.GetStat(Stat.StatType.Stamina); */
     }
 
     // Update is called once per frame
@@ -140,45 +131,9 @@ public class GameManager : MonoBehaviour
 
         //if ens falta stamina, iniciem coroutine per si podem regenerar
         if(staminaAct<100 && CoroutineRegenStamina==null &&CoroutineConsumeStamina==null){
-             CoroutineRegenStamina=StartCoroutine(TimerRegenStamina());
+            CoroutineRegenStamina=StartCoroutine(TimerRegenStamina());
         }
-        /* if (StaminaRegen)
-        {
-            //regenerem
-            // staminaAct += staminaRegenQuantity*Time.deltaTime;
-
-            //si màxim apaguem
-            if (staminaAct>= staminaMax)
-            {
-                StaminaRegen=false;
-            }
-        } */
-
-        //si ens ha dit que vol utiltizar stamina
-        /* if (want2Fly)
-        {
-            //parem regeneració
-            StopCoroutine(CoroutineRegenStamina);
-            StaminaRegen=false;
-
-            //podem usar stamina o no
-            if(staminaAct>0) staminaInUse=true;
-            else {
-                staminaInUse=false;
-                return;
-            }
-
-            //gastar stamina
-            staminaAct-=staminaUseQuantity*Time.deltaTime;
-            
-            //ja no podem usar stamina
-            if (staminaAct <= 0)
-            {
-                staminaInUse=false;
-                want2Fly=false;
-            }
-        } */
-        //print("staminaAct: "+staminaAct);
+    
     }
     
     public void InformIfGround(bool IsGround)
@@ -194,14 +149,7 @@ public class GameManager : MonoBehaviour
     public bool CanFly()
     {
         return IsStaminaEmpty? false:true;
-        /* if (!IsStaminaEmpty)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        } */
+      
     }
 
     public void MoveUpStamina(bool ground)
