@@ -19,7 +19,7 @@ public class AllObjectsDataBase : ScriptableObject
         {
             // Debug.Log("awake come here1");
             //AssignTakableData
-            float a = GameManager.Instance.staminaAct;
+            // float a = GameManager.Instance.staminaAct;
             // Debug.Log("awake come here2");
 
             item.AssignTakableData(GameManager.Instance.takableDataBase.ReturnItemDataByName(item.IDItemName));
