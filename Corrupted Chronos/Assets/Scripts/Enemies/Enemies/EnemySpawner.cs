@@ -29,7 +29,7 @@ public class EnemySpawner : MonoBehaviour
     [Header("Runtime")]
     [SerializeField] private List<GameObject> aliveEnemies = new();
 
-    private void Start()
+    private void OnEnable()
     {
         if (passiveSpawn)
         {

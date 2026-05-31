@@ -608,20 +608,4 @@ public class StatModifier
         this.type = type;
         this.source = source;
     }
-
-
-}
-[CreateAssetMenu(fileName = "BaseStats", menuName = "Stats/BaseStats")]
-public class BaseStatsSO : ScriptableObject
-{
-    [Serializable]
-    public struct StatInit
-    {
-        public Stat.StatTypeGeneral type;
-        public float value;
-
-        // public static 
-    }
-
-    public List<StatInit> defaultStats;
 }
