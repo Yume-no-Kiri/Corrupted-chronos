@@ -690,10 +690,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: StatsManager
       objectReference: {fileID: 0}
-    - target: {fileID: 4080332700811385721, guid: a8340979beba7db499340894a7cb2fdb, type: 3}
-      propertyPath: dadesBase
-      value: 
-      objectReference: {fileID: 11400000, guid: fd2363203ae59084d913786dcdd6b87b, type: 2}
     - target: {fileID: 4783677293229633617, guid: a8340979beba7db499340894a7cb2fdb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10

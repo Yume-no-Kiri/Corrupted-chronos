@@ -38,9 +38,11 @@ public class statsManager : MonoBehaviour
 
     void Awake()
     {
-        if (instance != null && instance != this)
+
+        if (instance == null) 
         {
-            Destroy(gameObject);
+            instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {

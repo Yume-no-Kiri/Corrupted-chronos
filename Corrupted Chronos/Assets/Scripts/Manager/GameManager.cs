@@ -41,30 +41,7 @@ public class GameManager : MonoBehaviour
     
     */
 
-    
 
-
-    //demoment les stats del jugador aquí mateix, en un futur potser moure a un script separat i tindre'l també aquí
-
-    // public float health;
-    
-    //stamina stuff
-    /* public float staminaMax=100f;
-    public float staminaAct;
-    public float staminaRegenQuantity=2.5f;
-    public float staminaUseQuantity=10f;
-    public float staminaTime2Regen=4f;
-    public bool StaminaRegen=false;
-    public Coroutine CoroutineRegenStamina=null;
-    public Coroutine CoroutineConsumeStamina=null;
-
-    public bool IsStaminaEmpty {get; private set;}
-    public float staminaMoveUPUseQuantity=5f;
- */
-    // public float EnemyKnockbackResistance=2f;
-
-
-    // public float moveSpeedNau=100f;
     [NonSerialized]
 
     public float moveSpeedPilot=4f;
