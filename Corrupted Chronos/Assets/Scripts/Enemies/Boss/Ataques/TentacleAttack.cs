@@ -12,7 +12,7 @@ public class TentacleAttack : MonoBehaviour, IDamageable
 
     
     
-
+    public ParticleSystem hitParticles;
     public bool independent;
     public KrakenController controller;
 
@@ -224,6 +224,8 @@ public class TentacleAttack : MonoBehaviour, IDamageable
     public void TakeDamage(float amount)
     {
         health -= amount;
+        hitParticles.Stop();
+        hitParticles.Play();
         if (health <= 0)
         {
             Die();
@@ -232,6 +234,7 @@ public class TentacleAttack : MonoBehaviour, IDamageable
 
     public void Die()
     {
+        controller.spawnedTentacles.Remove(this.gameObject);
         Destroy(this.gameObject);
     }
 

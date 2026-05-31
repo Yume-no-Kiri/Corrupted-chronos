@@ -48,4 +48,16 @@ public class KrakenController : MonoBehaviour
     {
         sm.currentState.PhysicsUpdate();
     }
+
+    public void bossDefeated()
+    {
+        GameManager.Instance.onBossDefeat();
+        //Enviar mensaje de victoria al player
+        for (int i = 0; i < spawnedTentacles.Count; i++)
+        {
+            if (spawnedTentacles[i] != null)
+                Destroy(spawnedTentacles[i]);
+        }
+        Destroy(this.gameObject);
+    }
 }

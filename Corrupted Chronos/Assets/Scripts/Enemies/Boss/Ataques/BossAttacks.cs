@@ -10,6 +10,7 @@ public class BossAttacks : MonoBehaviour, IDamageable
     public GameObject headGO;
     Animator anim;
     public Transform bulletSpawnPoint;
+    public ParticleSystem hitParticles;
 
     [Header("Move kraken")]
     public Vector3 newPos;
@@ -125,6 +126,8 @@ public class BossAttacks : MonoBehaviour, IDamageable
     public void TakeDamage(float amount)
     {
         health -= amount;
+        hitParticles.Stop();
+        hitParticles.Play();
         if (health <= 0)
         {
             Die();
@@ -133,7 +136,7 @@ public class BossAttacks : MonoBehaviour, IDamageable
 
     public void Die()
     {
-        krakenController.BossHealth -= maxHealth;
+        krakenController.bossDefeated();
     }
 
     public void AddKnockback(Vector3 dir, float force)
