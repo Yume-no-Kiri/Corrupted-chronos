@@ -6,7 +6,7 @@ using UnityEngine;
 
 [Serializable]
 // [CreateAssetMenu(fileName = "ItemData", menuName = "Scriptable Objects/ItemData")]
-public class TakableDataSO
+public class TakableData
 {
     // [field: SerializeField]
 
@@ -16,6 +16,9 @@ public class TakableDataSO
 
     public GameObject toInstanciate;
 
+/* [field: SerializeField] public string nameID { get; private set; }
+    [field: SerializeField] public GameObject toInstanciate { get; private set; }
+    [field: SerializeField] public float baseDamage { get; private set; } */
     /* public bool canBePlaced;
     public PlacementDataItem placementDataItem{get; private set;} 
 
@@ -31,10 +34,10 @@ public class TakableDataBase : ScriptableObject
 {
 
     [field: SerializeField]
-    public List<TakableDataSO> listItemsAux;
+    public List<TakableData> listItemsAux;
 
     //he de fer una conversió a diccionari
-    public Dictionary<string, TakableDataSO> listItems= new Dictionary<string, TakableDataSO>();
+    public Dictionary<string, TakableData> listItems= new Dictionary<string, TakableData>();
 
     #region Change to usable values
     public void StartConfigItem()
@@ -47,7 +50,7 @@ public class TakableDataBase : ScriptableObject
     }
     #endregion
 
-    public TakableDataSO ReturnItemDataByName(string name)
+    public TakableData ReturnItemDataByName(string name)
     {
         // Debug.Log("awake come here inside1");
 
@@ -69,6 +72,5 @@ public class TakableDataBase : ScriptableObject
         }
     }
 
-    //MOLT TEMPORAL, revisar i fusionar amb EachPartScript(potser)
    
 }

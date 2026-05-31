@@ -25,7 +25,7 @@ public class InteractionScriptAdder : MonoBehaviour
     //quan l'objecte entri en la zona afegeix la possibilitat d'interactuar
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Player entered");
+        // Debug.Log("Player entered");
 
         //comprovem que es jugador
         if (other.CompareTag("Player"))
@@ -33,7 +33,7 @@ public class InteractionScriptAdder : MonoBehaviour
             
             //trigger detecta nau o pilot, pero no el seu pare player, qeu l'escript que ens interessa
             Player i= other.GetComponentInParent<Player>();
-            Debug.Log("this is your Jugador" +i.gameObject.name);
+            // Debug.Log("this is your Jugador" +i.gameObject.name);
             if (i != null)
             {
                 //canvia l'interacció, canviar de pilot nau, nau pilot, entrar sortir de garatge, xarlar, etc...
@@ -46,7 +46,7 @@ public class InteractionScriptAdder : MonoBehaviour
             }
 
             //playerInputActions.Global.Interactua += other. nau_pilot();
-            Debug.Log("Player entered special zone.");
+            // Debug.Log("Player entered special zone.");
         }
     }
 
@@ -55,7 +55,7 @@ public class InteractionScriptAdder : MonoBehaviour
     {
         //mètode de seguretat, per si les mosques.
         //moltes vegades al desactivar objectes aquest mètode no es cridara
-        Debug.Log("Player left");
+        // Debug.Log("Player left");
 
         if (other.CompareTag("Player"))
         {
@@ -72,37 +72,10 @@ public class InteractionScriptAdder : MonoBehaviour
             }
 
             //playerInputActions.Global.Interactua += other. nau_pilot();
-            Debug.Log("Player left special zone.");
+            // Debug.Log("Player left special zone.");
         }
     }
 
-   /* bool CanGetPlayer(var i)
-    {
-        
 
-        if (i != null)
-        {
-            Debug.Log("error get Player");
-            return false;
-            
-        }
-        else
-        {
-            Debug.Log("get Player");
-            return true;
-        }
-        
-    }*/
-    
-    /* void OnDrawGizmos()
-    {
-        boxCollider = GetComponent<BoxCollider>();
-        if (boxCollider != null)
-        {
-            Gizmos.color = Color.cyan; // Change color if needed
-            Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.DrawWireCube(boxCollider.center, boxCollider.size);
-        }
-    }*/
     
 }

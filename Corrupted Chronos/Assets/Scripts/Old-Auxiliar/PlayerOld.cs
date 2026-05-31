@@ -292,12 +292,12 @@ public class PlayerOld : MonoBehaviour
  
         }else
         {
-            if (GameManager.Instance.staminaInUse == false)
+            /* if (GameManager.Instance.staminaInUse == false)
             {
                 // _gravity=true;
 
                 StartCoroutine(ActivateGravity());
-            }
+            } */
             //gastar energia per mantenir-se en la capa
         }
 
@@ -333,7 +333,7 @@ public class PlayerOld : MonoBehaviour
                 //que? mou enrere o 
             }
 
-            rb.AddForce(_newMovePosition*GameManager.Instance.dashingForce);
+            // rb.AddForce(_newMovePosition*GameManager.Instance.dashingForce);
         }
         else
         {
@@ -706,14 +706,14 @@ public class PlayerOld : MonoBehaviour
 
     void toFly()
     {
-        if (!lockDown)
+        /* if (!lockDown)
         {
             GameManager.Instance.want2Fly=true;
         }
         else
         {
             GameManager.Instance.want2Fly=false;
-        }
+        } */
     }
 
     #endregion

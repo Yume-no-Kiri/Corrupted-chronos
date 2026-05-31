@@ -47,6 +47,7 @@ public abstract class EnemyUnit : MonoBehaviour, IDamageable
     private float lastFireTime;
     private SpriteRenderer spr;
     private Vector3 externalForce = Vector3.zero;
+    private float KnockbackResistance=2f;
 
     protected bool CanFire()
     {
@@ -87,7 +88,7 @@ public abstract class EnemyUnit : MonoBehaviour, IDamageable
     {
         if (externalForce.magnitude > 0.01f)
         {
-            externalForce = Vector3.Lerp(externalForce, Vector3.zero, GameManager.Instance.knockbackResistance * Time.deltaTime);
+            externalForce = Vector3.Lerp(externalForce, Vector3.zero, KnockbackResistance * Time.deltaTime);
         }
         else
         {

@@ -16,89 +16,91 @@ MonoBehaviour:
   - <Name>k__BackingField: Escopeta
     <ID>k__BackingField: 0
     <dictionaryAuxSize>k__BackingField:
-    - typeGround: 1
+    - typeGround: 2
       sizeGround:
         Origen: {x: 0, y: 0}
         Size: {x: 1, y: 2}
         ExtraSize: []
-    - typeGround: 2
+    - typeGround: 3
       sizeGround:
-        Origen: {x: 0, y: 0}
-        Size: {x: 3, y: 4}
-        ExtraSize: []
+        Origen: {x: 0, y: -1}
+        Size: {x: 3, y: 3}
+        ExtraSize:
+        - {x: -1, y: 0}
+        - {x: 1, y: 0}
     <dictionaryAuxRequires>k__BackingField:
-    - typeGround: 2
+    - typeGround: 3
       sizeGround:
-        Origen: {x: 0, y: 0}
-        Size: {x: 1, y: 2}
+        Origen: {x: 0, y: -1}
+        Size: {x: 1, y: 1}
         ExtraSize: []
       nRequires: 1
     <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: 5c27cb9d07c56a444a054e4a978c1ef8, type: 3}
   - <Name>k__BackingField: Metralleta
     <ID>k__BackingField: 1
     <dictionaryAuxSize>k__BackingField:
-    - typeGround: 1
+    - typeGround: 2
       sizeGround:
         Origen: {x: 0, y: 0}
         Size: {x: 1, y: 2}
         ExtraSize: []
-    - typeGround: 2
+    - typeGround: 3
       sizeGround:
         Origen: {x: 0, y: 0}
         Size: {x: 3, y: 4}
         ExtraSize:
         - {x: 5, y: 0}
     <dictionaryAuxRequires>k__BackingField:
-    - typeGround: 2
+    - typeGround: 3
       sizeGround:
-        Origen: {x: 0, y: 0}
-        Size: {x: 1, y: 2}
+        Origen: {x: 0, y: -1}
+        Size: {x: 1, y: 1}
         ExtraSize: []
       nRequires: 1
     <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: 12447b49dcaf12544860785f83fc9963, type: 3}
   - <Name>k__BackingField: Flamethrower
     <ID>k__BackingField: 2
     <dictionaryAuxSize>k__BackingField:
-    - typeGround: 1
+    - typeGround: 2
       sizeGround:
         Origen: {x: 0, y: 0}
         Size: {x: 2, y: 2}
         ExtraSize:
         - {x: 0, y: 1}
         - {x: 0, y: 2}
-    - typeGround: 2
+    - typeGround: 3
       sizeGround:
         Origen: {x: 0, y: 0}
         Size: {x: 4, y: 4}
         ExtraSize:
         - {x: -1, y: 2}
+        - {x: 0, y: 2}
         - {x: 1, y: 2}
-        - {x: 0, y: 3}
+        - {x: 1, y: 1}
     <dictionaryAuxRequires>k__BackingField:
-    - typeGround: 2
+    - typeGround: 3
       sizeGround:
         Origen: {x: 0, y: 0}
         Size: {x: 2, y: 2}
         ExtraSize:
         - {x: 0, y: 1}
-        - {x: 0, y: 2}
       nRequires: 1
     <PrefabGaratge>k__BackingField: {fileID: 5216852073179350294, guid: 8f642f0ea9e451a4bb682d871b5ec92a, type: 3}
   - <Name>k__BackingField: Quadrat
     <ID>k__BackingField: 10
     <dictionaryAuxSize>k__BackingField:
-    - typeGround: 1
+    - typeGround: 2
       sizeGround:
         Origen: {x: 0, y: 0}
         Size: {x: 1, y: 1}
         ExtraSize: []
-    - typeGround: 2
+    - typeGround: 3
       sizeGround:
         Origen: {x: 0, y: 0}
         Size: {x: 3, y: 3}
         ExtraSize: []
     <dictionaryAuxRequires>k__BackingField:
-    - typeGround: 2
+    - typeGround: 3
       sizeGround:
         Origen: {x: 0, y: 0}
         Size: {x: 1, y: 1}
@@ -108,12 +110,12 @@ MonoBehaviour:
   - <Name>k__BackingField: 3x1
     <ID>k__BackingField: 3
     <dictionaryAuxSize>k__BackingField:
-    - typeGround: 1
+    - typeGround: 2
       sizeGround:
         Origen: {x: 0, y: 0}
         Size: {x: 3, y: 1}
         ExtraSize: []
-    - typeGround: 2
+    - typeGround: 3
       sizeGround:
         Origen: {x: 0, y: 0}
         Size: {x: 5, y: 3}
@@ -125,12 +127,12 @@ MonoBehaviour:
   - <Name>k__BackingField: NauBase
     <ID>k__BackingField: 0
     <dictionaryAuxSize>k__BackingField:
-    - typeGround: 1
+    - typeGround: 2
       sizeGround:
         Origen: {x: 0, y: 0}
         Size: {x: 2, y: 2}
         ExtraSize: []
-    - typeGround: 2
+    - typeGround: 3
       sizeGround:
         Origen: {x: 0, y: 0}
         Size: {x: 4, y: 4}

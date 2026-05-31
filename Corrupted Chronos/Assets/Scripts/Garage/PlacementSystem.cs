@@ -370,10 +370,10 @@ public class PlacementSystem : MonoBehaviour
         //maybe move into allobject
         _selectedObject.AssignIDP(thisIdp);
         if(!firstStructure){      
-            partToAdd.GetComponent<EachPartScript>().AssignIDP(thisIdp);
+            partToAdd.GetComponent<EachObjectScript>().AssignIDP(thisIdp);
             GameManager.Instance.playerInstance.GetComponent<InventoryManager>().CreateInventory(thisIdp);
             Debug.Log("what is partadded:"+partToAdd.name.ToString());
-            statsManager.instance.CreateStatsGun(partToAdd.GetComponent<EachPartScript>().returnPartName() ,thisIdp);
+            statsManager.instance.CreateStatsGun(partToAdd.GetComponent<EachObjectScript>().returnPartName() ,thisIdp);
             //
             //also creates inventory
         }

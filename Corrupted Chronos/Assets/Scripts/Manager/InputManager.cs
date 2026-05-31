@@ -21,8 +21,6 @@ public class InputManager : MonoBehaviour
 
 
     private Camera cameraGarage;
-    [SerializeField]
-    private Camera cameraGameplay;
     private Vector3 mousePos;
     
     
@@ -75,19 +73,6 @@ public class InputManager : MonoBehaviour
        
         mousePos = playerInputActions.Global.MousePosition.ReadValue<Vector2>();
 
-        /* if (!playerInputActions.Garage.enabled)
-        {
-            Ray ray2 = cameraGameplay.ScreenPointToRay(mousePos);
-            if (Physics.Raycast(ray2, out RaycastHit hit2)) {
-                // "_PointB" és el nom de la propietat al Shader Graph
-                // meuMaterial.SetVector("_PointB", hit.point);
-                GameManager.Instance.WaterMaterial.SetVector("_PositionMouse", hit2.point);
-
-            }
-
-            // GameManager.Instance.WaterMaterial.SetVector("_PositionMouse", );
-
-        }else  */
         if (playerInputActions.Garage.enabled)
         {
             //Camera camGarage = _garage.GetComponentInChildren<Camera>();

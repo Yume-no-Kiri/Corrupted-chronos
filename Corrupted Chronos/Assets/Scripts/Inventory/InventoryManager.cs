@@ -41,7 +41,7 @@ public class InventoryManager : MonoBehaviour
             return inventory;
         }
 
-        public bool AddItem(AllObjectSO newItem)
+        public bool AddItem(AllObject newItem)
         {   
             Debug.Log("newItem sprite"+newItem.takableDataSO.sprite.name);
 
@@ -152,12 +152,12 @@ public class InventoryManager : MonoBehaviour
  */
     }
 
-  /*   void addNewItemToInventory(ItemData item)
+    void OnDisable()
     {
-        Debug.Log("added new object inventory");
-        if(AddItem(item));
-        // listItems.Add(item);
-    } */
+        DeselectItemSlot();
+        selectedSlot=null;
+    }
+
 
 
     public void OpenInventory(int actIDP)
@@ -225,7 +225,7 @@ public class InventoryManager : MonoBehaviour
     }
 
 
-    public bool AddItemSpaceShip(AllObjectSO newItem)
+    public bool AddItemSpaceShip(AllObject newItem)
     {   
         return inventorySpaceship.AddItem(newItem);
 
@@ -264,6 +264,7 @@ public class InventoryManager : MonoBehaviour
 
     public void OnDeactivate()
     {
+        DeselectItemSlot();
         selectedSlot=null;
     }
     #endregion
@@ -321,7 +322,7 @@ public class InventoryManager : MonoBehaviour
                 else
                 {
                     //intercanvia
-                    AllObjectSO aux=slotInventory.thisItem;
+                    AllObject aux=slotInventory.thisItem;
                     selectedSlot.DeactivateSelectedEffect();
                     slotInventory.AddItem(selectedSlot.thisItem);
                     selectedSlot.AddItem(aux);

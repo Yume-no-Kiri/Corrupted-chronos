@@ -256,7 +256,6 @@ MonoBehaviour:
   listParts: 2
   listObjects: 100
   firepoint: {fileID: 698397631943366705}
-  bulletPrefab: {fileID: 8735485520253785074, guid: dd9dd7e0bda9d634dab941c77780f51e, type: 3}
   sprite: {fileID: 4420405078208937825}
 --- !u!114 &6119229187638868060
 MonoBehaviour:

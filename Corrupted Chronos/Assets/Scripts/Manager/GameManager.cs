@@ -23,16 +23,16 @@ public class GameManager : MonoBehaviour
     [Header("Manager")]
     // public GameObject HitboxBulletPrefab;
     public PlacementSystem placementSystem;
-    
     public InputManager inputManager;
-
     public GameObject playerInstance;
+    public GameObject EnemySpawner;
+
     // public ShipMovement shipInstance;
 
     [Header("Materials")]
     public Material WaterMaterial;
 
-    [Header("Variables that should be in statsManager")]
+    [Header("Variables that should be in other places")]
 
     /*
     Guardem tota informació que s'haurà d'anar actualitzant, estats del jugador i coses així
@@ -45,10 +45,10 @@ public class GameManager : MonoBehaviour
 
     //demoment les stats del jugador aquí mateix, en un futur potser moure a un script separat i tindre'l també aquí
 
-    public float health;
+    // public float health;
     
     //stamina stuff
-    public float staminaMax=100f;
+    /* public float staminaMax=100f;
     public float staminaAct;
     public float staminaRegenQuantity=2.5f;
     public float staminaUseQuantity=10f;
@@ -59,8 +59,8 @@ public class GameManager : MonoBehaviour
 
     public bool IsStaminaEmpty {get; private set;}
     public float staminaMoveUPUseQuantity=5f;
-
-    public float knockbackResistance=2f;
+ */
+    // public float EnemyKnockbackResistance=2f;
 
 
     // public float moveSpeedNau=100f;
@@ -76,16 +76,7 @@ public class GameManager : MonoBehaviour
     [NonSerialized]
 
     public float rotationSpeedLeft=80f;
-
-
-    public float dashingForce=20f;
-
-
-
-    //variable que es crida d'altres mètodes per voler volar i usar la stamina
-    public bool want2Fly=false;
-    //variable que respon gameManager i contesta a si es pot volar, osigui usar la stamina
-    public bool staminaInUse { get; private set;}
+    // public float dashingForce=20f;
 
 
     //to ceate items and parts, so we can identify diferent items and parts even if they are the same but repeated
@@ -93,8 +84,6 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-
-
         if(Instance == null)
         {
             Instance=this;
@@ -108,12 +97,6 @@ public class GameManager : MonoBehaviour
         placementDataBase.StartConfigPositions();
         takableDataBase.StartConfigItem();
         allObjectsDataBase.StartConfigObject();
-
-        staminaAct=staminaMax;
-        IsStaminaEmpty=false;
-
-        
-        // shipInstance= playerInstance.GetComponent<ShipMovement>();
     }
 
 
@@ -127,74 +110,19 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         WaterMaterial.SetVector("_PositionPlayer", playerInstance.transform.position);
-        Debug.Log("stamina:"+staminaAct);
-
-        //if ens falta stamina, iniciem coroutine per si podem regenerar
-        if(staminaAct<100 && CoroutineRegenStamina==null &&CoroutineConsumeStamina==null){
-            CoroutineRegenStamina=StartCoroutine(TimerRegenStamina());
-        }
-    
+  
     }
-    
-    public void InformIfGround(bool IsGround)
+
+    public void DeactivateOrActivateEnemies(bool enable)
     {
-        if (IsGround)
-        {
-            if(CoroutineConsumeStamina!=null){ 
-                StopCoroutine(CoroutineConsumeStamina);
-                CoroutineConsumeStamina=null;
-            }
-        }
-    }
-    public bool CanFly()
-    {
-        return IsStaminaEmpty? false:true;
-      
+        if(EnemySpawner!=null) EnemySpawner.SetActive(enable);
+        else Debug.LogWarning("EnemySpawner not assigned");
     }
 
-    public void MoveUpStamina(bool ground)
-    {
-        if(!ground){
-            if (CoroutineRegenStamina != null)
-            {
-                StopCoroutine(CoroutineRegenStamina);
-                CoroutineRegenStamina=null;
-            }
-            if(CoroutineConsumeStamina!=null) StopCoroutine(CoroutineConsumeStamina);
-            CoroutineConsumeStamina= StartCoroutine(UseStamina());
-        }// staminaAct-=staminaMoveUPUseQuantity; 
-    }
+   
 
 
-
-    IEnumerator TimerRegenStamina()
-    {
-        yield return new WaitForSeconds(staminaTime2Regen);
-        StaminaRegen=true;
-        while(staminaAct<staminaMax){
-            yield return new WaitForSeconds(0.1f);
-            staminaAct+=staminaRegenQuantity;    
-            IsStaminaEmpty=false;
-        }
-        CoroutineRegenStamina=null;
-    }
-    
-    IEnumerator UseStamina()
-    {
-        if(CoroutineRegenStamina!=null){ 
-            StopCoroutine(CoroutineRegenStamina);
-            CoroutineRegenStamina=null;    
-        }
-        while(staminaAct>0){
-            yield return new WaitForSeconds(0.1f);
-            staminaAct-=staminaMoveUPUseQuantity;    
-        }
-        staminaAct=0;
-        IsStaminaEmpty=true;
-        CoroutineConsumeStamina=null;
-    }
-
-
+    #region ForParts
     public PartAdder returnGarageAdder()
     {
         if( !playerInstance.GetComponent<PartAdder>()) Debug.LogError("NO HI HA GARAGEADDER");
@@ -211,6 +139,7 @@ public class GameManager : MonoBehaviour
         _countIDP++;
         return _countIDP;
     }
+    #endregion
     #region rewards
 
     public void EnemyKilled(Vector3 posReward)

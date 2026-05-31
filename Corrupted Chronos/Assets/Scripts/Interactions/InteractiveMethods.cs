@@ -60,7 +60,7 @@ public class InteractiveMethods : MonoBehaviour
     //fer les interaccions del jugador, segons la llista d'ionteraccions que tenim
     public void DoInteractions(List<InteractionType> interactions, Player player)
     {
-        Debug.Log("do itneractions %i:"+interactions.Count);
+        // Debug.Log("do itneractions %i:"+interactions.Count);
 
         //revisar funcionament, un cop surtis d'un dels menus hauries d'esperar a que aquest acabi per poder invocar el següent
         for (int i = 0; i < interactions.Count; i++)
@@ -122,7 +122,7 @@ public class InteractiveMethods : MonoBehaviour
         
 
 
-        Debug.Log("AAAAAAAAAAAAAAAAAAAA");
+        // Debug.Log("AAAAAAAAAAAAAAAAAAAA");
 
 
 

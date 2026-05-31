@@ -8,14 +8,15 @@ using UnityEngine;
 //aquí afegir més tipus com: punta cano
 public enum TypeGround
 {
-    Null,
-    Occupied,
-    Buildable,
+    Null=0,
+    Empty=1,
+    Occupied=2,
+    Buildable=3,
 
 
-    Muzzle, //boquilla de arma
-    Magazine, //cargador
-    OverHeat,
+    Muzzle=4, //boquilla de arma
+    Magazine=5, //cargador
+    OverHeat=6,
 } 
 
 

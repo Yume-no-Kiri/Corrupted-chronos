@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -26,6 +27,14 @@ public class statsManager : MonoBehaviour
 
     [field: SerializeField] public ListPartStats listPartStats { get; private set; }
     [field: SerializeField] public ListBulletStats listBulletStats { get; private set; }
+
+
+    public Coroutine CoroutineRegenShields=null;
+    public Coroutine CoroutineRegenStamina=null;
+    public Coroutine CoroutineConsumeStamina=null;
+    public bool StaminaRegen=false;
+    public bool IsStaminaEmpty {get; private set;}
+//  =false;
 
     void Awake()
     {
@@ -82,43 +91,143 @@ public class statsManager : MonoBehaviour
 
         }
 
-
+        IsStaminaEmpty=false;
     }
 
     private void Update()
     {
-        if (GetShipStat(Stat.StatTypeGeneral.MaxShields) > GetShipStat(Stat.StatTypeGeneral.CurrentShields))
+       /*  if (GetShipStat(Stat.StatTypeGeneral.MaxShields) > GetShipStat(Stat.StatTypeGeneral.CurrentShields))
         {
             increaseStatValue(Stat.StatTypeGeneral.CurrentShields, GetShipStat(Stat.StatTypeGeneral.ShieldRegenRate) * Time.deltaTime);
+        } */
+        if(GetShipStat(Stat.StatTypeGeneral.CurrentStamina)<100 && CoroutineRegenStamina==null &&CoroutineConsumeStamina==null){
+            CoroutineRegenStamina=StartCoroutine(TimerRegenStamina());
         }
     }
 
-    #region Methods
-
-
-
-    public void CreateStatsGun(ListNameParts name, int idp)
+    public void increaseStatValue(Stat.StatTypeGeneral type, float amount)
     {
-        Dictionary<Stat.StatTypeGun, Stat> baseStats = listPartStats.ReturnStatsByName(name);
-        if (baseStats != null && baseStats.Count > 0)
+        if (statLookup.TryGetValue(type, out var stat))
         {
-            Dictionary<Stat.StatTypeGun, Stat> independentStats = new Dictionary<Stat.StatTypeGun, Stat>();
-
-            foreach (var kvp in baseStats)
-            {
-                //creem una copia de les stats base, si no, modiifcariem les stats/*  */
-                independentStats[kvp.Key] = new Stat
-                {
-                    name = kvp.Value.name,
-                    baseValue = kvp.Value.baseValue,
-                    currentValue = kvp.Value.baseValue
-                };
-            }
-            statEachGun[idp] = independentStats;
+            stat.currentValue += amount;
         }
-        else { Debug.LogError("don't found gun stats"); }
     }
 
+    public void decreaseStatValue(Stat.StatTypeGeneral type, float amount)
+    {
+        if (statLookup.TryGetValue(type, out var stat))
+        {
+            stat.currentValue -= amount;
+        }
+    }
+    #region shield
+    public void JustHit()
+    {
+        if(CoroutineRegenShields != null){
+            StopCoroutine(CoroutineRegenShields);
+            CoroutineRegenShields=null;
+        }
+        CoroutineRegenShields=StartCoroutine(TimerRegenShields());
+    }
+
+    private IEnumerator TimerRegenShields()
+    {
+         yield return new WaitForSecondsRealtime(statLookup[Stat.StatTypeGeneral.ShieldRegenDelay].currentValue);
+        // StaminaRegen=true;
+        float shieldsAct= statLookup[Stat.StatTypeGeneral.CurrentShields].currentValue;
+        float shieldsMax= statLookup[Stat.StatTypeGeneral.MaxShields].currentValue;
+
+        while(shieldsAct<shieldsMax){
+            yield return new WaitForSecondsRealtime(0.2f);
+            //staminaAct+=staminaRegenQuantity; 
+            increaseStatValue(Stat.StatTypeGeneral.CurrentShields, statLookup[Stat.StatTypeGeneral.ShieldRegenRate].currentValue);    
+            // IsStaminaEmpty=false;
+
+            shieldsAct= statLookup[Stat.StatTypeGeneral.CurrentShields].currentValue;
+            shieldsMax= statLookup[Stat.StatTypeGeneral.MaxShields].currentValue;
+        }
+        CoroutineRegenShields=null;
+    }
+
+    #endregion
+
+
+    #region stamina 
+    public void InformIfGround(bool IsGround)
+    {
+        if (IsGround)
+        {
+            if(CoroutineConsumeStamina!=null){ 
+                StopCoroutine(CoroutineConsumeStamina);
+                CoroutineConsumeStamina=null;
+            }
+        }
+    }
+    public bool CanFly()
+    {
+        return IsStaminaEmpty? false:true;
+      
+    }
+
+    public void MoveUpStamina(bool ground)
+    {
+        // if(!ground){
+        if(CoroutineConsumeStamina==null) {
+            if (CoroutineRegenStamina != null)
+            {
+                StopCoroutine(CoroutineRegenStamina);
+                CoroutineRegenStamina=null;
+            }
+            // StopCoroutine(CoroutineConsumeStamina);
+            CoroutineConsumeStamina= StartCoroutine(UseStamina());
+        }
+        // }// staminsaAct-=staminaMoveUPUseQuantity; 
+    }
+
+
+
+    private IEnumerator TimerRegenStamina()
+    {
+        yield return new WaitForSecondsRealtime(statLookup[Stat.StatTypeGeneral.StaminaRegenDelay].currentValue);
+        StaminaRegen=true;
+        float staminaAct= statLookup[Stat.StatTypeGeneral.CurrentStamina].currentValue;
+        float staminaMax= statLookup[Stat.StatTypeGeneral.MaxStamina].currentValue;
+
+        while(staminaAct<staminaMax){
+            yield return new WaitForSecondsRealtime(0.2f);
+            //staminaAct+=staminaRegenQuantity; 
+            increaseStatValue(Stat.StatTypeGeneral.CurrentStamina, statLookup[Stat.StatTypeGeneral.StaminaRegenRate].currentValue);    
+            IsStaminaEmpty=false;
+
+            staminaAct= statLookup[Stat.StatTypeGeneral.CurrentStamina].currentValue;
+            staminaMax= statLookup[Stat.StatTypeGeneral.MaxStamina].currentValue;
+        }
+        CoroutineRegenStamina=null;
+    }
+    
+    private IEnumerator UseStamina()
+    {
+        // float staminaAct= statLookup[Stat.StatTypeGeneral.CurrentStamina].currentValue;
+
+        if(CoroutineRegenStamina!=null){ 
+            StopCoroutine(CoroutineRegenStamina);
+            CoroutineRegenStamina=null;    
+        }
+        while(statLookup[Stat.StatTypeGeneral.CurrentStamina].currentValue>0){
+            yield return new WaitForSecondsRealtime(0.2f);
+            //staminaAct-=staminaMoveUPUseQuantity;    
+            decreaseStatValue(Stat.StatTypeGeneral.CurrentStamina, statLookup[Stat.StatTypeGeneral.StaminaConsumeRate].currentValue);    
+
+        }
+        statLookup[Stat.StatTypeGeneral.CurrentStamina].currentValue=0;
+        IsStaminaEmpty=true;
+        CoroutineConsumeStamina=null;
+    }
+    
+    #endregion
+
+ 
+    #region AddModifier and RemoveMoidifier
     public float AddModifier(Stat.StatTypeGeneral type, StatModifier mod)
     {
         if (statLookup.TryGetValue(type, out var stat))
@@ -141,31 +250,6 @@ public class statsManager : MonoBehaviour
         Debug.LogWarning($"Stat {type} not found");
         return 0f;
     }
-
-    public void RemoveModifier(Stat.StatTypeGeneral type, StatModifier mod)
-    {
-        if (statLookup.TryGetValue(type, out var stat))
-        {
-            stat.removeModifier(mod);
-        }
-    }
-
-    public void increaseStatValue(Stat.StatTypeGeneral type, float amount)
-    {
-        if (statLookup.TryGetValue(type, out var stat))
-        {
-            stat.currentValue += amount;
-        }
-    }
-
-    public void decreaseStatValue(Stat.StatTypeGeneral type, float amount)
-    {
-        if (statLookup.TryGetValue(type, out var stat))
-        {
-            stat.currentValue -= amount;
-        }
-    }
-
 
     public float AddModifier(int modifyIDP, Stat.StatTypeGun type, StatModifier mod)
     {
@@ -193,27 +277,37 @@ public class statsManager : MonoBehaviour
             Debug.LogWarning($"No es pot treure el modificador: ID d'arma {modifyIDP} no trobada.");
         }
     }
-
-    /* ia diu:
-    Si aquest mètode es crida moltes vegades (per exemple, cada cop que dispares), fer ToString() i TryParse és una mica costós.
-     Una solució més professional seria crear un Diccionari de traducció estàtic un sol cop:
-     private static Dictionary<Stat.StatTypeBullet, Stat.StatTypeGaneral> _bulletToGeneralMap;
-
-    private void InitializeMap() {
-        _bulletToGeneralMap = new();
-        foreach (Stat.StatTypeBullet b in Enum.GetValues(typeof(Stat.StatTypeBullet))) {
-            if (Enum.TryParse(b.ToString(), out Stat.StatTypeGaneral g)) {
-                _bulletToGeneralMap[b] = g;
-            }
+    public void RemoveModifier(Stat.StatTypeGeneral type, StatModifier mod)
+    {
+        if (statLookup.TryGetValue(type, out var stat))
+        {
+            stat.removeModifier(mod);
         }
     }
+    #endregion
 
-    // I al teu bucle:
-    if (_bulletToGeneralMap.TryGetValue(tipus, out var generalType)) {
-        finalBullet.StatsBullet[tipus] = GetShipGunBulletStat(generalType, idp, bulletPreset);
+    #region get stats
+    public void CreateStatsGun(ListNameParts name, int idp)
+    {
+        Dictionary<Stat.StatTypeGun, Stat> baseStats = listPartStats.ReturnStatsByName(name);
+        if (baseStats != null && baseStats.Count > 0)
+        {
+            Dictionary<Stat.StatTypeGun, Stat> independentStats = new Dictionary<Stat.StatTypeGun, Stat>();
+
+            foreach (var kvp in baseStats)
+            {
+                //creem una copia de les stats base, si no, modiifcariem les stats/*  */
+                independentStats[kvp.Key] = new Stat
+                {
+                    name = kvp.Value.name,
+                    baseValue = kvp.Value.baseValue,
+                    currentValue = kvp.Value.baseValue
+                };
+            }
+            statEachGun[idp] = independentStats;
+        }
+        else { Debug.LogError("don't found gun stats"); }
     }
-
-      */
     public AllInformationBullet ReturnFinalStatsBullet(int idp, AllInformationBullet bulletPreset)
     {
         AllInformationBullet finalBullet = new AllInformationBullet();
@@ -254,14 +348,6 @@ public class statsManager : MonoBehaviour
         return Enum.IsDefined(typeof(Stat.StatTypeBullet), nom);
     }
 
-    /* public bool StatExistsBulet(Stat.StatTypeBullet bulletStat)
-    {
-        string nom = bulletStat.ToString();
-        // Comprova si el string "Damage" existeix dins de StatTypeGeneral
-        return Enum.IsDefined(typeof(Stat.StatTypeGaneral), nom);
-    } */
-
-    #region get single stat
     public float GetShipStat(Stat.StatTypeGeneral type)
     {
         if (statLookup.TryGetValue(type, out var stat))
@@ -352,7 +438,6 @@ public class statsManager : MonoBehaviour
 
         return finalValue;
     }
-    #endregion
 
     #endregion
 }
@@ -364,16 +449,23 @@ public class Stat
     {
         //ship: 6
         MaxHealth=0, //rang (0, inf)
-        MaxStamina=1, //rang (0, inf)
-        MaxShields=2, //rang (0, inf)
-        ShieldRegenRate =3, //rang (0, inf)
-        ShieldRegenDelay=4, //rang (0, inf)
-        Speed =4, //rang (0, inf)
-        Agility=5, //rang (0, inf)
+        CurrentHealth=1,
+        Speed=2, //rang (0, inf)
+        Agility=3, //rang (0, inf)
+        KnockbackResistance=4,
 
-        CurrentHealth,
-        CurrentStamina,
-        CurrentShields,
+        MaxShields=10, //rang (0, inf)
+        CurrentShields=11,
+        ShieldRegenRate =12, //rang (0, inf)
+        ShieldRegenDelay=13, //rang (0, inf)
+        
+        MaxStamina=20, //rang (0, inf)
+        CurrentStamina=21,
+        StaminaRegenRate=22,
+        StaminaRegenDelay=23,
+        StaminaConsumeRate=24,
+
+
 
         // guns: 4
         TimeBetweenShots =50, //rang (0, inf)

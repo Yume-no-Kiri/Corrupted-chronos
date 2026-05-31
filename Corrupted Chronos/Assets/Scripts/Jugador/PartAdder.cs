@@ -141,7 +141,7 @@ public class PartAdder : MonoBehaviour
         GameObject instPart = Instantiate(gb,adder.transform);
         instPart.transform.localRotation=rot;
         instPart.transform.localPosition=newPos+offset;
-        instPart.GetComponent<EachPartScript>().AssignIDP(cpart.IDP);
+        instPart.GetComponent<EachObjectScript>().AssignIDP(cpart.IDP);
 
         //falta assignar la mateixa IDP
         Transform coll = instPart.transform.Find("Collisions");
@@ -158,7 +158,7 @@ public class PartAdder : MonoBehaviour
 
         foreach (var item in NewerParts)
         {
-            pa= AddedParts[item].GetComponent<EachPartScript>().ActivateGun();
+            pa= AddedParts[item].GetComponent<EachObjectScript>().ActivateGun();
             pa.SubscribeEvent();
 
         }
@@ -242,7 +242,7 @@ public class PartAdder : MonoBehaviour
         
         foreach (Transform inventoryPart in adder.transform)
         {
-            int actIDP=inventoryPart.GetComponent<EachPartScript>().ReturnIDP();
+            int actIDP=inventoryPart.GetComponent<EachObjectScript>().ReturnIDP();
             Debug.Log("itemm return idp1:"+actIDP);
             InventoryManager.Inventory? inventory = inventoryManager.ReturnInventory(actIDP);
 
@@ -291,7 +291,7 @@ public class PartAdder : MonoBehaviour
         GameObject go = Instantiate(slot.thisItem.takableDataSO.toInstanciate, inventory?.ReturnVisualizer().transform);
 
         addedItems.Add(go);
-        go.GetComponent<EachPartScript>().Activate();
+        go.GetComponent<EachObjectScript>().Activate();
 
 
         ModifierItem modItem = go.GetComponent<AllObjectMB>().ReturnModifierItem();

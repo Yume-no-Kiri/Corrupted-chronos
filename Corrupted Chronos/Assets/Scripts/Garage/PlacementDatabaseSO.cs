@@ -208,6 +208,26 @@ public class PlacementDataSO
                
                 //no tindre en compte els cantonades
             return res;
+            case TypeGround.Empty:
+                //probably delete the information of other typeGround on this positons 
+                 /* origen= sGround.Origen;
+                for (int x = 0; x < sGround.Size.x; x++)
+                {
+                    for (int y = 0; y < sGround.Size.y; y++)
+                    {
+                        //extrems
+                       if(filtrateBorders)  if((x == 0 || x == sGround.Size.x - 1) && (y == 0 || y == sGround.Size.y - 1)) continue;
+
+                        res.Add(new Vector2Int(x-offsetX+origen.x, y-offsetY+origen.y));
+                    }
+                } 
+                foreach (var item in sGround.ExtraSize)
+                {
+                    res.Add(item);
+                } */
+                Debug.LogError("No implementat empty");
+
+            return null;
             case TypeGround.Null:
                 Debug.LogError("Error terreny es null????");
             return null;
@@ -383,10 +403,10 @@ public class PlacementDatabaseSO : ScriptableObject
     //no es un monobehavior, no hi ha start, toca cridar-ho
     public void StartConfigPositions()
     {
-        Debug.LogWarning("ENTREM A CONFIG POSITONS" + AllParts.Count);
+        // Debug.LogWarning("ENTREM A CONFIG POSITONS" + AllParts.Count);
         foreach (var item in AllParts)
         {
-            Debug.LogWarning("name");
+            // Debug.LogWarning("name");
             item.ConfigPositions();
             Debug.Log("DebugMethod final2 creació del configRequires: "+ item.debugConfigRequires());
         }
@@ -394,7 +414,7 @@ public class PlacementDatabaseSO : ScriptableObject
         {
             item.ConfigPositions();
         }
-        Debug.LogWarning("ENDED CONFIG POSITIONS");
+        // Debug.LogWarning("ENDED CONFIG POSITIONS");
     }
 
     public PlacementDataSO ReturnPartDataById(int ID)

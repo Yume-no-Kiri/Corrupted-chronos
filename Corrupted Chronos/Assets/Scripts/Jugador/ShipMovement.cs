@@ -5,8 +5,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class ShipMovement : MonoBehaviour,IDamageable 
 {
-    public float health;
-    public float shields;
+    // public float health;
+    // public float shields;
 
     [Header("Parameters")]
     public bool canMove=true;
@@ -14,8 +14,8 @@ public class ShipMovement : MonoBehaviour,IDamageable
 
     private bool IsGround=false;
 
-    private Vector3 PositionGround;
-    private Vector3 LimitGound;
+    // private Vector3 PositionGround;
+    // private Vector3 LimitGound;
 
     /* [Header("Input")]
     [SerializeField] private InputActionReference moveAction;
@@ -46,7 +46,9 @@ public class ShipMovement : MonoBehaviour,IDamageable
     private float targetSpeedMultiplier = 1f;
     private Vector3 externalForce= Vector3.zero;
 
-
+    Vector3 posLow= new Vector3(0,7,0);
+    Vector3 posHigh=new Vector3(0,11,0);
+    float posInY= 0;
     private void Awake()
     {
         controller = GetComponentInParent<CharacterController>();
@@ -59,8 +61,8 @@ public class ShipMovement : MonoBehaviour,IDamageable
     {
         Vector3 iniPos=transform.position;
         transform.position=new Vector3(iniPos.x, posLow.y,iniPos.z);
-        health = statsManager.instance.GetShipStat(Stat.StatTypeGeneral.MaxHealth);
-        shields = statsManager.instance.GetShipStat(Stat.StatTypeGeneral.MaxShields);
+        // health = statsManager.instance.GetShipStat(Stat.StatTypeGeneral.MaxHealth);
+        // shields = statsManager.instance.GetShipStat(Stat.StatTypeGeneral.MaxShields);
     }
 
     public void SetUpShipMovement(PlayerInputActions.NauActions nau)
@@ -95,13 +97,29 @@ public class ShipMovement : MonoBehaviour,IDamageable
 
         if (externalForce.magnitude > 0.01f)
         {
-            externalForce = Vector3.Lerp(externalForce, Vector3.zero, GameManager.Instance.knockbackResistance * Time.deltaTime);
+            // externalForce = Vector3.Lerp(externalForce, Vector3.zero, statsManager.instance.GetShipStat(Stat.StatTypeGeneral.KnockbackResistance) * Time.deltaTime);
+            
+            // externalForce= externalForce*Mathf.Clamp01(1f - (statsManager.instance.GetShipStat(Stat.StatTypeGeneral.KnockbackResistance) / 100f));
+            // float timeBase = 3f;
+            float tempsKnockback = 25f;
+            float velocitatFrenadaFinal = tempsKnockback + (statsManager.instance.GetShipStat(Stat.StatTypeGeneral.KnockbackResistance) * 0.3f);
+
+            // A MÉS resistència, MÉS ràpid es menja la força del cop (l'amortidors són més durs)
+            // float resistencia = 
+            
+            // Ajusta aquest "factorAmortidor" (Ex: 2f) per calibrar com de ràpid es nota la resistència
+            // float factorAmortidor = 2f; 
+            // float finalResistence = timeBase - (statsManager.instance.GetShipStat(Stat.StatTypeGeneral.KnockbackResistance) * 2);
+
+            externalForce = Vector3.MoveTowards(externalForce, Vector3.zero, velocitatFrenadaFinal * Time.deltaTime);
+           /*  float friccio = 1f + statsManager.instance.GetShipStat(Stat.StatTypeGeneral.KnockbackResistance)/10; 
+            externalForce *= Mathf.Exp(-friccio * Time.deltaTime); */
         }
         else
         {
             externalForce = Vector3.zero;
         }
-
+        Debug.Log("external force:"+externalForce.ToString());
         ApplyMovement();
 
         RaycastHit hit;
@@ -116,11 +134,6 @@ public class ShipMovement : MonoBehaviour,IDamageable
                     // PositionGround= hit.transform.position;
                     posLow=hit.point+ new Vector3(0,1.2f,0);
                     posInY=posLow.y;
-                    /* if(posLow.y>= transform.position.y)
-                    {
-                        
-                    } */
-                    
 
                 }
                
@@ -140,9 +153,7 @@ public class ShipMovement : MonoBehaviour,IDamageable
 
     }
 
-    Vector3 posLow= new Vector3(0,7,0);
-    Vector3 posHigh=new Vector3(0,11,0);
-    float posInY= 0;
+  
     // float timeBetweenHigh=1.2f;
 
     private void ReadInput()
@@ -161,23 +172,23 @@ public class ShipMovement : MonoBehaviour,IDamageable
         if(moveDown!=null || moveUp != null){        
             inputDownUp =- moveDown.ReadValue<float>();
             inputDownUp += moveUp.ReadValue<float>();
-            if(!GameManager.Instance.CanFly()){
+            if(!statsManager.instance.CanFly()){
                 if (transform.position.y >= posLow.y)
                 {
                     inputDownUp=-1;
                 }
                 
             }
-            if (transform.position.y >= posHigh.y && inputDownUp==1)
+           /*  if (transform.position.y >= posHigh.y && inputDownUp==1)
             {
                 inputDownUp=0;
-            }
+            } */
             if (inputDownUp > 0){
-                GameManager.Instance.MoveUpStamina(IsGround);
+                statsManager.instance.MoveUpStamina(IsGround);
             }
             else
             {
-                GameManager.Instance.InformIfGround(IsGround);
+                statsManager.instance.InformIfGround(IsGround);
             }
 
             /* if (transform.position.y > LimitHigh.y && inputDownUp>0 )
@@ -255,6 +266,7 @@ public class ShipMovement : MonoBehaviour,IDamageable
     #region interface
     public void TakeDamage(float damageAmount)
     {
+        statsManager.instance.JustHit();
         if (statsManager.instance.GetShipStat(Stat.StatTypeGeneral.CurrentShields) > 0f)
         {
             float absorbed = Mathf.Min(statsManager.instance.GetShipStat(Stat.StatTypeGeneral.CurrentShields), damageAmount);
@@ -276,13 +288,19 @@ public class ShipMovement : MonoBehaviour,IDamageable
 
     public void Die()
     {
-        Destroy(this.gameObject);
+
+        this.gameObject.SetActive(false);
+        GameManager.Instance.DeactivateOrActivateEnemies(false);
+
     }
 
     public void AddKnockback(Vector3 dir, float force) {
-        externalForce += dir.normalized * force*1.3f;
-        // Debug.LogWarning("enter do knockback dir:"+dir.ToString()+" force:"+force);
-        // Debug.LogWarning("externalForce:"+ externalForce.ToString());
+        // mètode 1
+        // externalForce += dir.normalized * force*1.3f;
+
+        // metode2 
+     
+        externalForce += dir.normalized * force* Mathf.Clamp01(1f - (statsManager.instance.GetShipStat(Stat.StatTypeGeneral.KnockbackResistance) * 0.015f));
     }
     #endregion
    

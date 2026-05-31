@@ -15,8 +15,8 @@ public class SlotInventory : MonoBehaviour
         void agregarItem
         void treure/moure item
     }  */
-    private Button button;
-    public AllObjectSO thisItem {get; private set; }
+    // private Button button;
+    public AllObject thisItem {get; private set; }
     private Image renderItem=null;
    
     private bool hasItem=false;
@@ -52,7 +52,7 @@ public class SlotInventory : MonoBehaviour
     {
         Debug.Log("buttonpressed");
     }
-    public void AddItem(AllObjectSO newItem)
+    public void AddItem(AllObject newItem)
     {
         SaveRenderItem();
 

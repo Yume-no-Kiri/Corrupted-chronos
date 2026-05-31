@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class AllObjectSO /*  : ScriptableObject */
+public class AllObject /*  : ScriptableObject */
 {
 
     [ SerializeField]
@@ -16,7 +16,7 @@ public class AllObjectSO /*  : ScriptableObject */
 
     // public bool isItem;
     public string IDItemName;
-    [HideInInspector]public TakableDataSO takableDataSO;
+    [HideInInspector]public TakableData takableDataSO;
 
     // public int IDP;// { get; private set; }
 
@@ -28,7 +28,7 @@ public class AllObjectSO /*  : ScriptableObject */
     
     // we should create consructors for each defined part?
 
-    public void AssignTakableData(TakableDataSO takableData)
+    public void AssignTakableData(TakableData takableData)
     {
         this.takableDataSO=takableData;
     }

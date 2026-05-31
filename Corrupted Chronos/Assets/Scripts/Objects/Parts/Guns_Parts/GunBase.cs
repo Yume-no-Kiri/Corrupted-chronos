@@ -64,6 +64,7 @@ public class GunBase : AllObjectMB
     {
         // ObjectNameID="";
         // = 1f;
+        bulletPrefab= statsManager.instance.listBulletStats.GeneralBullet;
         DefineBulletStats();
         
     }
@@ -141,10 +142,10 @@ public class GunBase : AllObjectMB
     {
         return typePart;
     }
-    public void PassVariables(Transform firepoint,GameObject bulletPrefab, SpriteRenderer spriteRenderer)
+    public void PassVariables(Transform firepoint, SpriteRenderer spriteRenderer)
     {
         this.firepoint.Add(firepoint);
-        this.bulletPrefab = bulletPrefab;
+        // this.bulletPrefab = bulletPrefab;
         this.sprite= spriteRenderer;
     }
     public void AssignIDP(int newIDP)

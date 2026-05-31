@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
     private InventoryManager inventoryManager;
 
     public InputManager inputManager { get; private set; }
+    [field: SerializeField]    public Camera cameraGameplay{private set; get;}
+
 
     //if diferent naus and pilots, should change stats then i would get a script with stats change? 
     private GameObject _nauGO;
@@ -174,7 +176,9 @@ public class Player : MonoBehaviour
             _garageGO.SetActive(true);
 
             ChangeInventory(true);
+            GameManager.Instance.DeactivateOrActivateEnemies(false);
             inputManager.playerInputActions.AccesInventory.Disable();
+            cameraGameplay.gameObject.SetActive(false);
             // AccesChangeInputMap(NameInputAction.Inventory,false);
 
         }else{
@@ -183,7 +187,9 @@ public class Player : MonoBehaviour
             _garageGO.SetActive(false);
 
             ChangeInventory(false);
+            GameManager.Instance.DeactivateOrActivateEnemies(true);
             inputManager.playerInputActions.AccesInventory.Enable();
+            cameraGameplay.gameObject.SetActive(true);
 
         }
     }

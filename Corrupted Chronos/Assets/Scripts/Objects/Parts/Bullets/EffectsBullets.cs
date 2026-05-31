@@ -403,12 +403,12 @@ public class BounceOnHitEB : EffectsBullets
     protected override void Awake()
     {   base.Awake();
         UsesHitbox=false;
-        baseBullets.ChangeDistanceToTimer();
-
     }
+    bool OutOfBounceRange=false;
     protected override void AfterSetup()
     {
         baseBullets.DamageHitbox[MyNameHitbox].OnHit += BounceBullet;
+        baseBullets.OnDecliveRange+=()=>OutOfBounceRange=true;
     }
     protected override void OnDestroy()
     {
@@ -419,21 +419,23 @@ public class BounceOnHitEB : EffectsBullets
     {   
         /* float nRotation= UnityEngine.Random.Range(100f,230f); 
         transform.Rotate(0,nRotation,0);  */
-        Vector3 direccioActual = transform.forward;
-        Ray ray = new Ray(transform.position - direccioActual * 0.5f, direccioActual);
-        RaycastHit hit;
-        if (trigger.Raycast(ray, out hit, 1.5f))
-        {
-            Vector3 normalWall = hit.normal;
+        if(!OutOfBounceRange){
+            Vector3 direccioActual = transform.forward;
+            Ray ray = new Ray(transform.position - direccioActual * 0.5f, direccioActual);
+            RaycastHit hit;
+            if (trigger.Raycast(ray, out hit, 1.5f))
+            {
+                Vector3 normalWall = hit.normal;
 
-            Vector3 dirBounce = Vector3.Reflect(direccioActual, normalWall);
+                Vector3 dirBounce = Vector3.Reflect(direccioActual, normalWall);
 
-            float nRotation = UnityEngine.Random.Range(-35f, 35f);
-            
-            dirBounce = Quaternion.Euler(0, nRotation, 0) * dirBounce;
-            transform.rotation = Quaternion.LookRotation(dirBounce);
-   
-            transform.position = hit.point + normalWall * 0.05f;
+                float nRotation = UnityEngine.Random.Range(-35f, 35f);
+                
+                dirBounce = Quaternion.Euler(0, nRotation, 0) * dirBounce;
+                transform.rotation = Quaternion.LookRotation(dirBounce);
+    
+                transform.position = hit.point + normalWall * 0.05f;
+            }
         }
     }
     

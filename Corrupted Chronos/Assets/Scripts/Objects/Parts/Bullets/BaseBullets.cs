@@ -30,7 +30,7 @@ public class BaseBullets : MonoBehaviour
 
     public AllInformationBullet AllInfoBullet{get; private set;}
 
-    private float distBeforeEffect=1;
+    private float distBeforeEffect=0.2f;
     // [HideInInspector] public Dictionary<Stat.StatTypeBullet, Stat> statsSO;
 
     // public GameObject FirstHitboxBullet;

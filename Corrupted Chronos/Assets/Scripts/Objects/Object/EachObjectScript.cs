@@ -6,7 +6,7 @@ using UnityEngine;
 /*EXPLICACIÓ: Aquest script està a cada part, i afegeix el subscript de PartActions adient,
  aquests s'scripts s'activen, a data que escric aquest comentari, al script player
  */
-public class EachPartScript : MonoBehaviour
+public class EachObjectScript : MonoBehaviour
 {
     [Tooltip("Acaba'l amb .cs")]
     [SerializeField] ListNameParts listParts;
@@ -20,7 +20,7 @@ public class EachPartScript : MonoBehaviour
     
     //should be upgrated, mutlple firepoint, firepoints with size
     [SerializeField] private Transform firepoint;
-    [SerializeField] private GameObject bulletPrefab;
+    // [SerializeField] private GameObject bulletPrefab;
 
     [SerializeField] private SpriteRenderer sprite;
     private int IDPtoGive=-1;
@@ -101,7 +101,7 @@ public class EachPartScript : MonoBehaviour
                 GameManager.Instance.inputManager.OnShotLeft -= GunScriptPart.DoShot;
                 GameManager.Instance.inputManager.OnShotRight -= GunScriptPart.DoShot;
 
-                GunScriptPart.PassVariables(firepoint, bulletPrefab,sprite);
+                GunScriptPart.PassVariables(firepoint,sprite);
             }// else Debug.LogError("es fill de GunBase pero no es GunBase (wtf)");
         }/* else{
             
@@ -111,17 +111,6 @@ public class EachPartScript : MonoBehaviour
     }
 
 
-    /* public void AddEffectsBullets(List<EffectsAdd> effectsAdds)
-    {
-        if (GunScriptPart != null)
-        {
-            
-        }
-    }
-    public void RemoveEffectsBullets(List<EffectsAdd> effectsAdds)
-    {
-        
-    } */
 
     public void AssignIDP(int newIDP)
     {

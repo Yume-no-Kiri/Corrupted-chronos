@@ -11,7 +11,7 @@ using UnityEngine;
 public class AllObjectsDataBase : ScriptableObject
 {
     [ SerializeField]
-    public List<AllObjectSO> AllObjects = new List<AllObjectSO>();
+    public List<AllObject> AllObjects = new List<AllObject>();
 
     public void StartConfigObject()
     {
@@ -35,13 +35,13 @@ public class AllObjectsDataBase : ScriptableObject
                 item.AssignPlacementData(null);
             }
             
-            }
+        }
     }
 
-    public AllObjectSO ReturnObjectSOByName(string ObjectNameID)
+    public AllObject ReturnObjectSOByName(string ObjectNameID)
     {
         //probablement canvia a acces directe []
-        AllObjectSO dataItem=null;
+        AllObject dataItem=null;
         foreach (var item in AllObjects)
         {
             if (item.NameID == ObjectNameID)
