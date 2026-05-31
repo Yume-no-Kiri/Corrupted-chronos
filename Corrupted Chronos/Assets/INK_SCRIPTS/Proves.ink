@@ -39,8 +39,9 @@ VAR met_fisherman = false
         -> two_pillars
     - pillars_broken == 3:
         -> three_pillars
+    - pillars_broken == 4:
+        -> four_pillars 
 }
-
 // --- PILLAR 0 ---
 === zero_pillars ===
 { met_fisherman:
@@ -55,6 +56,7 @@ I will do my best.
 Go for it, break the seals; I’ll wait for you here.
 Don’t let those fishes escape; I want to eat some when this ends.
 HAHAHA.
+~ met_fisherman = true
 -> END
 
 // --- PILLAR 1 ---
@@ -77,6 +79,7 @@ I will try at least.
 There are already two more rocks to be broken; come on, go.
 Of course, man, and don’t let those fishes escape; I want to eat some when this ends.
 HAHAHA.
+~ met_fisherman = true
 -> END
 
 // --- PILLAR 2 ---
@@ -98,15 +101,12 @@ I will work hard for it.
 There is one more caterpillar there. Go on, I’ll wait for you here.
 Thank you, and don’t let those fishes escape; I want to eat some when this ends.
 HAHAHA.
+~ met_fisherman = true
 -> END
 
 // --- PILLAR 3 (FINAL) ---
 === three_pillars ===
-{ not met_fisherman:
-    The keeper talked to me about your plan… You are brave if you think you can defeat that guy.
-- else:
-    You are here again. Have you destroyed all three pillars?
-}
+You are here. Have you destroyed all three pillars?
 May the chronos bless you as the time to suffer in battle has come; oh lord, offer us your power.
 Huh? What are you blabbing about, kid?
 Well, they have always told me to say something epic before an important battle… Was it too much?
@@ -131,5 +131,9 @@ HAHAHA, I just try to get the morale up. We have a tough fight to do.
 HYes, here we go. Are you ready?
 Ready!
 "Great lord of the ocean, hear our chants falling for the star upon us, the ones that will set this corruption away are imploring you, OPEN YOUR DOORS!” #BOSS
-
+~ pillars_broken = 4
 -> END
+=== four_pillars ===
+GO
+Yes yes, I'm just scared
+->END

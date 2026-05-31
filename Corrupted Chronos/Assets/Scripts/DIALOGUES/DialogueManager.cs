@@ -23,9 +23,9 @@ public class DialogueManager : MonoBehaviour
         story = new Ink.Runtime.Story(inkJson.text);
         playerInputActions = new PlayerInputActions();
         story.variablesState["pillars_broken"]=pillars;
+        playerInputActions.UI.submit.performed -= ctx => ContinueOrExitStory(); //REVISAR
         playerInputActions.UI.submit.performed += ctx => ContinueOrExitStory(); //REVISAR
     }
-  
     private void OnEnable()
     {
         GameEventsManager.instance.dialogue_events.onEnterDialogue += EnterDialogue;
@@ -93,8 +93,8 @@ public class DialogueManager : MonoBehaviour
         {
             if (shouldChangeScene)
             {
-                ExecuteSceneChange();
                 ExitDialogue();
+                ExecuteSceneChange();
             }
             else
             {
@@ -105,7 +105,8 @@ public class DialogueManager : MonoBehaviour
 
     private void ExitDialogue()
     {
-        Debug.Log("Sortint di�leg");
+        if (!dialogue_playing) return;
+        Debug.LogError("Sortint di�leg");
         GameEventsManager.instance.dialogue_events.DialogueFinished();
         
         
