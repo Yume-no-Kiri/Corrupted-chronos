@@ -126,11 +126,11 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DephColor: {r: 0.16347447, g: 0.14129576, b: 0.509434, a: 1}
     - _DephestColor: {r: 0.07463076, g: 0.06396921, b: 0.23099995, a: 1}
-    - _DirectionPlayer: {r: 0.59642863, g: 0, b: 0.8026661, a: 0}
+    - _DirectionPlayer: {r: -0.80115, g: 0, b: 0.59846354, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 0.99433964, b: 0.99433964, a: 1}
     - _PositionMouse: {r: -0.9999683, g: -0.00000058534005, b: 0.00796462, a: 0}
-    - _PositionPlayer: {r: 206.1542, g: 5.6499996, b: 242.82239, a: 0}
+    - _PositionPlayer: {r: 86.1, g: 7.0647, b: 109.1, a: 0}
     - _ShallowColor: {r: 0.29900318, g: 0.47763968, b: 0.6981132, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _VectorDiferencia: {r: 0, g: 0, b: 0.7, a: 0}

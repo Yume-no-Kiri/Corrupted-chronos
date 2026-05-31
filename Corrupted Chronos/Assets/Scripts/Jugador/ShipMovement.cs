@@ -288,7 +288,7 @@ public class ShipMovement : MonoBehaviour,IDamageable
 
     public void Die()
     {
-
+        GameManager.Instance.onPlayerDeath();
         this.gameObject.SetActive(false);
         GameManager.Instance.DeactivateOrActivateEnemies(false);
 

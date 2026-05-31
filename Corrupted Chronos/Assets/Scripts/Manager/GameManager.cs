@@ -1,8 +1,9 @@
+using Ink.Parsed;
 using System;
 using System.Collections;
-using Ink.Parsed;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class GameManager : MonoBehaviour
 
     [field: SerializeField] public RewardSpawner rewardSpawner{get; private set;}
 
-
+    public GameObject defeatCanvas;
     [Header("DataBases")]
     public AllObjectsDataBase allObjectsDataBase;
     public TakableDataBase takableDataBase;
@@ -87,7 +88,6 @@ public class GameManager : MonoBehaviour
         if(Instance == null)
         {
             Instance=this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -119,14 +119,29 @@ public class GameManager : MonoBehaviour
         else Debug.LogWarning("EnemySpawner not assigned");
     }
 
-   public void onBossDefeat()
+    public void onBossDefeat()
     {
 
     }
 
+    public void onPlayerDeath()
+    {
+        //desactivar el jugador, mostrar pantalla de muerte, etc
+        defeatCanvas.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
 
     #region ForParts
-    public PartAdder returnGarageAdder()
+public PartAdder returnGarageAdder()
     {
         if( !playerInstance.GetComponent<PartAdder>()) Debug.LogError("NO HI HA GARAGEADDER");
         return playerInstance.GetComponent<PartAdder>();
