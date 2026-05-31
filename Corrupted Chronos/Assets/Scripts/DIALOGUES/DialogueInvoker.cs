@@ -23,7 +23,15 @@ public class DialogueInvoker : MonoBehaviour
             GameEventsManager.instance.dialogue_events.EnterDialogue(branca, 0);
         }
     }
+ 
+    private void Start()
+    {
+        if (branca == "cinem1" || branca == "cinemF")
+        {
 
+            GameEventsManager.instance.dialogue_events.EnterDialogue(branca, 0);
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
