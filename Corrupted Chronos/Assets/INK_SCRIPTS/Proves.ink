@@ -16,10 +16,13 @@
     We made it. It’s been a long time, Umiko.\n Thanks, lord, you are alive… #scene:2
     You, the one that is the hero of this time… Thank you; without your help, defeating the monster would have been impossible.#scene:3
     Well, maybe my name will be written in history books, heh. Thank you… for saving us… for saving her… #scene:4
-    Well, maybe my name will be written in history books, heh. Thank you… for saving us… for saving her… \n Don’t worry, darling. You protected us from that thing; you have done a good job… #scene:5
+    Well, maybe my name will be written in history books, heh. Thank you… for saving us… for saving her… #scene:5
+    Don’t worry, darling. You protected us from that thing; you have done a good job… #scene:5
     I'm truly grateful to you; now I can’t make so much. after all this time sealing this creature, my power is weak… I think there is something I can give to you.#scene:6
-    This is what you need to create runes; they will give you more power in battle. Use them wisely. Fisherman never learned how to create them… so don’t blame him for not showing them…#scene:7
-    I'm sorry, as said, I always wanted a peaceful life…. \n You always wanted that, and I loved it. But now, the galaxy is corrupted, and you are the one that can save us. With this new power you will be able to do many new things#scene:8
+    This is what you need to create runes; they will give you more power in battle. Use them wisely. #scene:7
+    Fisherman never learned how to create them… so don’t blame him for not showing them…#scene:7
+    I'm sorry, as said, I always wanted a peaceful life…. \n You always wanted that, and I loved it.#scene:8
+    But now, the galaxy is corrupted, and you are the one that can save us. With this new power you will be able to do many new things.#scene:8
     Keep going; your adventure must continue…. #scene:9 #changeScene:Main_menu
 - ->END 
 // --- VARIABLES ---
@@ -104,8 +107,6 @@ HAHAHA.
 - else:
     You are here again. Have you destroyed all three pillars?
 }
-~ met_fisherman = true
-
 May the chronos bless you as the time to suffer in battle has come; oh lord, offer us your power.
 Huh? What are you blabbing about, kid?
 Well, they have always told me to say something epic before an important battle… Was it too much?
@@ -115,12 +116,16 @@ So, you made it… Tell me, are you afraid?
 Yes, I’d be an idiot not to be; that creature is a nightmare.
 It really is, but the sea waited for so long to get the freedom you will provide. It can tell you are the saviour in that corrupted chronos we all live in.
 You can talk to the sea? How long have you been alone?
-HAHAHA, you may think I just lost my mind, but I'm a water ohexa as Umiko was. We can sense in a very precise way the element we have affinity with. That’s why I made myself a fisherman; there is no bad fishing day, HAHAHA.
+HAHAHA, you may think I just lost my mind, but I'm a water ohexa as Umiko was. We can sense in a very precise way the element we have affinity with. 
+That’s why I made myself a fisherman; there is no bad fishing day, HAHAHA.
 But you can use your power for something more… heroic?
-That’s true, boy, but I never wanted that. I love peaceful days. I don’t want my name to be remembered. certainly this power was given to me by fault…
-Or maybe this is what you think. As far as I know, you will help me summon the Kraken again. All was written; you needed to be here at this moment.
+That’s true, boy, but I never wanted that. I love peaceful days. I don’t want my name to be remembered. 
+Certainly this power was given to me by fault…
+Or maybe this is what you think. As far as I know, you will help me summon the Kraken again. 
+All was written; you needed to be here at this moment.
 I don't believe in fate, but perhaps you are right. You need me to call the beast out of the seal…
-You don’t need to take big fights to be considered a hero. Don’t blame yourself for having this power. From what I can tell, eating is also important, and having someone that will always provide food will be a very useful way of power usage. Not all is war.
+You don’t need to take big fights to be considered a hero. Don’t blame yourself for having this power. 
+From what I can tell, eating is also important, and having someone that will always provide food will be a very useful way of power usage. Not all is war.
 Thank you. You are such a hero, aren't you?
 HAHAHA, I just try to get the morale up. We have a tough fight to do.
 HYes, here we go. Are you ready?
