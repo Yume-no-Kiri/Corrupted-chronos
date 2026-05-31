@@ -106,7 +106,7 @@ public class DialogueManager : MonoBehaviour
     private void ExitDialogue()
     {
         if (!dialogue_playing) return;
-        Debug.LogError("Sortint di�leg");
+        Debug.Log("Sortint di�leg");
         GameEventsManager.instance.dialogue_events.DialogueFinished();
         
         
