@@ -13,7 +13,7 @@
 
 ==cinemF==
     For the honour of the sea, the curse on this land must be defeated. We shall make you disappear among the sea of hope. Now, VANISH! #scene:1
-    We made it. It’s been a long time, Umiko.\n Thanks, lord, you are alive… #scene:2
+    We made it. It’s been a long time, Umiko. Thanks, lord, you are alive… #scene:2
     You, the one that is the hero of this time… Thank you; without your help, defeating the monster would have been impossible.#scene:3
     Well, maybe my name will be written in history books, heh. Thank you… for saving us… for saving her… #scene:4
     Well, maybe my name will be written in history books, heh. Thank you… for saving us… for saving her… #scene:5

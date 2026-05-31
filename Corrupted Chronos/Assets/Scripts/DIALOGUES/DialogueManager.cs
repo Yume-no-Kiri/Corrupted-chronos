@@ -112,7 +112,7 @@ public class DialogueManager : MonoBehaviour
         
         dialogue_playing = false;
         //reset story
-        story.ResetState();
+        //story.ResetState();
         if(GameManager.Instance!=null)  GameManager.Instance.playerInstance.GetComponent<Player>().ChangeToTalk(false);
 
     }
@@ -135,6 +135,8 @@ public class DialogueManager : MonoBehaviour
             }
             if (trimmedTag.StartsWith("BOSS"))
             {
+                pillars = 4;
+                story.variablesState["pillars_broken"] = pillars;
                 boss_spawner.spawnBoss();
             }
             // Pel futur: # npc:Fisherman, # emotion:Angry
