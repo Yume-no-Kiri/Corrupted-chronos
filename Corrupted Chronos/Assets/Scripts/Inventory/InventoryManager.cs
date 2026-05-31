@@ -255,17 +255,16 @@ public class InventoryManager : MonoBehaviour
     public void OnActivate()
     {
         selectedSlot=null;
-        // IDPInventory.Keys.Count()
-        if (IDPInventory.Keys.Count > 1)
+         foreach (var item in IDPInventory)
         {
-            for (int i = 1; i < IDPInventory.Keys.Count ; i++)
+            Debug.Log("keys invencory" + item.Key );
+            if (item.Key == 0)
             {
-                if(IDPInventory.ContainsKey(i)) IDPInventory[i].ShowOff();
-
-            }
-
-
+                continue;
+            }   
+            item.Value.ShowOff();
         }
+
 
         /* for (int i = 0; i < listSlots.Length; i++)
         {

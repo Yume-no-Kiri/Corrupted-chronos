@@ -174,7 +174,7 @@ public class Player : MonoBehaviour
             inputManager.playerInputActions.Garage.Enable();
             garageAdder.enabled=true;
             _garageGO.SetActive(true);
-            
+
 
             ChangeInventory(true);
             GameManager.Instance.DeactivateOrActivateEnemies(false);
@@ -242,14 +242,14 @@ public class Player : MonoBehaviour
             inputManager.playerInputActions.Nau.Enable();
             shipMovement.enabled=true;
             shipLook.enabled=true;
-            _nauGO.SetActive(true);
+            // _nauGO.SetActive(true);
         }
         else
         {
             inputManager.playerInputActions.Nau.Disable();
             shipMovement.enabled=false;
             shipLook.enabled=false;
-            _nauGO.SetActive(false);
+            // _nauGO.SetActive(false);
         }
     }
 
