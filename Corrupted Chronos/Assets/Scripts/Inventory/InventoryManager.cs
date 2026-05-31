@@ -255,6 +255,18 @@ public class InventoryManager : MonoBehaviour
     public void OnActivate()
     {
         selectedSlot=null;
+        // IDPInventory.Keys.Count()
+        if (IDPInventory.Keys.Count > 1)
+        {
+            for (int i = 1; i < IDPInventory.Keys.Count ; i++)
+            {
+                if(IDPInventory.ContainsKey(i)) IDPInventory[i].ShowOff();
+
+            }
+
+
+        }
+
         /* for (int i = 0; i < listSlots.Length; i++)
         {
             listSlots[i].ShowSprite();

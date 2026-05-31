@@ -33,6 +33,7 @@ public class DialogueEvents
         if (onDialogueFinished != null)
         {
             onDialogueFinished();
+
         }
     }
 

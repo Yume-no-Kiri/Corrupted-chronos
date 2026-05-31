@@ -291,9 +291,9 @@ public class InteractiveMethods : MonoBehaviour
 
         //desactiva controls pilot
         //jugador.inputManager.playerInputActions.Pilot.Disable();
-
-        
         print(jugador.branca);
+        if(GameManager.Instance!=null) GameManager.Instance.playerInstance.GetComponent<Player>().ChangeToTalk(true);
+
         GameEventsManager.instance.dialogue_events.EnterDialogue(jugador.branca, jugador.mode);
         jugador.SubInteraction(i);
     }

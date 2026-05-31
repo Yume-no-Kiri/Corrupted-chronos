@@ -112,6 +112,8 @@ public class DialogueManager : MonoBehaviour
         dialogue_playing = false;
         //reset story
         story.ResetState();
+        if(GameManager.Instance!=null)  GameManager.Instance.playerInstance.GetComponent<Player>().ChangeToTalk(false);
+
     }
 
     private void CheckTags()

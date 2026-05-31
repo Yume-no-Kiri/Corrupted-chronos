@@ -174,6 +174,7 @@ public class Player : MonoBehaviour
             inputManager.playerInputActions.Garage.Enable();
             garageAdder.enabled=true;
             _garageGO.SetActive(true);
+            
 
             ChangeInventory(true);
             GameManager.Instance.DeactivateOrActivateEnemies(false);
@@ -191,6 +192,28 @@ public class Player : MonoBehaviour
             inputManager.playerInputActions.AccesInventory.Enable();
             cameraGameplay.gameObject.SetActive(true);
 
+        }
+    }
+
+    public void ChangeToTalk(bool IsStart)
+    {
+        if (IsStart)
+        {
+            GameManager.Instance.DeactivateOrActivateEnemies(false);
+            // ChangeNau(false);
+            inputManager.playerInputActions.Nau.Disable();
+
+            inputManager.playerInputActions.AccesInventory.Disable();
+
+        }
+        else
+        {
+            GameManager.Instance.DeactivateOrActivateEnemies(true);
+            // ChangeNau(true);
+            inputManager.playerInputActions.Nau.Enable();
+
+            inputManager.playerInputActions.AccesInventory.Enable();
+            
         }
     }
 
