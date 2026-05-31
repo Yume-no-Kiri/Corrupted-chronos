@@ -14,7 +14,7 @@ public class PartBaseStatsSO : ScriptableObject
 
     public List<StatInit> GunStats;
 
-
+#if UNITY_EDITOR
     private void Reset()
     {
         var names = System.Enum.GetValues(typeof(Stat.StatTypeGun));
@@ -25,15 +25,15 @@ public class PartBaseStatsSO : ScriptableObject
             GunStats.Add(new StatInit { type = t, value = 0 });
         }
     }
-
+#endif
 }
 
 [CreateAssetMenu(fileName="EscopetaStats",menuName = "Stats/EscopetaPartStats")]
 public class EscopetaStatsSO: PartBaseStatsSO
 {}
-[CreateAssetMenu(fileName="MetralletaStats",menuName = "Stats/MetralletaPartStats")]
+/* [CreateAssetMenu(fileName="MetralletaStats",menuName = "Stats/MetralletaPartStats")]
 public class MetralletaStatsSO: PartBaseStatsSO
-{}
-[CreateAssetMenu(fileName="FlamethrowerStats",menuName = "Stats/FlamethrowerPartStats")]
+{} */
+/* [CreateAssetMenu(fileName="FlamethrowerStats",menuName = "Stats/FlamethrowerPartStats")]
 public class FlamethrowerStatsSO: PartBaseStatsSO
-{}
+{} */

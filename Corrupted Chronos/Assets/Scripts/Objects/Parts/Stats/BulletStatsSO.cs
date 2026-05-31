@@ -62,16 +62,19 @@ public class BulletStatsSO : ScriptableObject
         public float value;
     }
 
-    public List<StatInit> BulletStats;//= new List<StatInit>(Enum.GetNames(typeof(Stat.StatTypeBullet)).Length);
+    public List<StatInit> BulletStats= new List<StatInit>();//= new List<StatInit>(Enum.GetNames(typeof(Stat.StatTypeBullet)).Length);
 
-    private void Reset()
+    private void OnEnable()
     {
+        if (BulletStats == null || BulletStats.Count == 0){
+
         var names = System.Enum.GetValues(typeof(Stat.StatTypeBullet));
         BulletStats = new List<StatInit>();
 
         foreach (Stat.StatTypeBullet t in names)
         {
             BulletStats.Add(new StatInit { type = t, value = 0 });
+        }
         }
     }
 
@@ -102,5 +105,6 @@ public class FlameStatsSO: BulletStatsSO
 
 [CreateAssetMenu(fileName="ExplosionStats", menuName = "Bullet/ExplosionStats")]
 public class ExplosionStatsSO: BulletStatsSO
-{}
+{
+}
 

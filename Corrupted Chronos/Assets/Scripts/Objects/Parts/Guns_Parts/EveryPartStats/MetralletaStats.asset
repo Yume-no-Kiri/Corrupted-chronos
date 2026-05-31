@@ -12,28 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: MetralletaStats
   m_EditorClassIdentifier: Assembly-CSharp::MetralletaStatsSO
-  GunStats:
-  - type: 50
-    value: 0.2
-  - type: 51
-    value: -1
-  - type: 52
-    value: 1
-  - type: 53
-    value: 1
-  - type: 100
-    value: 5
-  - type: 101
-    value: 10
-  - type: 102
-    value: -1
-  - type: 103
-    value: 0
-  - type: 104
-    value: 0
-  - type: 105
-    value: 0
-  - type: 106
-    value: 0
-  - type: 107
-    value: 0
+  GunStats: []

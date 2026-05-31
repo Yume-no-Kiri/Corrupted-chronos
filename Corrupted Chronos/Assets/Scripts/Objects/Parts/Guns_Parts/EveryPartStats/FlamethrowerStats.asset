@@ -12,28 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: FlamethrowerStats
   m_EditorClassIdentifier: Assembly-CSharp::FlamethrowerStatsSO
-  GunStats:
-  - type: 50
-    value: 0.5
-  - type: 51
-    value: 100
-  - type: 52
-    value: 0
-  - type: 53
-    value: 2
-  - type: 100
-    value: 0
-  - type: 101
-    value: 0
-  - type: 102
-    value: 0
-  - type: 103
-    value: -0.6
-  - type: 104
-    value: -1.2
-  - type: 105
-    value: 0
-  - type: 106
-    value: 0
-  - type: 107
-    value: 5
+  GunStats: []
