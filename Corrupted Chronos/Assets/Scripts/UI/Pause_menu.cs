@@ -7,10 +7,10 @@ public class pause_menu : MonoBehaviour
 {
 
     public static bool GameIsPaused = false;
-    [SerializeField] public Button config_button;
+   // [SerializeField] public Button config_button;
     [SerializeField] public Button continue_button;
     [SerializeField] public Button exit_button;
-    [SerializeField] private GameObject inventory;
+   // [SerializeField] private GameObject inventory;
 
     // Start is called before the first frame update
     void Start()
@@ -55,11 +55,5 @@ public class pause_menu : MonoBehaviour
         GameIsPaused = true;
     }
 
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Resume();
-        }
-    }
+    
 }

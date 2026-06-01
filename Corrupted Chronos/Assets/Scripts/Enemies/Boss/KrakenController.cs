@@ -58,6 +58,7 @@ public class KrakenController : MonoBehaviour
             if (spawnedTentacles[i] != null)
                 Destroy(spawnedTentacles[i]);
         }
+        UnityEngine.SceneManagement.SceneManager.LoadScene("FINAL");
         Destroy(this.gameObject);
     }
 }
