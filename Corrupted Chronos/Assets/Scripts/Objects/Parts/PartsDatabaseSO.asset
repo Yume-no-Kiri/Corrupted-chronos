@@ -23,11 +23,9 @@ MonoBehaviour:
         ExtraSize: []
     - typeGround: 3
       sizeGround:
-        Origen: {x: 0, y: -1}
-        Size: {x: 3, y: 3}
-        ExtraSize:
-        - {x: -1, y: 0}
-        - {x: 1, y: 0}
+        Origen: {x: 0, y: 0}
+        Size: {x: 3, y: 4}
+        ExtraSize: []
     <dictionaryAuxRequires>k__BackingField:
     - typeGround: 3
       sizeGround:
