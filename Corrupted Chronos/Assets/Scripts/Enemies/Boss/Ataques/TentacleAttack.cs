@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -25,6 +26,12 @@ public class TentacleAttack : MonoBehaviour, IDamageable
     [Header("Slam Attack")]
     public NameBulletPreset slamBulletPreset;
     public float slamBulletAmount;
+
+    [Header("Stab Attack")]
+    public NameBulletPreset stabBulletPreset;
+
+    [Header("Spin Attack")]
+    public NameBulletPreset spinBulletPreset;
 
     [Header("Splash Attack")]
     public NameBulletPreset splashBulletPreset;
@@ -152,7 +159,29 @@ public class TentacleAttack : MonoBehaviour, IDamageable
         }
     }
 
+    public void SpawnStabBullet()
+    {
+        GameObject bulletInst = Instantiate(
+            statsManager.instance.listBulletStats.GeneralBullet,
+            spawnPoint.position,
+            transform.rotation
+        );
+        bulletInst
+            .GetComponent<CreateBullet>()
+            .Setup(false, stabBulletPreset);
+    }
 
+    public void SpawnSpinBullet()
+    {
+        GameObject bulletInst = Instantiate(
+            statsManager.instance.listBulletStats.GeneralBullet,
+            spawnPoint.position,
+            transform.rotation
+        );
+        bulletInst
+            .GetComponent<CreateBullet>()
+            .Setup(false, stabBulletPreset);
+    }
 
     /* 
      call in start:

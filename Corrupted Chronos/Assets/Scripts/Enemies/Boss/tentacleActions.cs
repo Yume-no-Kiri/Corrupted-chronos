@@ -9,6 +9,16 @@ public class tentacleActions : MonoBehaviour
         tentacle = GetComponentInParent<TentacleAttack>();
     }
 
+    public void stabAttack()
+    {
+
+    }
+
+    public void spinAttack()
+    {
+
+    }
+
     public void slamAttack()
     {
         tentacle.SpawnSlamBullets();

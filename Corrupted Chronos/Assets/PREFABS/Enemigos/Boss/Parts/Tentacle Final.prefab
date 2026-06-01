@@ -121,6 +121,8 @@ MonoBehaviour:
   spawnPoint: {fileID: 1842863248912592440}
   slamBulletPreset: 2
   slamBulletAmount: 12
+  stabBulletPreset: 7
+  spinBulletPreset: 7
   splashBulletPreset: 2
   splashBulletAmount: 12
 --- !u!65 &2997594824881057198
