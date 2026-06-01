@@ -56,7 +56,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         dialogue_playing=true;
-
+        Time.timeScale = 0f;
         GameEventsManager.instance.dialogue_events.DialogueStarted();
 
 
@@ -107,6 +107,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (!dialogue_playing) return;
         Debug.Log("Sortint di�leg");
+        Time.timeScale = 1f;
         GameEventsManager.instance.dialogue_events.DialogueFinished();
         
         

@@ -61,7 +61,7 @@ HAHAHA.
 
 // --- PILLAR 1 ---
 === one_pillar ===
-{ not met_fisherman:
+{ met_fisherman:
     You made it?
     I destroyed the biggest pillar in history!
     Haha, I’m sorry to tell you this, but all have the same size?
@@ -84,7 +84,7 @@ HAHAHA.
 
 // --- PILLAR 2 ---
 === two_pillars ===
-{ not met_fisherman:
+{ met_fisherman:
     You are here again; you made it?
     There is one that escapes my sight. I think that one is playing hide and seek.
     You know… Rocks can’t move?
