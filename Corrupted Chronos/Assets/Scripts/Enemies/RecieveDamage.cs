@@ -35,7 +35,9 @@ public class FireEffect : MonoBehaviour
     private IDamageable target;
     private float damageForWave;
     private float durationEffect;
-    private float durationWave=0.4f;
+    private float durationWave=0.9f;
+    private float durationMinWave=0.5f;
+
     private float charges=0;
 
     // Aquest mètode configura l'efecte
@@ -49,10 +51,14 @@ public class FireEffect : MonoBehaviour
     }
 
     public void BurnMore(float dmg, float time){
-        durationEffect+=time/2;
+        durationEffect+=time/3;
         damageForWave+=dmg/2;
         charges++;
-        durationWave-=0.01f* Random.Range( 0, 20);
+        durationWave-=0.01f* Random.Range( 0, 10);
+        if (durationWave < durationMinWave)
+        {
+            durationWave=durationMinWave;
+        }
     }
     private IEnumerator BurnRoutine()
     {

@@ -43,11 +43,11 @@ MonoBehaviour:
     toInstanciate: {fileID: 4565051072455466545, guid: ae463f379ca3ffa4b859bd2aef025dc4, type: 3}
   - nameShow: Heavy Bullets item
     nameID: HeavyBulletsItem
-    sprite: {fileID: 21300000, guid: 34ea344e4bf86c049a8a434b62a3c480, type: 3}
+    sprite: {fileID: 21300000, guid: a38d278489bdc5840acc36482d9ed676, type: 3}
     toInstanciate: {fileID: 4565051072455466545, guid: 3977aa0be20b4224898fe144e5f9ec1d, type: 3}
   - nameShow: Lighter Bullets item
     nameID: LighterBulletsItem
-    sprite: {fileID: 21300000, guid: 34ea344e4bf86c049a8a434b62a3c480, type: 3}
+    sprite: {fileID: 21300000, guid: fe8217d01d751ff498a7490d2c500a84, type: 3}
     toInstanciate: {fileID: 4565051072455466545, guid: 0204d6cac04465c42870ddc60a5f90e0, type: 3}
   - nameShow: Kaboom Bullets item
     nameID: KaboomBulletsItem

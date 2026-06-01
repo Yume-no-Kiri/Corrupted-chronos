@@ -40,7 +40,7 @@ public class HitboxBullet : MonoBehaviour
 
     public void DefineTriggerSize(Vector3 size)
     {
-        BoxTrigger.transform.localScale=size;
+        BoxTrigger.transform.localScale+=size;
         
     }
 

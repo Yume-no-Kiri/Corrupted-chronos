@@ -136,7 +136,14 @@ public PartAdder returnGarageAdder()
     }
     #endregion
     #region rewards
-
+    public void FirstGun(Vector3 posReward)
+    {
+        rewardSpawner.GenerateFirstGun(posReward);
+    }
+    public void TowerKilled(Vector3 posReward)
+    {
+        rewardSpawner.ForsureSpawnReward(posReward);
+    }
     public void EnemyKilled(Vector3 posReward)
     {
         rewardSpawner.ProbablySpawnReward(posReward);

@@ -1,5 +1,6 @@
 using System;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class RewardSpawner : MonoBehaviour
@@ -9,6 +10,8 @@ public class RewardSpawner : MonoBehaviour
     private int nTriesToReward=0;
 
     private int nRewardsTotal=0;
+    private int MaxRewardsTotal=20;
+
 
     // int NItemsSpawned=0;
     // int NgunsSpawned=0;
@@ -37,11 +40,20 @@ public class RewardSpawner : MonoBehaviour
         int index= UnityEngine.Random.Range(0, Rewards.listItems.Count);
         GameObject gun= Rewards.GetInstantiateFromNumber(index);
         Instantiate( gun, position, quaternion.identity);
+        nRewardsTotal++;
+
+    }
+
+    // public void SpawnFirstGun
+    public void ForsureSpawnReward(Vector3 posReward)
+    {
+        GenerateReward(posReward);
     }
 
     public void ProbablySpawnReward(Vector3 posReward)
     {
         Debug.Log("reward called ntries:"+nTriesToReward);
+        if(nRewardsTotal>=MaxRewardsTotal) return;
         if (nTriesToReward >= AsseguratedReward)
         {
             //spawn reward

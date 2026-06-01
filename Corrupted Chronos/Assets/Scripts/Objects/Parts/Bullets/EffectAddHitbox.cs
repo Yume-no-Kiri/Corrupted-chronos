@@ -52,7 +52,9 @@ public class AddHitboxEB: EffectsBullets
 
     protected virtual void CreateHitbox()
     {
+        Debug.Log("scale arrived inside hitbox");
         hitboxUsed = Instantiate(prefabHitboxBox, baseBullets.gameObject.transform.position, baseBullets.gameObject.transform.rotation, baseBullets.gameObject.transform);
+        hitboxUsed.transform.localScale*= baseBullets.AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSize];
     }
 
 
@@ -73,6 +75,7 @@ public class AddHitsphereEB: AddHitboxEB
     {
         // base.CreateHitbox();
         hitboxUsed = Instantiate(prefabHitboxSphere, baseBullets.gameObject.transform.position, baseBullets.gameObject.transform.rotation, baseBullets.gameObject.transform);
+        hitboxUsed.transform.localScale*= baseBullets.AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSize];
 
     }
 }

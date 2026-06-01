@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 854130acc281c7445b94de5c980aec7d, type: 3}
   m_Name: BasicStats
   m_EditorClassIdentifier: Assembly-CSharp::BasicStatsSO
-  sprite: {fileID: 21300000, guid: 64f2e000382566d44b5fdc32a28c2d3c, type: 3}
+  sprite: {fileID: 84336430, guid: 8bbb4d0c1abbd554c8dd7097cbd6e1d3, type: 3}
   classBullet: 1
   Effects:
   - nameEffect: 0
@@ -33,6 +33,6 @@ MonoBehaviour:
   - type: 105
     value: 0
   - type: 106
-    value: 1
+    value: 0.5
   - type: 107
     value: 0

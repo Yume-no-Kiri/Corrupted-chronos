@@ -338,7 +338,7 @@ public class FireEB: EffectsBullets
     protected override void HitboxTriggerEnter(Collider trigger)
     {
         
-        if (trigger.gameObject.TryGetComponent(out IDamageable victim))
+        if (trigger.gameObject.TryGetComponent(out IDamageable victim) && trigger.CompareTag("Enemy"))
         {
             if(!onDeclive){
             
@@ -365,6 +365,8 @@ public class CreateExplosionOnHitEB: EffectsBullets
 {
      protected override void Awake()
     {   
+        Debug.Log("generate explosion awake");
+
         base.Awake();
         UsesHitbox=false;
         }
@@ -384,7 +386,7 @@ public class CreateExplosionOnHitEB: EffectsBullets
         // AllInformationBullet? newBulletInfo= statsManager.instance.listBulletStats.ReturnBulletStatsSO(NameBulletPreset.Explosion);
         GameObject newBullet= Instantiate(statsManager.instance.listBulletStats.GeneralBullet, gameObject.transform.position, quaternion.identity);
         newBullet.GetComponent<CreateBullet>().Setup(true, NameBulletPreset.Explosion);
-        
+        Debug.Log("generate explosion");
     }
 }
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad29e9b81e82d8746a6fb7dec92f9dc8, type: 3}
   m_Name: RedWaveStats
   m_EditorClassIdentifier: Assembly-CSharp::RedWaveStatsSO
-  sprite: {fileID: -1060839441, guid: cbe9aa4ee9bb09d42ac7d63d4b697da8, type: 3}
+  sprite: {fileID: -389861802, guid: 8bbb4d0c1abbd554c8dd7097cbd6e1d3, type: 3}
   classBullet: 1
   Effects:
   - nameEffect: 0
@@ -35,6 +35,6 @@ MonoBehaviour:
   - type: 105
     value: 10
   - type: 106
-    value: 1
+    value: 0.5
   - type: 107
     value: 0

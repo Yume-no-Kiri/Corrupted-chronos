@@ -22,6 +22,7 @@ public class bossTower : MonoBehaviour, IDamageable
         Destroy(this.gameObject);
         dialogue_manager.UpdatePillars();
         BossSpawner.instance.towerDestroyed(this.gameObject);
+        GameManager.Instance.TowerKilled(gameObject.transform.position);
     }
 
     public void TakeDamage(float amount)
