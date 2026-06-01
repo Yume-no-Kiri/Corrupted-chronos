@@ -11,12 +11,12 @@ public class tentacleActions : MonoBehaviour
 
     public void stabAttack()
     {
-
+        tentacle.SpawnStabBullet();
     }
 
     public void spinAttack()
     {
-
+        tentacle.SpawnSpinBullet();
     }
 
     public void slamAttack()
