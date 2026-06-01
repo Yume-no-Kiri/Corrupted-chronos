@@ -62,16 +62,19 @@ public class BulletStatsSO : ScriptableObject
         public float value;
     }
 
-    public List<StatInit> BulletStats;//= new List<StatInit>(Enum.GetNames(typeof(Stat.StatTypeBullet)).Length);
+    public List<StatInit> BulletStats= new List<StatInit>();//= new List<StatInit>(Enum.GetNames(typeof(Stat.StatTypeBullet)).Length);
 
-    private void Reset()
+    private void OnEnable()
     {
+        if (BulletStats == null || BulletStats.Count == 0){
+
         var names = System.Enum.GetValues(typeof(Stat.StatTypeBullet));
         BulletStats = new List<StatInit>();
 
         foreach (Stat.StatTypeBullet t in names)
         {
             BulletStats.Add(new StatInit { type = t, value = 0 });
+        }
         }
     }
 
@@ -80,27 +83,9 @@ public class BulletStatsSO : ScriptableObject
 
 
 //Defined in the ScripteableObject in project
-[CreateAssetMenu(fileName="WaveStats", menuName = "Bullet/WaveBulletStats")]
-public class WaveStatsSO: BulletStatsSO
-{}
 
-[CreateAssetMenu(fileName="RedWaveStats", menuName = "Bullet/RedWaveBulletStats")]
-public class RedWaveStatsSO: BulletStatsSO
-{}
 
-[CreateAssetMenu(fileName="BasicStats", menuName = "Bullet/BasicBulletStats")]
-public class BasicStatsSO: BulletStatsSO
-{}
 
-[CreateAssetMenu(fileName="FollowinMissile", menuName = "Bullet/FollowinMissile")]
-public class FollowinMissileSO: BulletStatsSO
-{}
 
-[CreateAssetMenu(fileName="FlameStats", menuName = "Bullet/FlameStats")]
-public class FlameStatsSO: BulletStatsSO
-{}
 
-[CreateAssetMenu(fileName="ExplosionStats", menuName = "Bullet/ExplosionStats")]
-public class ExplosionStatsSO: BulletStatsSO
-{}
 
