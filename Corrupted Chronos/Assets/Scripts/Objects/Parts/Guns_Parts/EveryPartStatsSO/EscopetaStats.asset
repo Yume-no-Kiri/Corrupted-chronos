@@ -9,30 +9,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: WaveStats
-  m_EditorClassIdentifier: Assembly-CSharp::WaveStatsSO
-  sprite: {fileID: -1060839441, guid: cbe9aa4ee9bb09d42ac7d63d4b697da8, type: 3}
-  classBullet: 1
-  Effects:
-  - nameEffect: 0
-    setup: 2
-  - nameEffect: 30
-    setup: 2
-  BulletStats:
+  m_Script: {fileID: 11500000, guid: 743a5451911f766458a04aa6d4ff490d, type: 3}
+  m_Name: EscopetaStats
+  m_EditorClassIdentifier: Assembly-CSharp::PartBaseStatsSO
+  GunStats:
+  - type: 50
+    value: 1
+  - type: 51
+    value: -1
+  - type: 52
+    value: 3
+  - type: 53
+    value: 3
   - type: 100
-    value: 0
+    value: 5
   - type: 101
-    value: 12
+    value: -12
   - type: 102
     value: 0
   - type: 103
-    value: 10
+    value: 0
   - type: 104
-    value: 25
+    value: 0
   - type: 105
-    value: 10
+    value: 15
   - type: 106
-    value: 1
+    value: -0.25
   - type: 107
     value: 0
