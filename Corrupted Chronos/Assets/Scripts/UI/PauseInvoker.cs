@@ -11,11 +11,13 @@ public class PauseInvoker : MonoBehaviour
         {
             active= true;
             pause_menu.SetActive(true);
+            Time.timeScale = 0f;
         }
         else if (active && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             active = false;
             pause_menu.SetActive(false);
+            Time.timeScale = 1f;
         }
 
     }

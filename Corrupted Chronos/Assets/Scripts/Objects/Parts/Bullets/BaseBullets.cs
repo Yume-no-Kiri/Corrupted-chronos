@@ -86,7 +86,9 @@ public class BaseBullets : MonoBehaviour
         }
         myClassBullet=newBulletSO.classBullet;
         // newBulletSO.Debuger();
-        this.transform.localScale*=AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSize];
+        Debug.Log("scale arrived inside basebullet");
+
+        // this.transform.localScale*=AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSize];
         spr.gameObject.transform.localScale *=AllInfoBullet.StatsBullet[Stat.StatTypeBullet.BulletSize];
         newBulletSO.Debuger();
     }
