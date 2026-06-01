@@ -12,7 +12,8 @@ public enum NameBulletPreset
     RedWave=3,
     FollowMissile=4,
     Flame=5,
-    Explosion=6
+    Explosion=6,
+    Tentacle=7
 }
 
 // Ara mateix la relació de colliders i effectes es: molts efectes a 1 collider

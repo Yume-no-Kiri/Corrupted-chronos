@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0884a6eb47062cd4aa44136825acfd7e, type: 3}
+  m_Name: TentacleStats
+  m_EditorClassIdentifier: Assembly-CSharp::TentacleStatsSO
+  sprite: {fileID: 0}
+  classBullet: 1
+  Effects:
+  - nameEffect: 0
+    setup: 2
+  - nameEffect: 31
+    setup: 2
+  - nameEffect: 30
+    setup: 2
+  - nameEffect: 35
+    setup: 2
+  BulletStats:
+  - type: 100
+    value: 10
+  - type: 101
+    value: 0
+  - type: 102
+    value: 5
+  - type: 103
+    value: 0
+  - type: 104
+    value: 5
+  - type: 105
+    value: 5
+  - type: 106
+    value: 10
+  - type: 107
+    value: 0
